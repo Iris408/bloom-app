@@ -2,9 +2,25 @@ import { useState } from 'react'
 import Header from './components/layout/Header'
 import Sidebar from './components/layout/Sidebar'
 import BottomNav from './components/layout/BottomNav'
+import Home from './pages/Home'
+import Routines from './pages/Routines'
+import Focus from './pages/Focus'
+import Progress from './pages/Progress'
+import Rewards from './pages/Rewards'
+import Profile from './pages/Profile'
+
 
 function App() {
   const [activePage, setActivePage] = useState("home")
+
+  function renderPage() {
+    if (activePage === "home")     return <Home />
+    if (activePage === "routines") return <Routines />
+    if (activePage === "focus")    return <Focus />
+    if (activePage === "progress") return <Progress />
+    if (activePage === "rewards")  return <Rewards />
+    if (activePage === "profile")  return <Profile />
+  }
 
   return (
     <div className="min-h-screen bg-green-50 flex flex-col">
@@ -19,9 +35,7 @@ function App() {
 
         {/* Main content area */}
         <main className="flex-1 flex flex-col px-4 py-8 pb-24 md:pb-8">
-          <p className="text-green-700 font-medium">
-            Active page: {activePage}
-          </p>
+          {renderPage()}
         </main>  
 
       </div>
