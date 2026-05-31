@@ -108,14 +108,16 @@ function TaskList() {
                               onChange={(e) => setEditText(e.target.value)}
                               className="flex-1 rounded-lg border border-green-300 px-3 py-1 text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-400"/>
                         </div>
+                            
                         <div className="flex justify-end gap-2">
                             <button
                               onClick={() => handleEditSave(task.id)}
                               className="text-sm text-white bg-green-800 px-3 py-1 rounded-lg hover:bg-green-900 transition">
                                 Save
                               </button>
+
                               <button
-                                onClick={handleEditCancel}
+                                onClick={() => { setEditingId(null); setEditText("") }}
                                 className="text-sm text-white bg-green-800 px-3 py-1 rounded-lg hover:bg-green-900 transition">
                                     Cancel
                                 </button>
