@@ -1,13 +1,12 @@
 import TaskList from "../components/tasks/TaskList"
 
 function Home() {
-    const { activeMode, activeTheme } = useApp()
 
     return (
         <div className="flex flex-col gap-6">
 
             <h2 className="text-2xl font-bold text-green-800">
-                🏠 Today's tasks
+                ⌂ Today's tasks
             </h2>
 
             <TaskList />

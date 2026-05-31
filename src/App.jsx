@@ -23,7 +23,7 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-green-50 flex flex-col">
+    <div className="min-h-screen bg-bloom-light flex flex-col">
 
       <Header />
 
