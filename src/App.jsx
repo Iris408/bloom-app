@@ -12,16 +12,16 @@ import Profile from './pages/Profile'
 
 
 function App() {
-  const [activePage, setActivePage] = useState("home")
+  const [activePage, setActivePage] = useState("overview")
 
   function renderPage() {
+    if (activePage === "overview") return <Overview />
     if (activePage === "home")     return <Home />
     if (activePage === "routines") return <Routines />
     if (activePage === "focus")    return <Focus />
     if (activePage === "progress") return <Progress />
     if (activePage === "rewards")  return <Rewards />
     if (activePage === "profile")  return <Profile />
-    if (activePage === "overview") return <Overview />
   }
 
   return (

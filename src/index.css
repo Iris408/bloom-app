@@ -19,3 +19,20 @@
   --color-bloom-teal:       #5BA8A0;
   --color-bloom-navy:       #2C3E50;
 }
+
+:root {
+  --bloom-deep-forest: #1d5c45;
+  --bloom-mid-green: #3a7d5e;
+  --bloom-sage: #8faf6e;
+  --bloom-mint: #7cc49a;
+  --bloom-aqua: #6ecfc4;
+  --bloom-sky: #9dc4e8;
+  --bloom-lavender: #a89fc8;
+  --bloom-light-mint: #eaf4ee;
+
+  --bloom-coral: #e8704a;
+  --bloom-amber: #e8a84a;
+  --bloom-yellow: #f5d98a;
+  --bloom-cream: #faf0e6;
+  --bloom-navy: #2c3e50;
+}
