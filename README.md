@@ -21,6 +21,7 @@ The long-term vision is **Bloom Education**, which may expand the app into an ed
 
 ## Current Features
 
+- Overview page created
 - React app structure created with Vite
 - Component-based folder structure
 - Desktop sidebar navigation
@@ -116,6 +117,7 @@ bloom-app/
 │   ├── pages/
 │   │   ├── Focus.jsx
 │   │   ├── Home.jsx
+│   │   ├── Overview.jsx
 │   │   ├── Profile.jsx
 │   │   ├── Progress.jsx
 │   │   ├── Rewards.jsx

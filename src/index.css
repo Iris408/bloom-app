@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --color-bloom-forest:   #1D5C45;
   --color-bloom-mid:      #3A7D5E;
@@ -10,10 +12,10 @@
   --color-bloom-lavender: #A89FC8;
   --color-bloom-light:    #EAF4EE;
 
-  --color-kid-coral:      #E8704A;
-  --color-kid-amber:      #E8A84A;
-  --color-kid-yellow:     #F5D98A;
-  --color-kid-cream:      #FAF0E6;
-  --color-kid-teal:       #5BA8A0;
-  --color-kid-navy:       #2C3E50;
+  --color-bloom-coral:      #E8704A;
+  --color-bloom-amber:      #E8A84A;
+  --color-bloom-yellow:     #F5D98A;
+  --color-bloom-cream:      #FAF0E6;
+  --color-bloom-teal:       #5BA8A0;
+  --color-bloom-navy:       #2C3E50;
 }

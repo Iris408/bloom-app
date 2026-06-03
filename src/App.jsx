@@ -3,6 +3,7 @@ import Header from './components/layout/Header'
 import Sidebar from './components/layout/Sidebar'
 import BottomNav from './components/layout/BottomNav'
 import Home from './pages/Home'
+import Overview from './pages/Overview'
 import Routines from './pages/Routines'
 import Focus from './pages/Focus'
 import Progress from './pages/Progress'
@@ -20,10 +21,11 @@ function App() {
     if (activePage === "progress") return <Progress />
     if (activePage === "rewards")  return <Rewards />
     if (activePage === "profile")  return <Profile />
+    if (activePage === "overview") return <Overview />
   }
 
   return (
-    <div className="min-h-screen bg-bloom-light flex flex-col">
+    <div className="min-h-screen bg-bloom-light dark:bg-gray-900 flex flex-col">
 
       <Header />
 
@@ -34,7 +36,7 @@ function App() {
         <Sidebar activePage={activePage} setActivePage={setActivePage} />
 
         {/* Main content area */}
-        <main className="flex-1 flex flex-col px-4 py-8 pb-24 md:pb-8">
+        <main className="flex-1 flex flex-col px-4 py-8 pb-24 md:pb-8 dark:bg-gray-900">
           {renderPage()}
         </main>  
 
@@ -44,7 +46,7 @@ function App() {
       <BottomNav activePage={activePage} setActivePage={setActivePage} /> 
 
     </div>
-  )
+  )  
 }
 
 export default App
