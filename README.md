@@ -28,13 +28,11 @@ The long-term vision is **Bloom Education**, which may expand the app into an ed
 - Mobile bottom navigation
 - Header component
 - Task card and task list components
+- Reusable Bloom button component
+- Task add, edit, save, cancel, and delete actions
+- Emoji picker for new and edited tasks
 - Main pages created:
-  - Home
-  - Routines
-  - Focus
-  - Progress
-  - Rewards
-  - Profile
+  - Overview, Home, Routines, Focus, Progress, Rewards, Profile
 - Global app context structure started
 - Reusable UI component folder started
 
