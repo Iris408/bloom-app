@@ -1,12 +1,27 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import TaskCard from "./TaskCard"
 
 const emojis = [
-  "🌅", "🥣", "🎒", "🏃", "📚",
-  "🎮", "🛁", "💤", "🎨", "🐾",
-  "🧹", "💊", "🎯", "🌟", "💪",
-  "🧘", "🌿", "☀️", "🍵", "✏️",
+  // Morning / daily routine
+  "🌅", "☀️", "🛏️", "⏰", "🪥", "🚿", "🧴", "🪞",
+  // Food / drink
+  "🥣", "🍳", "🍎", "🥪", "🍝", "🍵", "💧",
+  // School / work / focus
+  "🎒", "📚", "✏️", "💻", "📝", "📅", "✅", "🎯",
+  // Movement / health
+  "🏃", "🚶", "💪", "🧘", "💊", "🩺",
+  // Chores / home
+  "🧹", "🧺", "🧼", "🗑️", "🐾", "🪴",
+  // Fun / creativity
+  "🎮", "🎨", "🎵", "📺", "🧩", "🧸",
+  // Outside / travel
+  "🚗", "🚌", "🏫", "🏠", "🌳", "🌧️",
+  // Rest / evening
+  "🛁", "🌙", "💤", "📖", "🕯️",
+  // Rewards / motivation
+  "🌟", "⭐", "🏆", "🎁", "💖", "👏"
 ]
+const TASKS_STORAGE_KEY = "bloom-tasks"
 
 function TaskList() {
   const [tasks, setTasks] = useState([])
@@ -118,7 +133,7 @@ function TaskList() {
           </div>
 
         {showPicker && (
-          <div className="bg-white dark:bg-dark-surface border border-gray-200 dark:border-dark-border rounded-2xl shadow p-3 grid grid-cols-8 gap-2">
+          <div className="grid grid-flow-rows grid-col-7 gap-2 bg-white dark:bg-dark-surface border border-gray-200 dark:border-dark-border rounded-2xl shadow p-3 grid grid-cols-8 gap-2">
             {emojis.map((emoji) => (
               <button
                 type="button"
