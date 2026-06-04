@@ -9,6 +9,8 @@ function AppProvider({ children }) {
     const [activeProfile, setActiveProfile] = useState(null)
     const [isDarkMode, setIsDarkMode]       = useState(false)
     const [darkStyle, setDarkStyle]         = useState("green")
+    const [fontSize, setFontSize]         = useState("medium")
+    const [dyslexicFont, setDyslexicFont] = useState(false)
 
     function toggleDarkStyle() {
     setDarkStyle(darkStyle === "grey" ? "green" : "grey")
@@ -25,13 +27,35 @@ function AppProvider({ children }) {
         }
     }
 
+    function applyFontSize(size) {
+    // EN: Remove all font size classes then apply the chosen one
+    // JP: すべてのフォントサイズクラスを削除し、選択したサイズを適用します
+    document.documentElement.classList.remove(
+        "font-small", "font-medium", "font-large", "font-xl"
+    )
+    document.documentElement.classList.add(`font-${size}`)
+    setFontSize(size)
+}
+
+    function toggleDyslexicFont() {
+    const newValue = !dyslexicFont
+    setDyslexicFont(newValue)
+    if (newValue) {
+        document.documentElement.classList.add("dyslexic")
+    } else {
+        document.documentElement.classList.remove("dyslexic")
+    }
+}
+
     return (
         <AppContext.Provider value={{
-            activeMode, setActiveMode,
-            activeTheme, setActiveTheme,
+            activeMode,    setActiveMode,
+            activeTheme,   setActiveTheme,
             activeProfile, setActiveProfile,
-            isDarkMode, toggleDarkMode,
-            darkStyle,
+            isDarkMode,    toggleDarkMode,
+            darkStyle,     
+            fontSize,      applyFontSize,
+            dyslexicFont,  toggleDyslexicFont,
         }}>
             {children}
         </AppContext.Provider>

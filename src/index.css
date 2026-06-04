@@ -3,6 +3,7 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
+  /* Adult Mode */
   --color-bloom-forest:   #1D5C45;
   --color-bloom-mid:      #3A7D5E;
   --color-bloom-sage:     #8FAF6E;
@@ -12,32 +13,39 @@
   --color-bloom-lavender: #A89FC8;
   --color-bloom-light:    #EAF4EE;
 
-  --color-bloom-coral:      #E8704A;
-  --color-bloom-amber:      #E8A84A;
-  --color-bloom-yellow:     #F5D98A;
-  --color-bloom-cream:      #FAF0E6;
-  --color-bloom-teal:       #5BA8A0;
-  --color-bloom-navy:       #2C3E50;
-  --color-dark-bg:      #0F1A14;
-  --color-dark-surface: #1A2E22;
-  --color-dark-card:    #1E3828;
-  --color-dark-border:  #2D4A38;
+  /* Kid Mode */
+  --color-kid-coral:      #E8704A;
+  --color-kid-amber:      #E8A84A;
+  --color-kid-yellow:     #F5D98A;
+  --color-kid-cream:      #FAF0E6;
+  --color-kid-teal:       #5BA8A0;
+  --color-kid-navy:       #2C3E50;
 
+  /* Dark Mode */
+  --color-dark-bg:        #0F1A14;
+  --color-dark-surface:   #1A2E22;
+  --color-dark-card:      #1E3828;
+  --color-dark-border:    #2D4A38;
 }
 
-:root {
-  --bloom-deep-forest: #1d5c45;
-  --bloom-mid-green: #3a7d5e;
-  --bloom-sage: #8faf6e;
-  --bloom-mint: #7cc49a;
-  --bloom-aqua: #6ecfc4;
-  --bloom-sky: #9dc4e8;
-  --bloom-lavender: #a89fc8;
-  --bloom-light-mint: #eaf4ee;
+/* Font size scaling */
+html.font-small  { font-size: 14px; }
+html.font-medium { font-size: 16px; }
+html.font-large  { font-size: 18px; }
+html.font-xl     { font-size: 20px; }
 
-  --bloom-coral: #e8704a;
-  --bloom-amber: #e8a84a;
-  --bloom-yellow: #f5d98a;
-  --bloom-cream: #faf0e6;
-  --bloom-navy: #2c3e50;
+/* OpenDyslexic font */
+@font-face {
+  font-family: "OpenDyslexic";
+  src: url("/fonts/OpenDyslexic3-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+html.dyslexic * {
+  font-family: "OpenDyslexic", sans-serif !important;
+}
+
+.font-dyslexic {
+  font-family: "OpenDyslexic", Arial, sans-serif;
 }
