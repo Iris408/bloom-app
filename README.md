@@ -10,6 +10,9 @@ Bloom is being built as a web-first visual task sequencer and routine builder. T
 
 The long-term vision is **Bloom Education**, which may expand the app into an educational platform for students, parents, teachers, and school administrators. This education phase is planned for the future after the personal version is complete and stable.
 
+> Status: Public Preview / Active Capstone Build  
+> Bloom is currently in the frontend foundation phase. Core layout, task actions, accessibility settings, and visual design are being developed before backend persistence is added.
+
 ## Core Goals
 
 - Build a calm and accessible routine-building app
