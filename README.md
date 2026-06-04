@@ -31,10 +31,13 @@ The long-term vision is **Bloom Education**, which may expand the app into an ed
 - Reusable Bloom button component
 - Task add, edit, save, cancel, and delete actions
 - Emoji picker for new and edited tasks
-- Main pages created:
-  - Overview, Home, Routines, Focus, Progress, Rewards, Profile
+- Main pages created: Overview, Home, Routines, Focus, Progress, Rewards, Profile
 - Global app context structure started
 - Reusable UI component folder started
+- Font size controls
+- OpenDyslexic font option
+- Light and dark mode
+- Reduce motion option
 
 ## Planned Features
 
@@ -48,10 +51,6 @@ The long-term vision is **Bloom Education**, which may expand the app into an ed
 - Progress tracking
 - Streaks, stars, and badges
 - Profile switching
-- Font size controls
-- OpenDyslexic font option
-- Light and dark mode
-- Reduce motion option
 - Future backend with FastAPI
 - Future database persistence
 - Future mobile/iOS version
@@ -97,12 +96,15 @@ The long-term vision is **Bloom Education**, which may expand the app into an ed
 ```text
 bloom-app/
 ├── public/
+│   ├── fonts/
+│   │   ├── OpenDyslexic3-Regular.ttf
 ├── src/
 │   ├── assets/
 │   ├── components/
 │   │   ├── layout/
 │   │   │   ├── BottomNav.jsx
 │   │   │   ├── Header.jsx
+│   │   │   └── Footer.jsx
 │   │   │   └── Sidebar.jsx
 │   │   ├── modes/
 │   │   ├── tasks/
@@ -110,6 +112,9 @@ bloom-app/
 │   │   │   └── TaskList.jsx
 │   │   └── ui/
 │   │       └── Button.jsx
+│   │       └── DyslexicFontToggle.jsx
+│   │       └── FontSizeSlider.jsx
+│   │       └── ReduceMotionToggle.jsx
 │   ├── context/
 │   │   └── AppContext.jsx
 │   ├── pages/
