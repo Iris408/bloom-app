@@ -97,7 +97,7 @@ The long-term vision is **Bloom Education**, which may expand the app into an ed
 bloom-app/
 ├── public/
 │   ├── fonts/
-│   │   ├── OpenDyslexic3-Regular.ttf
+│   │   └── OpenDyslexic3-Regular.ttf
 ├── src/
 │   ├── assets/
 │   ├── components/
