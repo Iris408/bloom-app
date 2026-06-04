@@ -9,8 +9,9 @@ function AppProvider({ children }) {
     const [activeProfile, setActiveProfile] = useState(null)
     const [isDarkMode, setIsDarkMode]       = useState(false)
     const [darkStyle, setDarkStyle]         = useState("green")
-    const [fontSize, setFontSize]         = useState("medium")
-    const [dyslexicFont, setDyslexicFont] = useState(false)
+    const [fontSize, setFontSize]           = useState("medium")
+    const [dyslexicFont, setDyslexicFont]   = useState(false)
+    const [reduceMotion, setReduceMotion]   = useState(false)
 
     function toggleDarkStyle() {
     setDarkStyle(darkStyle === "grey" ? "green" : "grey")
@@ -47,6 +48,17 @@ function AppProvider({ children }) {
     }
 }
 
+    function toggleReduceMotion() {
+        const newValue = !reduceMotion
+        setReduceMotion(newValue)
+
+        if (newValue) {
+            document.documentElement.classList.add("reduce-motion")   
+        } else {
+            document.documentElement.classList.remove("reduce-motion")
+        }
+    }
+
     return (
         <AppContext.Provider value={{
             activeMode,    setActiveMode,
@@ -56,6 +68,7 @@ function AppProvider({ children }) {
             darkStyle,     
             fontSize,      applyFontSize,
             dyslexicFont,  toggleDyslexicFont,
+            reduceMotion,  toggleReduceMotion
         }}>
             {children}
         </AppContext.Provider>

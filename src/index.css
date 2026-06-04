@@ -49,3 +49,14 @@ html.dyslexic * {
 .font-dyslexic {
   font-family: "OpenDyslexic", Arial, sans-serif;
 }
+
+html.reduce-motion * {
+  scroll-behavior: auto !important;
+}
+html.reduce-motion *,
+html.reduce-motion *::before,
+html.reduce-motion *::after {  
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+}
