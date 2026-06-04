@@ -1,6 +1,5 @@
 import { useState } from "react"
 import TaskCard from "./TaskCard"
-import Button from "../ui/Button"
 
 const emojis = [
   "🌅", "🥣", "🎒", "🏃", "📚",
@@ -10,11 +9,7 @@ const emojis = [
 ]
 
 function TaskList() {
-  const [tasks, setTasks] = useState([
-    { id: 1, emoji: "🌅", text: "Morning stretches" },
-    { id: 2, emoji: "🥣", text: "Eat breakfast" },
-    { id: 3, emoji: "🎒", text: "Pack my bag" },
-  ])
+  const [tasks, setTasks] = useState([])
 
   const [inputText, setInputText] = useState("")
   const [selectedEmoji, setSelectedEmoji] = useState("📝")
@@ -92,10 +87,10 @@ function TaskList() {
   }
 
   return (
-    <div className="flex flex-col gap-4 w-full max-w-lg">
+    <div className="flex flex-col gap-8 w-full">
       {/* ADD INPUT AREA */}
-      <div className="flex flex-col gap-2">
-        <div className="flex items-center gap-2 border border-gray-300 dark:border-dark-border rounded-xl px-3 py-2 bg-white dark:bg-dark-surface focus-within:ring-2 focus-within:ring-bloom-sage">
+      <div className="flex flex-col gap-4">
+        <div className="flex items-center gap-2 border border-gray-300 dark:border-dark-border rounded-xl px-3 py-2 bg-white dark:bg-dark-surface focus-within:ring-1 focus-within:ring-bloom-mid">
           <button
             type="button"
             onClick={() => setShowPicker(!showPicker)}
@@ -113,11 +108,14 @@ function TaskList() {
             placeholder="Add a new task..."
             className="flex-1 text-gray-700 dark:text-gray-100 dark:bg-transparent placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none"
           />
-
-          <Button variant="primary" onClick={handleAddTask}>
+          <button
+            type="button"
+            onClick={handleAddTask}
+            className="text-sm font-semibold text-bloom-mid dark:text-bloom-sage hover:text-bloom-forest dark:hover:text-bloom-light transition"
+          >
             Add
-          </Button>
-        </div>
+          </button>
+          </div>
 
         {showPicker && (
           <div className="bg-white dark:bg-dark-surface border border-gray-200 dark:border-dark-border rounded-2xl shadow p-3 grid grid-cols-8 gap-2">
@@ -139,70 +137,92 @@ function TaskList() {
       </div>
 
       {/* TASK CARDS */}
-      {tasks.map((task) =>
-        editingId === task.id ? (
-          <div
-            key={task.id}
-            className="flex flex-col gap-3 border border-gray-300 dark:border-dark-border rounded-xl px-3 py-3 bg-white dark:bg-dark-surface"
-          >
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
-                onClick={() => setShowEditPicker(!showEditPicker)}
-                className="text-2xl flex items-center justify-center hover:bg-bloom-light dark:hover:bg-gray-700 rounded-lg p-1 transition"
-              >
-                {editEmoji}
-              </button>
+      {tasks.length === 0 ? (
+        <div className="rounded-2xl border border-bloom-sage/30 bg-white/60 dark:bg-white/10 p-6 text-center">
+          <p className="text-3xl mb-3">🌱</p>
 
-              <input
-                type="text"
-                value={editText}
-                onChange={(e) => setEditText(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") handleEditSave(task.id)
-                }}
-                className="flex-1 text-gray-700 dark:text-gray-100 dark:bg-transparent placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none"
-              />
-            </div>
+          <h3 className="text-lg font-bold text-bloom-forest dark:text-bloom-light mb-2">
+            No tasks yet
+          </h3>
 
-            {showEditPicker && (
-              <div className="bg-white dark:bg-dark-surface border border-gray-200 dark:border-dark-border rounded-2xl shadow p-3 grid grid-cols-8 gap-2">
-                {emojis.map((emoji) => (
-                  <button
-                    type="button"
-                    key={emoji}
-                    onClick={() => {
-                      setEditEmoji(emoji)
-                      setShowEditPicker(false)
-                    }}
-                    className="text-2xl w-10 h-10 rounded-lg flex items-center justify-center hover:bg-bloom-light transition"
-                  >
-                    {emoji}
-                  </button>
-                ))}
+          <p className="text-sm text-gray-500 dark:text-gray-400">
+            Add your first small step when you're ready.
+          </p>
+        </div>  
+      ) : (
+        tasks.map((task) =>
+          editingId === task.id ? (
+            <div
+              key={task.id}
+              className="flex flex-col gap-3 border border-gray-300 dark:border-dark-border rounded-xl px-3 py-3 bg-white dark:bg-dark-surface"
+            >
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setShowEditPicker(!showEditPicker)}
+                  className="text-2xl flex items-center justify-center hover:bg-bloom-light dark:hover:bg-gray-700 rounded-lg p-1 transition"
+                >
+                  {editEmoji}
+                </button>
+
+                <input
+                  type="text"
+                  value={editText}
+                  onChange={(e) => setEditText(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") handleEditSave(task.id)
+                  }}
+                  className="flex-1 text-gray-700 dark:text-gray-100 dark:bg-transparent placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none"
+                />
               </div>
-            )}
 
-            <div className="flex justify-end gap-2">
-              <Button onClick={() => handleEditSave(task.id)}>
-                Save
-              </Button>
+              {showEditPicker && (
+                <div className="bg-white dark:bg-dark-surface border border-gray-200 dark:border-dark-border rounded-2xl shadow p-3 grid grid-cols-8 gap-2">
+                  {emojis.map((emoji) => (
+                    <button
+                      type="button"
+                      key={emoji}
+                      onClick={() => {
+                        setEditEmoji(emoji)
+                        setShowEditPicker(false)
+                      }}
+                      className="text-2xl w-10 h-10 rounded-lg flex items-center justify-center hover:bg-bloom-light transition"
+                    >
+                      {emoji}
+                    </button>
+                  ))}
+                </div>
+              )}
 
-              <Button variant="secondary" onClick={handleEditCancel}>
-                Cancel
-              </Button>
+              <div className="flex gap-4 justify-end">
+                <button
+                  type="button"
+                  onClick={() => handleEditSave(task.id)}
+                  className="text-sm font-medium font-semibold text-bloom-mid dark:text-bloom-sage hover:text-bloom-forest dark:hover:text-bloom-light transition"
+                >
+                  Save
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleEditCancel}
+                  className="text-sm font-lg font-semibold text-bloom-forest dark:text-bloom-mid hover:text-dark-card dark:hover:text-bloom-sage transition"
+                >
+                  Cancel
+                </button>
+              </div>
             </div>
-          </div>
-        ) : (
-          <TaskCard
-            key={task.id}
-            task={task}
-            onEdit={handleEditStart}
-            onDelete={handleDelete}
-          />
+          ) : (
+            <TaskCard
+              key={task.id}
+              task={task}
+              onEdit={handleEditStart}
+              onDelete={handleDelete}
+            />
+          )
         )
       )}
-    </div>
+    </div>  
   )
 }
 

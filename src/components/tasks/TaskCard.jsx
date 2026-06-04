@@ -6,7 +6,7 @@ function TaskCard({ task, onEdit, onDelete }) {
 
   const cardClass = isDarkMode
     ? "bg-dark-card border-dark-border"
-    : "bg-white border-bloom-sage"
+    : "bg-white border-bloom-mid"
 
   return (
     <div className={`${cardClass} border rounded-2xl shadow p-4 flex flex-col gap-3`}>
@@ -22,11 +22,16 @@ function TaskCard({ task, onEdit, onDelete }) {
 
       {/* EN: Task action buttons */}
       {/* JP: タスク操作ボタン */}
-      <div className="flex justify-end gap-2">
+      <div className="flex justify-end gap-4">
+        <button type="button"
+        onClick={() => onEdit(task)}
+        className="text-sm font-medium font-semibold text-bloom-mid dark:text-bloom-sage hover:text-bloom-forest dark:hover:text-bloom-light transition"
+       >Edit</button>
 
-        <Button variant="secondary" onClick={() => onEdit(task)}>Edit</Button>
-
-        <Button variant="danger" onClick={() => onDelete(task.id)}>Delete</Button>
+        <button type="button"
+        onClick={() => onDelete(task.id)}
+        className="text-sm font-medium font-semibold text-red-400 hover:text-red-500 transition"
+       >Delete</button>
 
       </div>
     </div>

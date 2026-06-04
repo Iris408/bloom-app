@@ -21,36 +21,34 @@ The long-term vision is **Bloom Education**, which may expand the app into an ed
 
 ## Current Features
 
-- Overview page created
 - React app structure created with Vite
 - Component-based folder structure
 - Desktop sidebar navigation
 - Mobile bottom navigation
-- Header component
-- Task card and task list components
+- Header and Footer components
 - Reusable Bloom button component
-- Task add, edit, save, cancel, and delete actions
+- Task card and task list components
 - Emoji picker for new and edited tasks
+- Task add, edit, save, cancel, and delete actions
 - Main pages created: Overview, Home, Routines, Focus, Progress, Rewards, Profile
 - Global app context structure started
 - Reusable UI component folder started
-- Font size controls
-- OpenDyslexic font option
 - Light and dark mode
-- Reduce motion option
+- Font size controls
+- OpenDyslexic font toggle
+- Reduce motion toggle
 
 ## Planned Features
 
 - Routine builder
 - Add, edit, delete, and reorder routine steps
-- Emoji picker for tasks
+- Progress tracking
+- Streaks, stars, and badges
+- Profile switching
 - Focus Mode for one-step-at-a-time routines
 - Kid Mode with larger buttons, warmer colours, and more emoji-based guidance
 - Calm Mode with reduced visual urgency
 - Review Mode for completed routines
-- Progress tracking
-- Streaks, stars, and badges
-- Profile switching
 - Future backend with FastAPI
 - Future database persistence
 - Future mobile/iOS version
