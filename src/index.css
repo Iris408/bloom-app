@@ -18,6 +18,11 @@
   --color-bloom-cream:      #FAF0E6;
   --color-bloom-teal:       #5BA8A0;
   --color-bloom-navy:       #2C3E50;
+  --color-dark-bg:      #0F1A14;
+  --color-dark-surface: #1A2E22;
+  --color-dark-card:    #1E3828;
+  --color-dark-border:  #2D4A38;
+
 }
 
 :root {

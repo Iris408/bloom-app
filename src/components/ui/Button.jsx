@@ -1,5 +1,5 @@
 function Button({ variant = "primary", onClick, children, className = "",type = "button", disabled = false }) {
-    const base = "px-4 py-2 rounded-xl font-semibold transition text-sm"
+    const base = "px-4 py-2 rounded-xl font-semibold transition text-sm cursor-pointer"
 
     const variants = {
         primary:   "bg-bloom-forest text-white hover:bg-bloom-mid",

@@ -95,12 +95,11 @@ function TaskList() {
     <div className="flex flex-col gap-4 w-full max-w-lg">
       {/* ADD INPUT AREA */}
       <div className="flex flex-col gap-2">
-        <div className="flex items-center gap-2 border border-gray-300 dark:border-gray-600 rounded-xl px-3 py-2 bg-white dark:bg-gray-800 focus-within:ring-2 focus-within:ring-bloom-sage">
+        <div className="flex items-center gap-2 border border-gray-300 dark:border-dark-border rounded-xl px-3 py-2 bg-white dark:bg-dark-surface focus-within:ring-2 focus-within:ring-bloom-sage">
           <button
             type="button"
             onClick={() => setShowPicker(!showPicker)}
-            className="text-2xl flex items-center justify-center hover:bg-bloom-light rounded-lg p-1 transition"
-          >
+            className="text-2xl flex items-center justify-center hover:bg-bloom-light dark:hover:bg-gray-700 rounded-lg p-1 transition">
             {selectedEmoji}
           </button>
 
@@ -121,7 +120,7 @@ function TaskList() {
         </div>
 
         {showPicker && (
-          <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-2xl shadow p-3 grid grid-cols-8 gap-2">
+          <div className="bg-white dark:bg-dark-surface border border-gray-200 dark:border-dark-border rounded-2xl shadow p-3 grid grid-cols-8 gap-2">
             {emojis.map((emoji) => (
               <button
                 type="button"
@@ -144,13 +143,13 @@ function TaskList() {
         editingId === task.id ? (
           <div
             key={task.id}
-            className="flex flex-col gap-3 border border-gray-300 dark:border-gray-600 rounded-xl px-3 py-3 bg-white dark:bg-gray-800"
+            className="flex flex-col gap-3 border border-gray-300 dark:border-dark-border rounded-xl px-3 py-3 bg-white dark:bg-dark-surface"
           >
             <div className="flex items-center gap-2">
               <button
                 type="button"
                 onClick={() => setShowEditPicker(!showEditPicker)}
-                className="text-2xl flex items-center justify-center hover:bg-bloom-light rounded-lg p-1 transition"
+                className="text-2xl flex items-center justify-center hover:bg-bloom-light dark:hover:bg-gray-700 rounded-lg p-1 transition"
               >
                 {editEmoji}
               </button>
@@ -167,7 +166,7 @@ function TaskList() {
             </div>
 
             {showEditPicker && (
-              <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-2xl shadow p-3 grid grid-cols-8 gap-2">
+              <div className="bg-white dark:bg-dark-surface border border-gray-200 dark:border-dark-border rounded-2xl shadow p-3 grid grid-cols-8 gap-2">
                 {emojis.map((emoji) => (
                   <button
                     type="button"

@@ -3,7 +3,7 @@ import Button from "../components/ui/Button"
 function Overview({ setActivePage }) {
   return (
     <main className="min-h-screen p-6 lg:p-10">
-      <section className="max-w-6xl mx-auto space-y-8">
+      <section className="max-w-6xl mx-auto space-y-32">
 
         {/* Hero */}
         <div className="rounded-3xl bg-bloom-light text-white p-8 lg:p-12 shadow-lg">
@@ -22,7 +22,7 @@ function Overview({ setActivePage }) {
           </p>
 
           <div className="flex flex-wrap gap-3">
-            <Button onClick={() => setActivePage("Home")}>
+            <Button onClick={() => setActivePage("home")}>
               Start with Tasks
             </Button>
 
@@ -37,7 +37,7 @@ function Overview({ setActivePage }) {
 
         {/* Quick summary cards */}
         <div className="grid md:grid-cols-3 gap-4">
-          <div className="rounded-3xl bg-white dark:bg-gray-800 border border-bloom-sage p-6 shadow">
+          <div className="rounded-3xl bg-white dark:bg-dark-surface border border-bloom-sage dark:border-bloom-mint p-6 shadow">
             <p className="text-sm font-semibold text-bloom-mid mb-2">
               Current Build
             </p>
@@ -50,7 +50,7 @@ function Overview({ setActivePage }) {
             </p>
           </div>
 
-          <div className="rounded-3xl bg-white dark:bg-gray-800 border border-bloom-sage p-6 shadow">
+          <div className="rounded-3xl bg-white dark:bg-dark-surface border border-bloom-sage dark:border-bloom-mint p-6 shadow">
             <p className="text-sm font-semibold text-bloom-mid mb-2">
               Personal Modes
             </p>
@@ -63,7 +63,7 @@ function Overview({ setActivePage }) {
             </p>
           </div>
 
-          <div className="rounded-3xl bg-white dark:bg-gray-800 border border-bloom-sage p-6 shadow">
+          <div className="rounded-3xl bg-white dark:bg-dark-surface border border-bloom-sage dark:border-bloom-mint p-6 shadow">
             <p className="text-sm font-semibold text-bloom-mid mb-2">
               Design Goal
             </p>
@@ -78,7 +78,7 @@ function Overview({ setActivePage }) {
         </div>
 
         {/* Purpose section */}
-        <div className="rounded-3xl bg-bloom-light p-8 border border-bloom-sage">
+        <div className="rounded-3xl bg-bloom-light p-8 border border-bloom-sage dark:border-bloom-mint">
           <p className="text-sm font-semibold text-bloom-mid uppercase tracking-wide mb-3">
             Why Bloom exists
           </p>
@@ -96,7 +96,7 @@ function Overview({ setActivePage }) {
         </div>
 
         {/* Roadmap */}
-        <div id="roadmap" className="rounded-3xl bg-white dark:bg-gray-800 border border-bloom-sage p-8 shadow">
+        <div id="roadmap" className="rounded-3xl bg-white dark:bg-green-100/70 border border-bloom-sage dark:border-bloom-mint p-8 shadow">
           <p className="text-sm font-semibold text-bloom-mid uppercase tracking-wide mb-3">
             Roadmap
           </p>

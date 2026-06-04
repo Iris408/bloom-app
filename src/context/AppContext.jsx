@@ -8,6 +8,11 @@ function AppProvider({ children }) {
     const [activeTheme, setActiveTheme]     = useState("system")
     const [activeProfile, setActiveProfile] = useState(null)
     const [isDarkMode, setIsDarkMode]       = useState(false)
+    const [darkStyle, setDarkStyle]         = useState("green")
+
+    function toggleDarkStyle() {
+    setDarkStyle(darkStyle === "grey" ? "green" : "grey")
+    } 
 
     function toggleDarkMode() {
         const newValue = !isDarkMode
@@ -26,6 +31,7 @@ function AppProvider({ children }) {
             activeTheme, setActiveTheme,
             activeProfile, setActiveProfile,
             isDarkMode, toggleDarkMode,
+            darkStyle,
         }}>
             {children}
         </AppContext.Provider>
