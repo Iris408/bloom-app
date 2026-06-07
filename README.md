@@ -10,8 +10,6 @@ Bloom is an active full-stack capstone project focused on building a calm, acces
 
 Bloomは、視覚的なルーティン作成とタスク進行を支援するアクセシビリティ重視のフルスタック・キャップストーンプロジェクトです。ユーザーがステップごとのルーティンを分かりやすく作成・整理・実行できるように設計しており、ニューロダイバージェントフレンドリーな体験を重視しています。
 
----
-
 ## Current Status / 現在のステータス
 
 **Active Capstone Project / Frontend Foundation Phase**
@@ -39,7 +37,9 @@ Bloomは、視覚的なルーティン作成とタスク進行を支援するア
 | Backend API | 🚧 Planned |
 | Database persistence | 🚧 Planned |
 
----
+## Screenshot / スクリーンショット
+
+<img src="./public/bloom-app.png" width="400"/>
 
 ## Project Overview / プロジェクト概要
 
@@ -51,8 +51,6 @@ Bloomは、Webファーストの視覚的タスクシーケンサーおよびル
 
 長期的には、学生、保護者、教師、学校管理者向けの教育プラットフォームである **Bloom Education** への拡張も視野に入れています。この教育向けフェーズは、個人版が安定した後の将来的な計画です。
 
----
-
 ## Core Goals / 主な目標
 
 | EN | 日本語 |
@@ -63,8 +61,6 @@ Bloomは、Webファーストの視覚的タスクシーケンサーおよびル
 | Include kid-friendly and adult-friendly modes | 子ども向け・大人向けのモードに対応 |
 | Design layouts that work well on desktop and mobile | デスクトップとモバイルの両方で使いやすいレイアウトを設計 |
 | Build a strong portfolio-ready full-stack capstone project | ポートフォリオに掲載できるフルスタック・キャップストーンとして成長させる |
-
----
 
 ## Current Features / 現在の機能
 
@@ -86,8 +82,6 @@ Bloomは、Webファーストの視覚的タスクシーケンサーおよびル
 | Font size controls | フォントサイズ調整 |
 | OpenDyslexic font toggle | OpenDyslexicフォント切り替え |
 | Reduce motion toggle | アニメーション軽減設定 |
-
----
 
 ## Pages / ページ構成
 
@@ -113,8 +107,6 @@ Bloomは、Webファーストの視覚的タスクシーケンサーおよびル
 | Rewards | 今後のリワード・バッジ |
 | Profile | ユーザー設定とアクセシビリティ設定 |
 
----
-
 ## Planned Features / 今後の予定機能
 
 | EN | 日本語 |
@@ -132,8 +124,6 @@ Bloomは、Webファーストの視覚的タスクシーケンサーおよびル
 | Future FastAPI backend | 将来的なFastAPIバックエンド |
 | Future database persistence | 将来的なデータベース永続化 |
 | Future mobile/iOS version | 将来的なモバイル/iOS版 |
-
----
 
 ## App Modes / アプリモード
 
@@ -156,8 +146,6 @@ Bloomは、Webファーストの視覚的タスクシーケンサーおよびル
 | Calm Mode | 動きや緊急感を抑えた落ち着いたUI |
 | Review Mode | ルーティン完了後の振り返り |
 | Education Mode | 将来的な学校・教育向け利用モード |
-
----
 
 ## Tech Stack / 技術スタック
 
@@ -182,8 +170,6 @@ Bloomは、Webファーストの視覚的タスクシーケンサーおよびル
 - React Native for iOS
 - Vercel for frontend hosting
 - Render for backend hosting
-
----
 
 ## Project Structure / プロジェクト構成
 
