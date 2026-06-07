@@ -32,8 +32,11 @@ Bloomは、視覚的なルーティン作成とタスク進行を支援するア
 | OpenDyslexic font toggle | ✅ Complete |
 | Reduce motion toggle | ✅ Complete |
 | Main pages created | ✅ Complete |
-| localStorage task persistence | ✅ Complete  |
-| Routine builder | 🚧 Next |
+| localStorage task and routine persistence | ✅ Complete  |
+| Routine builder v1 | ✅ Complete  |
+| Add, edit, delete routine actions | ✅ Complete |
+| Add and remove routine steps | ✅ Complete  |
+| Progress tracking | 🚧 Planned |
 | Backend API | 🚧 Planned |
 | Database persistence | 🚧 Planned |
 
