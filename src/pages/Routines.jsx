@@ -1,14 +1,324 @@
+import { useEffect, useState } from "react"
+
+const ROUTINE_STORAGE_KEY = "bloom-routines"
+
 function Routines() {
-    return (
-        <div className="flex flex-col gap-4">
-            <h2 className="text-2xl font-bold text-green-800">
-                ◴ Routines
-            </h2>
-            <p className="text-gray-500">
-                Coming soon...
-            </p>
-        </div>
+  const [routines, setRoutines] = useState(() => {
+    try {
+      const savedRoutines = localStorage.getItem(ROUTINE_STORAGE_KEY)
+
+      if (savedRoutines) {
+        return JSON.parse(savedRoutines)
+      }
+
+      return []
+    } catch {
+      return []
+    }
+  })
+
+  const [routineName, setRoutineName] = useState("")
+  const [stepText, setStepText] = useState({})
+
+  const [editingRoutineId, setEditingRoutineId] = useState(null)
+  const [editRoutineName, setEditRoutineName] = useState("")
+
+  // EN: Save routines whenever the routine list changes
+  // JP: ルーティン一覧が変更されるたびに localStorage に保存します
+  useEffect(() => {
+    localStorage.setItem(ROUTINE_STORAGE_KEY, JSON.stringify(routines))
+  }, [routines])
+
+  // EN: Add a new routine
+  // JP: 新しいルーティンを追加します
+  function handleAddRoutine() {
+    if (routineName.trim() === "") return
+
+    const newRoutine = {
+      id: Date.now(),
+      name: routineName.trim(),
+      steps: [],
+    }
+
+    setRoutines([...routines, newRoutine])
+    setRoutineName("")
+  }
+
+  // EN: Start editing a routine name
+  // JP: ルーティン名の編集を開始します
+  function handleEditRoutineStart(routine) {
+    setEditingRoutineId(routine.id)
+    setEditRoutineName(routine.name)
+  }
+
+  // EN: Save edited routine name
+  // JP: 編集したルーティン名を保存します
+  function handleEditRoutineSave(routineId) {
+    if (editRoutineName.trim() === "") return
+
+    setRoutines(
+      routines.map((routine) =>
+        routine.id === routineId
+          ? {
+              ...routine,
+              name: editRoutineName.trim(),
+            }
+          : routine
+      )
     )
+
+    setEditingRoutineId(null)
+    setEditRoutineName("")
+  }
+
+  // EN: Cancel routine name editing
+  // JP: ルーティン名の編集をキャンセルします
+  function handleEditRoutineCancel() {
+    setEditingRoutineId(null)
+    setEditRoutineName("")
+  }
+
+  // EN: Add a new step to a specific routine
+  // JP: 指定したルーティンに新しいステップを追加します
+  function handleAddStep(routineId) {
+    const text = stepText[routineId]
+
+    if (!text || text.trim() === "") return
+
+    setRoutines(
+      routines.map((routine) =>
+        routine.id === routineId
+          ? {
+              ...routine,
+              steps: [
+                ...routine.steps,
+                {
+                  id: Date.now(),
+                  text: text.trim(),
+                },
+              ],
+            }
+          : routine
+      )
+    )
+
+    setStepText({
+      ...stepText,
+      [routineId]: "",
+    })
+  }
+
+  // EN: Delete a routine
+  // JP: ルーティンを削除します
+  function handleDeleteRoutine(routineId) {
+    setRoutines(routines.filter((routine) => routine.id !== routineId))
+  }
+
+  // EN: Delete one step from a routine
+  // JP: ルーティン内のステップを1つ削除します
+  function handleDeleteStep(routineId, stepId) {
+    setRoutines(
+      routines.map((routine) =>
+        routine.id === routineId
+          ? {
+              ...routine,
+              steps: routine.steps.filter((step) => step.id !== stepId),
+            }
+          : routine
+      )
+    )
+  }
+
+  return (
+    <div className="flex flex-col gap-8 max-w-3xl">
+      <div>
+        <p className="text-xs font-semibold uppercase tracking-widest text-bloom-mid dark:text-bloom-sage mb-2">
+          Routine Builder
+        </p>
+
+        <h2 className="text-3xl font-bold text-bloom-forest dark:text-bloom-light">
+          ◴ Routines
+        </h2>
+
+        <p className="text-sm text-bloom-forest/80 dark:text-gray-300 mt-3 leading-relaxed">
+          Create simple step-by-step routines and build calm structure for your
+          day.
+        </p>
+      </div>
+
+      {/* Add routine input */}
+      <div className="flex items-center gap-2 border border-bloom-sage/30 dark:border-white/10 rounded-xl px-3 py-2 bg-white dark:bg-white/10 dark:hover:bg-white/15 transition">
+        <input
+          type="text"
+          value={routineName}
+          onChange={(e) => setRoutineName(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") handleAddRoutine()
+          }}
+          placeholder="Add a new routine..."
+          className="flex-1 bg-transparent text-bloom-forest dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-400 caret-bloom-forest dark:caret-white outline-none focus:outline-none focus:ring-0"
+        />
+
+        <button
+          type="button"
+          onClick={handleAddRoutine}
+          className="text-sm font-semibold text-bloom-mid dark:text-bloom-sage hover:text-bloom-forest dark:hover:text-bloom-light transition"
+        >
+          Add
+        </button>
+      </div>
+
+      {/* Empty state */}
+      {routines.length === 0 ? (
+        <div className="rounded-2xl border border-bloom-sage/30 bg-white/60 dark:bg-white/10 p-6 text-center">
+          <p className="text-3xl mb-3">🌿</p>
+
+          <h3 className="text-lg font-bold text-bloom-forest dark:text-bloom-light mb-2">
+            No routines yet
+          </h3>
+
+          <p className="text-sm text-gray-500 dark:text-gray-400">
+            Add your first routine when you're ready.
+          </p>
+        </div>
+      ) : (
+        <div className="flex flex-col gap-5">
+          {routines.map((routine) => (
+            <div
+              key={routine.id}
+              className="rounded-2xl border border-bloom-sage/30 bg-white dark:bg-dark-surface p-5 flex flex-col gap-4"
+            >
+              {/* Routine card header */}
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex-1">
+                  {editingRoutineId === routine.id ? (
+                    <input
+                      type="text"
+                      value={editRoutineName}
+                      onChange={(e) => setEditRoutineName(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          handleEditRoutineSave(routine.id)
+                        }
+                      }}
+                      className="w-full bg-white/10 border border-white/10 rounded-xl px-3 py-2 text-bloom-forest dark:text-gray-100 caret-bloom-forest dark:caret-white outline-none focus:outline-none focus:ring-0"
+                    />
+                  ) : (
+                    <h3 className="text-lg font-bold text-bloom-forest dark:text-bloom-light">
+                      {routine.name}
+                    </h3>
+                  )}
+
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    {routine.steps.length} step
+                    {routine.steps.length === 1 ? "" : "s"}
+                  </p>
+                </div>
+
+                {editingRoutineId === routine.id ? (
+                  <div className="flex gap-3">
+                    <button
+                      type="button"
+                      onClick={() => handleEditRoutineSave(routine.id)}
+                      className="text-sm font-semibold text-bloom-mid dark:text-bloom-sage hover:text-bloom-forest dark:hover:text-bloom-light transition"
+                    >
+                      Save
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={handleEditRoutineCancel}
+                      className="text-sm font-semibold text-gray-500 dark:text-gray-300 hover:text-bloom-forest dark:hover:text-bloom-light transition"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                ) : (
+                  <div className="flex gap-3">
+                    <button
+                      type="button"
+                      onClick={() => handleEditRoutineStart(routine)}
+                      className="text-sm font-semibold text-bloom-mid dark:text-bloom-sage hover:text-bloom-forest dark:hover:text-bloom-light transition"
+                    >
+                      Edit
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteRoutine(routine.id)}
+                      className="text-sm font-semibold text-red-500 hover:text-red-700 dark:hover:text-red-300 transition"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              {/* Steps */}
+              {routine.steps.length === 0 ? (
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  No steps added yet.
+                </p>
+              ) : (
+                <div className="flex flex-col gap-2">
+                  {routine.steps.map((step, index) => (
+                    <div
+                      key={step.id}
+                      className="flex items-center justify-between gap-3 rounded-xl bg-bloom-light/60 dark:bg-white/10 px-3 py-2"
+                    >
+                      <p className="text-sm text-bloom-forest dark:text-gray-200">
+                        <span className="font-semibold mr-2">
+                          {index + 1}.
+                        </span>
+                        {step.text}
+                      </p>
+
+                      <button
+                        type="button"
+                        onClick={() =>
+                          handleDeleteStep(routine.id, step.id)
+                        }
+                        className="text-xs font-semibold text-bloom-mid dark:text-bloom-sage hover:text-red-500 transition"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Add step input */}
+              <div className="flex items-center gap-2 border border-bloom-sage/30 dark:border-white/10 rounded-xl px-3 py-2 bg-white/80 dark:bg-white/10 dark:hover:bg-white/15 transition">
+                <input
+                  type="text"
+                  value={stepText[routine.id] || ""}
+                  onChange={(e) =>
+                    setStepText({
+                      ...stepText,
+                      [routine.id]: e.target.value,
+                    })
+                  }
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") handleAddStep(routine.id)
+                  }}
+                  placeholder="Add a step..."
+                  className="flex-1 bg-transparent text-bloom-forest dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-400 caret-bloom-forest dark:caret-white outline-none focus:outline-none focus:ring-0"
+                />
+
+                <button
+                  type="button"
+                  onClick={() => handleAddStep(routine.id)}
+                  className="text-sm font-semibold text-bloom-mid dark:text-bloom-sage hover:text-bloom-forest dark:hover:text-bloom-light transition"
+                >
+                  Add step
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
 }
 
 export default Routines

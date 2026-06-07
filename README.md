@@ -12,7 +12,7 @@ Bloomは、視覚的なルーティン作成とタスク進行を支援するア
 
 ## Current Status / 現在のステータス
 
-**Active Capstone Project / Frontend Foundation Phase**
+**Active Capstone Project / Frontend Foundation + Task Persistence**
 
 **アクティブなキャップストーンプロジェクト / フロントエンド基礎構築フェーズ**
 
