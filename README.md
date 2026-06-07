@@ -2,58 +2,140 @@
 
 Calm routines for every brain.
 
-Bloom is a personal full-stack capstone project focused on building a calm, accessible visual routine and task sequencing application. The app is designed to help users create, organise, and follow step-by-step routines in a clear, supportive, and neurodivergent-friendly way.
+Bloom is an active full-stack capstone project focused on building a calm, accessible visual routine and task sequencing application. The app is designed to help users create, organise, and follow step-by-step routines in a clear, supportive, and neurodivergent-friendly way.
 
-## Project Overview
+# Bloom 🌱
+
+すべての人にやさしい、落ち着いたルーティン管理アプリ。
+
+Bloomは、視覚的なルーティン作成とタスク進行を支援するアクセシビリティ重視のフルスタック・キャップストーンプロジェクトです。ユーザーがステップごとのルーティンを分かりやすく作成・整理・実行できるように設計しており、ニューロダイバージェントフレンドリーな体験を重視しています。
+
+---
+
+## Current Status / 現在のステータス
+
+**Active Capstone Project / Frontend Foundation Phase**
+
+**アクティブなキャップストーンプロジェクト / フロントエンド基礎構築フェーズ**
+
+| Area | Status |
+|---|---|
+| React + Vite frontend structure | ✅ Complete |
+| Component-based folder structure | ✅ Complete |
+| Desktop sidebar navigation | ✅ Complete |
+| Mobile bottom navigation | ✅ Complete |
+| Header and footer layout | ✅ Complete |
+| Reusable Bloom button component | ✅ Complete |
+| Task card and task list components | ✅ Complete |
+| Add, edit, save, cancel, and delete task actions | ✅ Complete |
+| Emoji picker for new and edited tasks | ✅ Complete |
+| Light and dark mode support | ✅ Complete |
+| Font size controls | ✅ Complete |
+| OpenDyslexic font toggle | ✅ Complete |
+| Reduce motion toggle | ✅ Complete |
+| Main pages created | ✅ Complete |
+| localStorage task persistence | 🚧 Next |
+| Routine builder | 🚧 Planned |
+| Backend API | 🚧 Planned |
+| Database persistence | 🚧 Planned |
+
+---
+
+## Project Overview / プロジェクト概要
 
 Bloom is being built as a web-first visual task sequencer and routine builder. The first version focuses on **Bloom Personal**, a personal-use routine app with accessible layouts, task cards, routine pages, progress tracking, rewards, and multiple user modes.
 
 The long-term vision is **Bloom Education**, which may expand the app into an educational platform for students, parents, teachers, and school administrators. This education phase is planned for the future after the personal version is complete and stable.
 
-## Core Goals
+Bloomは、Webファーストの視覚的タスクシーケンサーおよびルーティンビルダーとして開発しています。最初のバージョンでは、個人利用向けの **Bloom Personal** に集中し、アクセシブルなレイアウト、タスクカード、ルーティンページ、進捗管理、リワード、複数の利用モードを構築していきます。
 
-- Build a calm and accessible routine-building app
-- Support neurodivergent-friendly user experiences
-- Provide simple visual step-by-step task guidance
-- Include kid-friendly and adult-friendly modes
-- Design layouts that work well on desktop and mobile
-- Build a strong portfolio-ready full-stack capstone project
+長期的には、学生、保護者、教師、学校管理者向けの教育プラットフォームである **Bloom Education** への拡張も視野に入れています。この教育向けフェーズは、個人版が安定した後の将来的な計画です。
 
-## Current Features
+---
 
-- React app structure created with Vite
-- Component-based folder structure
-- Desktop sidebar navigation
-- Mobile bottom navigation
-- Header and Footer components
-- Reusable Bloom button component
-- Task card and task list components
-- Emoji picker for new and edited tasks
-- Task add, edit, save, cancel, and delete actions
-- Main pages created: Overview, Home, Routines, Focus, Progress, Rewards, Profile
-- Global app context structure started
-- Reusable UI component folder started
-- Light and dark mode
-- Font size controls
-- OpenDyslexic font toggle
-- Reduce motion toggle
+## Core Goals / 主な目標
 
-## Planned Features
+| EN | 日本語 |
+|---|---|
+| Build a calm and accessible routine-building app | 落ち着いて使えるアクセシブルなルーティン作成アプリを構築 |
+| Support neurodivergent-friendly user experiences | ニューロダイバージェントフレンドリーなユーザー体験を支援 |
+| Provide simple visual step-by-step task guidance | ステップごとの視覚的なタスク案内を提供 |
+| Include kid-friendly and adult-friendly modes | 子ども向け・大人向けのモードに対応 |
+| Design layouts that work well on desktop and mobile | デスクトップとモバイルの両方で使いやすいレイアウトを設計 |
+| Build a strong portfolio-ready full-stack capstone project | ポートフォリオに掲載できるフルスタック・キャップストーンとして成長させる |
 
-- Routine builder
-- Add, edit, delete, and reorder routine steps
-- Progress tracking
-- Streaks, stars, and badges
-- Profile switching
-- Focus Mode for one-step-at-a-time routines
-- Kid Mode with larger buttons, warmer colours, and more emoji-based guidance
-- Calm Mode with reduced visual urgency
-- Review Mode for completed routines
-- Future backend with FastAPI
-- Future database persistence
-- Future mobile/iOS version
+---
 
-## App Modes
+## Current Features / 現在の機能
+
+| EN | 日本語 |
+|---|---|
+| React app structure created with Vite | Viteで作成したReactアプリ構成 |
+| Component-based folder structure | コンポーネントベースのフォルダ構成 |
+| Desktop sidebar navigation | デスクトップ用サイドバーナビゲーション |
+| Mobile bottom navigation | モバイル用ボトムナビゲーション |
+| Header and footer components | ヘッダー・フッターコンポーネント |
+| Reusable Bloom button component | 再利用可能なBloomボタンコンポーネント |
+| Task card and task list components | タスクカード・タスクリストコンポーネント |
+| Emoji picker for new and edited tasks | 新規作成・編集タスク用の絵文字ピッカー |
+| Task add, edit, save, cancel, and delete actions | タスクの追加、編集、保存、キャンセル、削除 |
+| Main pages created | 主要ページの作成 |
+| Global app context structure started | グローバルアプリコンテキスト構成の開始 |
+| Reusable UI component folder started | 再利用可能なUIコンポーネントフォルダの作成 |
+| Light and dark mode | ライトモード・ダークモード |
+| Font size controls | フォントサイズ調整 |
+| OpenDyslexic font toggle | OpenDyslexicフォント切り替え |
+| Reduce motion toggle | アニメーション軽減設定 |
+
+---
+
+## Pages / ページ構成
+
+| Page | Purpose |
+|---|---|
+| Overview | High-level app overview |
+| Home | Today’s focus and task list |
+| Routines | Future routine builder page |
+| Focus | Future one-step-at-a-time mode |
+| Progress | Future progress tracking |
+| Rewards | Future rewards and badges |
+| Profile | User settings and accessibility preferences |
+
+### 日本語
+
+| ページ | 目的 |
+|---|---|
+| Overview | アプリ全体の概要 |
+| Home | 今日のフォーカスとタスクリスト |
+| Routines | 今後のルーティン作成ページ |
+| Focus | 今後の1ステップ集中モード |
+| Progress | 今後の進捗管理 |
+| Rewards | 今後のリワード・バッジ |
+| Profile | ユーザー設定とアクセシビリティ設定 |
+
+---
+
+## Planned Features / 今後の予定機能
+
+| EN | 日本語 |
+|---|---|
+| localStorage task persistence | localStorageによるタスク保存 |
+| Routine builder | ルーティンビルダー |
+| Add, edit, delete, and reorder routine steps | ルーティンステップの追加・編集・削除・並び替え |
+| Progress tracking | 進捗管理 |
+| Streaks, stars, and badges | 継続記録、スター、バッジ |
+| Profile switching | プロフィール切り替え |
+| Focus Mode | 1ステップずつ表示する集中モード |
+| Kid Mode | 子ども向けモード |
+| Calm Mode | 視覚的な刺激を抑えた落ち着いたモード |
+| Review Mode | 完了後の振り返りモード |
+| Future FastAPI backend | 将来的なFastAPIバックエンド |
+| Future database persistence | 将来的なデータベース永続化 |
+| Future mobile/iOS version | 将来的なモバイル/iOS版 |
+
+---
+
+## App Modes / アプリモード
 
 | Mode | Purpose |
 |---|---|
@@ -64,54 +146,67 @@ The long-term vision is **Bloom Education**, which may expand the app into an ed
 | Review Mode | Reflection after completing a routine |
 | Education Mode | Long-term future mode for school-based use |
 
-## Tech Stack
+### 日本語
 
-### Current Frontend
+| モード | 目的 |
+|---|---|
+| Standard Mode | 個人ルーティン向けのシンプルで大人向けのレイアウト |
+| Kid Mode | 子ども向けの分かりやすく温かい絵文字中心のUI |
+| Focus Mode | 気が散りにくいように1ステップずつ表示 |
+| Calm Mode | 動きや緊急感を抑えた落ち着いたUI |
+| Review Mode | ルーティン完了後の振り返り |
+| Education Mode | 将来的な学校・教育向け利用モード |
+
+---
+
+## Tech Stack / 技術スタック
+
+### Current Frontend / 現在のフロントエンド
 
 - React
 - JavaScript
 - Tailwind CSS
 - Vite
 - CSS
-- Git
-- GitHub
+- Git/GitHub
 
-### Planned Backend
+### Planned Backend / 今後のバックエンド予定
 
 - Python
 - FastAPI
-- SQLite / TinyDB for early learning stage
-- PostgreSQL in future production-ready versions
+- SQLite or TinyDB for early learning phase
+- PostgreSQL for future production-ready versions
 
-### Future Tools
+### Future Tools / 将来的に使用予定のツール
 
 - React Native for iOS
 - Vercel for frontend hosting
 - Render for backend hosting
 
-## Project Structure
+---
+
+## Project Structure / プロジェクト構成
 
 ```text
 bloom-app/
 ├── public/
 │   └── fonts/
-│       └── OpenDyslexic3-Regular.ttf
 ├── src/
 │   ├── assets/
 │   ├── components/
 │   │   ├── layout/
 │   │   │   ├── BottomNav.jsx
+│   │   │   ├── Footer.jsx
 │   │   │   ├── Header.jsx
-│   │   │   └── Footer.jsx
 │   │   │   └── Sidebar.jsx
 │   │   ├── modes/
 │   │   ├── tasks/
 │   │   │   ├── TaskCard.jsx
 │   │   │   └── TaskList.jsx
 │   │   └── ui/
-│   │       └── Button.jsx
-│   │       └── DyslexicFontToggle.jsx
-│   │       └── FontSizeSlider.jsx
+│   │       ├── Button.jsx
+│   │       ├── DyslexicFontToggle.jsx
+│   │       ├── FontSizeSlider.jsx
 │   │       └── ReduceMotionToggle.jsx
 │   ├── context/
 │   │   └── AppContext.jsx
@@ -132,4 +227,5 @@ bloom-app/
 ├── eslint.config.js
 ├── index.html
 ├── package-lock.json
-└── package.json
+├── package.json
+└── README.md
