@@ -21,10 +21,28 @@ const emojis = [
   // Rewards / motivation
   "🌟", "⭐", "🏆", "🎁", "💖", "👏"
 ]
-const TASKS_STORAGE_KEY = "bloom-tasks"
+const TASK_STORAGE_KEY = "bloom-tasks"
 
 function TaskList() {
-  const [tasks, setTasks] = useState([])
+  const [tasks, setTasks] = useState(() => {
+    try {
+      const savedTasks = localStorage.getItem(TASK_STORAGE_KEY)
+
+      if (savedTasks) {
+        return JSON.parse(savedTasks)
+      }
+
+      return []
+    } catch {
+      return []
+    }
+  })
+  
+  // EN: Save tasks to localStorage whenever the task list changes
+  // JP: タスクリストが変更されるたびに localStorage に保存します
+  useEffect(() => {
+    localStorage.setItem(TASK_STORAGE_KEY, JSON.stringify(tasks))
+  }, [tasks])
 
   const [inputText, setInputText] = useState("")
   const [selectedEmoji, setSelectedEmoji] = useState("📝")
@@ -133,7 +151,7 @@ function TaskList() {
           </div>
 
         {showPicker && (
-          <div className="grid grid-flow-rows grid-col-7 gap-2 bg-white dark:bg-dark-surface border border-gray-200 dark:border-dark-border rounded-2xl shadow p-3 grid grid-cols-8 gap-2">
+          <div className="<bg-white dark:bg-dark-surface border border-gray-200 dark:border-dark-border rounded-2xl shadow p-3 grid grid-cols-8 gap-2">
             {emojis.map((emoji) => (
               <button
                 type="button"
