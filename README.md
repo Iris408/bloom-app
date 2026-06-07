@@ -227,5 +227,4 @@ bloom-app/
 ├── eslint.config.js
 ├── index.html
 ├── package-lock.json
-├── package.json
-└── README.md
+└── package.json
