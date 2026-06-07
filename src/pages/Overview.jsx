@@ -28,7 +28,7 @@ function Overview({ setActivePage }) {
 
             <a
               href="#roadmap"
-              className="px-4 py-2 rounded-xl font-semibold text-sm border border-bloom-mint text-bloom-mint hover:bg-bloom-mint hover:text-bloom-forest transition"
+              className="px-4 py-2 rounded-xl font-semibold text-sm border border-bloom-mint text-bloom-mint hover:bg-bloom-mint hover:text-bloom-forest dark:bg-dark-surface/50 transition"
             >
               View roadmap
             </a>
