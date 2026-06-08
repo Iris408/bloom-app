@@ -99,6 +99,7 @@ function Routines() {
                 {
                   id: Date.now(),
                   text: text.trim(),
+                  completed: false,
                 },
               ],
             }
@@ -131,6 +132,28 @@ function Routines() {
           : routine
       )
     )
+  }
+
+  // EN: Toggle a routine step between complete and incomplete
+  // JP:ルーティン内のステップを完了・未完了に切り替えます
+  function handleToggleStepComplete(routineId, stepId) {
+    setRoutines(
+      routines.map((routine) =>
+      routine.id === routineId
+        ? {
+            ...routine,
+            steps: routine.steps.map((step) =>
+            step.id === stepId
+              ? {
+                  ...step,
+                  completed: !step.completed,
+                }
+              : step  
+            ),
+          }
+        : routine    
+      )
+    )  
   }
 
   // EN: Start editing one routine step
@@ -355,13 +378,38 @@ function Routines() {
                             className="w-full bg-transparent text-bloom-forest dark:text-gray-100 caret-bloom-forest dark:caret-white outline-none focus:outline-none focus:ring-0"
                             />
                           ) : (
-                            <p className="text-sm text-bloom-forest dark:text-gray-200">
-                              <span className="font-semibold mr-2">
-                                {index + 1}.
-                              </span>
+                            <div className="flex items-center gap-3">
+                              <button
+                              type="button"
+                              onClick={() => handleToggleStepComplete(routine.id, step.id)}
+                              aria-label={
+                                step.completed
+                                  ? "Mark step as incomplete"
+                                  : "Mark as complete"
+                              }
+                              className={`w-5 h-5 rounded-full border flex items-center justify-center text-xs font-bold transition ${
+                                step.completed
+                                  ? "bg-bloom-forest border-bloom-forest text-white"
+                                  : "border-bloom-sage text-transparent hover:border-bloom-forest"
+                              }`}
+                              >
+                                ✓
+                              </button>
+
+                              <p 
+                                className={`text-sm ${
+                                  step.completed
+                                  ? "text-gray-400 line-through"
+                                  : "text-bloom-forest dark:text-gray-200"
+                              }`}
+                              >
+                                <span className="font-semibold mr-2">
+                                  {index + 1}.
+                                </span>
                                 {step.text}
-                            </p>
-                          )}
+                              </p>
+                            </div>
+                          )}    
                         </div>
 
                         {editingStepId === step.id ? (
