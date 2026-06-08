@@ -4,7 +4,7 @@ function Header({ setActivePage, activePage }) {
   const { isDarkMode, toggleDarkMode, darkStyle } = useApp()
 
   return (
-    <header className="w-full hidden md:flex flex-col bg-white/50 dark:bg-[#101a0e]/60 border-r border-bloom-sage/30 dark:border-white/10 px-6 py-4">
+    <header className="w-full bg-gradient-to-b from-[#f3f7ed] via-[#e8f0dd] to-[#dde9ce] dark:bg-gradient-to-t from-[#0A1208] via-[#0D1A0A] to-[#111F0D] border-b border-bloom-sage/25 px-6 py-4">
       <div className="flex items-center justify-between">
         {/* Logo - left side */}
         <div 

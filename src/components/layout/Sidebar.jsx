@@ -11,7 +11,7 @@ function Sidebar({ activePage, setActivePage }) {
     ]
 
     return (
-    <aside className="hidden md:flex flex-col w-56 min-h-screen border-r border-bloom-light dark:border-dark-border px-5 py-6"
+    <aside className="hidden md:flex flex-col w-56 min-h-screen bg-gradient-to-t from-[#f3f7ed] via-[#e8f0dd] to-[#dde9ce] dark:bg-[#0D1A0A]/90 border-r border-bloom-light dark:border-dark-border px-5 py-6"
     >
     
       {/* Navigation */}
