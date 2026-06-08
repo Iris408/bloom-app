@@ -22,28 +22,24 @@ Bloomは、視覚的なルーティン作成とタスク進行を支援するア
 
 | Area | Status |
 |---|---|
-| React + Vite frontend structure | ✅ Complete |
-| Component-based folder structure | ✅ Complete |
-| Desktop sidebar navigation | ✅ Complete |
-| Mobile bottom navigation | ✅ Complete |
-| Header and footer layout | ✅ Complete |
-| Reusable Bloom button and reminder components | ✅ Complete |
-| Task card and task list components | ✅ Complete |
-| Add, edit, save, cancel, and delete task actions | ✅ Complete |
-| Emoji picker for new and edited tasks | ✅ Complete |
-| Light and dark mode support | ✅ Complete |
-| Accessibility controls | ✅ Complete |
-| localStorage task and routine persistence | ✅ Complete  |
-| Routine builder v1 | ✅ Complete  |
-| Add, edit, delete routine actions | ✅ Complete |
-| Add and remove routine steps | ✅ Complete  |
-| localStorage task persistence | ✅ Complete |
-| Edit individual routine steps | ✅ Complete |
-| Reorder routine steps with up/down controls | ✅ Complete |
-| Mark routine steps complete/incomplete | 🚧 Next |
-| Progress tracking | 🚧 Planned |
-| Backend API | 🚧 Planned |
-| Database persistence | 🚧 Planned |
+| **Foundation** | |
+| Vite + React, folder structure, routing | ✅ Complete |
+| Sidebar navigation for desktop and bottom navigation | ✅ Complete |
+| Header, footer, reusable UI components | ✅ Complete |
+| **Tasks** | |
+| Task cards, task list, CRUD actions and emoji picker | ✅ Complete |
+| Task localStorage persistence | ✅ Complete |
+| **Routines** | |
+| Routine builder — create, edit and delete routines | ✅ Complete |
+| Routine steps — add, remove, edit, reorder and complete | ✅ Complete |
+| Routine and step localStorage persistence | ✅ Complete |
+| **UI / UX** | |
+| Light/dark mode and accessibility controls | ✅ Complete |
+| Reusable Bloom reminder component across pages | ✅ Complete |
+| **Planned Updates** | |
+| Progress v1 - step percentage and completion calculation | 🚧 In progress |
+| Progress page visual summaries | 🚧 Planned |
+| Backend API and database persistence | 🚧 Planned |
 
 ## Project Overview / プロジェクト概要
 
