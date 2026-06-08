@@ -38,6 +38,9 @@ Bloomは、視覚的なルーティン作成とタスク進行を支援するア
 | Add, edit, delete routine actions | ✅ Complete |
 | Add and remove routine steps | ✅ Complete  |
 | localStorage task persistence | ✅ Complete |
+| Edit individual routine steps | ✅ Complete |
+| Reorder routine steps with up/down controls | ✅ Complete |
+| Mark routine steps complete/incomplete | 🚧 Next |
 | Progress tracking | 🚧 Planned |
 | Backend API | 🚧 Planned |
 | Database persistence | 🚧 Planned |
