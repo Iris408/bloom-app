@@ -179,6 +179,7 @@ Bloomは、Webファーストの視覚的タスクシーケンサーおよびル
 bloom-app/
 ├── public/
 │   └── fonts/
+│       └── OpenDyslexic3-Regular.ttf
 ├── src/
 │   ├── assets/
 │   ├── components/
@@ -192,6 +193,7 @@ bloom-app/
 │   │   │   ├── TaskCard.jsx
 │   │   │   └── TaskList.jsx
 │   │   └── ui/
+│   │       ├── BloomReminder.jsx
 │   │       ├── Button.jsx
 │   │       ├── DyslexicFontToggle.jsx
 │   │       ├── FontSizeSlider.jsx
