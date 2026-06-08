@@ -10,6 +10,10 @@ Bloom is an active full-stack capstone project focused on building a calm, acces
 
 Bloomは、視覚的なルーティン作成とタスク進行を支援するアクセシビリティ重視のフルスタック・キャップストーンプロジェクトです。ユーザーがステップごとのルーティンを分かりやすく作成・整理・実行できるように設計しており、ニューロダイバージェントフレンドリーな体験を重視しています。
 
+## Screenshot / スクリーンショット
+
+<img src="./public/bloom-app.png" width="400"/>
+
 ## Current Status / 現在のステータス
 
 **Active Capstone Project / Frontend Foundation + Task Persistence**
@@ -23,26 +27,20 @@ Bloomは、視覚的なルーティン作成とタスク進行を支援するア
 | Desktop sidebar navigation | ✅ Complete |
 | Mobile bottom navigation | ✅ Complete |
 | Header and footer layout | ✅ Complete |
-| Reusable Bloom button component | ✅ Complete |
+| Reusable Bloom button and reminder components | ✅ Complete |
 | Task card and task list components | ✅ Complete |
 | Add, edit, save, cancel, and delete task actions | ✅ Complete |
 | Emoji picker for new and edited tasks | ✅ Complete |
 | Light and dark mode support | ✅ Complete |
-| Font size controls | ✅ Complete |
-| OpenDyslexic font toggle | ✅ Complete |
-| Reduce motion toggle | ✅ Complete |
-| Main pages created | ✅ Complete |
+| Accessibility controls | ✅ Complete |
 | localStorage task and routine persistence | ✅ Complete  |
 | Routine builder v1 | ✅ Complete  |
 | Add, edit, delete routine actions | ✅ Complete |
 | Add and remove routine steps | ✅ Complete  |
+| localStorage task persistence | ✅ Complete |
 | Progress tracking | 🚧 Planned |
 | Backend API | 🚧 Planned |
 | Database persistence | 🚧 Planned |
-
-## Screenshot / スクリーンショット
-
-<img src="./public/bloom-app.png" width="400"/>
 
 ## Project Overview / プロジェクト概要
 
@@ -79,8 +77,8 @@ Bloomは、Webファーストの視覚的タスクシーケンサーおよびル
 | Emoji picker for new and edited tasks | 新規作成・編集タスク用の絵文字ピッカー |
 | Task add, edit, save, cancel, and delete actions | タスクの追加、編集、保存、キャンセル、削除 |
 | Main pages created | 主要ページの作成 |
-| Global app context structure started | グローバルアプリコンテキスト構成の開始 |
-| Reusable UI component folder started | 再利用可能なUIコンポーネントフォルダの作成 |
+| Global app context structure | グローバルアプリコンテキスト構成 |
+| Reusable UI component folder | 再利用可能なUIコンポーネントフォルダ |
 | Light and dark mode | ライトモード・ダークモード |
 | Font size controls | フォントサイズ調整 |
 | OpenDyslexic font toggle | OpenDyslexicフォント切り替え |
@@ -102,21 +100,19 @@ Bloomは、Webファーストの視覚的タスクシーケンサーおよびル
 
 | ページ | 目的 |
 |---|---|
-| Overview | アプリ全体の概要 |
-| Home | 今日のフォーカスとタスクリスト |
-| Routines | 今後のルーティン作成ページ |
-| Focus | 今後の1ステップ集中モード |
-| Progress | 今後の進捗管理 |
-| Rewards | 今後のリワード・バッジ |
-| Profile | ユーザー設定とアクセシビリティ設定 |
+| 概要 | アプリ全体の概要 |
+| ホーム | 今日のフォーカスとタスクリスト |
+| ルーティン | 今後のルーティン作成ページ |
+| フォーカス | 今後の1ステップ集中モード |
+| プログレス | 今後の進捗管理 |
+| リワード | 今後のリワード・バッジ |
+| プロフィール | ユーザー設定とアクセシビリティ設定 |
 
 ## Planned Features / 今後の予定機能
 
 | EN | 日本語 |
 |---|---|
-| localStorage task persistence | localStorageによるタスク保存 |
-| Routine builder | ルーティンビルダー |
-| Add, edit, delete, and reorder routine steps | ルーティンステップの追加・編集・削除・並び替え |
+| Reorder routine steps | ルーティンステップの追加・編集・削除・並び替え |
 | Progress tracking | 進捗管理 |
 | Streaks, stars, and badges | 継続記録、スター、バッジ |
 | Profile switching | プロフィール切り替え |
@@ -143,12 +139,12 @@ Bloomは、Webファーストの視覚的タスクシーケンサーおよびル
 
 | モード | 目的 |
 |---|---|
-| Standard Mode | 個人ルーティン向けのシンプルで大人向けのレイアウト |
-| Kid Mode | 子ども向けの分かりやすく温かい絵文字中心のUI |
-| Focus Mode | 気が散りにくいように1ステップずつ表示 |
-| Calm Mode | 動きや緊急感を抑えた落ち着いたUI |
-| Review Mode | ルーティン完了後の振り返り |
-| Education Mode | 将来的な学校・教育向け利用モード |
+| スタンダードモード | 個人ルーティン向けのシンプルで大人向けのレイアウト |
+| キッズモード | 子ども向けの分かりやすく温かい絵文字中心のUI |
+| フォーカスモード | 気が散りにくいように1ステップずつ表示 |
+| リラックスモード | 動きや緊急感を抑えた落ち着いたUI |
+| レビューモード | ルーティン完了後の振り返り |
+| 学習・学校モード | 将来的な学校・教育向け利用モード |
 
 ## Tech Stack / 技術スタック
 
