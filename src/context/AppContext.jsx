@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react"
+import { createContext, useContext, useState, useEffect } from "react"
 
 // create the context
 const AppContext = createContext()
@@ -12,10 +12,42 @@ function AppProvider({ children }) {
     const [fontSize, setFontSize]           = useState("medium")
     const [dyslexicFont, setDyslexicFont]   = useState(false)
     const [reduceMotion, setReduceMotion]   = useState(false)
+    const [focusTasks, setFocusTasks]       = useState(() => {
+        const saved = localStorage.getItem("bloom_focus_tasks");
+        return saved ? JSON.parse(saved) : [];
+    });
+
+    useEffect(() => {
+        localStorage.setItem("bloom_focus_tasks", JSON.stringify(focusTasks));
+    }, [focusTasks]);
 
     function toggleDarkStyle() {
     setDarkStyle(darkStyle === "grey" ? "green" : "grey")
-    } 
+    }
+
+    const addFocusTask = (title, dateKey) => {
+        setFocusTasks((prev) => [
+            ...prev,
+    {
+      id: crypto.randomUUID(),
+      title,
+      scheduledFor: dateKey,
+      completedOn: null,
+    },
+  ]);
+};
+
+    const completeFocusTask = (id, dateKey) => {
+        setFocusTasks((prev) => 
+            prev.map((task) =>
+                task.id === id ? { ...task, completedOn: dateKey } : task
+    )
+  );
+};
+
+const deleteFocusTask = (id) => {
+  setFocusTasks((prev) => prev.filter((task) => task.id !== id));
+};
 
     function toggleDarkMode() {
         const newValue = !isDarkMode
@@ -64,11 +96,20 @@ function AppProvider({ children }) {
             activeMode,    setActiveMode,
             activeTheme,   setActiveTheme,
             activeProfile, setActiveProfile,
+
             isDarkMode,    toggleDarkMode,
             darkStyle,     
+            toggleDarkStyle,
+
             fontSize,      applyFontSize,
             dyslexicFont,  toggleDyslexicFont,
-            reduceMotion,  toggleReduceMotion
+            reduceMotion,  toggleReduceMotion,
+            
+            focusTasks,    
+            setFocusTasks,
+            addFocusTask,
+            completeFocusTask,
+            deleteFocusTask,  
         }}>
             {children}
         </AppContext.Provider>
@@ -81,3 +122,4 @@ function useApp() {
 }
 
 export { AppProvider, useApp }
+export default AppContext

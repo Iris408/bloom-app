@@ -26,6 +26,11 @@
   --color-dark-surface:   #1A2E22;
   --color-dark-card:      #1E3828;
   --color-dark-border:    #2D4A38;
+  --color-dark-soil:      #0D1A0A;
+  --color-dark-root:      #111F0D;
+  --color-dark-bark:      #162611;
+  --color-dark-moss:      #1F3318;
+  --color-dark-deep:      #0C170A;
 }
 
 /* Font size scaling */
