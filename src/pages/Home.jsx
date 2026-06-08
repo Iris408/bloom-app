@@ -21,8 +21,7 @@ function Home() {
           </p>
 
           <p className="text-sm leading-relaxed text-bloom-forest/80 dark:text-gray-300 max-w-3xl">
-            You do not need to finish everything at once. Choose one task,
-            start gently, and take the next step when you're ready.
+            You do not need to finish everything at once. Choose one task, start slowly, and take the next step when you're ready.
           </p>
 
           <div className="flex flex-col gap-3">
@@ -71,7 +70,7 @@ function Home() {
             </p>
 
             <blockquote className="text-base font-semibold leading-relaxed text-bloom-forest dark:text-bloom-light">
-              "A routine does not have to be perfect to be helpful."
+              "You don't have to do everything today. One small step is still progress."
             </blockquote>
           </div>
 

@@ -19,7 +19,7 @@ function App() {
 
   // Dynamic background based on dark style
   const bgClass = !isDarkMode
-      ? "bg-white"
+      ? "bg-gradient-to-t from-[#f3f7ed] via-[#e8f0dd] to-[#dde9ce]"
       : darkStyle === "green"
           ? "bg-dark-card"
           : "bg-gray-700"

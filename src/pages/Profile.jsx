@@ -1,14 +1,16 @@
 import FontSizeSlider from '../components/ui/FontSizeSlider'
 import DyslexicFontToggle from '../components/ui/DyslexicFontToggle'
 import ReduceMotionToggle from '../components/ui/ReduceMotionToggle'
+import BloomReminder from '../components/ui/BloomReminder'
 
 function Profile() {
   return (
     <div className="flex flex-col gap-8 max-w-lg">
-
+      <div>
       <h2 className="text-2xl font-bold text-bloom-forest dark:text-bloom-light">
         ⌖ Profile & Settings
       </h2>
+      </div>
 
       {/* Appearance section */}
       <div className="flex flex-col gap-4">
@@ -26,6 +28,13 @@ function Profile() {
           </div>
         </div>
       </div>
+
+      <BloomReminder
+        reminder="Your settings are yours to change — anytime, no questions asked.."
+        phaseTitle="Profile v1"
+        phaseDescription="Customize the font size, OpenDyslexic toggle and Reduce Motion toggle to suit your needs."
+      />
+
     </div>
   )
 }
