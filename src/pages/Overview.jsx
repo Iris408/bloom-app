@@ -1,4 +1,5 @@
 import Button from "../components/ui/Button"
+import BloomReminder from "../components/ui/BloomReminder"
 
 function Overview({ setActivePage }) {
   return (
@@ -127,6 +128,13 @@ function Overview({ setActivePage }) {
             </div>
           </div>
         </div>
+
+        <BloomReminder
+          reminder="Bloom is being built one calm step at a time."
+          phaseTitle="Bloom Frontend MVP"
+          phaseDescription="Current work focuses on task persistence, routine persistence, reusable UI components, and accessible page layouts."
+        />
+        
       </section>
     </main>
   )

@@ -13,9 +13,9 @@ function Rewards() {
             </div>
 
             <BloomReminder
-                reminder="You earned this. It's not luck, it's effort."
+                reminder="You earned this. All wins deserve to be noticed."
                 phaseTitle="Rewards v1"
-                phaseDescription="This page will later show visual rewards and keep everything saved with localStorage."
+                phaseDescription="This page will later show badges, stars, streaks, and gentle rewards for completed routines."
             />
         </div>
     )

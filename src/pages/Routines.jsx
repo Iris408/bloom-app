@@ -319,14 +319,14 @@ function Routines() {
               </div>
             ))}
           </div>
-
-          <BloomReminder
-            reminder="A routine does not have to be perfect to be helpful."
-            phaseTitle="Routine Builder v1"
-            phaseDescription="Create routines, edit routine names, add steps, remove steps, and keep everything saved with localStorage."
-          />
         </>
       )}
+
+      <BloomReminder
+        reminder="A routine does not have to be perfect to be helpful."
+        phaseTitle="Routine Builder v1"
+        phaseDescription="Create routines, edit routine names, add steps, remove steps, and keep everything saved with localStorage."
+      />
     </div>
   )
 }

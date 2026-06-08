@@ -32,7 +32,7 @@ function Profile() {
       <BloomReminder
         reminder="Your settings are yours to change — anytime, no questions asked.."
         phaseTitle="Profile v1"
-        phaseDescription="Customize the font size, OpenDyslexic toggle and Reduce Motion toggle to suit your needs."
+        phaseDescription="This page will later manage accessibility preferences, user modes, and personalised routine settings."
       />
 
     </div>
