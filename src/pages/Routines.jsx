@@ -24,6 +24,9 @@ function Routines() {
   const [editingRoutineId, setEditingRoutineId] = useState(null)
   const [editRoutineName, setEditRoutineName] = useState("")
 
+  const [editingStepId, setEditingStepId] = useState(null)
+  const [editStepText, setEditStepText] = useState("")
+
   // EN: Save routines whenever the routine list changes
   // JP: ルーティン一覧が変更されるたびに localStorage に保存します
   useEffect(() => {
@@ -127,6 +130,75 @@ function Routines() {
             }
           : routine
       )
+    )
+  }
+
+  // EN: Start editing one routine step
+  // JP: ルーティン内の1つのステップ編集を開始します
+  function handleEditStepStart(step) {
+    setEditingStepId(step.id)
+    setEditStepText(step.text)
+  }
+
+  // EN: Save edited routine step
+  // JP: 編集したステップを保存します
+  function handleEditStepSave(routineId, stepId) {
+    if (editStepText.trim() === "") return
+
+    setRoutines(
+      routines.map((routine) =>
+        routine.id === routineId
+          ? {
+              ...routine,
+              steps: routine.steps.map((step) =>
+                step.id === stepId
+                  ? {
+                      ...step,
+                      text: editStepText.trim(),
+                    }
+                  : step
+              ),
+            }
+          : routine
+      )
+    )
+
+    setEditingStepId(null)
+    setEditStepText("")
+  }
+
+  // EN: Cancel step editing
+  // JP: ステップ編集をキャンセルします
+  function handleEditStepCancel () {
+    setEditingStepId(null)
+    setEditStepText("")
+  }
+
+  // EN: Move a routine step up or down
+  // JP: ルーティン内のステップを上または下に移動します
+  function handleMoveStep(routineId, stepIndex, direction) {
+    setRoutines(
+      routines.map((routine) => {
+        if (routine.id !== routineId) {
+          return routine
+        }
+
+        const updatedSteps = [...routine.steps]
+        const newIndex = stepIndex + direction
+
+        if (newIndex < 0 || newIndex >= updatedSteps.length) {
+          return routine
+        }
+
+        const movedStep = updatedSteps[stepIndex]
+        updatedSteps[stepIndex] = updatedSteps[newIndex]
+        updatedSteps[newIndex] = movedStep
+
+        return {
+          ...routine,
+          steps: updatedSteps,
+        }
+      })
     )
   }
 
@@ -269,26 +341,93 @@ function Routines() {
                         key={step.id}
                         className="flex items-center justify-between gap-3 rounded-xl bg-bloom-light/60 dark:bg-white/10 px-3 py-2"
                       >
-                        <p className="text-sm text-bloom-forest dark:text-gray-200">
-                          <span className="font-semibold mr-2">
-                            {index + 1}.
-                          </span>
-                          {step.text}
-                        </p>
+                        <div className="flex-1">
+                          {editingStepId === step.id ? (
+                            <input
+                            type="text"
+                            value={editStepText}
+                            onChange={(e) => setEditStepText(e.target.value)}
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter") {
+                                handleEditStepSave(routine.id, step.id)
+                              }
+                            }}
+                            className="w-full bg-transparent text-bloom-forest dark:text-gray-100 caret-bloom-forest dark:caret-white outline-none focus:outline-none focus:ring-0"
+                            />
+                          ) : (
+                            <p className="text-sm text-bloom-forest dark:text-gray-200">
+                              <span className="font-semibold mr-2">
+                                {index + 1}.
+                              </span>
+                                {step.text}
+                            </p>
+                          )}
+                        </div>
 
-                        <button
-                          type="button"
-                          onClick={() =>
-                            handleDeleteStep(routine.id, step.id)
-                          }
-                          className="text-xs font-semibold text-bloom-mid dark:text-bloom-sage hover:text-red-500 transition"
-                        >
-                          Remove
-                        </button>
+                        {editingStepId === step.id ? (
+                          <div className="flex gap-3">
+                            <button
+                              type="button"
+                              onClick={() => handleEditStepSave(routine.id, step.id)}
+                              className="text-xs font-semibold text-bloom-mid dark:text-bloom-sage hover:text-bloom-forest dark:hover:text-bloom-light transition"
+                            >
+                              Save
+                            </button>
+
+                            <button
+                            type="button"
+                            onClick={handleEditStepCancel}
+                            className="text-xs font-semibold text-gray-500 dark:text-gray-300 hover:text-bloom-forest dark:hover:text-bloom-light transition"
+                          >
+                            Cancel 
+                            </button>
+                          </div>
+                        ) : (
+                          <div className="flex gap-1">
+                            <button
+                            type="button"
+                            onClick={() => handleMoveStep(routine.id, index, -1)}
+                            disabled={index === 0}
+                            aria-label="Move step up"
+                            title="Move up"
+                            className="p-1 text-base font-semibold text-bloom-mid dark:text-bloom-sage disabled:opacity-30 disabled:cursor-not-allowed hover:text-bloom-forest dark:hover:text-bloom-light transition"
+                            >
+                            <i className="ti ti-arrow-up" aria-hidden="true"></i>
+                            </button>
+
+                            <button
+                            type="button"
+                            onClick={() => handleMoveStep(routine.id, index, 1)}
+                            disabled={index === routine.steps.length - 1}
+                            aria-label="Move step down"
+                            title="Move down"
+                            className="p-1 text-base font-semibold text-bloom-mid dark:text-bloom-sage disabled:opacity-30 disabled:cursor-not-allowed hover:text-bloom-forest dark:hover:text-bloom-light transition"
+                            >
+                            <i className="ti ti-arrow-down" aria-hidden="true"></i>
+                            </button>
+
+                            <button
+                            type="button"
+                            onClick={() => handleEditStepStart(step)}
+                            className="text-xs font-semibold text-bloom-mid dark:text-bloom-sage hover:text-bloom-forest dark:hover:text-bloom-light transition"
+                            >
+                              Edit
+                            </button>
+
+                            <button
+                            type="button"
+                            onClick={() => handleDeleteStep(routine.id, step.id)}
+                            className="text-xs font-semibold text-bloom-mid dark:text-bloom-sage hover:text-red-500 transition"
+                            >
+                              Remove
+                            </button>
+                          </div>
+                        )}
                       </div>
-                    ))}
-                  </div>
-                )}
+                        ))}   
+                  </div>     
+                )}     
+
 
                 {/* Add step input */}
                 <div className="flex items-center gap-2 border border-bloom-sage/30 dark:border-white/10 rounded-xl px-3 py-2 bg-white/80 dark:bg-white/10 dark:hover:bg-white/15 transition">
