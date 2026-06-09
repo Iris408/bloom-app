@@ -81,16 +81,16 @@ function Home() {
 
           <div className="border-t border-bloom-sage/20 dark:border-dark-border" />
 
-          <div className="rounded-2xl bg-bloom-forest dark:bg-dark-surface/65 text-white p-5">
+          <div className="rounded-2xl bg-bloom-forest dark:bg-dark-surface text-white p-5">
             <p className="text-xs font-semibold uppercase tracking-widest text-bloom-mint dark:text-bloom-sage mb-2">
               Current phase
             </p>
 
-            <h3 className="text-lg font-bold text-bloom-light/80 mb-2">
+            <h3 className="text-lg font-bold text-bloom-light mb-2">
               P1 Foundation
             </h3>
 
-            <p className="text-sm leading-relaxed text-bloom-light/90 dark:text-bloom-light/80">
+            <p className="text-sm leading-relaxed text-bloom-light dark:text-bloom-light/80">
               Task actions, layout, accessibility settings, and reusable UI
               components are being built first.
             </p>

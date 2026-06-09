@@ -229,7 +229,7 @@ function Routines() {
     <div className="flex flex-col gap-8 max-w-3xl">
       {/* Page heading */}
       <div>
-        <p className="text-xs font-semibold uppercase tracking-widest text-bloom-mid dark:text-bloom-sage mb-2">
+        <p className="text-xs font-semibold uppercase tracking-widest text-bloom-mid dark:text-blue-500/80 mb-2">
           Routine Builder
         </p>
 
@@ -244,7 +244,7 @@ function Routines() {
       </div>
 
       {/* Add routine input */}
-      <div className="flex items-center gap-2 border border-bloom-sage/30 dark:border-white/10 rounded-xl px-3 py-2 bg-white dark:bg-white/10 dark:hover:bg-white/15 transition">
+      <div className="flex items-center gap-2 border border-bloom-sage/30 dark:border-white/10 rounded-xl px-3 py-2 bg-white dark:bg-dark-surface/70 transition">
         <input
           type="text"
           value={routineName}
@@ -253,7 +253,7 @@ function Routines() {
             if (e.key === "Enter") handleAddRoutine()
           }}
           placeholder="Add a new routine..."
-          className="flex-1 bg-transparent text-bloom-forest dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-400 caret-bloom-forest dark:caret-white outline-none focus:outline-none focus:ring-0"
+          className="flex-1 bg-transparent text-bloom-forest dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-bloom-light/80 caret-bloom-forest dark:caret-white outline-none focus:outline-none focus:ring-0"
         />
 
         <button
@@ -267,7 +267,7 @@ function Routines() {
 
       {/* Empty state OR routine list */}
       {routines.length === 0 ? (
-        <div className="rounded-2xl border border-bloom-sage/30 bg-white/60 dark:bg-white/10 p-6 text-center">
+        <div className="rounded-2xl border border-bloom-sage/30 bg-white/60 dark:bg-dark-surface/70 p-6 text-center">
           <p className="text-3xl mb-3">🌿</p>
 
           <h3 className="text-lg font-bold text-bloom-forest dark:text-bloom-light mb-2">
@@ -284,7 +284,7 @@ function Routines() {
             {routines.map((routine) => (
               <div
                 key={routine.id}
-                className="rounded-2xl border border-bloom-sage/30 bg-white dark:bg-dark-surface p-5 flex flex-col gap-4"
+                className="rounded-2xl border border-bloom-sage/30 bg-white dark:bg-dark-surface/80 p-5 flex flex-col gap-4"
               >
                 {/* Routine card header */}
                 <div className="flex items-start justify-between gap-4">
@@ -299,7 +299,7 @@ function Routines() {
                             handleEditRoutineSave(routine.id)
                           }
                         }}
-                        className="w-full bg-white/10 border border-white/10 rounded-xl px-3 py-2 text-bloom-forest dark:text-gray-100 caret-bloom-forest dark:caret-white outline-none focus:outline-none focus:ring-0"
+                        className="w-full bg-white/10 dark:bg-bloom-mint/20 border border-white/10 rounded-xl px-3 py-2 text-bloom-forest dark:text-gray-100 caret-bloom-forest dark:caret-white outline-none focus:outline-none focus:ring-0"
                       />
                     ) : (
                       <h3 className="text-lg font-bold text-bloom-forest dark:text-bloom-light">
@@ -307,7 +307,7 @@ function Routines() {
                       </h3>
                     )}
 
-                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    <p className="text-xs text-gray-500 dark:text-gray-300 mt-1">
                       {routine.steps.length} step
                       {routine.steps.length === 1 ? "" : "s"}
                     </p>
@@ -326,7 +326,7 @@ function Routines() {
                       <button
                         type="button"
                         onClick={handleEditRoutineCancel}
-                        className="text-sm font-semibold text-gray-500 dark:text-gray-300 hover:text-bloom-forest dark:hover:text-bloom-light transition"
+                        className="text-sm font-semibold text-gray-500 dark:text-red-500/90 hover:text-bloom-forest dark:hover:dark:text-red-300 transition"
                       >
                         Cancel
                       </button>
@@ -344,7 +344,7 @@ function Routines() {
                       <button
                         type="button"
                         onClick={() => handleDeleteRoutine(routine.id)}
-                        className="text-sm font-semibold text-red-500 hover:text-red-700 dark:hover:text-red-300 transition"
+                        className="text-sm font-semibold text-red-400 hover:text-red-700 dark:hover:text-red-500 transition"
                       >
                         Delete
                       </button>
@@ -354,7 +354,7 @@ function Routines() {
 
                 {/* Steps */}
                 {routine.steps.length === 0 ? (
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                  <p className="text-sm text-gray-500 dark:text-bloom-light/80">
                     No steps added yet.
                   </p>
                 ) : (
@@ -362,7 +362,7 @@ function Routines() {
                     {routine.steps.map((step, index) => (
                       <div
                         key={step.id}
-                        className="flex items-center justify-between gap-3 rounded-xl bg-bloom-light/60 dark:bg-white/10 px-3 py-2"
+                        className="flex items-center justify-between gap-3 rounded-xl bg-bloom-light/60 dark:bg-dark-deep/60 px-3 py-2"
                       >
                         <div className="flex-1">
                           {editingStepId === step.id ? (
@@ -375,7 +375,7 @@ function Routines() {
                                 handleEditStepSave(routine.id, step.id)
                               }
                             }}
-                            className="w-full bg-transparent text-bloom-forest dark:text-gray-100 caret-bloom-forest dark:caret-white outline-none focus:outline-none focus:ring-0"
+                            className="w-full bg-transparent text-bloom-forest dark:text-bloom-light/60 caret-bloom-forest dark:caret-white outline-none focus:outline-none focus:ring-0"
                             />
                           ) : (
                             <div className="flex items-center gap-3">
@@ -425,7 +425,7 @@ function Routines() {
                             <button
                             type="button"
                             onClick={handleEditStepCancel}
-                            className="text-xs font-semibold text-gray-500 dark:text-gray-300 hover:text-bloom-forest dark:hover:text-bloom-light transition"
+                            className="text-xs font-semibold text-gray-500 dark:text-red-400 hover:text-bloom-forest dark:hover:text-red-500 transition"
                           >
                             Cancel 
                             </button>
@@ -438,7 +438,7 @@ function Routines() {
                             disabled={index === 0}
                             aria-label="Move step up"
                             title="Move up"
-                            className="p-1 text-base font-semibold text-bloom-mid dark:text-bloom-sage disabled:opacity-30 disabled:cursor-not-allowed hover:text-bloom-forest dark:hover:text-bloom-light transition"
+                            className="p-2 text-xl font-semibold text-bloom-mid dark:text-bloom-sage disabled:opacity-30 disabled:cursor-not-allowed hover:text-bloom-forest dark:hover:text-bloom-light transition"
                             >
                             <i className="ti ti-arrow-up" aria-hidden="true"></i>
                             </button>
@@ -449,7 +449,7 @@ function Routines() {
                             disabled={index === routine.steps.length - 1}
                             aria-label="Move step down"
                             title="Move down"
-                            className="p-1 text-base font-semibold text-bloom-mid dark:text-bloom-sage disabled:opacity-30 disabled:cursor-not-allowed hover:text-bloom-forest dark:hover:text-bloom-light transition"
+                            className="p-2 text-xl font-semibold text-bloom-mid dark:text-bloom-sage disabled:opacity-30 disabled:cursor-not-allowed hover:text-bloom-forest dark:hover:text-bloom-light transition"
                             >
                             <i className="ti ti-arrow-down" aria-hidden="true"></i>
                             </button>
@@ -465,7 +465,7 @@ function Routines() {
                             <button
                             type="button"
                             onClick={() => handleDeleteStep(routine.id, step.id)}
-                            className="text-xs font-semibold text-bloom-mid dark:text-bloom-sage hover:text-red-500 transition"
+                            className="text-xs font-semibold text-bloom-mid dark:text-red-400 hover:text-red-500 transition"
                             >
                               Remove
                             </button>

@@ -15,7 +15,7 @@ function BloomReminder({
         </blockquote>
       </div>
 
-      <div className="rounded-2xl bg-bloom-forest dark:bg-dark-surface text-bloom-mid p-5">
+      <div className="rounded-2xl bg-bloom-forest dark:bg-dark-surface text-bloom-light p-5">
         <p className="text-xs font-semibold uppercase tracking-widest text-bloom-mint dark:text-bloom-mid mb-2">
           Current phase
         </p>

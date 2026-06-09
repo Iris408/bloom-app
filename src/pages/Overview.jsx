@@ -109,22 +109,22 @@ function Overview({ setActivePage }) {
           <div className="grid md:grid-cols-4 gap-4">
             <div className="rounded-2xl bg-bloom-light dark:bg-bloom-mint/65 p-4">
               <p className="font-bold text-bloom-forest">P1</p>
-              <p className="text-sm text-bloom-navy">Foundation</p>
+              <p className="text-sm text-bloom-navy dark:text-bloom-light/70">Foundation</p>
             </div>
 
             <div className="rounded-2xl bg-bloom-light dark:bg-bloom-mint/65 p-4">
               <p className="font-bold text-bloom-forest">P2</p>
-              <p className="text-sm text-bloom-navy">Design System</p>
+              <p className="text-sm text-bloom-navy dark:text-bloom-light/70">Design System</p>
             </div>
 
             <div className="rounded-2xl bg-bloom-light dark:bg-bloom-mint/65 p-4">
               <p className="font-bold text-bloom-forest">P3</p>
-              <p className="text-sm text-bloom-navy">Routine Builder</p>
+              <p className="text-sm text-bloom-navy dark:text-bloom-light/70">Routine Builder</p>
             </div>
 
             <div className="rounded-2xl bg-bloom-light dark:bg-bloom-mint/65 p-4">
               <p className="font-bold text-bloom-forest">P4</p>
-              <p className="text-sm text-bloom-navy">Modes</p>
+              <p className="text-sm text-bloom-navy dark:text-bloom-light/70">Modes</p>
             </div>
           </div>
         </div>
