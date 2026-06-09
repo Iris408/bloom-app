@@ -80,7 +80,7 @@ function Overview({ setActivePage }) {
 
         {/* Purpose section */}
         <div className="rounded-3xl bg-bloom-light p-8 border border-bloom-sage dark:bg-bloom-mid/35 dark:border-bloom-mint">
-          <p className="text-sm font-semibold text-bloom-mint dark:text-white/40 uppercase tracking-wide mb-3">
+          <p className="text-sm font-semibold text-bloom-mint dark:text-bloom-mid/90 uppercase tracking-wide mb-3">
             Why Bloom exists
           </p>
 
@@ -97,32 +97,32 @@ function Overview({ setActivePage }) {
         </div>
 
         {/* Roadmap */}
-        <div id="roadmap" className="rounded-3xl bg-white dark:bg-dark-surface/40 border border-bloom-sage dark:border-bloom-mint p-8 shadow">
+        <div id="roadmap" className="rounded-3xl bg-white dark:bg-dark-surface/60 border border-bloom-sage dark:border-bloom-mint p-8 shadow">
           <p className="text-sm font-semibold text-bloom-mid uppercase tracking-wide mb-3">
             Roadmap
           </p>
 
-          <h2 className="text-3xl font-bold text-bloom-forest dark:text-bloom-light mb-6">
+          <h2 className="text-3xl font-bold text-bloom-forest dark:text-bloom-light/80 mb-6">
             Build order
           </h2>
 
           <div className="grid md:grid-cols-4 gap-4">
-            <div className="rounded-2xl bg-bloom-light dark:bg-bloom-light/80 p-4">
+            <div className="rounded-2xl bg-bloom-light dark:bg-bloom-mint/65 p-4">
               <p className="font-bold text-bloom-forest">P1</p>
               <p className="text-sm text-bloom-navy">Foundation</p>
             </div>
 
-            <div className="rounded-2xl bg-bloom-light dark:bg-bloom-light/80 p-4">
+            <div className="rounded-2xl bg-bloom-light dark:bg-bloom-mint/65 p-4">
               <p className="font-bold text-bloom-forest">P2</p>
               <p className="text-sm text-bloom-navy">Design System</p>
             </div>
 
-            <div className="rounded-2xl bg-bloom-light dark:bg-bloom-light/80 p-4">
+            <div className="rounded-2xl bg-bloom-light dark:bg-bloom-mint/65 p-4">
               <p className="font-bold text-bloom-forest">P3</p>
               <p className="text-sm text-bloom-navy">Routine Builder</p>
             </div>
 
-            <div className="rounded-2xl bg-bloom-light dark:bg-bloom-light/80 p-4">
+            <div className="rounded-2xl bg-bloom-light dark:bg-bloom-mint/65 p-4">
               <p className="font-bold text-bloom-forest">P4</p>
               <p className="text-sm text-bloom-navy">Modes</p>
             </div>

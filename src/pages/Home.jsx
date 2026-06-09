@@ -6,18 +6,23 @@ function Home() {
       {/* Page heading */}
       <section className="flex flex-col gap-5">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-widest text-bloom-mid dark:text-bloom-sage mb-2">
+          <p className="text-xs font-semibold uppercase tracking-widest text-bloom-mid dark:text-blue-500/80 mb-2">
             Home
           </p>
 
-          <h2 className="text-3xl font-bold text-bloom-forest dark:text-bloom-light">
+          <h2 className="text-3xl font-bold text-bloom-forest dark:text-bloom-light/90">
             Today's focus
           </h2>
         </div>
 
         <div className="max-w-5xl flex flex-col gap-4">
-          <p className="text-xl font-bold text-bloom-forest dark:text-bloom-light">
-            One small step at a time 🌱
+          <p className="text-xl font-bold text-bloom-forest dark:text-bloom-light/90">
+            One small step at a time {" "}
+            <span
+            className="inline-block dark:[filter:hue-rotate(145deg)_saturate(1.3)_brightness(0.9)]"
+            role="img"
+            aria-label="indigo seedling"
+            >🌱</span>
           </p>
 
           <p className="text-sm leading-relaxed text-bloom-forest/80 dark:text-gray-300 max-w-3xl">
@@ -25,7 +30,7 @@ function Home() {
           </p>
 
           <div className="flex flex-col gap-3">
-            <p className="text-xs font-semibold uppercase tracking-widest text-bloom-mid dark:text-bloom-sage">
+            <p className="text-xs font-semibold uppercase tracking-widest text-bloom-mid dark:text-bloom-mint/75">
               Gentle checklist
             </p>
 
@@ -56,7 +61,7 @@ function Home() {
         {/* Left column — task input and task list */}
         <div className="flex flex-col gap-4">
 
-            <h2 className="text-3xl font-bold text-bloom-forest dark:text-bloom-light mb-4">
+            <h2 className="text-2xl font-bold text-bloom-forest dark:text-bloom-light/80 mb-4">
               Today's tasks
             </h2>
           <TaskList />
@@ -76,16 +81,16 @@ function Home() {
 
           <div className="border-t border-bloom-sage/20 dark:border-dark-border" />
 
-          <div className="rounded-2xl bg-bloom-forest text-white p-5">
-            <p className="text-xs font-semibold uppercase tracking-widest text-bloom-mint mb-2">
+          <div className="rounded-2xl bg-bloom-forest dark:bg-dark-surface/65 text-white p-5">
+            <p className="text-xs font-semibold uppercase tracking-widest text-bloom-mint dark:text-bloom-sage mb-2">
               Current phase
             </p>
 
-            <h3 className="text-lg font-bold mb-2">
+            <h3 className="text-lg font-bold text-bloom-light/80 mb-2">
               P1 Foundation
             </h3>
 
-            <p className="text-sm leading-relaxed text-bloom-light/90">
+            <p className="text-sm leading-relaxed text-bloom-light/90 dark:text-bloom-light/80">
               Task actions, layout, accessibility settings, and reusable UI
               components are being built first.
             </p>

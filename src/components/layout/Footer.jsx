@@ -1,6 +1,6 @@
 function Footer() {
   return (
-    <footer className="w-full border-t border-bloom-sage/25 dark:border-dark-border px-6 py-6 mt-auto">
+    <footer className="w-full border-t border-bloom-sage/25 dark:border-[#343442] px-6 py-6 mt-auto">
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
 
         {/* Left — branding */}

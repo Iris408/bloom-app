@@ -4,23 +4,23 @@ function BloomReminder({
   phaseDescription = "Build calm, accessible routines with simple step-by-step structure.",
 }) {
   return (
-    <aside className="flex flex-col gap-5 border-t border-bloom-sage/20 dark:border-dark-border pt-6">
+    <aside className="flex flex-col gap-5 border-t border-bloom-sage/20 dark:border-[#343442] pt-6">
       <div>
-        <p className="text-xs font-semibold uppercase tracking-widest text-bloom-mid dark:text-bloom-sage mb-3">
+        <p className="text-xs font-semibold uppercase tracking-widest text-bloom-mid dark:text-bloom-sage/80 mb-3">
           Bloom reminder
         </p>
 
-        <blockquote className="text-base font-semibold leading-relaxed text-bloom-forest dark:text-bloom-light">
+        <blockquote className="text-base font-semibold leading-relaxed text-bloom-forest dark:text-bloom-light/90">
           "{reminder}"
         </blockquote>
       </div>
 
-      <div className="rounded-2xl bg-bloom-forest text-white p-5">
-        <p className="text-xs font-semibold uppercase tracking-widest text-bloom-mint mb-2">
+      <div className="rounded-2xl bg-bloom-forest dark:bg-dark-surface text-bloom-mid p-5">
+        <p className="text-xs font-semibold uppercase tracking-widest text-bloom-mint dark:text-bloom-mid mb-2">
           Current phase
         </p>
 
-        <h3 className="text-lg font-bold mb-2">
+        <h3 className="text-lg dark:text-bloom-light font-bold mb-2">
           {phaseTitle}
         </h3>
 

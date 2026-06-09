@@ -1,17 +1,18 @@
 import { useApp } from "../../context/AppContext"
+import Seedling from "../ui/Seedling"
 
 function Header({ setActivePage, activePage }) {
   const { isDarkMode, toggleDarkMode, darkStyle } = useApp()
 
   return (
-    <header className="w-full bg-gradient-to-b from-[#f3f7ed] via-[#e8f0dd] to-[#dde9ce] dark:bg-gradient-to-t from-[#0A1208] via-[#0D1A0A] to-[#111F0D] border-b border-bloom-sage/25 px-6 py-4">
+    <header className="w-full bg-transparent dark:bg-transparent border-b border-bloom-sage/25 dark:border-white/10 px-6 py-4">
       <div className="flex items-center justify-between">
         {/* Logo - left side */}
         <div 
           onClick={() => setActivePage("overview")}
           className="flex items-center gap-3 cursor-pointer">
           <span className="text-3xl cursor-pointer text-bloom-forest dark:text-bloom-light">
-            🌱
+            <Seedling variant="indigo" />
           </span>
 
           <div>
@@ -19,7 +20,7 @@ function Header({ setActivePage, activePage }) {
               Bloom
             </h1>
 
-            <p className="text-xs uppercase tracking-[0.18em] text-bloom-mid dark:text-bloom-mint font-lg">
+            <p className="text-xs uppercase tracking-[0.18em] text-bloom-mid dark:text-blue-500/80 font-lg">
               Calm routines
             </p>
           </div>

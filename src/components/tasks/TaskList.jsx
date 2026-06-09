@@ -123,11 +123,11 @@ function TaskList() {
     <div className="flex flex-col gap-8 w-full">
       {/* ADD INPUT AREA */}
       <div className="flex flex-col gap-4">
-        <div className="flex items-center gap-2 border border-gray-300 dark:border-dark-border rounded-xl px-3 py-2 bg-white dark:bg-dark-surface focus-within:ring-1 focus-within:ring-bloom-mid">
+        <div className="flex items-center gap-2 border border-gray-300 dark:border-dark-border rounded-xl px-3 py-2 bg-white dark:bg-dark-surface/70 focus-within:ring-1 focus-within:ring-bloom-mid/70">
           <button
             type="button"
             onClick={() => setShowPicker(!showPicker)}
-            className="text-2xl flex items-center justify-center hover:bg-bloom-light dark:hover:bg-gray-700 rounded-lg p-1 transition">
+            className="text-2xl flex items-center justify-center hover:bg-bloom-light dark:hover:bg-bloom-light/80 rounded-lg p-1 transition">
             {selectedEmoji}
           </button>
 
@@ -139,12 +139,12 @@ function TaskList() {
               if (e.key === "Enter") handleAddTask()
             }}
             placeholder="Add a new task..."
-            className="flex-1 text-gray-700 dark:text-gray-100 dark:bg-transparent placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none"
+            className="flex-1 text-gray-700 dark:text-gray-100 dark:bg-transparent placeholder:text-gray-400 dark:placeholder:text-bloom-light/80 focus:outline-none"
           />
           <button
             type="button"
             onClick={handleAddTask}
-            className="text-sm font-semibold text-bloom-mid dark:text-bloom-sage hover:text-bloom-forest dark:hover:text-bloom-light transition"
+            className="text-sm font-semibold text-bloom-mid dark:text-bloom-sage/85 hover:text-bloom-forest dark:hover:text-bloom-light/80 transition"
           >
             Add
           </button>
@@ -160,7 +160,7 @@ function TaskList() {
                   setSelectedEmoji(emoji)
                   setShowPicker(false)
                 }}
-                className="text-2xl w-10 h-10 rounded-lg flex items-center justify-center hover:bg-bloom-light transition"
+                className="text-2xl w-10 h-10 rounded-lg flex items-center justify-center hover:bg-bloom-light dark:hover:bg-bloom-light/85 transition"
               >
                 {emoji}
               </button>
@@ -171,14 +171,14 @@ function TaskList() {
 
       {/* TASK CARDS */}
       {tasks.length === 0 ? (
-        <div className="rounded-2xl border border-bloom-sage/30 bg-white/60 dark:bg-white/10 p-6 text-center">
+        <div className="rounded-2xl border border-bloom-sage/30 bg-white/60 dark:bg-dark-surface/80 p-6 text-center">
           <p className="text-3xl mb-3">🌱</p>
 
           <h3 className="text-lg font-bold text-bloom-forest dark:text-bloom-light mb-2">
             No tasks yet
           </h3>
 
-          <p className="text-sm text-gray-500 dark:text-gray-400">
+          <p className="text-sm text-gray-500 dark:text-gray-200">
             Add your first small step when you're ready.
           </p>
         </div>  
