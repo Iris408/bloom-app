@@ -127,7 +127,7 @@ function TaskList() {
           <button
             type="button"
             onClick={() => setShowPicker(!showPicker)}
-            className="text-2xl flex items-center justify-center hover:bg-bloom-light dark:hover:bg-bloom-light/80 rounded-lg p-1 transition">
+            className="text-2xl flex items-center justify-center hover:bg-bloom-light dark:hover:bg-bloom-light/70 rounded-lg p-1 transition">
             {selectedEmoji}
           </button>
 
@@ -144,14 +144,14 @@ function TaskList() {
           <button
             type="button"
             onClick={handleAddTask}
-            className="text-sm font-semibold text-bloom-mid dark:text-bloom-sage/85 hover:text-bloom-forest dark:hover:text-bloom-light/80 transition"
+            className="text-sm font-semibold text-bloom-mid dark:text-bloom-sage/85 hover:text-bloom-forest dark:hover:text-bloom-light/70 transition"
           >
             Add
           </button>
           </div>
 
         {showPicker && (
-          <div className="<bg-white dark:bg-dark-surface border border-gray-200 dark:border-dark-border rounded-2xl shadow p-3 grid grid-cols-8 gap-2">
+          <div className="<bg-white dark:bg-dark-surface/80 border border-gray-200 dark:border-dark-border rounded-2xl shadow p-3 grid grid-cols-8 gap-2">
             {emojis.map((emoji) => (
               <button
                 type="button"
@@ -160,7 +160,7 @@ function TaskList() {
                   setSelectedEmoji(emoji)
                   setShowPicker(false)
                 }}
-                className="text-2xl w-10 h-10 rounded-lg flex items-center justify-center hover:bg-bloom-light dark:hover:bg-bloom-light/85 transition"
+                className="text-2xl w-10 h-10 rounded-lg flex items-center justify-center border-t border-dark-border hover:bg-bloom-light dark:hover:bg-bloom-light/70 transition"
               >
                 {emoji}
               </button>
@@ -171,7 +171,7 @@ function TaskList() {
 
       {/* TASK CARDS */}
       {tasks.length === 0 ? (
-        <div className="rounded-2xl border border-bloom-sage/30 bg-white/60 dark:bg-dark-surface/80 p-6 text-center">
+        <div className="rounded-2xl border border-bloom-sage/30 bg-white/60 dark:bg-dark-surface/70 p-6 text-center">
           <p className="text-3xl mb-3">🌱</p>
 
           <h3 className="text-lg font-bold text-bloom-forest dark:text-bloom-light mb-2">
@@ -187,13 +187,13 @@ function TaskList() {
           editingId === task.id ? (
             <div
               key={task.id}
-              className="flex flex-col gap-3 border border-gray-300 dark:border-dark-border rounded-xl px-3 py-3 bg-white dark:bg-dark-surface"
+              className="flex flex-col gap-3 border border-gray-300 dark:border-dark-border rounded-xl px-3 py-3 bg-white dark:bg-bloom-mint/20"
             >
               <div className="flex items-center gap-2">
                 <button
                   type="button"
                   onClick={() => setShowEditPicker(!showEditPicker)}
-                  className="text-2xl flex items-center justify-center hover:bg-bloom-light dark:hover:bg-gray-700 rounded-lg p-1 transition"
+                  className="text-2xl flex items-center justify-center hover:bg-bloom-light dark:hover:bg-bloom-light/80 rounded-lg p-1 transition"
                 >
                   {editEmoji}
                 </button>
@@ -210,7 +210,7 @@ function TaskList() {
               </div>
 
               {showEditPicker && (
-                <div className="bg-white dark:bg-dark-surface border border-gray-200 dark:border-dark-border rounded-2xl shadow p-3 grid grid-cols-8 gap-2">
+                <div className="bg-white dark:bg-transparent border border-gray-200 dark:border-transparent border-t rounded-2xl p-3 grid grid-cols-8 gap-2">
                   {emojis.map((emoji) => (
                     <button
                       type="button"
@@ -219,7 +219,7 @@ function TaskList() {
                         setEditEmoji(emoji)
                         setShowEditPicker(false)
                       }}
-                      className="text-2xl w-10 h-10 rounded-lg flex items-center justify-center hover:bg-bloom-light transition"
+                      className="text-2xl w-10 h-10 rounded-lg flex items-center justify-center border-t border-dark-border hover:bg-bloom-light transition"
                     >
                       {emoji}
                     </button>
@@ -231,7 +231,7 @@ function TaskList() {
                 <button
                   type="button"
                   onClick={() => handleEditSave(task.id)}
-                  className="text-sm font-medium font-semibold text-bloom-mid dark:text-bloom-sage hover:text-bloom-forest dark:hover:text-bloom-light transition"
+                  className="text-sm font-medium font-semibold text-bloom-mid dark:text-bloom-sage hover:text-bloom-forest dark:hover:text-bloom-mid transition"
                 >
                   Save
                 </button>
@@ -239,7 +239,7 @@ function TaskList() {
                 <button
                   type="button"
                   onClick={handleEditCancel}
-                  className="text-sm font-lg font-semibold text-bloom-forest dark:text-bloom-mid hover:text-dark-card dark:hover:text-bloom-sage transition"
+                  className="text-sm font-lg font-semibold text-bloom-forest dark:text-red-400 hover:text-dark-card dark:hover:text-red-500/90 transition"
                 >
                   Cancel
                 </button>

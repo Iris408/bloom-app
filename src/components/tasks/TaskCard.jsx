@@ -5,7 +5,7 @@ function TaskCard({ task, onEdit, onDelete }) {
   const { isDarkMode, darkStyle } = useApp()
 
   const cardClass = isDarkMode
-    ? "bg-dark-card border-dark-border"
+    ? "bg-bloom-mid/40 border-dark-border"
     : "bg-white border-bloom-mid"
 
   return (
