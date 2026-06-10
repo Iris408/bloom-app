@@ -12,7 +12,8 @@ Bloomは、視覚的なルーティン作成とタスク進行を支援するア
 
 ## Screenshot / スクリーンショット
 
-<img src="./public/bloom-app.png" width="400"/>
+<img src="./public/bloom-overview.png" width="300"/>
+<img src="./public/bloom-overview-dark.png" width="300"/>
 
 ## Current Status / 現在のステータス
 
