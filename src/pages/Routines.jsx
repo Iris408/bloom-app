@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import BloomReminder from "../components/ui/BloomReminder"
+import { demoRoutines } from "../data/demoData"
 
 const ROUTINE_STORAGE_KEY = "bloom-routines"
 
@@ -26,6 +27,8 @@ function Routines() {
 
   const [editingStepId, setEditingStepId] = useState(null)
   const [editStepText, setEditStepText] = useState("")
+
+  const [showDemoRoutines, setShowDemoRoutines] = useState(false)
 
   // EN: Save routines whenever the routine list changes
   // JP: ルーティン一覧が変更されるたびに localStorage に保存します
@@ -243,6 +246,56 @@ function Routines() {
         </p>
       </div>
 
+      <div className="rounded-2xl border border-bloom-sage/30 bg-white/80 p-5 dark:border-dark-border dark:bg-dark-surface/55">
+  <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+    <div>
+      <p className="text-xs font-semibold uppercase tracking-widest text-bloom-mid dark:text-bloom-sage">
+        Demo routines
+      </p>
+      <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">
+        New to Bloom? Explore demo routines to see how Bloom can support your daily flow.
+      </p>
+    </div>
+
+    <button
+      onClick={() => setShowDemoRoutines((prev) => !prev)}
+      className="rounded-xl border border-bloom-sage dark:border-bloom-sage/60 px-4 py-2 text-sm font-semibold text-bloom-forest transition hover:bg-bloom-light dark:text-bloom-light dark:hover:bg-bloom-mint/30"
+    >
+      {showDemoRoutines ? "Hide demo routines" : "View demo routines"}
+    </button>
+  </div>
+
+  {showDemoRoutines && (
+    <div className="mt-5 grid gap-3">
+      {demoRoutines.map((routine) => (
+        <div
+          key={routine.id}
+          className="rounded-xl border border-bloom-sage/20 bg-bloom-light/40 p-4 dark:border-dark-border dark:bg-bloom-mid/25"
+        >
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <h3 className="font-semibold text-bloom-forest dark:text-bloom-light">
+                {routine.title}
+              </h3>
+              <p className="mt-1 text-sm text-gray-600 dark:text-bloom-light/75">
+                {routine.description}
+              </p>
+            </div>
+
+            <span className="w-fit rounded-full bg-white px-3 py-1 text-xs font-semibold text-bloom-forest dark:bg-bloom-forest dark:text-bloom-light">
+              {routine.label}
+            </span>
+          </div>
+
+          <p className="mt-3 text-xs text-gray-500 dark:text-gray-300">
+            {routine.steps.length} steps · {routine.category}
+          </p>
+        </div>
+      ))}
+    </div>
+  )}
+</div>
+
       {/* Add routine input */}
       <div className="flex items-center gap-2 border border-bloom-sage/30 dark:border-white/10 rounded-xl px-3 py-2 bg-white dark:bg-dark-surface/70 transition">
         <input
@@ -267,7 +320,7 @@ function Routines() {
 
       {/* Empty state OR routine list */}
       {routines.length === 0 ? (
-        <div className="rounded-2xl border border-bloom-sage/30 bg-white/60 dark:bg-dark-surface/70 p-6 text-center">
+        <div className="rounded-2xl border border-bloom-sage/30 bg-white/60 dark:border-dark-border dark:bg-dark-surface/70 p-6 text-center">
           <p className="text-3xl mb-3">🌿</p>
 
           <h3 className="text-lg font-bold text-bloom-forest dark:text-bloom-light mb-2">
