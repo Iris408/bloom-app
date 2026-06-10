@@ -30,6 +30,35 @@ function Routines() {
 
   const [showDemoRoutines, setShowDemoRoutines] = useState(false)
 
+// EN: Load demo routines into the editable routine list.
+// JP: デモ用ルーティンを編集可能なルーティン一覧に追加します。
+function handleLoadDemoRoutines() {
+  setRoutines((prevRoutines) => {
+    const existingIds = new Set(prevRoutines.map((routine) => routine.id))
+
+    const routinesToAdd = demoRoutines
+      .filter((routine) => !existingIds.has(routine.id))
+      .map((routine) => ({
+        ...routine,
+        name: routine.title,
+        steps: routine.steps.map((step) => ({
+          ...step,
+          completed: false,
+        })),
+      }))
+
+    return [...prevRoutines, ...routinesToAdd]
+  })
+}
+
+// EN: Remove only demo routines from the editable routine list.
+// JP: 編集可能なルーティン一覧からデモ用ルーティンだけを削除します。
+function handleClearDemoRoutines() {
+  setRoutines((prevRoutines) =>
+    prevRoutines.filter((routine) => !routine.id.startsWith("demo-routine"))
+  )
+}
+
   // EN: Save routines whenever the routine list changes
   // JP: ルーティン一覧が変更されるたびに localStorage に保存します
   useEffect(() => {
@@ -246,32 +275,52 @@ function Routines() {
         </p>
       </div>
 
-      <div className="rounded-2xl border border-bloom-sage/30 bg-white/80 p-5 dark:border-dark-border dark:bg-dark-surface/55">
-  <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-    <div>
-      <p className="text-xs font-semibold uppercase tracking-widest text-bloom-mid dark:text-bloom-sage">
-        Demo routines
-      </p>
-      <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">
-        New to Bloom? Explore demo routines to see how Bloom can support your daily flow.
-      </p>
+    <div className="relative rounded-2xl border border-bloom-sage/30 bg-white/80 p-4 pr-40 pb-8 dark:border-dark-border dark:bg-dark-surface/55">
+      {/* Header Text Area */}
+      <div>
+        <p className="text-[11px] font-semibold uppercase tracking-widest text-bloom-mid dark:text-bloom-sage">
+          Demo routines
+        </p>
+        <p className="mt-1 text-xs text-gray-500 dark:text-bloom-light/70">
+          New to Bloom ? Explore demo routines to see how Bloom can support you.
+        </p>
     </div>
 
-    <button
-      onClick={() => setShowDemoRoutines((prev) => !prev)}
-      className="rounded-xl border border-bloom-sage dark:border-bloom-sage/60 px-4 py-2 text-sm font-semibold text-bloom-forest transition hover:bg-bloom-light dark:text-bloom-light dark:hover:bg-bloom-mint/30"
-    >
-      {showDemoRoutines ? "Hide demo routines" : "View demo routines"}
-    </button>
+    {/* Top Right Actions */}
+    <div className="absolute top-4 right-4 flex shrink-0 items-start gap-2">
+      <button
+        onClick={() => setShowDemoRoutines((prev) => !prev)}
+        className="rounded-lg border border-bloom-sage px-3 py-1 text-[11px] font-semibold text-bloom-forest hover:bg-bloom-mid/10 dark:border-bloom-sage/60 dark:text-bloom-light dark:hover:bg-bloom-mint/20 transition"
+      >
+        {showDemoRoutines ? "Hide Preview" : "View Preview"}
+      </button>
+    
+      <button
+        onClick={handleLoadDemoRoutines}
+        className="rounded-lg bg-bloom-forest px-3 py-1 text-[11px] font-semibold text-white hover:opacity-90 dark:hover:bg-bloom-mint/50 dark:bg-bloom-sage dark:text-dark-bg transition"
+      >
+        Load Demo
+      </button>   
+    </div>
+
+    {/* Bottom Right Actions */}
+    <div className="absolute bottom-2 right-4">
+      <button
+        onClick={handleClearDemoRoutines}
+        className="text-[10px] font-semibold text-red-400 hover:text-red-500 dark:text-red-400 dark:hover:text-red-500 transition"
+      >
+        Clear demo
+      </button>
+    </div>  
   </div>
 
-  {showDemoRoutines && (
-    <div className="mt-5 grid gap-3">
-      {demoRoutines.map((routine) => (
-        <div
+      {showDemoRoutines && (
+        <div className="mt-5 grid gap-3">
+          {demoRoutines.map((routine) => (
+          <div
           key={routine.id}
           className="rounded-xl border border-bloom-sage/20 bg-bloom-light/40 p-4 dark:border-dark-border dark:bg-bloom-mid/25"
-        >
+          >
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h3 className="font-semibold text-bloom-forest dark:text-bloom-light">
@@ -293,8 +342,7 @@ function Routines() {
         </div>
       ))}
     </div>
-  )}
-</div>
+      )}
 
       {/* Add routine input */}
       <div className="flex items-center gap-2 border border-bloom-sage/30 dark:border-white/10 rounded-xl px-3 py-2 bg-white dark:bg-dark-surface/70 transition">
