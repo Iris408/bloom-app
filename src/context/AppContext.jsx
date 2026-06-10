@@ -25,29 +25,34 @@ function AppProvider({ children }) {
     setDarkStyle(darkStyle === "grey" ? "green" : "grey")
     }
 
-    const addFocusTask = (title, dateKey) => {
-        setFocusTasks((prev) => [
-            ...prev,
+const addFocusTask = (title, dateKey) => {
+  setFocusTasks((prev) => [
+    ...prev,
     {
       id: crypto.randomUUID(),
       title,
       scheduledFor: dateKey,
       completedOn: null,
     },
-  ]);
-};
+  ])
+}
 
-    const completeFocusTask = (id, dateKey) => {
-        setFocusTasks((prev) => 
-            prev.map((task) =>
-                task.id === id ? { ...task, completedOn: dateKey } : task
+const toggleFocusTaskComplete = (id, dateKey) => {
+  setFocusTasks((prev) =>
+    prev.map((task) =>
+      task.id === id
+        ? {
+            ...task,
+            completedOn: task.completedOn === dateKey ? null : dateKey,
+          }
+        : task
     )
-  );
-};
+  )
+}
 
 const deleteFocusTask = (id) => {
-  setFocusTasks((prev) => prev.filter((task) => task.id !== id));
-};
+  setFocusTasks((prev) => prev.filter((task) => task.id !== id))
+}
 
     function toggleDarkMode() {
         const newValue = !isDarkMode
@@ -108,7 +113,7 @@ const deleteFocusTask = (id) => {
             focusTasks,    
             setFocusTasks,
             addFocusTask,
-            completeFocusTask,
+            toggleFocusTaskComplete,
             deleteFocusTask,  
         }}>
             {children}
@@ -116,7 +121,6 @@ const deleteFocusTask = (id) => {
     )
 }
 
-// build a custom hook for easy access
 function useApp() {
     return useContext(AppContext)
 }
