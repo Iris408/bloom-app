@@ -10,10 +10,19 @@ Bloom is an active full-stack capstone project focused on building a calm, acces
 
 Bloomは、視覚的なルーティン作成とタスク進行を支援するアクセシビリティ重視のフルスタック・キャップストーンプロジェクトです。ユーザーがステップごとのルーティンを分かりやすく作成・整理・実行できるように設計しており、ニューロダイバージェントフレンドリーな体験を重視しています。
 
-## Screenshot / スクリーンショット
+## Screenshots / スクリーンショット
 
-![Bloom Overview](public/bloom-overview.png)
-![Bloom Overview Dark](public/bloom-overview-dark.png)
+### Home
+![Bloom Home](public/bloom-home.png)
+
+### Routines
+![Bloom Routines](public/bloom-routines.png)
+
+### Progress
+![Bloom Progress](public/bloom-progress.png)
+
+### Focus Mode
+![Bloom Focus Mode](public/bloom-focus.png)
 
 ## Current Status / 現在のステータス
 
