@@ -36,10 +36,14 @@ Bloomは、視覚的なルーティン作成とタスク進行を支援するア
 | **UI / UX** | |
 | Light/dark mode and accessibility controls | ✅ Complete |
 | Reusable Bloom reminder component across pages | ✅ Complete |
+| **Focus** | |
+| Focus v1 - add, complete and remove daily focus tasks | ✅ Complete |
+| Focus task localStorage persistence | ✅ Complete |
+| **Progress** | |
+| Progress v1 - calm routine progress overview | ✅ Complete |
+| Pre-routine progress bars and weekly progress snapshots | ✅ Complete |
 | **Planned Updates** | |
-| Progress v1 - step percentage and completion calculation | 🚧 In progress |
-| Progress page visual summaries | 🚧 Planned |
-| Backend API and database persistence | 🚧 Planned |
+| Backend API and database persistence | 🚧 In Progress |
 
 ## Project Overview / プロジェクト概要
 
