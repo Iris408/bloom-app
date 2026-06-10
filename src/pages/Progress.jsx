@@ -305,12 +305,12 @@ export default function Progress() {
 
       {/* Weekly flow */}
       <section>
-        <p className="text-xs font-semibold uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-3">
+        <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-gray-500 dark:text-gray-400">
           This week
         </p>
 
-        <div className="bg-white dark:bg-dark-surface border border-black/10 dark:border-white/10 rounded-2xl p-4">
-          <div className="grid grid-cols-7 gap-2 mb-3">
+        <div className="rounded-2xl border border-black/10 bg-white p-4 dark:bg-dark-surface dark:border-white/10">
+          <div className="flex gap-3 overflow-x-auto pb-2 sm:grid sm:grid-cols-7 sm:overflow-visible sm:pb-0">
             {weekKeys.map((key) => (
               <StreakDay
                 key={key}
@@ -323,7 +323,7 @@ export default function Progress() {
             ))}
           </div>
 
-          <p className="text-xs text-gray-500 dark:text-gray-400">
+          <p className="mt-3 text-xs text-gray-500 dark:text-bloom-light/70">
             {streakCount > 0
               ? `${streakCount} day streak going. Partial days count too.`
               : "Tap any day to see your progress."}
