@@ -17,7 +17,7 @@ function DemoRoutinesPanel({
             Demo routines
           </p>
           <p className="mt-1 text-xs text-gray-500 dark:text-bloom-light/70">
-            New to Bloom ? Explore demo routines to see how Bloom can support you.
+            New to Bloom? Explore demo routines to see how Bloom can support you.
           </p>
         </div>
 
@@ -42,9 +42,9 @@ function DemoRoutinesPanel({
         <div className="absolute bottom-2 right-4">
           <button
             onClick={handleClearDemoRoutines}
-            className="text-[10px] font-semibold text-red-400 hover:text-red-500 dark:text-red-400 dark:hover:text-red-500 transition"
+            className="text-[12px] font-semibold text-red-400 hover:text-red-500 dark:text-red-400 dark:hover:text-red-500 transition"
           >
-            Clear demo
+            Clear Demo
           </button>
         </div>
       </div>
