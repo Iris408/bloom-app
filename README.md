@@ -12,23 +12,41 @@ Bloomは、視覚的なルーティン作成とタスク進行を支援するア
 
 ## Screenshots / スクリーンショット
 
-### Home
-![Bloom Home](public/bloom-home.png)
-
-### Routines
-![Bloom Routines](public/bloom-routines.png)
-
-### Progress
-![Bloom Progress](public/bloom-progress.png)
-
-### Focus Mode
-![Bloom Focus Mode](public/bloom-focus.png)
+<table>
+  <tr>
+    <td>
+      <img src="./public/bloom-home.png" width="400"/>
+      <br/>
+      <strong>Bloom Home/ホーム</strong>
+    </td>
+    <td>
+      <img src="./public/bloom-routines.png" width="400"/>
+      <br/>
+      <strong>Routines/ルーティン</strong>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <img src="./public/bloom-progress.png" width="400"/>
+      <br/>
+      <strong>Progress/プログレス</strong>
+    </td>
+    <td>
+      <img src="./public/bloom-focus.png" width="400"/>
+      <br/>
+      <strong>Focus Mode/フォーカス</strong>
+    </td>
+  </tr>
+</table>
 
 ## Current Status / 現在のステータス
 
 **Active Capstone Project / Frontend Foundation + Task Persistence**
 
 **アクティブなキャップストーンプロジェクト / フロントエンド基礎構築フェーズ**
+
+* Bloom is currently a frontend MVP focused on calm routine building, focus task tracking, and gentle progress feedback. The app uses React, Vite, Tailwind CSS, reusable components, and localStorage persistence.
+* Bloomは現在、穏やかな日々のルーティンの構築、集中すべきタスクの追跡、そして安心できる進捗状況のフィードバックの提供に重点を置いたフロントエンドMVPです。このアプリは、React、Vite、Tailwind CSS、再利用可能なコンポーネント、そしてlocalStorageによるデータストレージを利用しています。
 
 | Area | Status |
 |---|---|
@@ -43,17 +61,21 @@ Bloomは、視覚的なルーティン作成とタスク進行を支援するア
 | Routine builder — create, edit and delete routines | ✅ Complete |
 | Routine steps — add, remove, edit, reorder and complete | ✅ Complete |
 | Routine and step localStorage persistence | ✅ Complete |
-| **UI / UX** | |
-| Light/dark mode and accessibility controls | ✅ Complete |
-| Reusable Bloom reminder component across pages | ✅ Complete |
-| **Focus** | |
+| **Focus Mode** | |
 | Focus v1 - add, complete and remove daily focus tasks | ✅ Complete |
 | Focus task localStorage persistence | ✅ Complete |
 | **Progress** | |
 | Progress v1 - calm routine progress overview | ✅ Complete |
 | Pre-routine progress bars and weekly progress snapshots | ✅ Complete |
+| Descriptive progress labels | ✅ Complete |
+| **UI / UX** | |
+| Light/dark mode and accessibility controls | ✅ Complete |
+| Reusable Bloom reminder component across pages | ✅ Complete |
 | **Planned Updates** | |
-| Backend API and database persistence | 🚧 In Progress |
+| Rewards page v1 | 🚧 Planned |
+| Profile settings persistence | 🚧 Planned |
+| Backend API and database persistence | 🚧 Planned |
+| Future full-stack deployment | 🚧 Planned
 
 ## Project Overview / プロジェクト概要
 
