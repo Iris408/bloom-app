@@ -29,25 +29,25 @@ function Home() {
             You do not need to finish everything at once. Choose one task, start slowly, and take the next step when you're ready.
           </p>
 
-          <div className="flex flex-col gap-3">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
             <p className="text-xs font-semibold uppercase tracking-widest text-bloom-mid dark:text-bloom-mint/75">
               Gentle checklist
             </p>
 
             <div className="flex flex-wrap gap-x-8 gap-y-3 text-sm text-bloom-forest dark:text-gray-300">
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3 text-sm text-bloom-forest dark:text-bloom-light/70">
                 <span className="h-2 w-2 rounded-full bg-bloom-mint flex-shrink-0" />
                 Pick one task
               </div>
 
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3 text-sm text-bloom-forest dark:text-bloom-light/70">
                 <span
                   className="h-2 w-2 rounded-full flex-shrink-0"
                   span className="h-2 w-2 rounded-full bg-bloom-teal flex-shrink-0" />
                 Take a short pause
               </div>
 
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3 text-sm text-bloom-forest dark:text-bloom-light/70">
                 <span className="h-2 w-2 rounded-full bg-bloom-sage flex-shrink-0" />
                 Mark progress, not perfection
               </div>

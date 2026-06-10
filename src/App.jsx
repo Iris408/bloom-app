@@ -45,7 +45,7 @@ const bgClass = isDarkMode
         <Sidebar activePage={activePage} setActivePage={setActivePage} />
 
         {/* Main content area */}
-        <main className={`flex-1 flex flex-col px-4 py-8 pb-24 md:pb-8 ${bgClass}`}>
+        <main className={`flex-1 flex flex-col px-4 py-8 pb-28 md:pb-10 ${bgClass}`}>
           {renderPage()}
         </main>  
 
