@@ -193,21 +193,18 @@ Bloomは、Webファーストの視覚的タスクシーケンサーおよびル
 - JavaScript
 - Tailwind CSS
 - Vite
-- CSS
+- Vercel
 - Git/GitHub
 
 ### Planned Backend / 今後のバックエンド予定
 
-- Python
-- FastAPI
-- SQLite or TinyDB for early learning phase
-- PostgreSQL for future production-ready versions
-
-### Future Tools / 将来的に使用予定のツール
-
-- React Native for iOS
-- Vercel for frontend hosting
-- Render for backend hosting
+- FastAPI: backend API for routines, tasks, focus sessions, rewards and profile settings
+- PostgreSQL: persistent database storage
+- SQLAlchemy: database ORM for Python models and queries
+- JWT Authentication: secure login and protected user data
+- Docker: local devlopment and deployment consistency
+- Cloud deployment: backend development through Render, Fly.io or similar
+- API documentation: Swagger/OpenAPI documentation for backend routes
 
 ## Project Structure / プロジェクト構成
 
