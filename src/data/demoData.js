@@ -66,7 +66,7 @@ export const demoRoutines = [
     title: "Wind Down Routine",
     label: "Evening",
     category: "Daily care",
-    description: "A gentle routine for closing the day.",
+    description: "A slow routine to wind down and recharge.",
     steps: [
       { id: "evening-step-1", text: "Put away current tasks" },
       { id: "evening-step-2", text: "Prepare anything needed for tomorrow" },
