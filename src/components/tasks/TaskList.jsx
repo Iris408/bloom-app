@@ -64,6 +64,7 @@ function TaskList() {
         id: Date.now(),
         emoji: selectedEmoji,
         text: inputText.trim(),
+        completed: false,
       },
     ])
 
@@ -71,6 +72,21 @@ function TaskList() {
     setSelectedEmoji("📝")
     setShowPicker(false)
   }
+
+  // EN: Toggle a task between complete and incomplete
+  // JP: タスクの完了・未完了を切り替えます
+  function handleToggleComplete(id) {
+    setTasks(
+      tasks.map((task) =>
+        task.id === id
+          ? {
+              ...task,
+              completed: !task.completed, 
+            } : task
+      )
+    )
+  }
+
 
   // EN: Start editing a task
   // JP: タスクの編集を開始します
@@ -116,7 +132,9 @@ function TaskList() {
   // EN: Delete a task
   // JP: タスクを削除します
   function handleDelete(id) {
-    setTasks(tasks.filter((task) => task.id !== id))
+    setTasks(tasks.map((task) => task.id === id ? {
+      ...task, completed: !task.completed,
+    } :task))
   }
 
   return (
@@ -151,7 +169,7 @@ function TaskList() {
           </div>
 
         {showPicker && (
-          <div className="<bg-white dark:bg-dark-surface/80 border border-gray-200 dark:border-dark-border rounded-2xl shadow p-3 grid grid-cols-8 gap-2">
+          <div className="bg-white dark:bg-dark-surface/80 border border-gray-200 dark:border-dark-border rounded-2xl shadow p-3 grid grid-cols-8 gap-2">
             {emojis.map((emoji) => (
               <button
                 type="button"
@@ -171,7 +189,7 @@ function TaskList() {
 
       {/* TASK CARDS */}
       {tasks.length === 0 ? (
-        <div className="rounded-2xl border border-bloom-sage/30 bg-white/60 dark:bg-dark-surface/70 p-6 text-center">
+        <div className="rounded-2xl border border-bloom-sage/30 bg-white/60 dark:bg-dark-surface p-6 text-center">
           <p className="text-3xl mb-3">🌱</p>
 
           <h3 className="text-lg font-bold text-bloom-forest dark:text-bloom-light mb-2">
@@ -187,7 +205,7 @@ function TaskList() {
           editingId === task.id ? (
             <div
               key={task.id}
-              className="flex flex-col gap-3 border border-gray-300 dark:border-dark-border rounded-xl px-3 py-3 bg-white dark:bg-bloom-mint/20"
+              className="flex flex-col gap-3 border border-gray-300 dark:border-dark-border rounded-xl px-3 py-3 bg-white dark:bg-bloom-mint/30"
             >
               <div className="flex items-center gap-2">
                 <button
@@ -251,6 +269,7 @@ function TaskList() {
               task={task}
               onEdit={handleEditStart}
               onDelete={handleDelete}
+              onToggleComplete={handleToggleComplete}
             />
           )
         )
