@@ -2,7 +2,7 @@ import { useApp } from "../../context/AppContext"
 import TaskCompletionButton from "./TaskCompletionButton"
 
 function TaskCard({ task, onEdit, onDelete, onToggleComplete }) {
-  const { isDarkMode, darkStyle } = useApp()
+  const { isDarkMode } = useApp()
 
   const cardClass = isDarkMode
     ? "bg-dark-surface/85 border-dark-border"
@@ -12,11 +12,11 @@ function TaskCard({ task, onEdit, onDelete, onToggleComplete }) {
     <div className={`${cardClass} border rounded-2xl shadow p-4 flex flex-col gap-3`}>
       {/* EN: Top row shows the completion button, task emoji and task text */}
       {/* JP: 上の行では完了ボタン、絵文字、タスクのテキストを表示します */}
-      <div className="flex items-center gap-4">
-        <TaskCompletionButton
-          isCompleted={task.completed}
-          onClick={() => onToggleComplete(task.id)}
-        />
+        <div className="flex items-center gap-4">
+          <TaskCompletionButton
+            isCompleted={task.completed}
+            onClick={() => onToggleComplete(task.id)}
+          />
         <span className="text-2xl">{task.emoji}</span>
 
         <p 

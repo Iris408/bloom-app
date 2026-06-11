@@ -132,9 +132,7 @@ function TaskList() {
   // EN: Delete a task
   // JP: タスクを削除します
   function handleDelete(id) {
-    setTasks(tasks.map((task) => task.id === id ? {
-      ...task, completed: !task.completed,
-    } :task))
+    setTasks(tasks.filter((task) => task.id !== id))
   }
 
   return (

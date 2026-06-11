@@ -1,96 +1,100 @@
 import TaskList from "../components/tasks/TaskList"
+import DailyAffirmationCard from "../components/home/DailyAffirmationCard"
 
 function Home() {
   return (
-    <div className="flex flex-col gap-8 max-w-7xl mx-auto w-full px-4">
-      {/* Page heading */}
-      <section className="flex flex-col gap-5">
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-widest text-bloom-mid dark:text-blue-500/80 mb-2">
-            Home
-          </p>
-
-          <h2 className="text-3xl font-bold text-bloom-forest dark:text-bloom-light/90">
-            Today's focus
-          </h2>
-        </div>
-
-        <div className="max-w-5xl flex flex-col gap-4">
-          <p className="text-xl font-bold text-bloom-forest dark:text-bloom-light/90">
-            One small step at a time {" "}
-            <span
-            className="inline-block dark:[filter:hue-rotate(145deg)_saturate(1.3)_brightness(0.9)]"
-            role="img"
-            aria-label="indigo seedling"
-            >🌱</span>
-          </p>
-
-          <p className="text-sm leading-relaxed text-bloom-forest/80 dark:text-gray-300 max-w-3xl">
-            You do not need to finish everything at once. Choose one task, start slowly, and take the next step when you're ready.
-          </p>
-
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-            <p className="text-xs font-semibold uppercase tracking-widest text-bloom-mid dark:text-bloom-mint/75">
-              Gentle checklist
+    <div className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-4">
+      {/* Page heading / Today's focus */}
+      <section className="grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,3fr)_minmax(280px,1fr)]">
+        {/* Left side — Today's focus */}
+        <div className="flex flex-col gap-5">
+          <div>
+            <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-bloom-mid dark:text-blue-500/80">
+              Home
             </p>
 
-            <div className="flex flex-wrap gap-x-8 gap-y-3 text-sm text-bloom-forest dark:text-gray-300">
-              <div className="flex items-center gap-3 text-sm text-bloom-forest dark:text-bloom-light/70">
-                <span className="h-2 w-2 rounded-full bg-bloom-mint flex-shrink-0" />
-                Pick one task
-              </div>
+            <h2 className="text-3xl font-bold text-bloom-forest dark:text-bloom-light/90">
+              Today&apos;s focus
+            </h2>
 
-              <div className="flex items-center gap-3 text-sm text-bloom-forest dark:text-bloom-light/70">
-                <span
-                  className="h-2 w-2 rounded-full flex-shrink-0"
-                  span className="h-2 w-2 rounded-full bg-bloom-teal flex-shrink-0" />
-                Take a short pause
-              </div>
+            {/* EN: Mobile-only collapsible daily reminder */}
+            {/* JP: モバイル専用の折りたたみ式デイリーリマインダー */}
+            <div className="mt-4 xl:hidden">
+              <DailyAffirmationCard variant="collapsible" />
+            </div>
+          </div>
 
-              <div className="flex items-center gap-3 text-sm text-bloom-forest dark:text-bloom-light/70">
-                <span className="h-2 w-2 rounded-full bg-bloom-sage flex-shrink-0" />
-                Mark progress, not perfection
+          <div className="flex max-w-5xl flex-col gap-4">
+            <p className="text-xl font-bold text-bloom-forest dark:text-bloom-light/90">
+              One small step at a time{" "}
+              <span
+                className="inline-block dark:[filter:hue-rotate(145deg)_saturate(1.3)_brightness(0.9)]"
+                role="img"
+                aria-label="indigo seedling"
+              >
+                🌱
+              </span>
+            </p>
+
+            <p className="max-w-3xl text-sm leading-relaxed text-bloom-forest/80 dark:text-gray-300">
+              You do not need to finish everything at once. Choose one task,
+              start slowly, and take the next step when you&apos;re ready.
+            </p>
+
+            <div className="flex flex-col gap-3">
+              <p className="text-xs font-semibold uppercase tracking-widest text-bloom-mid dark:text-bloom-mint/75">
+                Gentle checklist
+              </p>
+
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+                <div className="flex items-center gap-3 text-sm text-bloom-forest dark:text-bloom-light/70">
+                  <span className="h-2 w-2 flex-shrink-0 rounded-full bg-bloom-mint" />
+                  Pick one task
+                </div>
+
+                <div className="flex items-center gap-3 text-sm text-bloom-forest dark:text-bloom-light/70">
+                  <span className="h-2 w-2 flex-shrink-0 rounded-full bg-bloom-teal" />
+                  Take a short pause
+                </div>
+
+                <div className="flex items-center gap-3 text-sm text-bloom-forest dark:text-bloom-light/70">
+                  <span className="h-2 w-2 flex-shrink-0 rounded-full bg-bloom-sage" />
+                  Mark progress, not perfection
+                </div>
               </div>
             </div>
           </div>
         </div>
+
+        {/* Right side — Desktop daily reminder */}
+        <aside className="hidden xl:block xl:self-start xl:pt-8">
+          <DailyAffirmationCard variant="panel" />
+        </aside>
       </section>
 
       {/* Main content area */}
-      <section className="grid grid-cols-1 xl:grid-cols-[minmax(0,3fr)_minmax(280px,1fr)] gap-8">
+      <section className="grid grid-cols-1 gap-8 xl:grid-cols-[minmax(0,3fr)_minmax(280px,1fr)]">
         {/* Left column — task input and task list */}
         <div className="flex flex-col gap-4">
+          <h2 className="mb-4 text-2xl font-bold text-bloom-forest dark:text-bloom-light/80">
+            Today&apos;s tasks
+          </h2>
 
-            <h2 className="text-2xl font-bold text-bloom-forest dark:text-bloom-light/80 mb-4">
-              Today's tasks
-            </h2>
           <TaskList />
         </div>
 
-        {/* Right column */}
-        <aside className="flex flex-col gap-8 xl:pt-2">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-widest text-bloom-mid dark:text-bloom-sage mb-3">
-              Bloom reminder
-            </p>
-
-            <blockquote className="text-base font-semibold leading-relaxed text-bloom-forest dark:text-bloom-light">
-              "You don't have to do everything today. One small step is still progress."
-            </blockquote>
-          </div>
-
-          <div className="border-t border-bloom-sage/20 dark:border-dark-border" />
-
-          <div className="rounded-2xl bg-bloom-forest dark:bg-dark-surface text-white p-5">
-            <p className="text-xs font-semibold uppercase tracking-widest text-bloom-mint dark:text-bloom-sage mb-2">
+        {/* Right column — desktop supporting panel */}
+        <aside className="hidden xl:flex xl:flex-col xl:pt-[64px]">
+          <div className="flex h-full min-h-[180px] flex-col justify-between rounded-2xl bg-bloom-forest p-5 text-white dark:bg-dark-surface">
+            <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-bloom-mint dark:text-bloom-sage">
               Current phase
             </p>
 
-            <h3 className="text-lg font-bold text-bloom-light mb-2">
+            <h3 className="mb-2 text-3xl font-bold text-bloom-light">
               P1 Foundation
             </h3>
 
-            <p className="text-sm leading-relaxed text-bloom-light dark:text-bloom-light/80">
+            <p className="text-medium leading-relaxed text-bloom-light dark:text-bloom-light/80">
               Task actions, layout, accessibility settings, and reusable UI
               components are being built first.
             </p>
