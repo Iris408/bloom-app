@@ -30,6 +30,7 @@ function Routines() {
   const [editStepText, setEditStepText] = useState("")
 
   const [showDemoRoutines, setShowDemoRoutines] = useState(false)
+  const [selectedDemoRoutineIds, setSelectedDemoRoutineIds] = useState([])
 
 // EN: Load demo routines into the editable routine list.
 // JP: デモ用ルーティンを編集可能なルーティン一覧に追加します。
@@ -38,6 +39,7 @@ function handleLoadDemoRoutines() {
     const existingIds = new Set(prevRoutines.map((routine) => routine.id))
 
     const routinesToAdd = demoRoutines
+      .filter((routine) => selectedDemoRoutineIds.includes(routine.id))
       .filter((routine) => !existingIds.has(routine.id))
       .map((routine) => ({
         ...routine,
@@ -56,7 +58,7 @@ function handleLoadDemoRoutines() {
 // JP: 編集可能なルーティン一覧からデモ用ルーティンだけを削除します。
 function handleClearDemoRoutines() {
   setRoutines((prevRoutines) =>
-    prevRoutines.filter((routine) => !routine.id.startsWith("demo-routine"))
+    prevRoutines.filter((routine) => !routine.id.toString().startsWith("demo-routine"))
   )
 }
 
@@ -281,6 +283,8 @@ function handleClearDemoRoutines() {
         setShowDemoRoutines={setShowDemoRoutines}
         handleLoadDemoRoutines={handleLoadDemoRoutines}
         handleClearDemoRoutines={handleClearDemoRoutines}
+        selectedDemoRoutineIds={selectedDemoRoutineIds}
+        setSelectedDemoRoutineIds={setSelectedDemoRoutineIds}
       />
 
       {/* Add routine input */}
