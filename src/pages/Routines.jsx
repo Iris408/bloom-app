@@ -32,35 +32,28 @@ function Routines() {
   const [showDemoRoutines, setShowDemoRoutines] = useState(false)
   const [selectedDemoRoutineIds, setSelectedDemoRoutineIds] = useState([])
 
-// EN: Load demo routines into the editable routine list.
-// JP: デモ用ルーティンを編集可能なルーティン一覧に追加します。
-function handleLoadDemoRoutines() {
-  setRoutines((prevRoutines) => {
-    const existingIds = new Set(prevRoutines.map((routine) => routine.id))
+  // EN: Load demo routines into the editable routine list.
+  // JP: デモ用ルーティンを編集可能なルーティン一覧に追加します。
+  function handleLoadDemoRoutines() {
+    setRoutines((prevRoutines) => {
+      const existingIds = new Set(prevRoutines.map((routine) => routine.id))
 
-    const routinesToAdd = demoRoutines
-      .filter((routine) => selectedDemoRoutineIds.includes(routine.id))
-      .filter((routine) => !existingIds.has(routine.id))
-      .map((routine) => ({
-        ...routine,
-        name: routine.title,
-        steps: routine.steps.map((step) => ({
-          ...step,
-          completed: false,
-        })),
-      }))
+      const routinesToAdd = demoRoutines
+        .filter((routine) => selectedDemoRoutineIds.includes(routine.id))
+        .filter((routine) => !existingIds.has(routine.id))
+        .map((routine) => ({
+          ...routine,
+          name: routine.title,
+          steps: routine.steps.map((step) => ({
+            ...step,
+            completed: false,
+          })),
+        }))
 
-    return [...prevRoutines, ...routinesToAdd]
-  })
-}
-
-// EN: Remove only demo routines from the editable routine list.
-// JP: 編集可能なルーティン一覧からデモ用ルーティンだけを削除します。
-function handleClearDemoRoutines() {
-  setRoutines((prevRoutines) =>
-    prevRoutines.filter((routine) => !routine.id.toString().startsWith("demo-routine"))
-  )
-}
+      return [...prevRoutines, ...routinesToAdd]
+    })
+    setShowDemoRoutines(false)
+  }
 
   // EN: Save routines whenever the routine list changes
   // JP: ルーティン一覧が変更されるたびに localStorage に保存します
@@ -259,6 +252,7 @@ function handleClearDemoRoutines() {
       })
     )
   }
+  
 
   return (
     <div className="flex flex-col gap-8 max-w-3xl">
@@ -281,10 +275,9 @@ function handleClearDemoRoutines() {
       <DemoRoutinesPanel
         showDemoRoutines={showDemoRoutines}
         setShowDemoRoutines={setShowDemoRoutines}
-        handleLoadDemoRoutines={handleLoadDemoRoutines}
-        handleClearDemoRoutines={handleClearDemoRoutines}
         selectedDemoRoutineIds={selectedDemoRoutineIds}
         setSelectedDemoRoutineIds={setSelectedDemoRoutineIds}
+        handleLoadDemoRoutines={handleLoadDemoRoutines}
       />
 
       {/* Add routine input */}

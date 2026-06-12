@@ -8,7 +8,6 @@ function DemoRoutinesPanel({
   selectedDemoRoutineIds = [],
   setSelectedDemoRoutineIds,
   handleLoadDemoRoutines,
-  handleClearDemoRoutines,
 }) {
 
   // EN: Select or unselect one demo routine.
@@ -102,19 +101,7 @@ const safeSelectedDemoRoutineIds = Array.isArray(selectedDemoRoutineIds)
             onClick={handleClearSelectedDemoRoutines}
             className="text-[11px] font-semibold text-gray-500 transition hover:text-bloom-mid dark:text-bloom-light/70 dark:hover:text-bloom-sage"
           >
-            Clear selection
-          </button>
-        </div>
-
-        {/* EN: Clear loaded demo routines only */}
-        {/* JP: 読み込まれたデモルーティンだけを削除します */}
-        <div className="mt-3 flex justify-end sm:absolute sm:bottom-3 sm:right-4 sm:mt-0">
-          <button
-            type="button"
-            onClick={handleClearDemoRoutines}
-            className="text-[10px] font-semibold text-red-400 transition hover:text-red-500 dark:text-red-400 dark:hover:text-red-500"
-          >
-            Clear demo
+            Clear all
           </button>
         </div>
       </div>
