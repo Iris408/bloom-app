@@ -32,8 +32,8 @@ function Routines() {
   const [showDemoRoutines, setShowDemoRoutines] = useState(false)
   const [selectedDemoRoutineIds, setSelectedDemoRoutineIds] = useState([])
 
-  // EN: Load demo routines into the editable routine list.
-  // JP: デモ用ルーティンを編集可能なルーティン一覧に追加します。
+// EN: Load selected demo routines, reset selected ticks, and close the preview panel.
+// JP: 選択されたデモルーティンを読み込み、チェック状態をリセットして、プレビューパネルを閉じます。
   function handleLoadDemoRoutines() {
     setRoutines((prevRoutines) => {
       const existingIds = new Set(prevRoutines.map((routine) => routine.id))
@@ -52,6 +52,7 @@ function Routines() {
 
       return [...prevRoutines, ...routinesToAdd]
     })
+    setSelectedDemoRoutineIds([])
     setShowDemoRoutines(false)
   }
 
