@@ -52,6 +52,19 @@ Bloomは、視覚的なルーティン作成とタスク進行を支援するア
 * Bloom is currently a frontend MVP focused on calm routine building, task completion, focus task tracking, demo routine onboardimg, daily reminders and visual progress feedback. The app uses React, Vite, Tailwind CSS, reusable components, and localStorage persistence.
 * Bloomは現在、穏やかなルーティン作成、タスク完了管理、集中タスクの追跡、デモルーティンのオンボーディング、デイリーリマインダー、安心できる進捗フィードバックに重点を置いたフロントエンドMVPです。このアプリは、React、Vite、Tailwind CSS、再利用可能なコンポーネント、そしてlocalStorageによるデータストレージを利用しています。
 
+## Version Update — v1.2.0 / バージョン更新 — v1.2.0
+
+* Bloom v1.2.0 adds several usability improvements focused on task completion, gentle daily encouragement, and demo routine onboarding.
+
+* Bloom v1.2.0では、タスク完了管理、やさしいデイリーリマインダー、デモルーティンのオンボーディングを中心に、使いやすさを改善しました。
+
+### User Experience Improvements
+
+Bloom now gives users a clearer onboarding flow for trying demo routines. Users can preview available routines, select one or more routines, load only the routines they want, and continue editing them as normal routine cards. The demo preview also closes automatically after loading, and selected ticks reset so the interface stays clean.
+
+### UX改善
+Bloomでは、デモルーティンを試すためのオンボーディング体験がより分かりやすくなりました。ユーザーは利用可能なルーティンをプレビューし、1つまたは複数のルーティンを選択し、必要なものだけを読み込み、その後は通常のルーティンカードとして編集できます。デモプレビューは読み込み後に自動で閉じ、選択済みチェックもリセットされるため、画面がすっきりした状態を保てます。
+
 | Area | Status |
 |---|---|
 | **Foundation** | |
@@ -167,25 +180,14 @@ Bloomは、Webファーストの視覚的タスクシーケンサーおよびル
 
 ## App Modes / アプリモード
 
-| Mode | Purpose |
-|---|---|
-| Standard Mode | Clean adult-friendly layout for personal routines |
-| Kid Mode | Simplified, warmer, emoji-heavy experience for children |
-| Focus Mode | One step shown at a time to reduce distraction |
-| Calm Mode | Softer interface with reduced motion and urgency |
-| Review Mode | Reflection after completing a routine |
-| Education Mode | Long-term future mode for school-based use |
-
-### 日本語
-
-| モード | 目的 |
-|---|---|
-| スタンダードモード | 個人ルーティン向けのシンプルで大人向けのレイアウト |
-| キッズモード | 子ども向けの分かりやすく温かい絵文字中心のUI |
-| フォーカスモード | 気が散りにくいように1ステップずつ表示 |
-| リラックスモード | 動きや緊急感を抑えた落ち着いたUI |
-| レビューモード | ルーティン完了後の振り返り |
-| 学習・学校モード | 将来的な学校・教育向け利用モード |
+| Mode | Purpose | モード | 目的 |
+|---|---|---|---|
+| Standard Mode | Clean adult-friendly layout for personal routines | スタンダードモード | 個人ルーティン向けのシンプルで大人向けのレイアウト |
+| Kid Mode | Simplified, warmer, emoji-heavy experience for children | キッズモード | 子ども向けの分かりやすく温かい絵文字中心のUI |
+| Focus Mode | One step shown at a time to reduce distraction | フォーカスモード | 気が散りにくいように1ステップずつ表示 |
+| Calm Mode | Softer interface with reduced motion and urgency | リラックスモード | 動きや緊急感を抑えた落ち着いたUI |
+| Review Mode | Reflection after completing a routine | レビューモード | ルーティン完了後の振り返り |
+| Education Mode | Long-term future mode for school-based use | 学習・学校モード | 将来的な学校・教育向け利用モード |
 
 ## Tech Stack / 技術スタック
 
