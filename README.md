@@ -45,12 +45,12 @@ Bloomは、視覚的なルーティン作成とタスク進行を支援するア
 
 ## Current Status / 現在のステータス
 
-**Active Capstone Project / Frontend Foundation + Task Persistence**
+**Active Capstone Project / Frontend MVP v1.2.0 Complete**
 
-**アクティブなキャップストーンプロジェクト / フロントエンド基礎構築フェーズ**
+**アクティブなキャップストーンプロジェクト / フロントエンドMVP v1.2.0完了**
 
-* Bloom is currently a frontend MVP focused on calm routine building, focus task tracking, and gentle progress feedback. The app uses React, Vite, Tailwind CSS, reusable components, and localStorage persistence.
-* Bloomは現在、穏やかな日々のルーティンの構築、集中すべきタスクの追跡、そして安心できる進捗状況のフィードバックの提供に重点を置いたフロントエンドMVPです。このアプリは、React、Vite、Tailwind CSS、再利用可能なコンポーネント、そしてlocalStorageによるデータストレージを利用しています。
+* Bloom is currently a frontend MVP focused on calm routine building, task completion, focus task tracking, demo routine onboardimg, daily reminders and visual progress feedback. The app uses React, Vite, Tailwind CSS, reusable components, and localStorage persistence.
+* Bloomは現在、穏やかなルーティン作成、タスク完了管理、集中タスクの追跡、デモルーティンのオンボーディング、デイリーリマインダー、安心できる進捗フィードバックに重点を置いたフロントエンドMVPです。このアプリは、React、Vite、Tailwind CSS、再利用可能なコンポーネント、そしてlocalStorageによるデータストレージを利用しています。
 
 | Area | Status |
 |---|---|
@@ -61,10 +61,14 @@ Bloomは、視覚的なルーティン作成とタスク進行を支援するア
 | **Tasks** | |
 | Task cards, task list, CRUD actions and emoji picker | ✅ Complete |
 | Task localStorage persistence | ✅ Complete |
+| Reusable task completion button | ✅ Complete |
+| Completed task styling with tick and line-through state | ✅ Complete |
 | **Routines** | |
 | Routine builder — create, edit and delete routines | ✅ Complete |
 | Routine steps — add, remove, edit, reorder and complete | ✅ Complete |
 | Routine and step localStorage persistence | ✅ Complete |
+| Demo routine data stored in `src/data/demoData.js` | ✅ Complete |
+| Auto-close preview and reset selected ticks after loading | ✅ Complete |
 | **Focus Mode** | |
 | Focus v1 - add, complete and remove daily focus tasks | ✅ Complete |
 | Focus task localStorage persistence | ✅ Complete |
@@ -75,7 +79,11 @@ Bloomは、視覚的なルーティン作成とタスク進行を支援するア
 | **UI / UX** | |
 | Light/dark mode and accessibility controls | ✅ Complete |
 | Reusable Bloom reminder component across pages | ✅ Complete |
+| Daily affirmation/reminder card | ✅ Complete |
+| Better mobile-friendly layout improvements | ✅ Complete |
 | **Planned Updates** | |
+| v1.3.0 Daily reset behaviour | 🚧 Planned |
+| v1.4.0 Empty state microcopy improvements | 🚧 Planned |
 | Rewards page v1 | 🚧 Planned |
 | Profile settings persistence | 🚧 Planned |
 | Backend API and database persistence | 🚧 Planned |
@@ -108,60 +116,54 @@ Bloomは、Webファーストの視覚的タスクシーケンサーおよびル
 |---|---|
 | React app structure created with Vite | Viteで作成したReactアプリ構成 |
 | Component-based folder structure | コンポーネントベースのフォルダ構成 |
-| Desktop sidebar navigation | デスクトップ用サイドバーナビゲーション |
-| Mobile bottom navigation | モバイル用ボトムナビゲーション |
+| Desktop sidebar and Mobile bottom navigation | デスクトップ用サイドバーナビゲーション/モバイル用ボトムナビゲーション |
 | Header and footer components | ヘッダー・フッターコンポーネント |
 | Reusable Bloom button component | 再利用可能なBloomボタンコンポーネント |
 | Task card and task list components | タスクカード・タスクリストコンポーネント |
 | Emoji picker for new and edited tasks | 新規作成・編集タスク用の絵文字ピッカー |
-| Task add, edit, save, cancel, and delete actions | タスクの追加、編集、保存、キャンセル、削除 |
-| Main pages created | 主要ページの作成 |
+| Completed task styling with tick and line-through state | チェック表示と取り消し線による完了タスク表示 |
+| Selectable demo routine preview | 選択可能なデモルーティンプレビュー |
+| Select all and Clear all demo routine controls | デモルーティン用の Select all / Clear all 操作 |
+| Load selected demo routines only | 選択したデモルーティンのみ読み込み |
+| Auto-close demo preview after loading | 読み込み後にデモプレビューを自動で閉じる機能 |
+| Reset selected demo routine ticks after loading | 読み込み後に選択チェックを自動でリセット |
 | Global app context structure | グローバルアプリコンテキスト構成 |
 | Reusable UI component folder | 再利用可能なUIコンポーネントフォルダ |
 | Light and dark mode | ライトモード・ダークモード |
 | Font size controls | フォントサイズ調整 |
-| OpenDyslexic font toggle | OpenDyslexicフォント切り替え |
-| Reduce motion toggle | アニメーション軽減設定 |
+| OpenDyslexic font, Reduce motion toggle | OpenDyslexicフォント切り替え /アニメーション軽減設定|
 
 ## Pages / ページ構成
 
-| Page | Purpose |
-|---|---|
-| Overview | High-level app overview |
-| Home | Today’s focus and task list |
-| Routines | Future routine builder page |
-| Focus | Future one-step-at-a-time mode |
-| Progress | Future progress tracking |
-| Rewards | Future rewards and badges |
-| Profile | User settings and accessibility preferences |
+| Page | Purpose | ページ | 目的 |
+|---|---|---|---|
+| Overview | High-level app overview | 概要 | アプリ全体の概要 |
+| Home | Today’s focus, task list, task completion and daily reminder | 今日のフォーカス、タスクリスト、タスク完了、デイリーリマインダー |
+| Routines | Routine builder, routine steps and selectable demo routines | ルーティン | ルーティン作成、ステップ管理、選択可能なデモルーティン |
+| Focus | Daily focus task tracking | フォーカス | 日々の集中タスク管理 |
+| Progress | Calm progress overview and weekly snapshots | プログレス | 落ち着いた進捗概要と週間スナップショット |
+| Rewards | Placeholder page for future rewards and badges | リワード | 今後のリワード・バッジ用プレースホルダーページ |
+| Profile | Placeholder page for future user settings and accessibility preferences | プロフィール | 今後のユーザー設定・アクセシビリティ設定用プレースホルダーページ |
 
-### 日本語
-
-| ページ | 目的 |
-|---|---|
-| 概要 | アプリ全体の概要 |
-| ホーム | 今日のフォーカスとタスクリスト |
-| ルーティン | 今後のルーティン作成ページ |
-| フォーカス | 今後の1ステップ集中モード |
-| プログレス | 今後の進捗管理 |
-| リワード | 今後のリワード・バッジ |
-| プロフィール | ユーザー設定とアクセシビリティ設定 |
 
 ## Planned Features / 今後の予定機能
 
 | EN | 日本語 |
 |---|---|
-| Reorder routine steps | ルーティンステップの追加・編集・削除・並び替え |
-| Progress tracking | 進捗管理 |
-| Streaks, stars, and badges | 継続記録、スター、バッジ |
-| Profile switching | プロフィール切り替え |
-| Focus Mode | 1ステップずつ表示する集中モード |
-| Kid Mode | 子ども向けモード |
-| Calm Mode | 視覚的な刺激を抑えた落ち着いたモード |
-| Review Mode | 完了後の振り返りモード |
+| Daily reset behaviour for tasks, routines, routine steps and focus tasks | タスク、ルーティン、ルーティンステップ、集中タスクの日次リセット |
+| Empty state microcopy improvements | 空状態メッセージの改善 |
+| Wins-only progress view | 達成したことだけを見る進捗ビュー |
+| Time estimates per routine step | ルーティンステップごとの所要時間目安 |
+| Low demand mode | 低負荷モード |
+| Notification/reminder setting | 通知・リマインダー設定 |
+| Mood check-in at app open | アプリ起動時の気分チェックイン |
+| Short version of routines | ルーティンの短縮版 |
+| Onboarding flow | オンボーディングフロー |
+| Ambient audio toggle | 環境音の切り替え |
+| Exportable progress CSV | 進捗CSVエクスポート |
 | Future FastAPI backend | 将来的なFastAPIバックエンド |
 | Future database persistence | 将来的なデータベース永続化 |
-| Future mobile/iOS version | 将来的なモバイル/iOS版 |
+| Future full-stack deployment | 将来的なフルスタックデプロイ |
 
 ## App Modes / アプリモード
 
@@ -196,58 +198,3 @@ Bloomは、Webファーストの視覚的タスクシーケンサーおよびル
 - Vercel
 - Git/GitHub
 
-### Planned Backend / 今後のバックエンド予定
-
-- FastAPI: backend API for routines, tasks, focus sessions, rewards and profile settings
-- PostgreSQL: persistent database storage
-- SQLAlchemy: database ORM for Python models and queries
-- JWT Authentication: secure login and protected user data
-- Docker: local devlopment and deployment consistency
-- Cloud deployment: backend development through Render, Fly.io or similar
-- API documentation: Swagger/OpenAPI documentation for backend routes
-
-## Project Structure / プロジェクト構成
-
-```text
-bloom-app/
-├── public/
-│   └── fonts/
-│       └── OpenDyslexic3-Regular.ttf
-├── src/
-│   ├── assets/
-│   ├── components/
-│   │   ├── layout/
-│   │   │   ├── BottomNav.jsx
-│   │   │   ├── Footer.jsx
-│   │   │   ├── Header.jsx
-│   │   │   └── Sidebar.jsx
-│   │   ├── modes/
-│   │   ├── tasks/
-│   │   │   ├── TaskCard.jsx
-│   │   │   └── TaskList.jsx
-│   │   └── ui/
-│   │       ├── BloomReminder.jsx
-│   │       ├── Button.jsx
-│   │       ├── DyslexicFontToggle.jsx
-│   │       ├── FontSizeSlider.jsx
-│   │       └── ReduceMotionToggle.jsx
-│   ├── context/
-│   │   └── AppContext.jsx
-│   ├── pages/
-│   │   ├── Focus.jsx
-│   │   ├── Home.jsx
-│   │   ├── Overview.jsx
-│   │   ├── Profile.jsx
-│   │   ├── Progress.jsx
-│   │   ├── Rewards.jsx
-│   │   └── Routines.jsx
-│   ├── styles/
-│   ├── App.css
-│   ├── App.jsx
-│   ├── index.css
-│   └── main.jsx
-├── .gitignore
-├── eslint.config.js
-├── index.html
-├── package-lock.json
-└── package.json
