@@ -65,7 +65,7 @@ Bloom now gives users a clearer onboarding flow for trying demo routines. Users 
 ### UX改善
 Bloomでは、デモルーティンを試すためのオンボーディング体験がより分かりやすくなりました。ユーザーは利用可能なルーティンをプレビューし、1つまたは複数のルーティンを選択し、必要なものだけを読み込み、その後は通常のルーティンカードとして編集できます。デモプレビューは読み込み後に自動で閉じ、選択済みチェックもリセットされるため、画面がすっきりした状態を保てます。
 
-| Area | Status |
+| Area | Status | Area | Status |
 |---|---|---|---|
 | **Foundation** | | **Progress** | |
 | Vite + React, folder structure, routing | ✅ Complete | Progress v1 - calm routine progress overview | ✅ Complete |
