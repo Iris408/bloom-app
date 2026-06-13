@@ -66,41 +66,26 @@ Bloom now gives users a clearer onboarding flow for trying demo routines. Users 
 Bloomでは、デモルーティンを試すためのオンボーディング体験がより分かりやすくなりました。ユーザーは利用可能なルーティンをプレビューし、1つまたは複数のルーティンを選択し、必要なものだけを読み込み、その後は通常のルーティンカードとして編集できます。デモプレビューは読み込み後に自動で閉じ、選択済みチェックもリセットされるため、画面がすっきりした状態を保てます。
 
 | Area | Status |
-|---|---|
-| **Foundation** | |
-| Vite + React, folder structure, routing | ✅ Complete |
-| Sidebar navigation for desktop and bottom navigation | ✅ Complete |
-| Header, footer, reusable UI components | ✅ Complete |
-| **Tasks** | |
-| Task cards, task list, CRUD actions and emoji picker | ✅ Complete |
-| Task localStorage persistence | ✅ Complete |
-| Reusable task completion button | ✅ Complete |
-| Completed task styling with tick and line-through state | ✅ Complete |
-| **Routines** | |
-| Routine builder — create, edit and delete routines | ✅ Complete |
-| Routine steps — add, remove, edit, reorder and complete | ✅ Complete |
-| Routine and step localStorage persistence | ✅ Complete |
-| Demo routine data stored in `src/data/demoData.js` | ✅ Complete |
-| Auto-close preview and reset selected ticks after loading | ✅ Complete |
+|---|---|---|---|
+| **Foundation** | | **Progress** | |
+| Vite + React, folder structure, routing | ✅ Complete | Progress v1 - calm routine progress overview | ✅ Complete |
+| Sidebar navigation for desktop and bottom navigation | ✅ Complete | Pre-routine progress bars and weekly progress snapshots | ✅ Complete |
+| Header, footer, reusable UI components | ✅ Complete | Descriptive progress labels | ✅ Complete |
+| **Tasks** | | **UI / UX** | |
+| Task cards, task list, CRUD actions and emoji picker | ✅ Complete | Light/dark mode and accessibility controls | ✅ Complete |
+| Task localStorage persistence | ✅ Complete | Reusable Bloom reminder component across pages | ✅ Complete |
+| Reusable task completion button | ✅ Complete | Daily affirmation/reminder card | ✅ Complete |
+| Completed task styling with tick and line-through state | ✅ Complete | Better mobile-friendly layout improvements | ✅ Complete |
+| **Routines** | | **Planned Updates** | |
+| Routine builder — create, edit and delete routines | ✅ Complete | v1.3.0 Daily reset behaviour | 🚧 Planned |
+| Routine steps — add, remove, edit, reorder and complete | ✅ Complete | v1.4.0 Empty state microcopy improvements | 🚧 Planned |
+| Routine and step localStorage persistence | ✅ Complete | Rewards page v1 | 🚧 Planned |
+| Demo routine data stored in `src/data/demoData.js` | ✅ Complete | Profile settings persistence | 🚧 Planned |
+| Auto-close preview and reset selected ticks after loading | ✅ Complete | Backend API and database persistence | 🚧 Planned |
+| Load only selected demo routines | ✅ Complete | Future full-stack deployment | 🚧 Planned
 | **Focus Mode** | |
 | Focus v1 - add, complete and remove daily focus tasks | ✅ Complete |
 | Focus task localStorage persistence | ✅ Complete |
-| **Progress** | |
-| Progress v1 - calm routine progress overview | ✅ Complete |
-| Pre-routine progress bars and weekly progress snapshots | ✅ Complete |
-| Descriptive progress labels | ✅ Complete |
-| **UI / UX** | |
-| Light/dark mode and accessibility controls | ✅ Complete |
-| Reusable Bloom reminder component across pages | ✅ Complete |
-| Daily affirmation/reminder card | ✅ Complete |
-| Better mobile-friendly layout improvements | ✅ Complete |
-| **Planned Updates** | |
-| v1.3.0 Daily reset behaviour | 🚧 Planned |
-| v1.4.0 Empty state microcopy improvements | 🚧 Planned |
-| Rewards page v1 | 🚧 Planned |
-| Profile settings persistence | 🚧 Planned |
-| Backend API and database persistence | 🚧 Planned |
-| Future full-stack deployment | 🚧 Planned
 
 ## Project Overview / プロジェクト概要
 
