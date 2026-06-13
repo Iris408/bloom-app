@@ -2,8 +2,10 @@ import { useEffect, useState } from "react"
 import BloomReminder from "../components/ui/BloomReminder"
 import { demoRoutines } from "../data/demoData"
 import DemoRoutinesPanel from "../components/routines/DemoRoutinesPanel"
+import { shouldRunDailyReset, markDailyResetComplete, resetRoutineStepCompletion } from "../utils/dailyResetUtils"
 
 const ROUTINE_STORAGE_KEY = "bloom-routines"
+const ROUTINE_DAILY_RESET_KEY = "bloom-routines-last-reset"
 
 function Routines() {
   const [routines, setRoutines] = useState(() => {
@@ -11,14 +13,27 @@ function Routines() {
       const savedRoutines = localStorage.getItem(ROUTINE_STORAGE_KEY)
 
       if (savedRoutines) {
-        return JSON.parse(savedRoutines)
+        const parsedRoutines = JSON.parse(savedRoutines)
+
+        if (shouldRunDailyReset(ROUTINE_DAILY_RESET_KEY)) {
+          const resetRoutines = resetRoutineStepCompletion(parsedRoutines)
+
+          localStorage.setItem(ROUTINE_STORAGE_KEY, JSON.stringify(resetRoutines))
+          markDailyResetComplete(ROUTINE_DAILY_RESET_KEY)
+
+          return resetRoutines
+        }
+
+        return parsedRoutines
       }
 
       return []
-    } catch {
+    } catch (error) {
+      console.error("Failed to load routines:", error)
       return []
     }
   })
+
 
   const [routineName, setRoutineName] = useState("")
   const [stepText, setStepText] = useState({})

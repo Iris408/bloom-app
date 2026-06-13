@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import TaskCard from "./TaskCard"
+import { shouldRunDailyReset, markDailyResetComplete, resetCompletedItems } from "../../utils/dailyResetUtils"
 
 const emojis = [
   // Morning / daily routine
@@ -22,6 +23,7 @@ const emojis = [
   "🌟", "⭐", "🏆", "🎁", "💖", "👏"
 ]
 const TASK_STORAGE_KEY = "bloom-tasks"
+const TASK_DAILY_RESET_KEY = "bloom-tasks-last-reset"
 
 function TaskList() {
   const [tasks, setTasks] = useState(() => {
@@ -29,7 +31,18 @@ function TaskList() {
       const savedTasks = localStorage.getItem(TASK_STORAGE_KEY)
 
       if (savedTasks) {
-        return JSON.parse(savedTasks)
+        const parsedTasks = JSON.parse(savedTasks)
+
+        if (shouldRunDailyReset(TASK_DAILY_RESET_KEY)) {
+          const resetTasks = resetCompletedItems(parsedTasks)
+
+          localStorage.setItem(TASK_DAILY_RESET_KEY, JSON.stringify(resetTasks))
+          markDailyResetComplete(TASK_DAILY_RESET_KEY)
+
+          return resetTasks
+        }
+
+        return parsedTasks
       }
 
       return []

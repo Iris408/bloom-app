@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react"
+import { shouldRunDailyReset, markDailyResetComplete, resetCompletedItems, } from "../utils/dailyResetUtils"
 
 // create the context
 const AppContext = createContext()
@@ -12,14 +13,41 @@ function AppProvider({ children }) {
     const [fontSize, setFontSize]           = useState("medium")
     const [dyslexicFont, setDyslexicFont]   = useState(false)
     const [reduceMotion, setReduceMotion]   = useState(false)
-    const [focusTasks, setFocusTasks]       = useState(() => {
-        const saved = localStorage.getItem("bloom_focus_tasks");
-        return saved ? JSON.parse(saved) : [];
-    });
+        const FOCUS_TASK_STORAGE_KEY = "bloom_focus_tasks"
+        const FOCUS_DAILY_RESET_KEY = "bloom-focus-tasks-last-reset"
+
+        const [focusTasks, setFocusTasks]       = useState(() => {
+      try {
+        const saved = localStorage.getItem(FOCUS_TASK_STORAGE_KEY, JSON.stringify(focusTasks))
+
+        if (saved) {
+            const parsedFocusTasks = JSON.parse(saved)
+
+            if (shouldRunDailyReset(FOCUS_DAILY_RESET_KEY)) {
+                const resetFocusTasks = resetCompletedItems(parsedFocusTasks)
+
+                localStorage.setItem(FOCUS_TASK_STORAGE_KEY, JSON.stringify(resetFocusTasks))
+
+                markDailyResetComplete(FOCUS_DAILY_RESET_KEY)
+
+                return resetFocusTasks
+            }
+
+            return parsedFocusTasks
+        }
+
+        return []
+            } catch {
+                return []
+            }
+        })     
+
 
     useEffect(() => {
         localStorage.setItem("bloom_focus_tasks", JSON.stringify(focusTasks));
     }, [focusTasks]);
+
+    
 
     function toggleDarkStyle() {
     setDarkStyle(darkStyle === "grey" ? "green" : "grey")

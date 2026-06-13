@@ -11,11 +11,8 @@ import {
   dayLabel,
 } from "../utils/progressUtils"
 
-// ========================================
 // EN: Per-routine progress bar
 // JP: ルーティンごとの進捗バー
-// ========================================
-
 function RoutineBar({ name, completedSteps, totalSteps }) {
   const pct =
     totalSteps === 0 ? 0 : Math.round((completedSteps / totalSteps) * 100)
@@ -53,11 +50,8 @@ function RoutineBar({ name, completedSteps, totalSteps }) {
   )
 }
 
-// ========================================
 // EN: One day in the weekly streak row
 // JP: 週間ストリークの1日分
-// ========================================
-
 function StreakDay({ dateKey, snapshot, isSelected, isToday, onClick }) {
   let status = "empty"
 
@@ -121,11 +115,8 @@ function StreakDay({ dateKey, snapshot, isSelected, isToday, onClick }) {
   )
 }
 
-// ========================================
 // EN: Main Progress page
 // JP: メインの Progress ページ
-// ========================================
-
 export default function Progress() {
   const { loadDay, syncToday } = useProgressStore()
 
@@ -149,7 +140,10 @@ export default function Progress() {
   // JP: Focus タスクはまだ接続していないため、今は空の配列にします。
   const safeFocusTasks = useMemo(() => [], [])
 
-  const safeRoutines = useMemo(() => routines ?? [], [routines])
+  const safeRoutines = useMemo(
+    () => (Array.isArray(routines) ? routines : []),
+    [routines]
+  )
 
   const today = todayKey()
   const weekKeys = useMemo(() => getWeekKeys(7), [])
@@ -234,7 +228,7 @@ export default function Progress() {
         </h2>
 
         <p className="text-sm text-bloom-forest/80 dark:text-gray-300 mt-3 leading-relaxed">
-          A calm overview of today’s routines, completed steps, and gentle
+          A calm overview of today's routines, completed steps, and gentle
           weekly progress.
         </p>
       </div>
