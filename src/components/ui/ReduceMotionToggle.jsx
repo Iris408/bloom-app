@@ -4,13 +4,12 @@ function ReduceMotionToggle() {
     const { reduceMotion, toggleReduceMotion } = useApp()
 
     return (
-        <div className="flex items-center justify-between">
-
-            <div className="flex flex-col gap-1">
-                <p className="text-sm font-medium text-bloom-forest dark:text-bloom-light">
+        <div className="flex w-full min-w-0 items-start justify-between gap-4">
+            <div className="min-w-0 flex-1">
+                <p className="break-words text-sm font-medium text-bloom-forest dark:text-bloom-light">
                     Reduce motion
                 </p>
-                <p className="text-xs text-gray-400">
+                <p className="mt-1 break-words text-xs leading-relaxed text-gray-400">
                     Turns off animations and movement across the app
                 </p>
             </div>
@@ -20,7 +19,7 @@ function ReduceMotionToggle() {
                 type="button"
                 onClick={toggleReduceMotion}
                 aria-label="Toggle reduce motion"
-                className={`relative w-12 h-6 rounded-full transition-colors duration-300 cursor-pointer focus:outline-none
+                className={`relative w-12 h-6 min-w-12 shrink-0 cursor-pointer rounded-full transition-colors duration-300 cursor-pointer focus:outline-none
                     ${reduceMotion
                         ? "bg-bloom-forest dark:bg-bloom-mid"
                         : "bg-gray-300 dark:bg-gray-600"

@@ -4,13 +4,12 @@ function DyslexicFontToggle() {
     const { dyslexicFont, toggleDyslexicFont } = useApp()
 
     return (
-        <div className="flex items-center justify-between">
-
-            <div className="flex flex-col gap-1">
-                <p className="text-sm font-medium text-bloom-forest dark:text-bloom-light">
+        <div className="flex w-full min-w-0 items-start justify-between gap-4">
+            <div className="min-w-0 flex-1">
+                <p className="break-words text-sm font-medium text-bloom-forest dark:text-bloom-light">
                     Dyslexia-friendly font
                 </p>
-                <p className="text-xs text-gray-400">
+                <p className="mt-1 break-words text-xs text-gray-400">
                     Switches to OpenDyslexic across the whole app
                 </p>
             </div>
@@ -20,7 +19,7 @@ function DyslexicFontToggle() {
                 type="button"
                 onClick={toggleDyslexicFont}
                 aria-label="Toggle dyslexia-friendly font"
-                className={`relative w-12 h-6 rounded-full transition-colors duration-300 cursor-pointer focus:outline-none
+                className={`relative w-12 h-6 min-w-12 shrink-0 cursor-pointer rounded-full transition-colors duration-300 cursor-pointer focus:outline-none
                     ${dyslexicFont
                         ? "bg-bloom-forest dark:bg-bloom-mid"
                         : "bg-gray-300 dark:bg-gray-600"

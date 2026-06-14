@@ -440,7 +440,7 @@ function Routines() {
                                   ? "Mark step as incomplete"
                                   : "Mark as complete"
                               }
-                              className={`w-5 h-5 rounded-full border flex items-center justify-center text-xs font-bold transition ${
+                              className={`w-6 h-6 min-h-6 min-w-6 shrink-0 rounded-full border flex items-center justify-center text-xs font-bold transition ${
                                 step.completed
                                   ? "bg-bloom-forest border-bloom-forest text-white"
                                   : "border-bloom-sage text-transparent hover:border-bloom-forest"
