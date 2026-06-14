@@ -4,31 +4,37 @@ function BloomReminder({
   phaseDescription = "Build calm, accessible routines with simple step-by-step structure.",
 }) {
   return (
-    <aside className="flex flex-col gap-5 border-t border-bloom-sage/20 dark:border-[#343442] pt-6">
-      <div>
-        <p className="text-xs font-semibold uppercase tracking-widest text-bloom-mid dark:text-bloom-sage/80 mb-3">
-          Bloom reminder
-        </p>
+    <section className="w-full max-w-full overflow-hidden rounded-2xl border-t border-bloom-sage/20 p-5 pt-6 dark:border-[#343442]">
+      <div className="flex w-full min-w-0 flex-col gap-5">
+        {/* EN: Gentle reminder text */}
+        {/* JP: やさしいリマインダーテキスト */}
+        <div className="min-w-0">
+          <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-bloom-mid dark:text-bloom-sage/80">
+            Bloom reminder
+          </p>
 
-        <blockquote className="text-base font-semibold leading-relaxed text-bloom-forest dark:text-bloom-light/90">
-          "{reminder}"
-        </blockquote>
+          <blockquote className="break-words text-base font-semibold leading-relaxed text-bloom-forest dark:text-bloom-light/90">
+            “{reminder}”
+          </blockquote>
+        </div>
+
+        {/* EN: Current project phase card */}
+        {/* JP: 現在のプロジェクトフェーズカード */}
+        <div className="min-w-0 rounded-2xl bg-bloom-forest p-5 text-bloom-light dark:bg-dark-surface">
+          <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-bloom-mint dark:text-bloom-mid">
+            Current phase
+          </p>
+
+          <h3 className="mb-2 break-words text-lg font-bold text-bloom-light">
+            {phaseTitle}
+          </h3>
+
+          <p className="break-words text-sm leading-relaxed text-bloom-light/90">
+            {phaseDescription}
+          </p>
+        </div>
       </div>
-
-      <div className="rounded-2xl bg-bloom-forest dark:bg-dark-surface text-bloom-light p-5">
-        <p className="text-xs font-semibold uppercase tracking-widest text-bloom-mint dark:text-bloom-mid mb-2">
-          Current phase
-        </p>
-
-        <h3 className="text-lg dark:text-bloom-light font-bold mb-2">
-          {phaseTitle}
-        </h3>
-
-        <p className="text-sm leading-relaxed text-bloom-light/90">
-          {phaseDescription}
-        </p>
-      </div>
-    </aside>
+    </section>
   )
 }
 
