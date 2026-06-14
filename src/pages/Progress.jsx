@@ -99,16 +99,15 @@ function StreakDay({ dateKey, snapshot, isSelected, isToday, onClick }) {
       onClick={onClick}
       aria-label={`View progress for ${dateKey}`}
       aria-pressed={isSelected}
-      className="min-w-[60px] sm:min-w-0 rounded-lg flex flex-col items-center justify-center px-1 py-2 gap-1 transition-transform hover:scale-105 active:scale-95"
+      className="min-w-[60px] shrink:0 sm:min-w-0 rounded-lg flex flex-col items-center justify-center px-1 py-2 gap-1 transition-transform hover:scale-105 active:scale-95"
       style={{
         backgroundColor: dayStyle.bg,
         color: dayStyle.color,
         outline: isSelected
-          ? `2px solid ${dayStyle.color}`
+          ? `inset 0 0 0 2px ${dayStyle.color}`
           : isToday
-            ? "2px solid #1D9E75"
+            ? "inset 0 0 0 2px #1D9E75"
             : "none",
-        outlineOffset: 2,
       }}
     >
       <span className="text-sm font-semibold">{dayStyle.icon}</span>
