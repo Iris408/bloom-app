@@ -52,11 +52,24 @@ Bloomは、視覚的なルーティン作成とタスク進行を支援するア
 * Bloom is currently a frontend MVP focused on calm routine building, task completion, focus task tracking, demo routine onboardimg, daily reminders and visual progress feedback. The app uses React, Vite, Tailwind CSS, reusable components, and localStorage persistence.
 * Bloomは現在、穏やかなルーティン作成、タスク完了管理、集中タスクの追跡、デモルーティンのオンボーディング、デイリーリマインダー、安心できる進捗フィードバックに重点を置いたフロントエンドMVPです。このアプリは、React、Vite、Tailwind CSS、再利用可能なコンポーネント、そしてlocalStorageによるデータストレージを利用しています。
 
-## Version Update — v1.2.0 / バージョン更新 — v1.2.0
+## v1.3.2 - UI Polish & Accessbility Layout Improvements
 
-* Bloom v1.2.0 adds several usability improvements focused on task completion, gentle daily encouragement, and demo routine onboarding.
+* Improved Profile & Settings mobile layout across Medium, Large, and XL text sizes.
+* Improved OpenDyslexic / dyslexia-friendly font layout handling.
+* Prevented accessibility toggle rows from overflowing on mobile.
+* Improved Progress page mobile layout and selected-day border styling.
+* Fixed routine step completion circles so they stay a consistent size beside multi-line text.
+* Added safer mobile spacing above the bottom navigation.
 
-* Bloom v1.2.0では、タスク完了管理、やさしいデイリーリマインダー、デモルーティンのオンボーディングを中心に、使いやすさを改善しました。
+## v1.3.2 - UI調整とアクセシビリティレイアウト改善
+
+Medium、Large、XL の文字サイズで Profile & Settings ページのモバイル表示を改善。
+
+* OpenDyslexic / ディスレクシア対応フォント使用時のレイアウト崩れを改善。
+* アクセシビリティ切り替え行がモバイルで横にはみ出さないように調整。
+* Progress ページのモバイル表示と選択日のボーダー表示を改善。
+* 複数行のルーティンステップ横でも完了サークルのサイズが揃うように修正。
+* モバイル下部ナビゲーションに隠れないよう余白を改善。
 
 ### User Experience Improvements
 
