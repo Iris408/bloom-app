@@ -21,12 +21,25 @@ function RoutineBar({ name, completedSteps, totalSteps }) {
   const isDone = completedSteps === totalSteps && totalSteps > 0
 
   return (
-    <div className="flex items-center gap-3 py-3 border-b border-black/5 last:border-b-0">
-      <span className="text-sm flex-1 text-bloom-forest dark:text-gray-100 truncate">
-        {name}
-      </span>
+    <div className="flex w-full min-w-0 flex-col gap-2 border-b border-black/5 py-3 last:border-b-0 sm:flex-row sm:items-center sm:gap-3">
+      <div className="flex min-w-0 items-center justify-between gap-3 sm:flex-1">
+        <span className="min-w-0 flex-1 truncate text-sm text-bloom-forest dark:text-gray-100">
+          {name}
+        </span>
 
-      <div className="flex-1 h-2 bg-[#F1EFE8] dark:bg-white/10 rounded-full overflow-hidden">
+        <span
+          className={`shrink-0 text-xs ${
+            isDone
+              ? "font-semibold text-bloom-forest dark:text-bloom-sage"
+              : "text-gray-500 dark:text-gray-300"
+          }`}
+        >
+          {completedSteps}/{totalSteps}
+          {isDone ? " ✓" : ""}
+        </span>
+      </div>
+
+      <div className="h-2 w-full min-w-0 overflow-hidden rounded-full bg-[#F1EFE8] dark:bg-white/10 sm:flex-1">
         <div
           className="h-full rounded-full transition-all duration-500"
           style={{
@@ -35,17 +48,6 @@ function RoutineBar({ name, completedSteps, totalSteps }) {
           }}
         />
       </div>
-
-      <span
-        className={`text-xs min-w-12 text-right ${
-          isDone
-            ? "text-bloom-forest dark:text-bloom-sage font-semibold"
-            : "text-gray-500 dark:text-gray-300"
-        }`}
-      >
-        {completedSteps}/{totalSteps}
-        {isDone ? " ✓" : ""}
-      </span>
     </div>
   )
 }
@@ -70,22 +72,22 @@ function StreakDay({ dateKey, snapshot, isSelected, isToday, onClick }) {
     done: {
       bg: "#E1F5EE",
       color: "#0F6E56",
-      icon: "✓",
+      icon: "🌳",
     },
     partial: {
       bg: "#FAEEDA",
       color: "#854F0B",
-      icon: "–",
+      icon: "🌸",
     },
     started: {
       bg: "#EEEDFE",
       color: "#534AB7",
-      icon: "·",
+      icon: "🌿",
     },
     empty: {
       bg: "#F1EFE8",
       color: "#B4B2A9",
-      icon: "·",
+      icon: "🌱",
     },
   }
 
@@ -97,7 +99,7 @@ function StreakDay({ dateKey, snapshot, isSelected, isToday, onClick }) {
       onClick={onClick}
       aria-label={`View progress for ${dateKey}`}
       aria-pressed={isSelected}
-      className="min-w-[88px] sm:min-w-0 rounded-lg flex flex-col items-center justify-center px-2 py-2 gap-1 transition-transform hover:scale-105 active:scale-95"
+      className="min-w-[60px] sm:min-w-0 rounded-lg flex flex-col items-center justify-center px-1 py-2 gap-1 transition-transform hover:scale-105 active:scale-95"
       style={{
         backgroundColor: dayStyle.bg,
         color: dayStyle.color,
@@ -216,7 +218,7 @@ export default function Progress() {
   )
 
   return (
-    <div className="flex flex-col gap-8 max-w-3xl">
+    <div className="mx-auto flex w-full min-w-0 max-w-3xl flex-col gap-6 overflow-x-hidden px-4 pb-24 sm:gap-8 sm:px-0 sm:pb-0">
       {/* Page heading */}
       <div>
         <p className="text-xs font-semibold uppercase tracking-widest text-bloom-mid dark:text-bloom-sage mb-2">
@@ -234,13 +236,13 @@ export default function Progress() {
       </div>
 
       {/* Today / selected day banner */}
-      <section>
+      <section className="w-full min-w-0 max-w-full overflow-hidden">
         <p className="text-xs font-semibold uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-3">
           {isToday ? "Today" : selectedDate}
         </p>
 
-        <div className="bg-white dark:bg-dark-surface border border-black/10 dark:border-white/10 rounded-2xl p-5 flex items-center gap-5">
-          <div className="flex-1">
+        <div className="flex w-full min-w-0 max-w-full flex-col gap-5 rounded-2xl border border-black/10 bg-white p-5 dark:border-white/10 dark:bg-dark-surface sm:flex-row sm:items-center">
+          <div className="min-w-0 flex-1">
             <div
               className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-sm font-semibold mb-3"
               style={{
@@ -267,7 +269,7 @@ export default function Progress() {
             </p>
           </div>
 
-          <div className="text-right shrink-0">
+          <div className="shrink-0 text-left sm:text-right">
             <div className="text-3xl font-bold text-bloom-forest dark:text-bloom-light leading-none">
               {completed}
               <span className="text-base text-gray-500 dark:text-gray-300 font-normal">
@@ -284,12 +286,12 @@ export default function Progress() {
 
       {/* Per-routine progress */}
       {daySnapshot?.routineSnapshots?.length > 0 && (
-        <section>
+        <section className="w-full min-w-0 max-w-full overflow-hidden">
           <p className="text-xs font-semibold uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-3">
             Your routines
           </p>
 
-          <div className="bg-white dark:bg-dark-surface border border-black/10 dark:border-white/10 rounded-2xl px-4">
+          <div className="w-full min-w-0 max-w-full overflow-hidden bg-white dark:bg-dark-surface border border-black/10 dark:border-white/10 rounded-2xl px-4">
             {daySnapshot.routineSnapshots.map((routine) => (
               <RoutineBar key={routine.id} {...routine} />
             ))}
@@ -298,13 +300,13 @@ export default function Progress() {
       )}
 
       {/* Weekly flow */}
-      <section>
+      <section className="w-full min-w-0 max-w-full overflow-hidden">
         <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-gray-500 dark:text-gray-400">
           This week
         </p>
 
-        <div className="rounded-2xl border border-black/10 bg-white p-4 dark:bg-dark-surface dark:border-white/10">
-          <div className="flex gap-3 overflow-x-auto pb-2 sm:grid sm:grid-cols-7 sm:overflow-visible sm:pb-0">
+        <div className="w-full min-w-0 max-w-full overflow-hidden rounded-2xl border border-black/10 bg-white p-4 dark:bg-dark-surface dark:border-white/10">
+          <div className="flex w-full max-w-full gap-3 overflow-x-auto pb-2 sm:grid sm:grid-cols-7 sm:overflow-visible sm:pb-0">
             {weekKeys.map((key) => (
               <StreakDay
                 key={key}
@@ -326,12 +328,12 @@ export default function Progress() {
       </section>
 
       {/* Overall metrics */}
-      <section>
+      <section className="w-full min-w-0 max-w-full overflow-hidden">
         <p className="text-xs font-semibold uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-3">
           Overall
         </p>
 
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid w-full min-w-0 grid-cols-1 gap-3 sm:grid-cols-3">
           {[
             { val: streakCount, label: "day streak" },
             { val: safeRoutines.length, label: "routines active" },
