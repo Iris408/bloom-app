@@ -45,21 +45,23 @@ Bloomは、視覚的なルーティン作成とタスク進行を支援するア
 
 ## Current Status / 現在のステータス
 
-### v1.4.0 - Empty State Microcopy & Layout Consistency
+### v1.5.0 - Portfolio Polish & Beta Prep
 
-* Added a reusable `EmptyState` UI component.
-* Added simple, low-demand empty states for Tasks, Routines, and Focus.
-* Kept Progress using its existing progress messages and icons instead of adding a separate empty state.
-* Updated Profile and Progress pages to follow the same left-centered layout flow as Home, Focus, and Routines.
-* Improved page consistency for future features and additional UI sections.
+* Updated desktop screenshots.
+* *Added mobile Safari screenshots.
+* Improved OpenDyslexic visual stability for header controls.
+* Replaced routine movement arrows with SVG icons for consistent rendering.
+* Polished small UI details for portfolio presentation.
+* Prepared Bloom for a beta feedback/testing phase.
 
-### v1.4.0 - 空状態メッセージとレイアウト統一
+### v1.5.0 - ポートフォリオ仕上げとベータ準備
 
-* 再利用可能な `EmptyState` UI コンポーネントを追加。
-* Tasks、Routines、Focus にシンプルで負担の少ない空状態メッセージを追加。
-* Progress は既存の進捗メッセージとアイコンを活かし、別の空状態は追加しない方針にした。
-* Profile と Progress のレイアウトを Home、Focus、Routines と同じ左寄せの流れに統一。
-* 今後の機能追加に向けて、ページ全体の一貫性を改善。
+* デスクトップ版スクリーンショットを更新。
+* Mobile Safari のスクリーンショットを追加。
+* OpenDyslexic 使用時のヘッダー表示の安定性を改善。
+* ルーティン移動ボタンの矢印を SVG アイコンに変更し、表示崩れを防止。
+* ポートフォリオ掲載に向けて細かい UI 表示を調整。
+* ベータフィードバック準備の段階に移行。
 
 | Area | Status | Area | Status |
 |---|---|---|---|
