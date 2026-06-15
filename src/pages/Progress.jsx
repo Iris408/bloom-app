@@ -4,12 +4,26 @@
 import { useState, useEffect, useMemo } from "react"
 import BloomReminder from "../components/ui/BloomReminder"
 import { useProgressStore } from "../hooks/useProgressStore"
-import {
-  getProgressState,
-  todayKey,
-  getWeekKeys,
-  dayLabel,
-} from "../utils/progressUtils"
+import { getProgressState, todayKey, getWeekKeys, dayLabel } from "../utils/progressUtils"
+
+function ProgressIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      className="h-7 w-7"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M6 19V14" />
+      <path d="M12 19V10" />
+      <path d="M18 19V6" />
+    </svg>
+  )
+}
 
 // EN: Per-routine progress bar
 // JP: ルーティンごとの進捗バー
@@ -225,8 +239,11 @@ export default function Progress() {
           Progress Map
         </p>
 
-        <h2 className="text-3xl font-bold text-bloom-forest dark:text-bloom-light">
-          √ Progress
+        <h2 className="flex items-center gap-3 text-3xl font-bold text-bloom-forest dark:text-bloom-light">
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center">
+            <ProgressIcon />
+          </span>
+          <span>Progress</span>
         </h2>
 
         <p className="text-sm text-bloom-forest/80 dark:text-gray-300 mt-3 leading-relaxed">

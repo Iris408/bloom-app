@@ -7,6 +7,25 @@ import { useApp } from "../context/AppContext"
 import { todayKey } from "../utils/progressUtils"
 import EmptyState from "../components/ui/EmptyState"
 
+function FocusIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      className="h-7 w-7"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M9 18h6" />
+      <path d="M10 21h4" />
+      <path d="M8 14c-1.3-1.2-2-2.8-2-4.5A6 6 0 0 1 18 9.5c0 1.7-.7 3.3-2 4.5-.7.6-1 1.3-1 2H9c0-.7-.3-1.4-1-2z" />
+    </svg>
+  )
+}
+
 function Focus() {
   const {
     focusTasks,
@@ -56,8 +75,11 @@ function Focus() {
           Focus Mode
         </p>
 
-        <h2 className="text-3xl font-bold text-bloom-forest dark:text-bloom-light">
-          𖣠 Focus
+        <h2 className="flex items-center gap-3 text-3xl font-bold text-bloom-forest dark:text-bloom-light">
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center">
+            <FocusIcon />
+          </span>
+          <span>Focus</span>
         </h2>
 
         <p className="text-sm text-bloom-forest/80 dark:text-gray-300 mt-3 leading-relaxed">
