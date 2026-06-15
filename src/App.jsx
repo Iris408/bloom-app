@@ -8,7 +8,7 @@ import Overview from './pages/Overview'
 import Routines from './pages/Routines'
 import Focus from './pages/Focus'
 import Progress from './pages/Progress'
-import Rewards from './pages/Rewards'
+import Moments from './pages/Moments'
 import Profile from './pages/Profile'
 import Footer from './components/layout/Footer'
 
@@ -29,7 +29,7 @@ const bgClass = isDarkMode
     if (activePage === "routines") return <Routines />
     if (activePage === "focus")    return <Focus />
     if (activePage === "progress") return <Progress />
-    if (activePage === "rewards")  return <Rewards />
+    if (activePage === "moments")  return <Moments />
     if (activePage === "profile")  return <Profile />
   }
 

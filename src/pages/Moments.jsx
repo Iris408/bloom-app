@@ -1,19 +1,19 @@
 import BloomReminder from "../components/ui/BloomReminder"
 
-function Rewards() {
+function Moments() {
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex max-w-3xl flex-col gap-8">
       <section>
         <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-bloom-mid dark:text-blue-500/80">
-          Bloom Wins 
+          Bloom Moments
         </p>
 
         <h2 className="text-3xl font-bold text-bloom-forest dark:text-bloom-light">
-          ⟡ Rewards
+          Moments
         </h2>
 
         <p className="mt-4 max-w-2xl text-sm leading-relaxed text-gray-600 dark:text-gray-300">
-          A quiet space for recognising progress, completed steps, and small wins.
+          A gentle place to notice small moments of progress.
         </p>
       </section>
 
@@ -23,11 +23,12 @@ function Rewards() {
         </p>
 
         <h3 className="mt-3 text-xl font-bold text-bloom-forest dark:text-bloom-light">
-          Gentle rewards are on the way
+          Bloom Moments are on the way
         </h3>
 
         <p className="mt-3 text-sm leading-relaxed text-gray-600 dark:text-gray-300">
-          Rewards v1 will later show badges, small wins and gentle reminders without pressure.
+          Moments v1 will later help you notice small wins, completed routines,
+          and gentle progress without pressure.
         </p>
 
         <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-3">
@@ -42,31 +43,31 @@ function Rewards() {
 
           <div className="rounded-xl bg-bloom-light/60 p-4 dark:bg-dark-card">
             <p className="text-sm font-semibold text-bloom-forest dark:text-bloom-light">
-              Routine badges
+              Completed routines
             </p>
             <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
-              Celebrate routines completed over time.
+              Look back at routines you completed over time.
             </p>
           </div>
 
           <div className="rounded-xl bg-bloom-light/60 p-4 dark:bg-dark-card">
             <p className="text-sm font-semibold text-bloom-forest dark:text-bloom-light">
-              Gentle reminders
+              Gentle reflections
             </p>
             <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
-              Track consistency in a calm, low-pressure way.
+              Review progress in a calm, low-pressure way.
             </p>
           </div>
         </div>
       </section>
 
       <BloomReminder
-        reminder="You earned this. All wins deserve to be noticed."
-        phaseTitle="Rewards v1"
-        phaseDescription="This page will later show badges, streaks, completed routines, and gentle rewards for progress."
+        reminder="Small moments count, even when the day feels unfinished."
+        phaseTitle="Moments v1"
+        phaseDescription="This page will later show small wins, completed routines, and gentle reflections on progress."
       />
     </div>
   )
 }
 
-export default Rewards
+export default Moments

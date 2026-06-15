@@ -20,7 +20,7 @@ const emojis = [
   "🚗", "🚌", "🏫", "🏠", "🌳", "🌧️",
   // Rest / evening
   "🛁", "🌙", "💤", "📖", "🕯️",
-  // Rewards / motivation
+  // Moments / motivation
   "🌟", "⭐", "🏆", "🎁", "💖", "👏"
 ]
 const TASK_STORAGE_KEY = "bloom-tasks"

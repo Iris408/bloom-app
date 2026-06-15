@@ -6,7 +6,7 @@ function Sidebar({ activePage, setActivePage }) {
         { id: "routines", label: "Routines" },
         { id: "focus",    label: "Focus" },
         { id: "progress", label: "Progress" },
-        { id: "rewards",  label: "Rewards" },
+        { id: "moments",  label: "Moments" },
         { id: "profile",  label: "Profile" },
     ]
 

@@ -77,7 +77,7 @@ Bloomは、視覚的なルーティン作成とタスク進行を支援するア
 | **Routines** | | **Planned Updates** | |
 | Routine builder — create, edit and delete routines | ✅ Complete | v1.3.0 Daily reset behaviour | 🚧 Planned |
 | Routine steps — add, remove, edit, reorder and complete | ✅ Complete | v1.4.0 Empty state microcopy improvements | 🚧 Planned |
-| Routine and step localStorage persistence | ✅ Complete | Rewards page v1 | 🚧 Planned |
+| Routine and step localStorage persistence | ✅ Complete | Bloom Moments page v1 | 🚧 Planned |
 | Demo routine data stored in `src/data/demoData.js` | ✅ Complete | Profile settings persistence | 🚧 Planned |
 | Auto-close preview and reset selected ticks after loading | ✅ Complete | Backend API and database persistence | 🚧 Planned |
 | Load only selected demo routines | ✅ Complete | Future full-stack deployment | 🚧 Planned
@@ -87,11 +87,11 @@ Bloomは、視覚的なルーティン作成とタスク進行を支援するア
 
 ## Project Overview / プロジェクト概要
 
-Bloom is being built as a web-first visual task sequencer and routine builder. The first version focuses on **Bloom Personal**, a personal-use routine app with accessible layouts, task cards, routine pages, progress tracking, rewards, and multiple user modes.
+Bloom is being built as a web-first visual task sequencer and routine builder. The first version focuses on **Bloom Personal**, a personal-use routine app with accessible layouts, task cards, routine pages, progress tracking and multiple user modes.
 
 The long-term vision is **Bloom Education**, which may expand the app into an educational platform for students, parents, teachers, and school administrators. This education phase is planned for the future after the personal version is complete and stable.
 
-Bloomは、Webファーストの視覚的タスクシーケンサーおよびルーティンビルダーとして開発しています。最初のバージョンでは、個人利用向けの **Bloom Personal** に集中し、アクセシブルなレイアウト、タスクカード、ルーティンページ、進捗管理、リワード、複数の利用モードを構築していきます。
+Bloomは、Webファーストの視覚的タスクシーケンサーおよびルーティンビルダーとして開発しています。最初のバージョンでは、個人利用向けの **Bloom Personal** に集中し、アクセシブルなレイアウト、タスクカード、ルーティンページ、進捗管理、複数の利用モードを構築していきます。
 
 長期的には、学生、保護者、教師、学校管理者向けの教育プラットフォームである **Bloom Education** への拡張も視野に入れています。この教育向けフェーズは、個人版が安定した後の将来的な計画です。
 
@@ -138,7 +138,7 @@ Bloomは、Webファーストの視覚的タスクシーケンサーおよびル
 | Routines | Routine builder, routine steps and selectable demo routines | ルーティン | ルーティン作成、ステップ管理、選択可能なデモルーティン |
 | Focus | Daily focus task tracking | フォーカス | 日々の集中タスク管理 |
 | Progress | Calm progress overview and weekly snapshots | プログレス | 落ち着いた進捗概要と週間スナップショット |
-| Rewards | Placeholder page for future rewards and badges | リワード | 今後のリワード・バッジ用プレースホルダーページ |
+| Moments | Placeholder page for future Bloom moments and badges | モーメンツ |「Bloom」で近日公開予定の「Moments」とバッジに関するプレビューページ |
 | Profile | Placeholder page for future user settings and accessibility preferences | プロフィール | 今後のユーザー設定・アクセシビリティ設定用プレースホルダーページ |
 
 
