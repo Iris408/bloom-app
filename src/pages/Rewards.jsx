@@ -4,7 +4,7 @@ function Rewards() {
   return (
     <div className="flex flex-col gap-8">
       <section>
-        <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-bloom-mid dark:text-bloom-sage">
+        <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-bloom-mid dark:text-blue-500/80">
           Rewards
         </p>
 

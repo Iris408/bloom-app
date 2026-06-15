@@ -3,6 +3,7 @@ import BloomReminder from "../components/ui/BloomReminder"
 import { demoRoutines } from "../data/demoData"
 import DemoRoutinesPanel from "../components/routines/DemoRoutinesPanel"
 import { shouldRunDailyReset, markDailyResetComplete, resetRoutineStepCompletion } from "../utils/dailyResetUtils"
+import EmptyState from "../components/ui/EmptyState"
 
 const ROUTINE_STORAGE_KEY = "bloom-routines"
 const ROUTINE_DAILY_RESET_KEY = "bloom-routines-last-reset"
@@ -320,16 +321,12 @@ function Routines() {
 
       {/* Empty state OR routine list */}
       {routines.length === 0 ? (
-        <div className="rounded-2xl border border-bloom-sage/30 bg-white/60 dark:border-dark-border dark:bg-dark-surface/70 p-6 text-center">
-          <p className="text-3xl mb-3">🌿</p>
-
-          <h3 className="text-lg font-bold text-bloom-forest dark:text-bloom-light mb-2">
-            No routines yet
-          </h3>
-
-          <p className="text-sm text-gray-500 dark:text-gray-400">
-            Add your first routine when you're ready.
-          </p>
+        <div className="rounded-2xl border border-bloom-sage/30 bg-white dark:border-dark-border dark:bg-dark-surface/70 p-6 text-center">
+          <EmptyState
+            icon="🌿"
+            title="No routines yet"
+            message="Add your first routine when you're ready."
+          />
         </div>
       ) : (
         <>
@@ -440,7 +437,7 @@ function Routines() {
                                   ? "Mark step as incomplete"
                                   : "Mark as complete"
                               }
-                              className={`w-6 h-6 min-h-6 min-w-6 shrink-0 rounded-full border flex items-center justify-center text-xs font-bold transition ${
+                              className={`w-5 h-5 rounded-full border flex items-center justify-center text-xs font-bold transition ${
                                 step.completed
                                   ? "bg-bloom-forest border-bloom-forest text-white"
                                   : "border-bloom-sage text-transparent hover:border-bloom-forest"

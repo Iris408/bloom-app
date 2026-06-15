@@ -32,7 +32,7 @@ export function getProgressState(percentage = 0) {
     return {
       icon: "🌱",
       label: "Ready when you are",
-      message: "No rush. Begin whenever it feels right.",
+      message: "No rush. Begin whenever you're ready.",
       bgColor: "#F1EFE8",
       textColor: "#5F625A",
       barColor: "#CFCBC1",
@@ -42,8 +42,8 @@ export function getProgressState(percentage = 0) {
   if (percentage < 50) {
     return {
       icon: "🌿",
-      label: "Gently beginning",
-      message: "You've made a start. That's enough.",
+      label: "One step at a time",
+      message: "Beginning is the hardest part. You did it.",
       bgColor: "#EEEDFE",
       textColor: "#534AB7",
       barColor: "#8B7FF5",
@@ -54,7 +54,7 @@ export function getProgressState(percentage = 0) {
     return {
       icon: "🌸",
       label: "Finding your flow",
-      message: "You're making your way through. Keep going at your own pace.",
+      message: "You're making your way through. You're doing great.",
       bgColor: "#FAEEDA",
       textColor: "#854F0B",
       barColor: "#D49B35",
@@ -63,8 +63,8 @@ export function getProgressState(percentage = 0) {
 
   return {
     icon: "🌳",
-    label: "All done",
-    message: "You showed up today. That matters.",
+    label: "You bloomed today",
+    message: "Every step is complete! Take a moment to feel good about that.",
     bgColor: "#E1F5EE",
     textColor: "#0F6E56",
     barColor: "#1D9E75",

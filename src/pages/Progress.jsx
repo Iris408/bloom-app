@@ -221,7 +221,7 @@ export default function Progress() {
     <div className="mx-auto flex w-full min-w-0 max-w-3xl flex-col gap-6 overflow-x-hidden px-4 pb-24 sm:gap-8 sm:px-0 sm:pb-0">
       {/* Page heading */}
       <div>
-        <p className="text-xs font-semibold uppercase tracking-widest text-bloom-mid dark:text-bloom-sage mb-2">
+        <p className="text-xs font-semibold uppercase tracking-widest text-bloom-mid dark:text-blue-500/80 mb-2">
           Progress
         </p>
 

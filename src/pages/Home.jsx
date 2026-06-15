@@ -1,5 +1,6 @@
 import TaskList from "../components/tasks/TaskList"
 import DailyAffirmationCard from "../components/home/DailyAffirmationCard"
+import EmptyState from "../components/ui/EmptyState"
 
 function Home() {
   return (

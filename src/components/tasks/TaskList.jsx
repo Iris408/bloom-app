@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import TaskCard from "./TaskCard"
 import { shouldRunDailyReset, markDailyResetComplete, resetCompletedItems } from "../../utils/dailyResetUtils"
+import EmptyState from "../ui/EmptyState"
 
 const emojis = [
   // Morning / daily routine
@@ -200,16 +201,12 @@ function TaskList() {
 
       {/* TASK CARDS */}
       {tasks.length === 0 ? (
-        <div className="rounded-2xl border border-bloom-sage/30 bg-white/60 dark:bg-dark-surface p-6 text-center">
-          <p className="text-3xl mb-3">🌱</p>
-
-          <h3 className="text-lg font-bold text-bloom-forest dark:text-bloom-light mb-2">
-            No tasks yet
-          </h3>
-
-          <p className="text-sm text-gray-500 dark:text-gray-200">
-            Add your first small step when you're ready.
-          </p>
+        <div className="rounded-2xl border border-bloom-sage/30 bg-white dark:border-dark-border dark:bg-dark-surface/70 p-6 text-center">
+          <EmptyState
+            icon="🌱"
+            title="No tasks yet"
+            message="Add one small task when you're ready."
+          />
         </div>  
       ) : (
         tasks.map((task) =>

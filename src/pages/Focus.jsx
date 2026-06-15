@@ -5,6 +5,7 @@ import { useMemo, useState } from "react"
 import BloomReminder from "../components/ui/BloomReminder"
 import { useApp } from "../context/AppContext"
 import { todayKey } from "../utils/progressUtils"
+import EmptyState from "../components/ui/EmptyState"
 
 function Focus() {
   const {
@@ -33,10 +34,10 @@ function Focus() {
     totalCount === 0
       ? "Add one small focus task when you're ready."
       : completedCount === totalCount
-        ? "All focus tasks are complete. That is enough for today."
+        ? "You did everything you set out to do today. Well done!"
         : completedCount > 0
-          ? "You have already started. Keep it gentle."
-          : "Choose one task and begin with the first step."
+          ? "You're doing really well. Keep going at your own pace."
+          : "There's no rush. Start when it feels right."
 
   // EN: Add a new focus task for today.
   // JP: 今日のフォーカスタスクを追加します。
@@ -60,10 +61,10 @@ function Focus() {
         </h2>
 
         <p className="text-sm text-bloom-forest/80 dark:text-gray-300 mt-3 leading-relaxed">
-          Choose a small number of focus tasks for today.
+          Focus is yours to shape. There's no right or wrong task, and no task is too small.
         </p>
         <p className="text-sm text-bloom-forest/80 dark:text-gray-300 mt-3 leading-relaxed">
-          This page is for calm, one-step-at-a-time progress.
+          Use this space to help you focus gently, without any pressure.
         </p>
       </div>
 
@@ -76,7 +77,7 @@ function Focus() {
         <div className="flex items-center justify-between gap-4">
           <div>
             <h3 className="text-lg font-bold text-bloom-forest dark:text-bloom-light">
-              {completedCount}/{totalCount} focus tasks complete
+              {completedCount}/{totalCount} focus tasks
             </h3>
 
             <p className="text-sm text-gray-600 dark:text-bloom-light/70 mt-2 leading-relaxed">
@@ -86,10 +87,10 @@ function Focus() {
 
           <div className="text-2xl">
             {totalCount === 0
-              ? "🌙"
+              ? "💡"
               : completedCount === totalCount
-                ? "🌸"
-                : "🌱"}
+                ? "🌳"
+                : "🌸"}
           </div>
         </div>
       </section>
@@ -108,7 +109,7 @@ function Focus() {
             onKeyDown={(e) => {
               if (e.key === "Enter") handleAddFocusTask()
             }}
-            placeholder="Add one focus task..."
+            placeholder="Add a focus task..."
             className="flex-1 bg-transparent text-bloom-forest dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-bloom-light/80 caret-bloom-forest dark:caret-white outline-none focus:outline-none focus:ring-0"
           />
 
@@ -129,16 +130,12 @@ function Focus() {
         </p>
 
         {todayFocusTasks.length === 0 ? (
-          <div className="rounded-2xl border border-bloom-sage/30 bg-white/60 dark:bg-dark-surface/70 p-6 text-center">
-            <p className="text-3xl mb-3">🌿</p>
-
-            <h3 className="text-lg font-bold text-bloom-forest dark:text-bloom-light mb-2">
-              No focus tasks yet
-            </h3>
-
-            <p className="text-sm text-gray-500 dark:text-gray-400">
-              Add one small task to begin.
-            </p>
+          <div className="rounded-2xl border border-bloom-sage/30 bg-white dark:border-dark-border dark:bg-dark-surface/70 p-6 text-center">
+          <EmptyState
+            icon="🎧"
+            title="Focus on what feels manageable"
+            message="You can always come back later."
+          />
           </div>
         ) : (
           <div className="flex flex-col gap-3">
