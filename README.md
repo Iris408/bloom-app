@@ -45,23 +45,27 @@ Bloomは、視覚的なルーティン作成とタスク進行を支援するア
 
 ## Current Status / 現在のステータス
 
-### v1.5.0 - Portfolio Polish & Beta Prep
+### v1.6.0 - Final Frontend Polish
 
-* Updated desktop screenshots.
-* *Added mobile Safari screenshots.
-* Improved OpenDyslexic visual stability for header controls.
-* Replaced routine movement arrows with SVG icons for consistent rendering.
-* Polished small UI details for portfolio presentation.
-* Prepared Bloom for a beta feedback/testing phase.
+* Renamed Rewards to Moments to better match Bloom’s calm, non-gamified tone.
+* Updated the Moments page wording for small wins, gentle reflections, and low-pressure progress.
+* Replaced mobile bottom navigation text symbols with stable SVG icons.
+* Updated Routines, Focus, and Progress page header icons for better visual consistency.
+* Changed the Focus icon to a lightbulb and the Progress icon to three small-to-big progress bars.
+* Added external Reddit beta feedback into the project feedback tracker.
+* Saved Oasis as a future idea for a calm reset/recovery space.
+* Clarified the next major direction: v2.0.0 full-stack backend and user persistence.
 
-### v1.5.0 - ポートフォリオ仕上げとベータ準備
+### v1.6.0 - ポートフォリオ仕上げとベータ準備
 
-* デスクトップ版スクリーンショットを更新。
-* Mobile Safari のスクリーンショットを追加。
-* OpenDyslexic 使用時のヘッダー表示の安定性を改善。
-* ルーティン移動ボタンの矢印を SVG アイコンに変更し、表示崩れを防止。
-* ポートフォリオ掲載に向けて細かい UI 表示を調整。
-* ベータフィードバック準備の段階に移行。
+* Bloom の落ち着いた雰囲気に合わせて、Rewards を Moments に名称変更。
+* Moments ページの文言を、小さな達成・やさしい振り返り・低負荷な進捗確認に合うように調整。
+* モバイル下部ナビゲーションの文字アイコンを、安定した SVG アイコンに変更。
+* Routines、Focus、Progress ページのヘッダーアイコンを更新し、見た目の一貫性を改善。
+* Focus アイコンを電球アイコンに、Progress アイコンを小さいバーから大きいバーへ進むアイコンに変更。
+* Reddit からの外部ベータフィードバックをフィードバックトラッカーに追加。
+* 将来的な落ち着いたリセット・回復スペースとして Oasis をアイデアとして保存。
+* 次の大きな方向性として、v2.0.0 フルスタックバックエンドとユーザー永続化 を明確化。
 
 | Area | Status | Area | Status |
 |---|---|---|---|
@@ -74,16 +78,16 @@ Bloomは、視覚的なルーティン作成とタスク進行を支援するア
 | Task localStorage persistence | ✅ Complete | Reusable Bloom reminder component across pages | ✅ Complete |
 | Reusable task completion button | ✅ Complete | Daily affirmation/reminder card | ✅ Complete |
 | Completed task styling with tick and line-through state | ✅ Complete | Better mobile-friendly layout improvements | ✅ Complete |
-| **Routines** | | **Planned Updates** | |
-| Routine builder — create, edit and delete routines | ✅ Complete | v1.3.0 Daily reset behaviour | 🚧 Planned |
-| Routine steps — add, remove, edit, reorder and complete | ✅ Complete | v1.4.0 Empty state microcopy improvements | 🚧 Planned |
-| Routine and step localStorage persistence | ✅ Complete | Bloom Moments page v1 | 🚧 Planned |
-| Demo routine data stored in `src/data/demoData.js` | ✅ Complete | Profile settings persistence | 🚧 Planned |
-| Auto-close preview and reset selected ticks after loading | ✅ Complete | Backend API and database persistence | 🚧 Planned |
-| Load only selected demo routines | ✅ Complete | Future full-stack deployment | 🚧 Planned
-| **Focus Mode** | |
-| Focus v1 - add, complete and remove daily focus tasks | ✅ Complete |
-| Focus task localStorage persistence | ✅ Complete |
+| **Routines** | | Frontend polish | ✅ Complete |
+| Routine builder — create, edit and delete routines | ✅ Complete | Mobile navigation SVG icons | ✅ Complete |
+| Routine steps — add, remove, edit, reorder and complete | ✅ Complete | Page header icon polish | ✅ Complete |
+| Routine and step localStorage persistence | ✅ Complete | Bloom Moments page rename | ✅ Complete |
+| Demo routine data stored in `src/data/demoData.js` | ✅ Complete | **Planned Updates** | |
+| Auto-close preview and reset selected ticks after loading | ✅ Complete | External beta feedback tracking | ✅ Complete |
+| Load only selected demo routines | ✅ Complete | v2.0.0 backend planning | 🚧 Next |
+| **Focus Mode** | | | |
+| Focus v1 - add, complete and remove daily focus tasks | ✅ Complete | Future full-stack deployment | 🚧 Planned |
+| Focus task localStorage persistence | ✅ Complete | Profile settings, Backend API and database persistence | 🚧 Planned |
 
 ## Project Overview / プロジェクト概要
 
