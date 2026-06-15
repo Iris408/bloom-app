@@ -218,15 +218,15 @@ export default function Progress() {
   )
 
   return (
-    <div className="mx-auto flex w-full min-w-0 max-w-3xl flex-col gap-6 overflow-x-hidden px-4 pb-24 sm:gap-8 sm:px-0 sm:pb-0">
+    <div className="flex w-full min-w-0 max-w-3xl flex-col gap-6 overflow-x-hidden pb-24 sm:gap-8 sm:pb-0">
       {/* Page heading */}
       <div>
         <p className="text-xs font-semibold uppercase tracking-widest text-bloom-mid dark:text-blue-500/80 mb-2">
-          Progress
+          Progress Map
         </p>
 
         <h2 className="text-3xl font-bold text-bloom-forest dark:text-bloom-light">
-          Progress
+          √ Progress
         </h2>
 
         <p className="text-sm text-bloom-forest/80 dark:text-gray-300 mt-3 leading-relaxed">

@@ -5,7 +5,7 @@ import BloomReminder from "../components/ui/BloomReminder"
 
 function Profile() {
   return (
-    <div className="mx-auto w-full min-w-0 max-w-3xl flex-col gap-6 overflow-x-hidden px-4 pb-28 sm:gap-8 sm:px-0 sm:pb-0">
+    <div className="flex w-full min-w-0 max-w-3xl flex-col gap-6 overflow-x-hidden pb-28 sm:gap-8 sm:pb-0">
       <section className="w-full min-w-0 max-w-full overflow-hidden">
         <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-bloom-mid dark:text-blue-500/80">
           Profile
