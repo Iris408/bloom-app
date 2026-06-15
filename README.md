@@ -128,6 +128,13 @@ Bloomは、Webファーストの視覚的タスクシーケンサーおよびル
 | Light and dark mode | ライトモード・ダークモード |
 | Font size controls | フォントサイズ調整 |
 | OpenDyslexic font, Reduce motion toggle | OpenDyslexicフォント切り替え /アニメーション軽減設定|
+| Daily reset behaviour for tasks, routines, routine steps and focus tasks | タスク、ルーティン、ルーティンステップ、集中タスクの日次リセット |
+| Reusable empty state component | 再利用可能な空状態コンポーネント |
+| Empty state microcopy improvements | 空状態メッセージの改善 |
+| Profile accessibility mobile layout polish | Profile のアクセシビリティ設定画面のモバイル表示改善 |
+| Progress mobile layout polish | Progress ページのモバイル表示改善 |
+| Rewards renamed to Moments | Rewards を Moments に名称変更 |
+| Mobile bottom navigation icon polish | モバイル下部ナビゲーションアイコンの改善 |
 
 ## Pages / ページ構成
 
@@ -146,19 +153,20 @@ Bloomは、Webファーストの視覚的タスクシーケンサーおよびル
 
 | EN | 日本語 |
 |---|---|
-| Daily reset behaviour for tasks, routines, routine steps and focus tasks | タスク、ルーティン、ルーティンステップ、集中タスクの日次リセット |
-| Empty state microcopy improvements | 空状態メッセージの改善 |
-| Wins-only progress view | 達成したことだけを見る進捗ビュー |
+| Moments view for small wins and gentle reflections | 小さな達成や振り返りを表示する Moments ビュー |
 | Time estimates per routine step | ルーティンステップごとの所要時間目安 |
+| Missed-day recovery wording | できなかった日の回復を支えるメッセージ |
 | Low demand mode | 低負荷モード |
 | Notification/reminder setting | 通知・リマインダー設定 |
 | Mood check-in at app open | アプリ起動時の気分チェックイン |
 | Short version of routines | ルーティンの短縮版 |
+| Oasis calm reset space | Oasis という落ち着いたリセット空間 |
 | Onboarding flow | オンボーディングフロー |
 | Ambient audio toggle | 環境音の切り替え |
 | Exportable progress CSV | 進捗CSVエクスポート |
 | Future FastAPI backend | 将来的なFastAPIバックエンド |
 | Future database persistence | 将来的なデータベース永続化 |
+| Future user authentication | 将来的なユーザー認証 |
 | Future full-stack deployment | 将来的なフルスタックデプロイ |
 
 ## App Modes / アプリモード
