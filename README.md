@@ -45,31 +45,21 @@ Bloomは、視覚的なルーティン作成とタスク進行を支援するア
 
 ## Current Status / 現在のステータス
 
-### v1.3.2 - UI Polish & Accessbility Layout Improvements
+### v1.4.0 - Empty State Microcopy & Layout Consistency
 
-* Improved Profile & Settings mobile layout across Medium, Large, and XL text sizes.
-* Improved OpenDyslexic / dyslexia-friendly font layout handling.
-* Prevented accessibility toggle rows from overflowing on mobile.
-* Improved Progress page mobile layout and selected-day border styling.
-* Fixed routine step completion circles so they stay a consistent size beside multi-line text.
-* Added safer mobile spacing above the bottom navigation.
+* Added a reusable `EmptyState` UI component.
+* Added simple, low-demand empty states for Tasks, Routines, and Focus.
+* Kept Progress using its existing progress messages and icons instead of adding a separate empty state.
+* Updated Profile and Progress pages to follow the same left-centered layout flow as Home, Focus, and Routines.
+* Improved page consistency for future features and additional UI sections.
 
-### v1.3.2 - UI調整とアクセシビリティレイアウト改善
+### v1.4.0 - 空状態メッセージとレイアウト統一
 
-Medium、Large、XL の文字サイズで Profile & Settings ページのモバイル表示を改善。
-
-* OpenDyslexic / ディスレクシア対応フォント使用時のレイアウト崩れを改善。
-* アクセシビリティ切り替え行がモバイルで横にはみ出さないように調整。
-* Progress ページのモバイル表示と選択日のボーダー表示を改善。
-* 複数行のルーティンステップ横でも完了サークルのサイズが揃うように修正。
-* モバイル下部ナビゲーションに隠れないよう余白を改善。
-
-### UX Improvements
-
-Bloom now gives users a clearer onboarding flow for trying demo routines. Users can preview available routines, select one or more routines, load only the routines they want, and continue editing them as normal routine cards. The demo preview also closes automatically after loading, and selected ticks reset so the interface stays clean.
-
-### UX改善
-Bloomでは、デモルーティンを試すためのオンボーディング体験がより分かりやすくなりました。ユーザーは利用可能なルーティンをプレビューし、1つまたは複数のルーティンを選択し、必要なものだけを読み込み、その後は通常のルーティンカードとして編集できます。デモプレビューは読み込み後に自動で閉じ、選択済みチェックもリセットされるため、画面がすっきりした状態を保てます。
+* 再利用可能な `EmptyState` UI コンポーネントを追加。
+* Tasks、Routines、Focus にシンプルで負担の少ない空状態メッセージを追加。
+* Progress は既存の進捗メッセージとアイコンを活かし、別の空状態は追加しない方針にした。
+* Profile と Progress のレイアウトを Home、Focus、Routines と同じ左寄せの流れに統一。
+* 今後の機能追加に向けて、ページ全体の一貫性を改善。
 
 | Area | Status | Area | Status |
 |---|---|---|---|
