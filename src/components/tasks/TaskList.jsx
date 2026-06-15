@@ -201,13 +201,11 @@ function TaskList() {
 
       {/* TASK CARDS */}
       {tasks.length === 0 ? (
-        <div className="rounded-2xl border border-bloom-sage/30 bg-white dark:border-dark-border dark:bg-dark-surface/70 p-6 text-center">
           <EmptyState
             icon="🌱"
             title="No tasks yet"
             message="Add one small task when you're ready."
-          />
-        </div>  
+          /> 
       ) : (
         tasks.map((task) =>
           editingId === task.id ? (

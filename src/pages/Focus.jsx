@@ -130,13 +130,11 @@ function Focus() {
         </p>
 
         {todayFocusTasks.length === 0 ? (
-          <div className="rounded-2xl border border-bloom-sage/30 bg-white dark:border-dark-border dark:bg-dark-surface/70 p-6 text-center">
           <EmptyState
             icon="🎧"
             title="Focus on what feels manageable"
             message="You can always come back later."
           />
-          </div>
         ) : (
           <div className="flex flex-col gap-3">
             {todayFocusTasks.map((task) => {

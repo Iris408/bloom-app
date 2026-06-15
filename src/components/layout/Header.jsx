@@ -4,6 +4,48 @@ import Seedling from "../ui/Seedling"
 function Header({ setActivePage, activePage }) {
   const { isDarkMode, toggleDarkMode, darkStyle } = useApp()
 
+function SunIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      className="h-5 w-5"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.25"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <circle cx="12" cy="12" r="4" />
+      <path d="M12 2v2" />
+      <path d="M12 20v2" />
+      <path d="M4.93 4.93l1.41 1.41" />
+      <path d="M17.66 17.66l1.41 1.41" />
+      <path d="M2 12h2" />
+      <path d="M20 12h2" />
+      <path d="M4.93 19.07l1.41-1.41" />
+      <path d="M17.66 6.34l1.41-1.41" />
+    </svg>
+  )
+}
+
+function MoonIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      className="h-5 w-5"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.75"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+    </svg>
+  )
+}  
+
   return (
     <header className="w-full bg-transparent dark:bg-transparent border-b border-bloom-sage/25 dark:border-white/10 px-6 py-4">
       <div className="flex items-center justify-between">
@@ -27,20 +69,22 @@ function Header({ setActivePage, activePage }) {
         </div>
 
         {/* Right side — dark mode toggle + profile avatar */}
-        <div className="flex items-center gap-3">
+        <div className="no-dyslexic flex shrink-0 items-center gap-3">
           {/* Dark mode toggle */}
           <button
             type="button"
             onClick={toggleDarkMode}
             aria-label="Toggle dark mode"
-            className="text-xl w-11 h-11 rounded-full flex items-center justify-center bg-bloom-light/70 dark:bg-white/10 text-bloom-forest dark:text-bloom-light border border-bloom-sage/30 hover:bg-bloom-mint/30 dark:hover:bg-white/20 transition cursor-pointer"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-bloom-sage/30 bg-bloom-light/70 text-bloom-forest transition hover:bg-bloom-mint/30 dark:bg-white/10 dark:text-bloom-light dark:hover:bg-white/20"
           >
-            {isDarkMode ? "☀︎" : "⏾"}
+            {isDarkMode ? <SunIcon /> : <MoonIcon />}
           </button>
 
-          {/* Profile avatar - right side */}
-          <div className="w-12 h-12 bg-bloom-light/80 dark:bg-white/10 border border-bloom-sage/30 rounded-full flex items-center justify-center text-bloom-forest dark:text-bloom-light font-bold text-xl cursor-pointer hover:bg-bloom-mint/30 dark:hover:bg-white/20 transition">
-            P
+          {/* Profile avatar */}
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-bloom-sage/30 bg-bloom-light/80 text-bloom-forest transition hover:bg-bloom-mint/30 dark:bg-white/10 dark:text-bloom-light dark:hover:bg-white/20">
+            <span className="block -translate-y-[1.5px] text-xl font-bold leading-none">
+              P
+            </span>
           </div>
         </div>
       </div>

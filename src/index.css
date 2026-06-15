@@ -65,3 +65,10 @@ html.reduce-motion *::after {
   transition: none !important;
   scroll-behavior: auto !important;
 }
+/* EN: Prevent icon controls from shifting when OpenDyslexic is enabled. */
+/* JP: OpenDyslexic 有効時にアイコンボタンがずれないようにします。 */
+.no-dyslexic,
+.no-dyslexic * {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  line-height: 1 !important;
+}

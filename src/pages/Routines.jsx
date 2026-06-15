@@ -8,6 +8,42 @@ import EmptyState from "../components/ui/EmptyState"
 const ROUTINE_STORAGE_KEY = "bloom-routines"
 const ROUTINE_DAILY_RESET_KEY = "bloom-routines-last-reset"
 
+function ArrowUpIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      className="h-5 w-5"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M12 19V5" />
+      <path d="M5 12l7-7 7 7" />
+    </svg>
+  )
+}
+
+function ArrowDownIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      className="h-5 w-5"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M12 5v14" />
+      <path d="M19 12l-7 7-7-7" />
+    </svg>
+  )
+}
+
 function Routines() {
   const [routines, setRoutines] = useState(() => {
     try {
@@ -321,13 +357,11 @@ function Routines() {
 
       {/* Empty state OR routine list */}
       {routines.length === 0 ? (
-        <div className="rounded-2xl border border-bloom-sage/30 bg-white dark:border-dark-border dark:bg-dark-surface/70 p-6 text-center">
           <EmptyState
             icon="🌿"
             title="No routines yet"
             message="Add your first routine when you're ready."
           />
-        </div>
       ) : (
         <>
           <div className="flex flex-col gap-5">
@@ -437,7 +471,7 @@ function Routines() {
                                   ? "Mark step as incomplete"
                                   : "Mark as complete"
                               }
-                              className={`w-5 h-5 rounded-full border flex items-center justify-center text-xs font-bold transition ${
+                              className={`flex w-6 h-6 min-w-6 min-h-6 shrink-0 items-center justify-center rounded-full border text-xs font-bold transition ${
                                 step.completed
                                   ? "bg-bloom-forest border-bloom-forest text-white"
                                   : "border-bloom-sage text-transparent hover:border-bloom-forest"
@@ -488,9 +522,9 @@ function Routines() {
                             disabled={index === 0}
                             aria-label="Move step up"
                             title="Move up"
-                            className="p-2 text-xl font-semibold text-bloom-mid dark:text-bloom-sage disabled:opacity-30 disabled:cursor-not-allowed hover:text-bloom-forest dark:hover:text-bloom-light transition"
+                            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-bloom-mid transition hover:text-bloom-forest disabled:cursor-not-allowed disabled:opacity-30 dark:text-bloom-sage dark:hover:text-bloom-light"
                             >
-                            <i className="ti ti-arrow-up" aria-hidden="true"></i>
+                              <ArrowUpIcon />
                             </button>
 
                             <button
@@ -499,9 +533,9 @@ function Routines() {
                             disabled={index === routine.steps.length - 1}
                             aria-label="Move step down"
                             title="Move down"
-                            className="p-2 text-xl font-semibold text-bloom-mid dark:text-bloom-sage disabled:opacity-30 disabled:cursor-not-allowed hover:text-bloom-forest dark:hover:text-bloom-light transition"
+                            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-bloom-mid transition hover:text-bloom-forest disabled:cursor-not-allowed disabled:opacity-30 dark:text-bloom-sage dark:hover:text-bloom-light"
                             >
-                            <i className="ti ti-arrow-down" aria-hidden="true"></i>
+                              <ArrowDownIcon />
                             </button>
 
                             <button
