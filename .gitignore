@@ -17,6 +17,11 @@ dist-ssr/
 # Environment files
 .env
 *.local
+backend/venv/
+backend/.env
+backend/bloom.db
+__pycache__/
+*.pyc
 
 # Editor directories and files
 .vscode/*
