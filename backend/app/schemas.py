@@ -163,4 +163,52 @@ class FocusTaskResponse(BaseModel):
     completed: bool
 
     class Config:
-        from_attributes = True                        
+        from_attributes = True
+
+class ProgressSnapshotCreate(BaseModel):
+    # EN: Data required when creating a progress snapshot.
+    # JP: 進捗スナップショット作成時に必要なデータです。
+    user_id: int
+    snapshot_date: str
+
+    completed_tasks: int = 0
+    total_tasks: int = 0
+
+    completed_routines: int = 0
+    total_routines: int = 0
+
+    completed_focus_tasks: int = 0
+    total_focus_tasks: int = 0
+
+
+class ProgressSnapshotUpdate(BaseModel):
+    # EN: Optional progress snapshot update fields.
+    # JP: 任意で更新できる進捗スナップショットフィールドです。
+    completed_tasks: int | None = None
+    total_tasks: int | None = None
+
+    completed_routines: int | None = None
+    total_routines: int | None = None
+
+    completed_focus_tasks: int | None = None
+    total_focus_tasks: int | None = None
+
+
+class ProgressSnapshotResponse(BaseModel):
+    # EN: Progress snapshot data returned by the API.
+    # JP: APIが返す進捗スナップショットデータです。
+    id: int
+    user_id: int
+    snapshot_date: str
+
+    completed_tasks: int
+    total_tasks: int
+
+    completed_routines: int
+    total_routines: int
+
+    completed_focus_tasks: int
+    total_focus_tasks: int
+
+    class Config:
+        from_attributes = True                                

@@ -48,6 +48,15 @@ class User(Base):
         cascade="all, delete-orphan",
     )
 
+    # EN: One user can have many progress snapshots.
+    # JP: 1人のユーザーは複数の進捗スナップショットを持つことができます。
+    progress_snapshots = relationship(
+        "ProgressSnapshot",
+        back_populates="user",
+        cascade="all, delete-orphan",
+    )
+
+
 class ProfileSettings(Base):    
     # EN: Stores user accessibility and display preferences.
     # JP: ユーザーのアクセシビリティ設定と表示設定を保存します。
@@ -122,6 +131,7 @@ class RoutineStep(Base):
 
     routine = relationship("Routine", back_populates="steps")    
 
+
 class FocusTask(Base):
     # EN: Stores a user's Focus page task.
     # JP: ユーザーのFocusページ用タスクを保存します。
@@ -137,3 +147,28 @@ class FocusTask(Base):
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     user = relationship("User", back_populates="focus_tasks")    
+
+
+class ProgressSnapshot(Base):
+    # EN: Stores a user's daily progress snapshot.
+    # JP: ユーザーの日別進捗スナップショットを保存します。
+    __tablename__ = "progress_snapshots"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+
+    snapshot_date = Column(String, nullable=False)
+
+    completed_tasks = Column(Integer, default=0)
+    total_tasks = Column(Integer, default=0)
+
+    completed_routines = Column(Integer, default=0)
+    total_routines = Column(Integer, default=0)
+
+    completed_focus_tasks = Column(Integer, default=0)
+    total_focus_tasks = Column(Integer, default=0)
+
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    user = relationship("User", back_populates="progress_snapshots")
