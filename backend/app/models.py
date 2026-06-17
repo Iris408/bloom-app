@@ -40,6 +40,14 @@ class User(Base):
         cascade="all, delete-orphan",
     )
 
+    # EN: One user can have many focus tasks.
+    # JP: 1人のユーザーは複数のフォーカスタスクを持つことができます。
+    focus_tasks = relationship(
+        "FocusTask",
+        back_populates="user",
+        cascade="all, delete-orphan",
+    )
+
 class ProfileSettings(Base):    
     # EN: Stores user accessibility and display preferences.
     # JP: ユーザーのアクセシビリティ設定と表示設定を保存します。
@@ -56,7 +64,7 @@ class ProfileSettings(Base):
     reduce_motion = Column(Boolean, default=False)
 
     user = relationship("User", back_populates="profile_settings")
-    
+
 
 class Task(Base):
     # EN: Stores a user task from the Bloom Home page.
@@ -113,3 +121,19 @@ class RoutineStep(Base):
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     routine = relationship("Routine", back_populates="steps")    
+
+class FocusTask(Base):
+    # EN: Stores a user's Focus page task.
+    # JP: ユーザーのFocusページ用タスクを保存します。
+    __tablename__ = "focus_tasks"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+
+    title = Column(String, nullable=False)
+    completed = Column(Boolean, default=False)
+
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    user = relationship("User", back_populates="focus_tasks")    

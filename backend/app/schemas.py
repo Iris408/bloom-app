@@ -137,4 +137,30 @@ class RoutineResponse(BaseModel):
     steps: list[RoutineStepResponse] = []
 
     class Config:
-        from_attributes = True                
+        from_attributes = True
+
+class FocusTaskCreate(BaseModel):
+    # EN: Data required when creating a focus task.
+    # JP: フォーカスタスク作成時に必要なデータです。
+    user_id: int
+    title: str
+    completed: bool = False
+
+
+class FocusTaskUpdate(BaseModel):
+    # EN: Optional focus task update fields.
+    # JP: 任意で更新できるフォーカスタスクフィールドです。
+    title: str | None = None
+    completed: bool | None = None
+
+
+class FocusTaskResponse(BaseModel):
+    # EN: Focus task data returned by the API.
+    # JP: APIが返すフォーカスタスクデータです。
+    id: int
+    user_id: int
+    title: str
+    completed: bool
+
+    class Config:
+        from_attributes = True                        
