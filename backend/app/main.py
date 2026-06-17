@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.routes import users, profile, tasks, routines, focus, progress
+from app.routes import users, profile, tasks, routines, focus, progress, auth
 from app.database import Base, engine
 from app import models
 
@@ -38,6 +38,7 @@ app.include_router(tasks.router)
 app.include_router(routines.router)
 app.include_router(focus.router)
 app.include_router(progress.router)
+app.include_router(auth.router)
 
 @app.get("/")
 def read_root():

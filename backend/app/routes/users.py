@@ -1,5 +1,6 @@
 # EN: User routes for creating and reading Bloom users.
 # JP: Bloomユーザーの作成と取得用ルートです。
+from app.auth import hash_password
 
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session, relationship
@@ -26,7 +27,7 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     new_user = models.User(
         email=user.email,
         username=user.username,
-        hashed_password=user.password,
+        hashed_password=hash_password(user.password),
     )
 
     db.add(new_user)

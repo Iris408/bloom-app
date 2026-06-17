@@ -3,6 +3,12 @@
 
 from pydantic import BaseModel, EmailStr
 
+class Token(BaseModel):
+    # EN: JWT token response returned after login.
+    # JP: ログイン後に返されるJWTトークンレスポンスです。
+    access_token: str
+    token_type: str
+
 
 class UserCreate(BaseModel):
     # EN: Data required when creating a new user.
