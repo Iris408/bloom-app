@@ -1,6 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.routes import users
+from app.database import Base, engine
+from app import models
+
 
 app = FastAPI(
     title="Bloom Backend API",
@@ -23,6 +27,12 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# EN: Create database tables during early development.
+# JP: 初期開発中にデータベーステーブルを作成します。
+Base.metadata.create_all(bind=engine)
+
+app.include_router(users.router)
 
 @app.get("/")
 def read_root():

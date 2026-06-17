@@ -6,7 +6,7 @@ from sqlalchemy.orm import relationship
 
 from app.database import Base
 
-class User(base):
+class User(Base):
     # EN: Main user account table.
     # JP: メインのユーザーアカウントテーブルです。
     __tablename__ = "users"
