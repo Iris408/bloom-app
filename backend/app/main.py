@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.routes import users, profile
+from app.routes import users, profile, tasks
 from app.database import Base, engine
 from app import models
 
@@ -34,6 +34,7 @@ Base.metadata.create_all(bind=engine)
 
 app.include_router(users.router)
 app.include_router(profile.router)
+app.include_router(tasks.router)
 
 @app.get("/")
 def read_root():

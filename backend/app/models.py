@@ -24,6 +24,12 @@ class User(Base):
         back_populates="user",
         uselist=False,
         cascade="all, delete-orphan",
+    )    
+
+    tasks = relationship(
+        "Task",
+        back_populates="user",
+        cascade="all, delete-orphan",    
     )
 
 class ProfileSettings(Base):    
@@ -43,18 +49,18 @@ class ProfileSettings(Base):
 
     user = relationship("User", back_populates="profile_settings")
 
-    class Task(Base):
-        # EN: Stores a user task from the Bloom Home page.
-        # JP: BloomのHomeページのユーザータスクを保存します。
-        __tablename__ = "tasks"
+class Task(Base):
+    # EN: Stores a user task from the Bloom Home page.
+    # JP: BloomのHomeページのユーザータスクを保存します。
+    __tablename__ = "tasks"
 
-        id = Column(Integer, primary_key=True, index=True)
-        user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
 
-        title = Column(String, nullable=False)
-        completed = Column(Boolean, default=False)
+    title = Column(String, nullable=False)
+    completed = Column(Boolean, default=False)
 
-        created_at = Column(DateTime, default=datetime.utcnow)
-        updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-        user = relationship("User", back_populates="tasks")
+    user = relationship("User", back_populates="tasks")
