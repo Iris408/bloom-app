@@ -81,4 +81,60 @@ class TaskResponse(BaseModel):
     completed: bool
 
     class Config:
-        from_attributes = True        
+        from_attributes = True
+
+class RoutineStepCreate(BaseModel):
+    # EN: Data required when creating a routine step.
+    # JP: ルーティンステップ作成時に必要なデータです。
+    title: str
+    completed: bool = False
+    step_order: int = 0
+
+
+class RoutineStepUpdate(BaseModel):
+    # EN: Optional routine step update fields.
+    # JP: 任意で更新できるルーティンステップフィールドです。
+    title: str | None = None
+    completed: bool | None = None
+    step_order: int | None = None
+
+
+class RoutineStepResponse(BaseModel):
+    # EN: Routine step data returned by the API.
+    # JP: APIが返すルーティンステップデータです。
+    id: int
+    routine_id: int
+    title: str
+    completed: bool
+    step_order: int
+
+    class Config:
+        from_attributes = True
+
+
+class RoutineCreate(BaseModel):
+    # EN: Data required when creating a routine.
+    # JP: ルーティン作成時に必要なデータです。
+    user_id: int
+    name: str
+    completed: bool = False
+
+
+class RoutineUpdate(BaseModel):
+    # EN: Optional routine update fields.
+    # JP: 任意で更新できるルーティンフィールドです。
+    name: str | None = None
+    completed: bool | None = None
+
+
+class RoutineResponse(BaseModel):
+    # EN: Routine data returned by the API.
+    # JP: APIが返すルーティンデータです。
+    id: int
+    user_id: int
+    name: str
+    completed: bool
+    steps: list[RoutineStepResponse] = []
+
+    class Config:
+        from_attributes = True                
