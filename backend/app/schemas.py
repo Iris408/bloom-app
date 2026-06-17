@@ -56,3 +56,29 @@ class ProfileSettingsResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+class TaskCreate(BaseModel):
+    # EN: Data required when creating a task.
+    # JP: タスク作成時に必要なデータです。
+    user_id: int
+    title: str
+    completed: bool = False
+
+
+class TaskUpdate(BaseModel):
+    # EN: Optional task update fields.
+    # JP: 任意で更新できるタスクフィールドです。
+    title: str | None = None
+    completed: bool | None = None
+
+
+class TaskResponse(BaseModel):
+    # EN: Task data returned by the API.
+    # JP: APIが返すタスクデータです。
+    id: int
+    user_id: int
+    title: str
+    completed: bool
+
+    class Config:
+        from_attributes = True        

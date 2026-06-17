@@ -2,7 +2,7 @@
 # JP: Bloomユーザーの作成と取得用ルートです。
 
 from fastapi import APIRouter, Depends
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, relationship
 
 from app.database import get_db
 from app import models, schemas
@@ -10,6 +10,12 @@ from app import models, schemas
 router = APIRouter(
     prefix="/users",
     tags=["Users"],
+)
+
+tasks = relationship(
+    "Task",
+    back_populates="user",
+    cascade="all, delete-orphan",
 )
 
 

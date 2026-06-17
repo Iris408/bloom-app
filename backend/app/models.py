@@ -1,10 +1,11 @@
 # EN: SQLAlchemy database models for the Bloom backend.
 # JP: Bloomバックエンド用のSQLAlchemyデータベースモデルです。
 
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
+from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 
 from app.database import Base
+from datetime import datetime
 
 class User(Base):
     # EN: Main user account table.
@@ -41,3 +42,19 @@ class ProfileSettings(Base):
     reduce_motion = Column(Boolean, default=False)
 
     user = relationship("User", back_populates="profile_settings")
+
+    class Task(Base):
+        # EN: Stores a user task from the Bloom Home page.
+        # JP: BloomのHomeページのユーザータスクを保存します。
+        __tablename__ = "tasks"
+
+        id = Column(Integer, primary_key=True, index=True)
+        user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+
+        title = Column(String, nullable=False)
+        completed = Column(Boolean, default=False)
+
+        created_at = Column(DateTime, default=datetime.utcnow)
+        updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+        user = relationship("User", back_populates="tasks")
