@@ -1,6 +1,6 @@
 # EN: User routes for creating and reading Bloom users.
 # JP: Bloomユーザーの作成と取得用ルートです。
-from app.auth import hash_password
+from app.auth import hash_password, get_current_user
 
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session, relationship
@@ -43,6 +43,12 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db.commit()
 
     return new_user
+
+@router.get("/me", response_model=schemas.UserResponse)
+def get_logged_in_user(current_user: models.User = Depends(get_current_user)):
+    # EN: Return the currently logged-in user from the JWT token.
+    # JP: JWTトークンから現在ログイン中のユーザーを返します。
+    return current_user
 
 
 @router.get("/", response_model=list[schemas.UserResponse])
