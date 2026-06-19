@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { useApp } from './context/AppContext'
+import { getCurrentUser, loginUser } from "./api/bloomApi"
+import Login from "./pages/Login";
 import Header from './components/layout/Header'
 import Sidebar from './components/layout/Sidebar'
 import BottomNav from './components/layout/BottomNav'
@@ -14,7 +16,7 @@ import Footer from './components/layout/Footer'
 
 
 function App() {
-  const [activePage, setActivePage] = useState("overview")
+  const [activePage, setActivePage] = useState("login");
   const { isDarkMode, darkStyle } = useApp()
 
   // Dynamic background based on dark style
@@ -25,6 +27,7 @@ const bgClass = isDarkMode
 
   function renderPage() {
     if (activePage === "overview") return <Overview setActivePage={setActivePage}/>
+    if (activePage === "login")    return <Login />;
     if (activePage === "home")     return <Home />
     if (activePage === "routines") return <Routines />
     if (activePage === "focus")    return <Focus />
