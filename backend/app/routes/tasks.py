@@ -34,14 +34,11 @@ def create_task(task: schemas.TaskCreate, db: Session = Depends(get_db), current
     return new_task
 
 
-@router.get("/{user_id}", response_model=list[schemas.TaskResponse])
-def get_tasks_for_user(user_id: int, db: Session = Depends(get_current_user)):
-      
-    # EN: Make sure users can only view their own tasks.
-    # JP: ユーザーが自分自身のタスクだけを表示できるようにします。
-    ensure_user_owns_resource(user_id, current_user.id)
-
-    return db.query(models.Task).filter(models.Task.user_id == user_id).all()
+@router.get("/", response_model=list[schemas.TaskResponse])
+def get_tasks_for_current_user(db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
+    # EN: Get all tasks for the currently logged-in user.
+    # JP: 現在ログイン中のユーザーのすべてのタスクを取得します。
+    return db.query(models.Task).filter(models.Task.user_id == current_user.id).all()
 
 
 @router.put("/{task_id}", response_model=schemas.TaskResponse)
