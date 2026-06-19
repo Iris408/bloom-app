@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { getCurrentUser, loginUser } from "../api/bloomApi";
+import { getCurrentUser, loginUser, logoutUser } from "../api/bloomApi";
 
 export default function Login() {
     const [email, setEmail] = useState("");
@@ -31,6 +31,16 @@ export default function Login() {
             setIsLoading(false);
           }
         }
+
+    function handleLogout() {
+        // EN: Remove the saved JWT token and clear the user from the page.
+        // JP: 保存済みJWTトークンを削除し、画面上のユーザー情報をクリアします。
+        logoutUser();
+        setCurrentUser(null);
+        setEmail("");
+        setPassword("");
+        setError("");
+    }    
 
   return (
     <section className="w-full max-w-md rounded-2xl bg-white/80 p-4 shadow-sm">
@@ -74,6 +84,14 @@ export default function Login() {
         <div className="mt-3 rounded-lg bg-green-50 p-3 text-sm">
           <p>Logged in as: {currentUser.username}</p>
           <p>Email: {currentUser.email}</p>
+
+        <button
+            type="button"
+            onClick={handleLogout}
+            className="mt-3 rounded-lg border border-green-700 px-4 py-2 text-green-800"
+        >
+          Log out
+        </button>
         </div>
       )}
     </section>

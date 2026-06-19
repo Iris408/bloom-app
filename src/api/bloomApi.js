@@ -31,43 +31,6 @@ export function getAuthHeaders() {
   };
 }
 
-// EN: Get the currently logged-in user from the backend.
-// JP: バックエンドから現在ログイン中のユーザーを取得します。
-export async function getCurrentUser() {
-  const response = await fetch(`${API_BASE_URL}/users/me`, {
-    method: "GET",
-    headers: getAuthHeaders(),
-  });
-
-  if (!response.ok) {
-    throw new Error("Failed to fetch current user");
-  }
-
-  return response.json();
-}
-
-// EN: Register a new Bloom user.
-// JP: 新しいBloomユーザーを登録します。
-export async function registerUser({ email, username, password }) {
-  const response = await fetch(`${API_BASE_URL}/users/`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      email,
-      username,
-      password,
-    }),
-  });
-
-  if (!response.ok) {
-    throw new Error("Failed to register user");
-  }
-
-  return response.json();
-}
-
 // EN: Log in a Bloom user and save the JWT token.
 // JP: Bloomユーザーをログインし、JWTトークンを保存します。
 export async function loginUser({ email, password }) {
@@ -100,3 +63,19 @@ export async function loginUser({ email, password }) {
 export function logoutUser() {
   removeAuthToken();
 }
+
+// EN: Get the currently logged-in user from the backend.
+// JP: バックエンドから現在ログイン中のユーザーを取得します。
+export async function getCurrentUser() {
+  const response = await fetch(`${API_BASE_URL}/users/me`, {
+    method: "GET",
+    headers: getAuthHeaders(),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch current user");
+  }
+
+  return response.json();
+}
+
