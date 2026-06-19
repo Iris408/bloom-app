@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 
 from app import models, schemas
 from app.database import get_db
+from app.auth import get_current_user
 
 router = APIRouter(
     prefix="/profile",
@@ -13,13 +14,16 @@ router = APIRouter(
 )
 
 
-@router.get("/{user_id}", response_model=schemas.ProfileSettingsResponse)
-def get_profile_settings(user_id: int, db: Session = Depends(get_db)):
-    # EN: Get profile/accessibility settings for one user.
-    # JP: 1人のユーザーのプロフィール・アクセシビリティ設定を取得します。
+@router.get("/", response_model=schemas.ProfileSettingsResponse)
+def get_profile_settings(
+    db: Session = Depends(get_db),
+    current_user: models.User = Depends(get_current_user),
+):
+    # EN: Get profile/accessibility settings for the currently logged-in user.
+    # JP: 現在ログイン中のユーザーのプロフィール・アクセシビリティ設定を取得します。
     profile_settings = (
         db.query(models.ProfileSettings)
-        .filter(models.ProfileSettings.user_id == user_id)
+        .filter(models.ProfileSettings.user_id == current_user.id)
         .first()
     )
 
@@ -29,17 +33,17 @@ def get_profile_settings(user_id: int, db: Session = Depends(get_db)):
     return profile_settings
 
 
-@router.put("/{user_id}", response_model=schemas.ProfileSettingsResponse)
+@router.put("/", response_model=schemas.ProfileSettingsResponse)
 def update_profile_settings(
-    user_id: int,
     profile_update: schemas.ProfileSettingsUpdate,
     db: Session = Depends(get_db),
+    current_user: models.User = Depends(get_current_user),
 ):
-    # EN: Update profile/accessibility settings for one user.
-    # JP: 1人のユーザーのプロフィール・アクセシビリティ設定を更新します。
+    # EN: Update profile/accessibility settings for the currently logged-in user.
+    # JP: 現在ログイン中のユーザーのプロフィール・アクセシビリティ設定を更新します。
     profile_settings = (
         db.query(models.ProfileSettings)
-        .filter(models.ProfileSettings.user_id == user_id)
+        .filter(models.ProfileSettings.user_id == current_user.id)
         .first()
     )
 
