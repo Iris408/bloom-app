@@ -19,19 +19,8 @@ router = APIRouter(
 @router.post("/", response_model=schemas.ProgressSnapshotResponse)
 def create_progress_snapshot(snapshot: schemas.ProgressSnapshotCreate, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
 
-    # EN: Create a new progress snapshot for a specific user.
-    # JP: 特定のユーザー用に新しい進捗スナップショットを作成します。
-    user = db.query(models.User).filter(models.User.id == snapshot.user_id).first()
-
-    if user is None:
-        raise HTTPException(status_code=404, detail="User not found")
-    
-    # EN: Make sure users can only create progress snapshots for themselves.
-    # JP: ユーザーが自分自身の進捗スナップショットだけを作成できるようにします。
-    ensure_user_owns_resource(snapshot.user_id, current_user.id)
-
     new_snapshot = models.ProgressSnapshot(
-        user_id=snapshot.user_id,
+        user_id=current_user.id,
         snapshot_date=snapshot.snapshot_date,
         completed_tasks=snapshot.completed_tasks,
         total_tasks=snapshot.total_tasks,

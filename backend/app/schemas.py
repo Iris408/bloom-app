@@ -66,7 +66,6 @@ class ProfileSettingsResponse(BaseModel):
 class TaskCreate(BaseModel):
     # EN: Data required when creating a task.
     # JP: タスク作成時に必要なデータです。
-    user_id: int
     title: str
     completed: bool = False
 
@@ -121,7 +120,6 @@ class RoutineStepResponse(BaseModel):
 class RoutineCreate(BaseModel):
     # EN: Data required when creating a routine.
     # JP: ルーティン作成時に必要なデータです。
-    user_id: int
     name: str
     completed: bool = False
 
@@ -148,7 +146,6 @@ class RoutineResponse(BaseModel):
 class FocusTaskCreate(BaseModel):
     # EN: Data required when creating a focus task.
     # JP: フォーカスタスク作成時に必要なデータです。
-    user_id: int
     title: str
     completed: bool = False
 
@@ -174,7 +171,6 @@ class FocusTaskResponse(BaseModel):
 class ProgressSnapshotCreate(BaseModel):
     # EN: Data required when creating a progress snapshot.
     # JP: 進捗スナップショット作成時に必要なデータです。
-    user_id: int
     snapshot_date: str
 
     completed_tasks: int = 0

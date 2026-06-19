@@ -17,12 +17,8 @@ router = APIRouter(
 @router.post("/", response_model=schemas.TaskResponse)
 def create_task(task: schemas.TaskCreate, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
 
-    # EN: Make sure users can only create tasks for themselves.
-    # JP: ユーザーが自分自身のタスクだけを作成できるようにします。
-    ensure_user_owns_resource(task.user_id, current_user.id)
-
     new_task = models.Task(
-        user_id=task.user_id,
+        user_id=current_user.id,
         title=task.title,
         completed=task.completed,
     )

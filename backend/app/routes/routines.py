@@ -19,12 +19,8 @@ router = APIRouter(
 @router.post("/", response_model=schemas.RoutineResponse)
 def create_routine(routine: schemas.RoutineCreate, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
 
-    # EN: Make sure users can only create routines for themselves.
-    # JP: ユーザーが自分自身のルーティンだけを作成できるようにします。
-    ensure_user_owns_resource(routine.user_id, current_user.id)
-
     new_routine = models.Routine(
-        user_id=routine.user_id,
+        user_id=current_user.id,
         name=routine.name,
         completed=routine.completed,
     )

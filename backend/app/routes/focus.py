@@ -19,12 +19,8 @@ router = APIRouter(
 @router.post("/", response_model=schemas.FocusTaskResponse)
 def create_focus_task(focus_task: schemas.FocusTaskCreate, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
 
-    # EN: Make sure users can only create focus tasks for themselves.
-    # JP: ユーザーが自分自身のフォーカスタスクだけを作成できるようにします。
-    ensure_user_owns_resource(focus_task.user_id, current_user.id)
-
     new_focus_task = models.FocusTask(
-        user_id=focus_task.user_id,
+        user_id=current_user.id,
         title=focus_task.title,
         completed=focus_task.completed,
     )
