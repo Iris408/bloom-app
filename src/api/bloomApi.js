@@ -45,3 +45,58 @@ export async function getCurrentUser() {
 
   return response.json();
 }
+
+// EN: Register a new Bloom user.
+// JP: 新しいBloomユーザーを登録します。
+export async function registerUser({ email, username, password }) {
+  const response = await fetch(`${API_BASE_URL}/users/`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      email,
+      username,
+      password,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to register user");
+  }
+
+  return response.json();
+}
+
+// EN: Log in a Bloom user and save the JWT token.
+// JP: Bloomユーザーをログインし、JWTトークンを保存します。
+export async function loginUser({ email, password }) {
+  const formData = new URLSearchParams();
+
+  formData.append("username", email);
+  formData.append("password", password);
+
+  const response = await fetch(`${API_BASE_URL}/auth/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: formData,
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to login");
+  }
+
+  const data = await response.json();
+
+  saveAuthToken(data.access_token);
+
+  return data;
+}
+
+// EN: Log out the current Bloom user.
+// JP: 現在のBloomユーザーをログアウトします。
+export function logoutUser() {
+  removeAuthToken();
+}
