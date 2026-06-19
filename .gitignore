@@ -17,6 +17,7 @@ dist-ssr/
 # Environment files
 .env
 *.local
+.env.local
 backend/venv/
 backend/.env
 backend/bloom.db
