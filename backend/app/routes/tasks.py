@@ -2,30 +2,24 @@
 # JP: BloomのHomeページタスク永続化用ルートです。
 
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.orm import Session, relationship
+from sqlalchemy.orm import Session
 
 from app import models, schemas
 from app.database import get_db
+from app.auth import get_current_user
+from app.permissions import ensure_user_owns_resource
 
 router = APIRouter(
     prefix="/tasks",
     tags=["Tasks"],
 )
 
-tasks = relationship(
-    "User",
-    back_populates="tasks",
-    cascade="all, delete-orphan",
-)
-
 @router.post("/", response_model=schemas.TaskResponse)
-def create_task(task: schemas.TaskCreate, db: Session = Depends(get_db)):
-    # EN: Create a new task for a specific user.
-    # JP: 特定のユーザー用に新しいタスクを作成します。
-    user = db.query(models.User).filter(models.User.id == task.user_id).first()
+def create_task(task: schemas.TaskCreate, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
 
-    if user is None:
-        raise HTTPException(status_code=404, detail="User not found")
+    # EN: Make sure users can only create tasks for themselves.
+    # JP: ユーザーが自分自身のタスクだけを作成できるようにします。
+    ensure_user_owns_resource(task.user_id, current_user.id)
 
     new_task = models.Task(
         user_id=task.user_id,
@@ -41,24 +35,26 @@ def create_task(task: schemas.TaskCreate, db: Session = Depends(get_db)):
 
 
 @router.get("/{user_id}", response_model=list[schemas.TaskResponse])
-def get_tasks_for_user(user_id: int, db: Session = Depends(get_db)):
-    # EN: Get all tasks for one user.
-    # JP: 1人のユーザーのすべてのタスクを取得します。
+def get_tasks_for_user(user_id: int, db: Session = Depends(get_current_user)):
+      
+    # EN: Make sure users can only view their own tasks.
+    # JP: ユーザーが自分自身のタスクだけを表示できるようにします。
+    ensure_user_owns_resource(user_id, current_user.id)
+
     return db.query(models.Task).filter(models.Task.user_id == user_id).all()
 
 
 @router.put("/{task_id}", response_model=schemas.TaskResponse)
-def update_task(
-    task_id: int,
-    task_update: schemas.TaskUpdate,
-    db: Session = Depends(get_db),
-):
+def update_task(task_id: int, task_update: schemas.TaskUpdate, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
+
     # EN: Update a task title or completed state.
     # JP: タスク名または完了状態を更新します。
     task = db.query(models.Task).filter(models.Task.id == task_id).first()
 
     if task is None:
         raise HTTPException(status_code=404, detail="Task not found")
+
+    ensure_user_owns_resource(task.user_id, current_user.id)
 
     update_data = task_update.model_dump(exclude_unset=True)
 
@@ -72,13 +68,16 @@ def update_task(
 
 
 @router.delete("/{task_id}")
-def delete_task(task_id: int, db: Session = Depends(get_db)):
+def delete_task(task_id: int, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
+
     # EN: Delete one task.
     # JP: 1つのタスクを削除します。
     task = db.query(models.Task).filter(models.Task.id == task_id).first()
 
     if task is None:
         raise HTTPException(status_code=404, detail="Task not found")
+    
+    ensure_user_owns_resource(task.user_id, current_user.id)
 
     db.delete(task)
     db.commit()
