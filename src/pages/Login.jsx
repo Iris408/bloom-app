@@ -1,10 +1,9 @@
 import { useState } from "react";
-import { getCurrentUser, loginUser, logoutUser } from "../api/bloomApi";
+import { getCurrentUser, loginUser } from "../api/bloomApi";
 
-export default function Login() {
+export default function Login({  currentUser, setCurrentUser, onLogout }) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [currentUser, setCurrentUser] = useState(null);
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
 
@@ -33,13 +32,10 @@ export default function Login() {
         }
 
     function handleLogout() {
-        // EN: Remove the saved JWT token and clear the user from the page.
-        // JP: 保存済みJWTトークンを削除し、画面上のユーザー情報をクリアします。
-        logoutUser();
-        setCurrentUser(null);
         setEmail("");
         setPassword("");
         setError("");
+        onLogout();
     }    
 
   return (
