@@ -1,8 +1,9 @@
 import { useApp } from "../../context/AppContext"
+import ProfileDropdown from "../auth/ProfileDropdown"
 import Seedling from "../ui/Seedling"
 
-function Header({ setActivePage, activePage }) {
-  const { isDarkMode, toggleDarkMode, darkStyle } = useApp()
+function Header({ setActivePage, activePage, currentUser, onLogout, reduceMotion=false }) {
+  const { isDarkMode, toggleDarkMode } = useApp()
 
 function SunIcon() {
   return (
@@ -12,7 +13,7 @@ function SunIcon() {
       className="h-5 w-5"
       fill="none"
       stroke="currentColor"
-      strokeWidth="2.25"
+      strokeWidth="1.75"
       strokeLinecap="round"
       strokeLinejoin="round"
     >
@@ -41,7 +42,7 @@ function MoonIcon() {
       strokeLinecap="round"
       strokeLinejoin="round"
     >
-      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+      <path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z" />
     </svg>
   )
 }  
@@ -68,7 +69,7 @@ function MoonIcon() {
           </div>
         </div>
 
-        {/* Right side — dark mode toggle + profile avatar */}
+        {/* Right side — dark mode toggle + login/profile menu */}
         <div className="no-dyslexic flex shrink-0 items-center gap-3">
           {/* Dark mode toggle */}
           <button
@@ -80,12 +81,23 @@ function MoonIcon() {
             {isDarkMode ? <SunIcon /> : <MoonIcon />}
           </button>
 
-          {/* Profile avatar */}
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-bloom-sage/30 bg-bloom-light/80 text-bloom-forest transition hover:bg-bloom-mint/30 dark:bg-white/10 dark:text-bloom-light dark:hover:bg-white/20">
-            <span className="block -translate-y-[1.5px] text-xl font-bold leading-none">
-              P
-            </span>
-          </div>
+          {/* Login button or logged-in profile profile dropdown */}
+          {currentUser ?  (
+            <ProfileDropdown
+              currentUser={currentUser}
+              setActivePage={setActivePage}
+              onLogout={onLogout}
+              reduceMotion={reduceMotion}
+            />
+          ) : (
+            <button
+              type="button"
+              onClick={() => setActivePage("login")}
+              className="rounded-full border border-bloom-sage/30 bg-bloom-light/80 px-4 py-2 text-sm font-semibold text-bloom-forest transition hover:bg-bloom-mint/30 dark:bg-white/10 dark:text-bloom-light dark:hover:bg-white/20"
+            >
+              Log in
+            </button>  
+          )}
         </div>
       </div>
     </header>
