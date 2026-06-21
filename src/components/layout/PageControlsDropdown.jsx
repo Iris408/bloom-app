@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useApp } from "../../context/AppContext"
 
 const fontSizeOptions = [
@@ -32,10 +32,36 @@ function SlidersIcon() {
 
 function PageControlsDropdown() {
   const [isOpen, setIsOpen] = useState(false)
+  const dropdownRef = useRef(null)
   const { fontSize, applyFontSize, dyslexicFont, toggleDyslexicFont } = useApp()
 
+  useEffect(() => {
+  function handleClickOutside(event) {
+    if (!dropdownRef.current) return
+
+    if (!dropdownRef.current.contains(event.target)) {
+      setIsOpen(false)
+    }
+  }
+
+  function handleEscapeKey(event) {
+    if (event.key === "Escape") {
+      setIsOpen(false)
+    }
+  }
+
+  document.addEventListener("mousedown", handleClickOutside)
+  document.addEventListener("keydown", handleEscapeKey)
+
+  return () => {
+    document.removeEventListener("mousedown", handleClickOutside)
+    document.removeEventListener("keydown", handleEscapeKey)
+  }
+}, [])
+
+
   return (
-    <div className="relative">
+    <div ref={dropdownRef} className="relative">
       {/* EN: Opens page display/accessibility controls */}
       {/* JP: ページ表示・アクセシビリティ設定を開きます */}
       <button
