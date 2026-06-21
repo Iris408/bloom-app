@@ -49,11 +49,12 @@ function MoonIcon() {
 
   return (
     <header className="w-full bg-transparent dark:bg-transparent border-b border-bloom-sage/25 dark:border-white/10 px-6 py-4">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-4">
         {/* Logo - left side */}
         <div 
           onClick={() => setActivePage(currentUser ? "home" : "overview")}
           className="flex items-center gap-3 cursor-pointer">
+
           <span className="text-3xl cursor-pointer text-bloom-forest dark:text-bloom-light">
             <Seedling variant="indigo" />
           </span>
@@ -68,6 +69,36 @@ function MoonIcon() {
             </p>
           </div>
         </div>
+
+        {/* EN: Public navigation links for logged-out users */}
+        {/* JP: 未ログインユーザー用の公開ナビゲーションリンク */}
+        {!currentUser && (
+          <nav className="hidden flex-1 items-center justify-center gap-5 md:flex">
+            <button
+              type="button"
+              onClick={() => setActivePage("overview")}
+              className={`text-sm font-semibold transition ${
+                activePage === "overview"
+                  ? "text-bloom-forest dark:text-bloom-light"
+                  : "text-bloom-forest/60 hover:text-bloom-mid dark:text-bloom-light/60 dark:hover:text-bloom-light"
+              }`}
+            >
+              Overview  
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setActivePage("about")}
+              className={`text-sm font-semibold transition ${
+                  activePage === "about"
+                    ? "text-bloom-forest dark:text-bloom-light"
+                    : "text-bloom-forest/60 hover:text-bloom-mid dark:text-bloom-light/60 dark:hover:text-bloom-light"
+              }`}
+            >
+              About
+            </button>
+          </nav>
+        )}
 
         {/* Right side — dark mode toggle + login/profile menu */}
         <div className="no-dyslexic flex shrink-0 items-center gap-3">

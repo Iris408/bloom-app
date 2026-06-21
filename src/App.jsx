@@ -15,6 +15,10 @@ import Moments from "./pages/Moments";
 import Profile from "./pages/Profile";
 import Footer from "./components/layout/Footer";
 
+import About from "./pages/About";
+import Privacy from "./pages/Privacy";
+import Accessibility from "./pages/Accessibility";
+
 function App() {
   const [activePage, setActivePage] = useState("overview");
   const [currentUser, setCurrentUser] = useState(null);
@@ -92,6 +96,12 @@ function App() {
   }
 
   function renderPage() {
+    // EN: Public information pages are available to all users.
+    // JP: 公開情報ページはすべてのユーザーが閲覧できます。
+    if (activePage === "about") return <About />;
+    if (activePage === "privacy") return <Privacy />;
+    if (activePage === "accessibility") return <Accessibility />;
+
     // EN: Logged-out users only see the public Overview page.
     // JP: 未ログインのユーザーには公開用Overviewページだけを表示します。
     if (!currentUser) {
@@ -107,8 +117,6 @@ function App() {
     if (activePage === "moments") return <Moments />;
     if (activePage === "profile") return <Profile />;
 
-    // EN: Fallback for logged-in users.
-    // JP: ログイン済みユーザー用の予備表示です。
     return <Home />;
   }
 
@@ -156,7 +164,7 @@ function App() {
         />
       )}
 
-      <Footer />
+      <Footer setActivePage={handlePageChange} />
     </div>
   );
 }
