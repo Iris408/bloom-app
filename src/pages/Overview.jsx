@@ -43,11 +43,12 @@ function Overview({ setActivePage }) {
               Current Build
             </p>
             <h2 className="text-2xl font-bold text-bloom-forest dark:text-bloom-light mb-3">
-              P1 Foundation
+              v1.6.1 Beta Polish
             </h2>
             <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-              App shell, navigation, task cards, add/edit/delete actions,
-              emoji picker, and reusable Bloom UI components.
+              Bloom is moving from a protected prototype layout toward a clearer public
+              beta experience with an Overview page, login modal, public information pages,
+              and stronger visual identity.
             </p>
           </div>
 
@@ -108,31 +109,31 @@ function Overview({ setActivePage }) {
 
           <div className="grid md:grid-cols-4 gap-4">
             <div className="rounded-2xl bg-bloom-light dark:bg-bloom-mint/65 p-4">
-              <p className="font-bold text-bloom-forest">P1</p>
-              <p className="text-sm text-bloom-navy dark:text-bloom-light/70">Foundation</p>
+              <p className="font-bold text-bloom-forest">v1.4</p>
+              <p className="text-sm text-bloom-navy dark:text-bloom-light/70">Empty States</p>
             </div>
 
             <div className="rounded-2xl bg-bloom-light dark:bg-bloom-mint/65 p-4">
-              <p className="font-bold text-bloom-forest">P2</p>
-              <p className="text-sm text-bloom-navy dark:text-bloom-light/70">Design System</p>
+              <p className="font-bold text-bloom-forest">v1.5</p>
+              <p className="text-sm text-bloom-navy dark:text-bloom-light/70">Portfolio Polish</p>
             </div>
 
             <div className="rounded-2xl bg-bloom-light dark:bg-bloom-mint/65 p-4">
-              <p className="font-bold text-bloom-forest">P3</p>
-              <p className="text-sm text-bloom-navy dark:text-bloom-light/70">Routine Builder</p>
+              <p className="font-bold text-bloom-forest">v1.6</p>
+              <p className="text-sm text-bloom-navy dark:text-bloom-light/70">Beta prep</p>
             </div>
 
             <div className="rounded-2xl bg-bloom-light dark:bg-bloom-mint/65 p-4">
-              <p className="font-bold text-bloom-forest">P4</p>
-              <p className="text-sm text-bloom-navy dark:text-bloom-light/70">Modes</p>
+              <p className="font-bold text-bloom-forest">v1.6.1</p>
+              <p className="text-sm text-bloom-navy dark:text-bloom-light/70">Visual identity</p>
             </div>
           </div>
         </div>
-
+         
         <BloomReminder
-          reminder="Bloom is being built one calm step at a time."
-          phaseTitle="Bloom Frontend MVP"
-          phaseDescription="Current work focuses on task persistence, routine persistence, reusable UI components, and accessible page layouts."
+          reminder="Bloom is being prepared for calm public beta feedback."
+          phaseTitle="Bloom v1.6.1 - Visual Identity & Public Beta Polish"
+          phaseDescription="Public Overview, login modal overlay, About/Privacy/Accessibility pages, Bloom illustration direction, and beta-ready UI polish."
         />
         
       </section>
