@@ -20,7 +20,7 @@ function Overview({ setActivePage }) {
     <main className="min-h-screen p-6 lg:p-10">
       <section className="mx-auto max-w-6xl space-y-32">
         {/* Hero */}
-        <div className="grid gap-8 rounded-3xl bg-bloom-light p-8 shadow-lg dark:bg-bloom-mid/35 dark:shadow-xl lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:p-12">
+        <div className="grid gap-8 rounded-3xl bg-bloom-light p-8 shadow-lg dark:bg-dark-surface/95 dark:shadow-xl lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:p-12">
           {/* EN: Main public introduction for Bloom */}
           {/* JP: Bloomの公開ページ用メイン紹介エリア */}
           <div>
@@ -193,7 +193,7 @@ function Overview({ setActivePage }) {
         {/* Roadmap */}
         <div
           id="roadmap"
-          className="rounded-3xl border border-bloom-sage bg-white p-8 shadow dark:border-bloom-mint dark:bg-dark-surface/60"
+          className="rounded-3xl border border-bloom-sage bg-white p-8 shadow dark:border-bloom-mint dark:bg-dark-surface/85"
         >
           <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-bloom-mid">
             Roadmap

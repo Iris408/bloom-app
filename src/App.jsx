@@ -18,6 +18,7 @@ import Footer from "./components/layout/Footer";
 import About from "./pages/About";
 import Privacy from "./pages/Privacy";
 import Accessibility from "./pages/Accessibility";
+import BloomBackgroundDecor from "./components/decor/BloomBackgroundDecor";
 
 function App() {
   const [activePage, setActivePage] = useState("overview");
@@ -122,35 +123,36 @@ function App() {
 
   return (
     <div
-      className={`min-h-screen flex flex-col overflow-x-hidden transition-colors duration-300 ${bgClass}`}
+      className={`relative min-h-screen flex flex-col overflow-x-hidden transition-colors duration-300 ${bgClass}`}
     >
-      <Header
-        setActivePage={handlePageChange}
-        activePage={activePage}
-        currentUser={currentUser}
-        onLogout={handleLogout}
-        onLoginClick={() => setIsLoginOpen(true)}
-      />
+      <BloomBackgroundDecor />
 
-      {/* EN: Below header layout with sidebar and main content. */}
-      {/* JP: ヘッダー下のサイドバーとメインコンテンツのレイアウトです。 */}
-      <div className="flex flex-1">
-        {currentUser && (
-          <Sidebar activePage={activePage} setActivePage={handlePageChange} />
-        )}
+      <div className="relative z-10 flex min-h-screen flex-col">
+        <Header
+          setActivePage={handlePageChange}
+          activePage={activePage}
+          currentUser={currentUser}
+          onLogout={handleLogout}
+          onLoginClick={() => setIsLoginOpen(true)}
+        />
 
-        <main
-          className={`flex-1 flex flex-col px-4 py-8 pb-28 md:pb-10 overflow-x-hidden ${bgClass}`}
-        >
-          {isCheckingAuth ? (
-            <p className="text-sm text-gray-600 dark:text-gray-300">
-              Checking login...
-            </p>
-          ) : (
-            renderPage()
+        {/* EN: Below header layout with sidebar and main content. */}
+        {/* JP: ヘッダー下のサイドバーとメインコンテンツのレイアウトです。 */}
+        <div className="flex flex-1">
+          {currentUser && (
+            <Sidebar activePage={activePage} setActivePage={handlePageChange} />
           )}
-        </main>
-      </div>
+
+          <main className="flex-1 flex flex-col px-4 py-8 pb-28 md:pb-10 overflow-x-hidden">
+            {isCheckingAuth ? (
+              <p className="text-sm text-gray-600 dark:text-gray-300">
+                Checking login...
+              </p>
+            ) : (
+              renderPage()
+            )}
+          </main>
+        </div>  
 
       {currentUser && (
         <BottomNav activePage={activePage} setActivePage={handlePageChange} />
@@ -166,6 +168,7 @@ function App() {
 
       <Footer setActivePage={handlePageChange} />
     </div>
+  </div>  
   );
 }
 
