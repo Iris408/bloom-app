@@ -2,7 +2,7 @@ import { useApp } from "../../context/AppContext"
 import ProfileDropdown from "../auth/ProfileDropdown"
 import Seedling from "../ui/Seedling"
 
-function Header({ setActivePage, activePage, currentUser, onLogout, reduceMotion=false }) {
+function Header({ setActivePage, activePage, currentUser, onLogout, onLoginClick, reduceMotion=false }) {
   const { isDarkMode, toggleDarkMode } = useApp()
 
 function SunIcon() {
@@ -52,7 +52,7 @@ function MoonIcon() {
       <div className="flex items-center justify-between">
         {/* Logo - left side */}
         <div 
-          onClick={() => setActivePage("overview")}
+          onClick={() => setActivePage(currentUser ? "home" : "overview")}
           className="flex items-center gap-3 cursor-pointer">
           <span className="text-3xl cursor-pointer text-bloom-forest dark:text-bloom-light">
             <Seedling variant="indigo" />
@@ -92,7 +92,7 @@ function MoonIcon() {
           ) : (
             <button
               type="button"
-              onClick={() => setActivePage("login")}
+              onClick={onLoginClick}
               className="rounded-full border border-bloom-sage/30 bg-bloom-light/80 px-4 py-2 text-sm font-semibold text-bloom-forest transition hover:bg-bloom-mint/30 dark:bg-white/10 dark:text-bloom-light dark:hover:bg-white/20"
             >
               Log in

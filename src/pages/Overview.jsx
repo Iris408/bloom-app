@@ -24,7 +24,7 @@ function Overview({ setActivePage }) {
 
           <div className="flex flex-wrap gap-3">
             <Button onClick={() => setActivePage("home")}>
-              Start with Tasks
+              Get started
             </Button>
 
             <a

@@ -1,7 +1,6 @@
 {/* Receiving props */}
 function Sidebar({ activePage, setActivePage }) {
     const navItems = [
-        { id: "overview", label: "Overview" },
         { id: "home",     label: "Home" },
         { id: "routines", label: "Routines" },
         { id: "focus",    label: "Focus" },

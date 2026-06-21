@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useApp } from "./context/AppContext";
 import { getAuthToken, getCurrentUser, logoutUser } from "./api/bloomApi";
 
-import Login from "./pages/Login";
+import LoginModal from "./components/auth/LoginModal";
 import Header from "./components/layout/Header";
 import Sidebar from "./components/layout/Sidebar";
 import BottomNav from "./components/layout/BottomNav";
@@ -16,9 +16,10 @@ import Profile from "./pages/Profile";
 import Footer from "./components/layout/Footer";
 
 function App() {
-  const [activePage, setActivePage] = useState("login");
+  const [activePage, setActivePage] = useState("overview");
   const [currentUser, setCurrentUser] = useState(null);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
 
   const { isDarkMode } = useApp();
 
@@ -52,12 +53,15 @@ function App() {
         const user = await getCurrentUser();
         setCurrentUser(user);
 
-        setActivePage("overview");
+        // EN: Existing logged-in users enter the protected app area.
+        // JP: 既にログイン済みのユーザーは保護されたアプリ画面へ移動します。
+        setActivePage("home");
       } catch (error) {
         // EN: Remove invalid or expired token.
         // JP: 無効または期限切れのトークンを削除します。
         logoutUser();
         setCurrentUser(null);
+        setActivePage("overview");
       } finally {
         setIsCheckingAuth(false);
       }
@@ -67,18 +71,20 @@ function App() {
   }, []);
 
   function handleLogout() {
-    // EN: Log out the user and return to the login page.
-    // JP: ユーザーをログアウトし、ログインページへ戻します。
+    // EN: Log out the user and return to the public Overview page.
+    // JP: ユーザーをログアウトし、公開用のOverviewページへ戻します。
     logoutUser();
     setCurrentUser(null);
-    setActivePage("login");
+    setIsLoginOpen(false);
+    setActivePage("overview");
   }
 
   function handlePageChange(page) {
-    // EN: Redirect logged-out users to login if they try to access protected pages.
-    // JP: 未ログインのユーザーが保護ページへアクセスしようとした場合、ログインページへ移動します。
+    // EN: Open the login modal if logged-out users try to access protected pages.
+    // JP: 未ログインのユーザーが保護ページへアクセスしようとした場合、ログインモーダルを開きます。
     if (protectedPages.includes(page) && !currentUser) {
-      setActivePage("login");
+      setActivePage("overview");
+      setIsLoginOpen(true);
       return;
     }
 
@@ -86,34 +92,14 @@ function App() {
   }
 
   function renderPage() {
-    // EN: Extra safety guard for protected pages.
-    // JP: 保護ページ用の追加安全チェックです。
-    if (protectedPages.includes(activePage) && !currentUser) {
-      return (
-        <Login
-          currentUser={currentUser}
-          setCurrentUser={setCurrentUser}
-          setActivePage={handlePageChange}
-          onLogout={handleLogout}
-        />
-      );
-    }
-
-    if (activePage === "login") {
-      return (
-        <Login
-          currentUser={currentUser}
-          setCurrentUser={setCurrentUser}
-          setActivePage={handlePageChange}
-          onLogout={handleLogout}
-        />
-      );
-    }
-
-    if (activePage === "overview") {
+    // EN: Logged-out users only see the public Overview page.
+    // JP: 未ログインのユーザーには公開用Overviewページだけを表示します。
+    if (!currentUser) {
       return <Overview setActivePage={handlePageChange} />;
     }
 
+    // EN: Logged-in users can access the protected app pages.
+    // JP: ログイン済みユーザーは保護されたアプリ画面にアクセスできます。
     if (activePage === "home") return <Home />;
     if (activePage === "routines") return <Routines />;
     if (activePage === "focus") return <Focus />;
@@ -121,7 +107,9 @@ function App() {
     if (activePage === "moments") return <Moments />;
     if (activePage === "profile") return <Profile />;
 
-    return <Overview setActivePage={handlePageChange} />;
+    // EN: Fallback for logged-in users.
+    // JP: ログイン済みユーザー用の予備表示です。
+    return <Home />;
   }
 
   return (
@@ -133,25 +121,40 @@ function App() {
         activePage={activePage}
         currentUser={currentUser}
         onLogout={handleLogout}
+        onLoginClick={() => setIsLoginOpen(true)}
       />
 
       {/* EN: Below header layout with sidebar and main content. */}
       {/* JP: ヘッダー下のサイドバーとメインコンテンツのレイアウトです。 */}
       <div className="flex flex-1">
-        <Sidebar activePage={activePage} setActivePage={handlePageChange} />
+        {currentUser && (
+          <Sidebar activePage={activePage} setActivePage={handlePageChange} />
+        )}
 
         <main
           className={`flex-1 flex flex-col px-4 py-8 pb-28 md:pb-10 overflow-x-hidden ${bgClass}`}
         >
           {isCheckingAuth ? (
-            <p className="text-sm text-gray-600">Checking login...</p>
+            <p className="text-sm text-gray-600 dark:text-gray-300">
+              Checking login...
+            </p>
           ) : (
             renderPage()
           )}
         </main>
       </div>
 
-      <BottomNav activePage={activePage} setActivePage={handlePageChange} />
+      {currentUser && (
+        <BottomNav activePage={activePage} setActivePage={handlePageChange} />
+      )}
+
+      {isLoginOpen && !currentUser && (
+        <LoginModal
+          setCurrentUser={setCurrentUser}
+          setActivePage={handlePageChange}
+          onClose={() => setIsLoginOpen(false)}
+        />
+      )}
 
       <Footer />
     </div>

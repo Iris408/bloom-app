@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { getCurrentUser, loginUser } from "../api/bloomApi";
+import bloomIllustration from "../assets/bloom-illustration.png";
 
 export default function Login({
   currentUser,
