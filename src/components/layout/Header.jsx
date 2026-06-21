@@ -1,6 +1,7 @@
 import { useApp } from "../../context/AppContext"
 import ProfileDropdown from "../auth/ProfileDropdown"
 import Seedling from "../ui/Seedling"
+import PageControlsDropdown from "./PageControlsDropdown"
 
 function Header({ setActivePage, activePage, currentUser, onLogout, onLoginClick, reduceMotion=false }) {
   const { isDarkMode, toggleDarkMode } = useApp()
@@ -73,29 +74,50 @@ function MoonIcon() {
         {/* EN: Public navigation links for logged-out users */}
         {/* JP: 未ログインユーザー用の公開ナビゲーションリンク */}
         {!currentUser && (
-          <nav className="hidden flex-1 items-center justify-center gap-5 md:flex">
+          <nav className="hidden flex-1 items-center justify-center gap-7 md:flex">
             <button
               type="button"
               onClick={() => setActivePage("overview")}
-              className={`text-sm font-semibold transition ${
+              className={`text-base font-semibold transition ${
                 activePage === "overview"
-                  ? "text-bloom-forest dark:text-bloom-light"
-                  : "text-bloom-forest/60 hover:text-bloom-mid dark:text-bloom-light/60 dark:hover:text-bloom-light"
+                ? "text-bloom-forest dark:text-bloom-light"
+                : "text-bloom-forest/70 hover:text-bloom-forest dark:text-bloom-light/70 dark:hover:text-bloom-light"
               }`}
             >
-              Overview  
+              Overview
             </button>
 
             <button
               type="button"
               onClick={() => setActivePage("about")}
-              className={`text-sm font-semibold transition ${
-                  activePage === "about"
-                    ? "text-bloom-forest dark:text-bloom-light"
-                    : "text-bloom-forest/60 hover:text-bloom-mid dark:text-bloom-light/60 dark:hover:text-bloom-light"
+              className={`text-base font-semibold transition ${
+                activePage === "about"
+                ? "text-bloom-forest dark:text-bloom-light"
+                : "text-bloom-forest/70 hover:text-bloom-forest dark:text-bloom-light/70 dark:hover:text-bloom-light"
               }`}
             >
               About
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                setActivePage("overview")
+
+                setTimeout(() => {
+                  const section = document.getElementById("feedback")
+
+                  if (!section) return
+
+                  section.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center",
+                  })
+                }, 100)
+              }}
+              className="text-base font-semibold text-bloom-forest/70 transition hover:text-bloom-forest dark:text-bloom-light/70 dark:hover:text-bloom-light"
+            >
+              Feedback
             </button>
           </nav>
         )}
@@ -112,6 +134,10 @@ function MoonIcon() {
             {isDarkMode ? <SunIcon /> : <MoonIcon />}
           </button>
 
+          {/* EN: Public and logged-in page controls */}
+          {/* JP: 公開ページとログイン後ページ用の表示設定 */}
+          <PageControlsDropdown />
+
           {/* Login button or logged-in profile profile dropdown */}
           {currentUser ?  (
             <ProfileDropdown
@@ -124,7 +150,7 @@ function MoonIcon() {
             <button
               type="button"
               onClick={onLoginClick}
-              className="rounded-full border border-bloom-sage/30 bg-bloom-light/80 px-4 py-2 text-sm font-semibold text-bloom-forest transition hover:bg-bloom-mint/30 dark:bg-white/10 dark:text-bloom-light dark:hover:bg-white/20"
+              className="rounded-full border border-bloom-sage/30 bg-bloom-light/80 px-5 py-2.5 text-sm font-semibold text-bloom-forest transition hover:bg-bloom-mint/30 dark:bg-white/10 dark:text-bloom-light dark:hover:bg-white/20"
             >
               Log in
             </button>  
