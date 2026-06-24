@@ -124,39 +124,24 @@ Bloomは、Webファーストの視覚的タスクシーケンサーおよびル
 
 ## Current Features / 現在の機能
 
-| EN | 日本語 |
-|---|---|
-| Desktop sidebar and Mobile bottom navigation | デスクトップ用サイドバーナビゲーション/モバイル用ボトムナビゲーション |
-| Reusable Bloom button components | 再利用可能なBloomボタンコンポーネント |
-| Task card and task list components | タスクカード・タスクリストコンポーネント |
-| Emoji picker for new and edited tasks | 新規作成・編集タスク用の絵文字ピッカー |
-| Completed task styling with tick and line-through state | チェック表示と取り消し線による完了タスク表示 |
-| Selectable demo routine preview | 選択可能なデモルーティンプレビュー |
-| Load selected demo routines only | 選択したデモルーティンのみ読み込み |
-| Global app context structure | グローバルアプリコンテキスト構成 |
-| Reusable UI component folder | 再利用可能なUIコンポーネントフォルダ |
-| Reusable empty state component | 再利用可能な空状態コンポーネント |
-| Empty state microcopy improvements | 空状態メッセージの改善 |
-| Public Overview landing page | 公開用Overviewランディングページ |
-| Login modal overlay | ログインモーダル表示 |
-| Public About, Privacy, and Accessibility pages | 公開用 About / Privacy / Accessibility ページ |
-| Google feedback form link for beta feedback | ベータフィードバック用Googleフォームリンク |
-| Header Page Controls dropdown | Header の Page Controls ドロップダウン |
-| OpenDyslexic available before login | ログイン前でも利用できる OpenDyslexic 設定 |
-| Text size controls from S to XL | S〜XL の文字サイズ設定 |
-| Light and dark mode | ライトモード・ダークモード |
-| OpenDyslexic font, Reduce motion toggle | OpenDyslexicフォント切り替え /アニメーション軽減設定|
-| Daily reset behaviour for tasks, routines, routine steps and focus tasks | タスク、ルーティン、ルーティンステップ、集中タスクの日次リセット |
-
+| EN | 日本語 | EN | 日本語 |
+|---|---|---|---|
+| Desktop sidebar and Mobile bottom navigation | デスクトップ用サイドバーナビゲーション/モバイル用ボトムナビゲーション | Empty state microcopy improvements | 空状態メッセージの改善 |
+| Reusable Bloom button components | 再利用可能なBloomボタンコンポーネント | Public Overview landing page | 公開用Overviewランディングページ |
+| Task card and task list components | タスクカード・タスクリストコンポーネント | Login modal overlay | ログインモーダル表示 |
+| Emoji picker for new and edited tasks | 新規作成・編集タスク用の絵文字ピッカー | Public About, Privacy, and Accessibility pages | 公開用 About / Privacy / Accessibility ページ |
+| Completed task styling with tick and line-through state | チェック表示と取り消し線による完了タスク表示 | Google feedback form link for beta feedback | ベータフィードバック用Googleフォームリンク |
+| Selectable demo routine preview | 選択可能なデモルーティンプレビュー | Header Page Controls dropdown | Header の Page Controls ドロップダウン |
+| Load selected demo routines only | 選択したデモルーティンのみ読み込み | Text size controls from S to XL | S〜XL の文字サイズ設定 |
+| Global app context structure | グローバルアプリコンテキスト構成 | Light and dark mode | ライトモード・ダークモード |
+| Reusable UI component folder | 再利用可能なUIコンポーネントフォルダ | OpenDyslexic font, Reduce motion toggle | OpenDyslexicフォント切り替え /アニメーション軽減設定|
+| Reusable empty state component | 再利用可能な空状態コンポーネント | Daily reset behaviour for tasks, routines, routine steps and focus tasks | タスク、ルーティン、ルーティンステップ、集中タスクの日次リセット |
 
 ## Pages / ページ構成
 
 | Page | Purpose | ページ | 目的 |
 |---|---|---|---|
 | Overview | Public landing page for Bloom, beta information, visual identity, roadmap and feedback link | 概要 | Bloomの公開ランディングページ、ベータ情報、ビジュアル方向性、ロードマップ、フィードバックリンク |
-| About | Deeper explanation of Bloom’s purpose, design goals and beta direction | About | Bloomの目的、デザイン方針、ベータ段階の説明 |
-| Privacy | Public privacy and data handling information | Privacy | プライバシーとデータ取り扱いに関する公開情報 |
-| Accessibility | Public accessibility and usability information | Accessibility | アクセシビリティと使いやすさに関する公開情報 |
 | Home | Today’s focus, task list, task completion and daily reminder | ホーム | 今日のフォーカス、タスクリスト、タスク完了、デイリーリマインダー |
 | Routines | Routine builder, routine steps and selectable demo routines | ルーティン | ルーティン作成、ステップ管理、選択可能なデモルーティン |
 | Focus | Daily focus task tracking | フォーカス | 日々の集中タスク管理 |
@@ -164,6 +149,10 @@ Bloomは、Webファーストの視覚的タスクシーケンサーおよびル
 | Moments | Future page for gentle wins, reflections and non-gamified progress moments | モーメンツ | 小さな達成、振り返り、非ゲーム的な進捗確認用の将来ページ |
 | Profile | User settings and accessibility preferences | プロフィール | ユーザー設定とアクセシビリティ設定 |
 
+Additonal pages:
+* About - Deeper explanation of Bloom’s purpose, design goals and beta direction / Bloomの目的、デザイン方針、ベータ段階の説明 |
+* Privacy - Public privacy and data handling information / プライバシーとデータ取り扱いに関する公開情報 |
+* Accessibility - Public accessibility and usability information / アクセシビリティと使いやすさに関する公開情報 |
 
 ## Planned Features / 今後の予定機能
 
