@@ -12,9 +12,7 @@ Bloomは、視覚的なルーティン作成とタスク進行を支援するア
 
 現在は、個人利用向けの **Bloom Personal** を中心に開発しています。現バージョンでは、公開用Overviewページ、ログインモーダル、アクセシビリティ用Page Controls、ビジュアルデザインの改善、ベータフィードバック収集に向けた調整を進めています。
 
-## Live Demo
-
-Click here to: [Experience Bloom](https://bloom-app-three-xi.vercel.app/)
+## Live Demo - [Experience Bloom](https://bloom-app-three-xi.vercel.app/)
 
 ### Beta Preview Note
 
@@ -24,7 +22,7 @@ Recent beta updates include the improved login modal, demo mode access, exit dem
 
 Full account creation and onboarding are planned for a later full-stack version.
 
-## Screenshots / スクリーンショット
+### Screenshots / スクリーンショット
 
 <table>
   <tr>
@@ -71,35 +69,27 @@ Full account creation and onboarding are planned for a later full-stack version.
 
 * Added a public Overview page as the main landing page for logged-out users.
 * Replaced the separate login page with a login modal overlay.
-* Added public About, Privacy, and Accessibility pages.
 * Updated the Header with public navigation links for Overview, About, and Feedback.
 * Added a feedback section with a Google feedback form link for beta testing.
-* Added a Page Controls dropdown in the Header using a slider SVG icon.
 * Made OpenDyslexic and text size controls available before login.
-* Added text size options from S to XL in the public Page Controls menu.
-* Added click-outside and Escape key support for closing the Page Controls dropdown.
 * Added the Bloom illustration to the public Overview hero section.
 * Added subtle floral and botanical desktop background decoration inspired by the Bloom illustration.
 * Tuned dark mode decoration opacity so the interface remains readable and calm.
 * Updated the roadmap section to show v1.4, v1.5, v1.6, and v1.6.1 with short explanations.
-* Continued preparing Bloom for public beta feedback and future v2.0.0 backend foundation work.
+* Continued preparing Bloom for public beta feedback and v2.0.0 backend foundation work.
 
 ### v1.6.1 - ビジュアルデザインと公開ベータ準備
 
 * 未ログインユーザー向けに、公開用Overviewページをメインのランディングページとして追加。
 * 独立したログインページを、Overviewページ上に表示されるログインモーダルへ変更。
-* 公開用の About、Privacy、Accessibility ページを追加。
 * Header に Overview、About、Feedback の公開ナビゲーションリンクを追加。
 * ベータテスト用に、Googleフィードバックフォームへつながるフィードバックセクションを追加。
-* Header にスライダーSVGアイコンを使った Page Controls ドロップダウンを追加。
 * ログイン前でも OpenDyslexic と文字サイズ設定を利用できるように改善。
-* Page Controls に S、M、L、XL の文字サイズ設定を追加。
-* Page Controls ドロップダウンに、外側クリックと Escape キーで閉じる動作を追加。
 * 公開Overviewページのヒーローエリアに Bloom イラストを追加。
 * Bloom イラストの雰囲気に合わせて、デスクトップ用の花・植物の背景装飾を追加。
 * ダークモードで装飾が強くなりすぎないように透明度を調整。
 * ロードマップを v1.4、v1.5、v1.6、v1.6.1 の説明付き表示へ更新。
-* 公開ベータフィードバックと将来の v2.0.0 バックエンド開発に向けた準備を継続。
+* 公開ベータフィードバックとv2.0.0 バックエンド開発に向けた準備を継続。
 
 ## Project Overview / プロジェクト概要
 
@@ -162,32 +152,15 @@ Additonal pages:
 | Mood check-in at app open | アプリ起動時の気分チェックイン |
 | Short version of routines | ルーティンの短縮版 |
 | Oasis calm reset space | Oasis という落ち着いたリセット空間 |
-| Moments view for small wins and gentle reflections | 小さな達成や振り返りを表示する Moments ビュー |
 | Time estimates per routine step | ルーティンステップごとの所要時間目安 |
 | Missed-day recovery wording | できなかった日の回復を支えるメッセージ |
 | Low demand mode | 低負荷モード |
-| Notification/reminder setting | 通知・リマインダー設定 |
 | Exportable progress CSV | 進捗CSVエクスポート |
 | Dedicated in-app Feedback page | 専用のアプリ内フィードバックページ |
-| Feedback form that sends directly to the Bloom email through a backend or serverless function | バックエンドまたはサーバーレス関数を通してBloomメールへ送信するフィードバックフォーム |
-| Ambient audio toggle | 環境音の切り替え |
-| High contrast display option | 高コントラスト表示オプション |
-| Reduced motion improvements | アニメーション軽減の改善 |
-| Helper label / ARIA support options | ヘルパーラベル・ARIAサポート設定 |
+| Additional accessibility features | その他のアクセシビリティ機能 |
 | Persisted user accessibility preferences | ユーザーごとのアクセシビリティ設定保存 |
 | v2.0.0 full-stack backend with authentication and database persistence | 認証とデータベース永続化を含む v2.0.0 フルスタックバックエンド |
 | Future full-stack deployment | 将来的なフルスタックデプロイ |
-
-## App Modes / アプリモード
-
-| Mode | Purpose | モード | 目的 |
-|---|---|---|---|
-| Standard Mode | Clean adult-friendly layout for personal routines | スタンダードモード | 個人ルーティン向けのシンプルで大人向けのレイアウト |
-| Kid Mode | Simplified, warmer, emoji-heavy experience for children | キッズモード | 子ども向けの分かりやすく温かい絵文字中心のUI |
-| Focus Mode | One step shown at a time to reduce distraction | フォーカスモード | 気が散りにくいように1ステップずつ表示 |
-| Calm Mode | Softer interface with reduced motion and urgency | リラックスモード | 動きや緊急感を抑えた落ち着いたUI |
-| Review Mode | Reflection after completing a routine | レビューモード | ルーティン完了後の振り返り |
-| Education Mode | Long-term future mode for school-based use | 学習・学校モード | 将来的な学校・教育向け利用モード |
 
 ## Tech Stack / 技術スタック
 
