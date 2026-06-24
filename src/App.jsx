@@ -61,7 +61,7 @@ function App() {
         // EN: Existing logged-in users enter the protected app area.
         // JP: 既にログイン済みのユーザーは保護されたアプリ画面へ移動します。
         setActivePage("home");
-      } catch (error) {
+      } catch {
         // EN: Remove invalid or expired token.
         // JP: 無効または期限切れのトークンを削除します。
         logoutUser();
@@ -122,38 +122,58 @@ function App() {
   }
 
   return (
-    <div
-      className={`relative min-h-screen flex flex-col overflow-x-hidden transition-colors duration-300 ${bgClass}`}
-    >
+    <>
+      {/* EN: Rendered outside the wrapper so overflow-x-hidden and any future */}
+      {/* EN: transforms on the wrapper cannot clip or reposition fixed children. */}
+      {/* JP: overflow-x-hidden や将来の transform によるクリッピングを防ぐため、 */}
+      {/* JP: ラッパー外に配置します。 */}
       <BloomBackgroundDecor />
 
-      <div className="relative z-10 flex min-h-screen flex-col">
-        <Header
-          setActivePage={handlePageChange}
-          activePage={activePage}
-          currentUser={currentUser}
-          onLogout={handleLogout}
-          onLoginClick={() => setIsLoginOpen(true)}
-        />
+      <div
+        className={`relative min-h-screen flex flex-col overflow-x-hidden transition-colors duration-300 ${bgClass}`}
+      >
+        <div className="relative z-10 flex min-h-screen flex-col">
+          <Header
+            setActivePage={handlePageChange}
+            activePage={activePage}
+            currentUser={currentUser}
+            onLogout={handleLogout}
+            onLoginClick={() => setIsLoginOpen(true)}
+          />
 
-        {/* EN: Below header layout with sidebar and main content. */}
-        {/* JP: ヘッダー下のサイドバーとメインコンテンツのレイアウトです。 */}
-        <div className="flex flex-1">
-          {currentUser && (
-            <Sidebar activePage={activePage} setActivePage={handlePageChange} />
-          )}
-
-          <main className="flex-1 flex flex-col px-4 py-8 pb-28 md:pb-10 overflow-x-hidden">
-            {isCheckingAuth ? (
-              <p className="text-sm text-gray-600 dark:text-gray-300">
-                Checking login...
-              </p>
-            ) : (
-              renderPage()
+          {/* EN: Below-header layout with optional sidebar and main content area. */}
+          {/* JP: ヘッダー下のサイドバーとメインコンテンツのレイアウトです。 */}
+          <div className="flex flex-1">
+            {currentUser && (
+              <Sidebar
+                activePage={activePage}
+                setActivePage={handlePageChange}
+              />
             )}
-          </main>
-        </div>  
 
+            <main className="flex-1 flex flex-col px-4 py-8 pb-28 md:pb-10 overflow-x-hidden">
+              {isCheckingAuth ? (
+                // EN: Centred loading indicator shown while the auth token is verified.
+                // JP: 認証トークンの確認中に表示される中央寄せのローディング表示です。
+                <div className="flex flex-1 items-center justify-center">
+                  <p className="text-sm text-gray-500 dark:text-gray-400 animate-pulse">
+                    🌱 Loading...
+                  </p>
+                </div>
+              ) : (
+                renderPage()
+              )}
+            </main>
+          </div>
+
+          <Footer setActivePage={handlePageChange} />
+        </div>
+      </div>
+
+      {/* EN: BottomNav and LoginModal are fixed-position elements rendered outside */}
+      {/* EN: the wrapper to guarantee they are never clipped or stacking-context trapped. */}
+      {/* JP: BottomNav と LoginModal は fixed 要素のため、ラッパー外に配置して */}
+      {/* JP: クリッピングやスタッキングコンテキストの影響を受けないようにします。 */}
       {currentUser && (
         <BottomNav activePage={activePage} setActivePage={handlePageChange} />
       )}
@@ -161,14 +181,11 @@ function App() {
       {isLoginOpen && !currentUser && (
         <LoginModal
           setCurrentUser={setCurrentUser}
-          setActivePage={handlePageChange}
+          setActivePage={setActivePage}
           onClose={() => setIsLoginOpen(false)}
         />
       )}
-
-      <Footer setActivePage={handlePageChange} />
-    </div>
-  </div>  
+    </>
   );
 }
 

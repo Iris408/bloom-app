@@ -86,7 +86,7 @@ function PageControlsDropdown() {
             </p>
 
             <p className="mt-1 text-xs leading-relaxed text-gray-500 dark:text-gray-300">
-              Adjust how Bloom looks and feels.
+              Adjust how Bloom looks and feels for you ꕤ
             </p>
           </div>
 
@@ -99,7 +99,7 @@ function PageControlsDropdown() {
               </p>
 
               <p className="mt-1 text-xs leading-relaxed text-gray-500 dark:text-gray-400">
-                Use a dyslexia-friendly font across Bloom.
+                Use a dyslexia-friendly font across Bloom
               </p>
             </div>
 
