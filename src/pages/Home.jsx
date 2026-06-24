@@ -1,8 +1,7 @@
 import TaskList from "../components/tasks/TaskList"
-import DailyAffirmationCard from "../components/home/DailyAffirmationCard"
-import EmptyState from "../components/ui/EmptyState"
+import DemoBanner from "../components/demo/DemoBanner"
 
-function Home() {
+function Home({ isDemoMode, demoType, onCreateAccount, onExitDemoClick }) {
   return (
     <div className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-4">
       {/* Page heading / Today's focus */}
@@ -17,12 +16,6 @@ function Home() {
             <h2 className="text-3xl font-bold text-bloom-forest dark:text-bloom-light/90">
               Today&apos;s focus
             </h2>
-
-            {/* EN: Mobile-only collapsible daily reminder */}
-            {/* JP: モバイル専用の折りたたみ式デイリーリマインダー */}
-            <div className="mt-4 xl:hidden">
-              <DailyAffirmationCard variant="collapsible" />
-            </div>
           </div>
 
           <div className="flex max-w-5xl flex-col gap-4">
@@ -31,7 +24,7 @@ function Home() {
               <span
                 className="inline-block dark:[filter:hue-rotate(145deg)_saturate(1.3)_brightness(0.9)]"
                 role="img"
-                aria-label="indigo seedling"
+                aria-label="seedling"
               >
                 🌱
               </span>
@@ -67,9 +60,15 @@ function Home() {
           </div>
         </div>
 
-        {/* Right side — Desktop daily reminder */}
-        <aside className="hidden xl:block xl:self-start xl:pt-8">
-          <DailyAffirmationCard variant="panel" />
+        {/* Right side — Desktop demo card, placed high */}
+        <aside className="hidden xl:block xl:self-start">
+          {isDemoMode && (
+            <DemoBanner
+              demoType={demoType}
+              onCreateAccount={onCreateAccount}
+              onExitDemoClick={onExitDemoClick}
+            />
+          )}
         </aside>
       </section>
 
@@ -85,8 +84,8 @@ function Home() {
         </div>
 
         {/* Right column — desktop supporting panel */}
-        <aside className="hidden xl:flex xl:flex-col xl:pt-[64px]">
-          <div className="flex h-full min-h-[180px] flex-col justify-between rounded-2xl bg-bloom-forest p-5 text-white dark:bg-dark-surface">
+        <aside className="hidden xl:flex xl:flex-col">
+          <div className="flex min-h-[180px] flex-col justify-between rounded-2xl bg-bloom-forest p-5 text-white dark:bg-dark-surface">
             <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-bloom-mint dark:text-bloom-sage">
               Current phase
             </p>

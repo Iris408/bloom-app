@@ -14,7 +14,15 @@ Bloomは、視覚的なルーティン作成とタスク進行を支援するア
 
 ## Live Demo
 
-[View Bloom on Vercel](https://bloom-app-three-xi.vercel.app/)
+Click here to: [Experience Bloom](https://bloom-app-three-xi.vercel.app/)
+
+### Beta Preview Note
+
+Bloom is currently in a beta/frontend polish phase. A demo mode has been added so testers and reviewers can explore the app with sample data before account creation is fully available.
+
+Recent beta updates include the improved login modal, demo mode access, exit demo confirmation, cleaner mobile reminder layout, sidebar reminder placement, and protected-app layout polish.
+
+Full account creation and onboarding are planned for a later full-stack version.
 
 ## Screenshots / スクリーンショット
 
@@ -74,7 +82,7 @@ Bloomは、視覚的なルーティン作成とタスク進行を支援するア
 * Added subtle floral and botanical desktop background decoration inspired by the Bloom illustration.
 * Tuned dark mode decoration opacity so the interface remains readable and calm.
 * Updated the roadmap section to show v1.4, v1.5, v1.6, and v1.6.1 with short explanations.
-* Continued preparing Bloom for public beta feedback and future v2.0.0 backend work.
+* Continued preparing Bloom for public beta feedback and future v2.0.0 backend foundation work.
 
 ### v1.6.1 - ビジュアルデザインと公開ベータ準備
 
@@ -92,28 +100,6 @@ Bloomは、視覚的なルーティン作成とタスク進行を支援するア
 * ダークモードで装飾が強くなりすぎないように透明度を調整。
 * ロードマップを v1.4、v1.5、v1.6、v1.6.1 の説明付き表示へ更新。
 * 公開ベータフィードバックと将来の v2.0.0 バックエンド開発に向けた準備を継続。
-
-| Area | Status | Area | Status |
-|---|---|---|---|
-| **Foundation** | | **Progress** | |
-| Vite + React, folder structure, routing | ✅ Complete | Progress v1 - calm routine progress overview | ✅ Complete |
-| Sidebar navigation for desktop and bottom navigation | ✅ Complete | Pre-routine progress bars and weekly progress snapshots | ✅ Complete |
-| Header, footer, reusable UI components | ✅ Complete | Descriptive progress labels | ✅ Complete |
-| **Tasks** | | **UI / UX** | |
-| Task cards, task list, CRUD actions and emoji picker | ✅ Complete | Light/dark mode and accessibility controls | ✅ Complete |
-| Task localStorage persistence | ✅ Complete | Reusable Bloom reminder component across pages | ✅ Complete |
-| Reusable task completion button | ✅ Complete | Daily affirmation/reminder card | ✅ Complete |
-| Completed task styling with tick and line-through state | ✅ Complete | Public About, Privacy and Accessibility pages | ✅ Complete |
-| **Routines** | | Bloom visual identity and floral background polish | ✅ Complete |
-| Routine builder — create, edit and delete routines | ✅ Complete | Header Page Controls dropdown | ✅ Complete |
-| Routine steps — add, remove, edit, reorder and complete | ✅ Complete | Login modal overlay | ✅ Complete |
-| Routine and step localStorage persistence | ✅ Complete | Public Overview and beta landing flow | ✅ Complete |
-| Demo routine data stored in `src/data/demoData.js` | ✅ Complete | **Planned Updates** | |
-| Auto-close preview and reset selected ticks after loading | ✅ Complete | External beta feedback tracking | ✅ Complete |
-| Load only selected demo routines | ✅ Complete | v2.0.0 backend planning | 🚧 Next |
-| **Focus Mode** | | | |
-| Focus v1 - add, complete and remove daily focus tasks | ✅ Complete | Future full-stack deployment | 🚧 Planned |
-| Focus task localStorage persistence | ✅ Complete | Profile settings, Backend API and database persistence | 🚧 Planned |
 
 ## Project Overview / プロジェクト概要
 
@@ -140,26 +126,21 @@ Bloomは、Webファーストの視覚的タスクシーケンサーおよびル
 
 | EN | 日本語 |
 |---|---|
-| React app structure created with Vite | Viteで作成したReactアプリ構成 |
-| Component-based folder structure | コンポーネントベースのフォルダ構成 |
 | Desktop sidebar and Mobile bottom navigation | デスクトップ用サイドバーナビゲーション/モバイル用ボトムナビゲーション |
 | Reusable Bloom button components | 再利用可能なBloomボタンコンポーネント |
 | Task card and task list components | タスクカード・タスクリストコンポーネント |
 | Emoji picker for new and edited tasks | 新規作成・編集タスク用の絵文字ピッカー |
 | Completed task styling with tick and line-through state | チェック表示と取り消し線による完了タスク表示 |
 | Selectable demo routine preview | 選択可能なデモルーティンプレビュー |
-| Select all and Clear all demo routine controls | デモルーティン用の Select all / Clear all 操作 |
 | Load selected demo routines only | 選択したデモルーティンのみ読み込み |
 | Global app context structure | グローバルアプリコンテキスト構成 |
 | Reusable UI component folder | 再利用可能なUIコンポーネントフォルダ |
 | Reusable empty state component | 再利用可能な空状態コンポーネント |
 | Empty state microcopy improvements | 空状態メッセージの改善 |
 | Public Overview landing page | 公開用Overviewランディングページ |
-| Subtle floral desktop background decoration | デスクトップ用の控えめな花・植物背景装飾 |
 | Login modal overlay | ログインモーダル表示 |
 | Public About, Privacy, and Accessibility pages | 公開用 About / Privacy / Accessibility ページ |
 | Google feedback form link for beta feedback | ベータフィードバック用Googleフォームリンク |
-| Bloom illustration on public Overview page | 公開OverviewページのBloomイラスト |
 | Header Page Controls dropdown | Header の Page Controls ドロップダウン |
 | OpenDyslexic available before login | ログイン前でも利用できる OpenDyslexic 設定 |
 | Text size controls from S to XL | S〜XL の文字サイズ設定 |
@@ -229,3 +210,6 @@ Bloomは、Webファーストの視覚的タスクシーケンサーおよびル
 - Vite
 - Vercel
 - Git/GitHub
+
+## Author
+Built by Iris408

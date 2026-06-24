@@ -3,85 +3,97 @@ import ProfileDropdown from "../auth/ProfileDropdown"
 import Seedling from "../ui/Seedling"
 import PageControlsDropdown from "./PageControlsDropdown"
 
-function Header({ setActivePage, activePage, currentUser, onLogout, onLoginClick, reduceMotion=false }) {
+function Header({
+  setActivePage,
+  activePage,
+  currentUser,
+  isDemoMode = false,
+  onLogout,
+  onLoginClick,
+  reduceMotion = false,
+}) {
   const { isDarkMode, toggleDarkMode } = useApp()
 
-function SunIcon() {
-  return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 24 24"
-      className="h-5 w-5"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.75"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <circle cx="12" cy="12" r="4" />
-      <path d="M12 2v2" />
-      <path d="M12 20v2" />
-      <path d="M4.93 4.93l1.41 1.41" />
-      <path d="M17.66 17.66l1.41 1.41" />
-      <path d="M2 12h2" />
-      <path d="M20 12h2" />
-      <path d="M4.93 19.07l1.41-1.41" />
-      <path d="M17.66 6.34l1.41-1.41" />
-    </svg>
-  )
-}
+  // EN: Demo mode users can enter the app, even without a real account.
+  // JP: デモモードのユーザーは、実際のアカウントなしでもアプリに入れます。
+  const canUseApp = Boolean(currentUser) || isDemoMode
 
-function MoonIcon() {
-  return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 24 24"
-      className="h-5 w-5"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.75"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z" />
-    </svg>
-  )
-}  
+  function SunIcon() {
+    return (
+      <svg
+        aria-hidden="true"
+        viewBox="0 0 24 24"
+        className="h-5 w-5"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.75"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <circle cx="12" cy="12" r="4" />
+        <path d="M12 2v2" />
+        <path d="M12 20v2" />
+        <path d="M4.93 4.93l1.41 1.41" />
+        <path d="M17.66 17.66l1.41 1.41" />
+        <path d="M2 12h2" />
+        <path d="M20 12h2" />
+        <path d="M4.93 19.07l1.41-1.41" />
+        <path d="M17.66 6.34l1.41-1.41" />
+      </svg>
+    )
+  }
+
+  function MoonIcon() {
+    return (
+      <svg
+        aria-hidden="true"
+        viewBox="0 0 24 24"
+        className="h-5 w-5"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.75"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z" />
+      </svg>
+    )
+  }
 
   return (
-    <header className="w-full bg-transparent dark:bg-transparent border-b border-bloom-sage/25 dark:border-white/10 px-6 py-4">
+    <header className="w-full border-b border-bloom-sage/25 bg-transparent px-6 py-4 dark:border-white/10 dark:bg-transparent">
       <div className="flex items-center justify-between gap-4">
         {/* Logo - left side */}
-        <div 
-          onClick={() => setActivePage(currentUser ? "home" : "overview")}
-          className="flex items-center gap-3 cursor-pointer">
-
-          <span className="text-3xl cursor-pointer text-bloom-forest dark:text-bloom-light">
+        <div
+          onClick={() => setActivePage(canUseApp ? "home" : "overview")}
+          className="flex cursor-pointer items-center gap-3"
+        >
+          <span className="cursor-pointer text-3xl text-bloom-forest dark:text-bloom-light">
             <Seedling variant="indigo" />
           </span>
 
           <div>
-            <h1 className="text-2xl font-bold tracking-wide cursor-pointer text-bloom-forest dark:text-bloom-light">
+            <h1 className="cursor-pointer text-2xl font-bold tracking-wide text-bloom-forest dark:text-bloom-light">
               Bloom
             </h1>
 
-            <p className="text-xs uppercase tracking-[0.18em] text-bloom-mid dark:text-blue-500/80 font-lg">
+            <p className="text-xs font-lg uppercase tracking-[0.18em] text-bloom-mid dark:text-blue-500/80">
               Calm routines
             </p>
           </div>
         </div>
 
-        {/* EN: Public navigation links for logged-out users */}
-        {/* JP: 未ログインユーザー用の公開ナビゲーションリンク */}
-        {!currentUser && (
+        {/* EN: Public navigation links for logged-out users only */}
+        {/* JP: 未ログインユーザーだけに表示する公開ナビゲーションリンク */}
+        {!canUseApp && (
           <nav className="hidden flex-1 items-center justify-center gap-7 md:flex">
             <button
               type="button"
               onClick={() => setActivePage("overview")}
               className={`text-base font-semibold transition ${
                 activePage === "overview"
-                ? "text-bloom-forest dark:text-bloom-light"
-                : "text-bloom-forest/70 hover:text-bloom-forest dark:text-bloom-light/70 dark:hover:text-bloom-light"
+                  ? "text-bloom-forest dark:text-bloom-light"
+                  : "text-bloom-forest/70 hover:text-bloom-forest dark:text-bloom-light/70 dark:hover:text-bloom-light"
               }`}
             >
               Overview
@@ -92,8 +104,8 @@ function MoonIcon() {
               onClick={() => setActivePage("about")}
               className={`text-base font-semibold transition ${
                 activePage === "about"
-                ? "text-bloom-forest dark:text-bloom-light"
-                : "text-bloom-forest/70 hover:text-bloom-forest dark:text-bloom-light/70 dark:hover:text-bloom-light"
+                  ? "text-bloom-forest dark:text-bloom-light"
+                  : "text-bloom-forest/70 hover:text-bloom-forest dark:text-bloom-light/70 dark:hover:text-bloom-light"
               }`}
             >
               About
@@ -122,9 +134,8 @@ function MoonIcon() {
           </nav>
         )}
 
-        {/* Right side — dark mode toggle + login/profile menu */}
+        {/* Right side — dark mode toggle + page controls + login/profile */}
         <div className="no-dyslexic flex shrink-0 items-center gap-3">
-          {/* Dark mode toggle */}
           <button
             type="button"
             onClick={toggleDarkMode}
@@ -134,27 +145,24 @@ function MoonIcon() {
             {isDarkMode ? <SunIcon /> : <MoonIcon />}
           </button>
 
-          {/* EN: Public and logged-in page controls */}
-          {/* JP: 公開ページとログイン後ページ用の表示設定 */}
           <PageControlsDropdown />
 
-          {/* Login button or logged-in profile profile dropdown */}
-          {currentUser ?  (
+          {currentUser ? (
             <ProfileDropdown
               currentUser={currentUser}
               setActivePage={setActivePage}
               onLogout={onLogout}
               reduceMotion={reduceMotion}
             />
-          ) : (
+          ) : !isDemoMode ? (
             <button
               type="button"
               onClick={onLoginClick}
               className="rounded-full border border-bloom-sage/30 bg-bloom-light/80 px-5 py-2.5 text-sm font-semibold text-bloom-forest transition hover:bg-bloom-mint/30 dark:bg-white/10 dark:text-bloom-light dark:hover:bg-white/20"
             >
               Log in
-            </button>  
-          )}
+            </button>
+          ) : null}
         </div>
       </div>
     </header>

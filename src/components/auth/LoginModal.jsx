@@ -1,16 +1,43 @@
 import { useState } from "react";
 import { getCurrentUser, loginUser } from "../../api/bloomApi";
 
-export default function LoginModal({ setCurrentUser, setActivePage, onClose }) {
+const demoOptions = [
+  {
+    id: "simple-day",
+    title: "Simple Day",
+    description: "A calm preview with one routine, one focus block, and gentle tasks.",
+  },
+  {
+    id: "neurodivergent-friendly",
+    title: "Neurodivergent-friendly Day",
+    description: "A softer setup with low-pressure routines and recovery-friendly wording.",
+  },
+  {
+    id: "full-preview",
+    title: "Full App Preview",
+    description: "Explore Bloom with sample routines, focus sessions, moments, and settings.",
+  },
+];
+
+export default function LoginModal({
+  setCurrentUser,
+  setActivePage,
+  onClose,
+  onStartDemo,
+}) {
+  const [modalView, setModalView] = useState("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   const [error, setError] = useState("");
+  const [notice, setNotice] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   async function handleLogin(event) {
     event.preventDefault();
 
     setError("");
+    setNotice("");
     setIsLoading(true);
 
     try {
@@ -38,6 +65,25 @@ export default function LoginModal({ setCurrentUser, setActivePage, onClose }) {
     }
   }
 
+  function handleCreateAccountClick() {
+    setError("");
+    setNotice(
+      "Account creation is planned for Bloom v2.0.0. For now, you can explore Bloom using demo mode."
+    );
+  }
+
+  function handleStartDemo(demoType) {
+    setError("");
+    setNotice("");
+
+    if (onStartDemo) {
+      onStartDemo(demoType);
+    }
+
+    setActivePage("home");
+    onClose();
+  }
+
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-bloom-forest/40 px-4 backdrop-blur-sm"
@@ -45,22 +91,22 @@ export default function LoginModal({ setCurrentUser, setActivePage, onClose }) {
       aria-modal="true"
       aria-labelledby="login-modal-title"
     >
-      <section className="w-full max-w-md rounded-3xl border border-bloom-sage/30 bg-white p-6 shadow-xl dark:border-white/10 dark:bg-dark-surface">
+      <section className="max-h-[90vh] w-full max-w-md overflow-y-auto rounded-3xl border border-bloom-sage/30 bg-white p-6 shadow-xl dark:border-white/10 dark:bg-[#343442]">
         <div className="mb-5 flex items-start justify-between gap-4">
           <div>
             <p className="mb-1 text-sm font-semibold uppercase tracking-wide text-bloom-mid">
-              Welcome back
+              Welcome to Bloom
             </p>
 
             <h2
               id="login-modal-title"
               className="text-2xl font-bold text-bloom-forest dark:text-bloom-light"
             >
-              Log in to Bloom
+              {modalView === "login" ? "Log in to Bloom" : "Try Bloom in demo mode"}
             </h2>
 
             <p className="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-300">
-              🌱 Continue with your calm routines, focus sessions, and daily tasks.
+              🌱 Continue your calm routines, focus sessions, and daily tasks.
             </p>
           </div>
 
@@ -74,51 +120,132 @@ export default function LoginModal({ setCurrentUser, setActivePage, onClose }) {
           </button>
         </div>
 
-        <form onSubmit={handleLogin}>
-          <label
-            htmlFor="email"
-            className="mb-1 block text-sm font-medium text-bloom-forest dark:text-bloom-light"
-          >
-            Email
-          </label>
+        {notice && (
+          <p className="mb-4 rounded-2xl border border-bloom-sage/30 bg-bloom-mint/20 px-4 py-3 text-sm leading-6 text-bloom-forest dark:border-white/10 dark:bg-white/10 dark:text-bloom-light">
+            {notice}
+          </p>
+        )}
 
-          <input
-            id="email"
-            type="email"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-            className="mb-4 w-full rounded-xl border border-bloom-sage/40 bg-white px-3 py-2 text-bloom-forest outline-none transition focus:border-bloom-mid focus:ring-2 focus:ring-bloom-mint/40 dark:bg-white/10 dark:text-bloom-light"
-          />
+        {error && (
+          <p className="mb-4 rounded-2xl bg-red-50 px-4 py-3 text-sm text-red-700">
+            {error}
+          </p>
+        )}
 
-          <label
-            htmlFor="password"
-            className="mb-1 block text-sm font-medium text-bloom-forest dark:text-bloom-light"
-          >
-            Password
-          </label>
+        {modalView === "login" && (
+          <>
+            <form onSubmit={handleLogin}>
+              <label
+                htmlFor="email"
+                className="mb-1 block text-sm font-medium text-bloom-forest dark:text-bloom-light"
+              >
+                Email
+              </label>
 
-          <input
-            id="password"
-            type="password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-            className="mb-4 w-full rounded-xl border border-bloom-sage/40 bg-white px-3 py-2 text-bloom-forest outline-none transition focus:border-bloom-mid focus:ring-2 focus:ring-bloom-mint/40 dark:bg-white/10 dark:text-bloom-light"
-          />
+              <input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                className="mb-4 w-full rounded-xl border border-bloom-sage/40 bg-white px-3 py-2 text-bloom-forest outline-none transition focus:border-bloom-mid focus:ring-2 focus:ring-bloom-mint/40 dark:bg-white/10 dark:text-bloom-light"
+              />
 
-          {error && (
-            <p className="mb-4 rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700">
-              {error}
-            </p>
-          )}
+              <label
+                htmlFor="password"
+                className="mb-1 block text-sm font-medium text-bloom-forest dark:text-bloom-light"
+              >
+                Password
+              </label>
 
-          <button
-            type="submit"
-            disabled={isLoading}
-            className="w-full rounded-full bg-bloom-mid/80 px-4 py-3 text-sm font-semibold text-white transition hover:bg-bloom-mid disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            {isLoading ? "Logging in..." : "Log in"}
-          </button>
-        </form>
+              <input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                className="mb-4 w-full rounded-xl border border-bloom-sage/40 bg-white px-3 py-2 text-bloom-forest outline-none transition focus:border-bloom-mid focus:ring-2 focus:ring-bloom-mint/40 dark:bg-white/10 dark:text-bloom-light"
+              />
+
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="w-full rounded-full bg-bloom-mid/80 dark:bg-px-4 py-3 text-sm font-semibold text-white transition hover:bg-bloom-forest dark:hover:bg-black/30 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {isLoading ? "Preparing your Bloom space..." : "Log in"}
+              </button>
+            </form>
+
+            <div className="my-6 border-t border-bloom-sage/30 dark:border-white/10" />
+
+            <div className="space-y-3 text-sm">
+              <div className="flex items-center justify-between gap-3">
+                <p className="text-gray-600 dark:text-gray-300">First time here?</p>
+
+                <button
+                  type="button"
+                  onClick={handleCreateAccountClick}
+                  className="rounded-full border border-bloom-sage/40 px-4 py-2 font-semibold text-bloom-forest transition hover:bg-bloom-mint/30 dark:bg-green-900/60 dark:text-bloom-light dark:hover:bg-bloom-forest/80"
+                >
+                  ꕤ Create your space
+                </button>
+              </div>
+
+              <div className="flex items-center justify-between gap-3">
+                <p className="text-gray-600 dark:text-gray-300">Not ready to commit?</p>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setError("");
+                    setNotice("");
+                    setModalView("demo");
+                  }}
+                  className="rounded-full border border-bloom-sage/40 dark:border-black/30 bg-bloom-mint/40 px-4 py-2 font-semibold text-bloom-forest transition hover:bg-bloom-mint/60 dark:bg-blue-900/40 dark:text-bloom-light dark:hover:bg-blue-600/20"
+                >
+                  ☾ Have a gentle look around
+                </button>
+              </div>
+            </div>
+          </>
+        )}
+
+        {modalView === "demo" && (
+          <>
+            <button
+              type="button"
+              onClick={() => {
+                setError("");
+                setNotice("");
+                setModalView("login");
+              }}
+              className="mb-4 text-sm font-semibold text-bloom-mid hover:text-bloom-forest dark:text-bloom-light"
+            >
+              ← Back to login
+            </button>
+
+            <div className="mb-5 rounded-2xl border border-bloom-sage/30 bg-bloom-mint/20 px-4 py-3 text-sm leading-6 text-bloom-forest dark:border-white/10 dark:bg-white/10 dark:text-bloom-light">
+              Demo mode uses sample data only. You can explore freely without creating an account.
+            </div>
+
+            <div className="space-y-3">
+              {demoOptions.map((option) => (
+                <button
+                  key={option.id}
+                  type="button"
+                  onClick={() => handleStartDemo(option.id)}
+                  className="w-full rounded-2xl border border-bloom-sage/30 bg-bloom-cream/70 p-4 text-left transition hover:border-bloom-mid hover:bg-bloom-mint/20 dark:border-white/10 dark:bg-white/5"
+                >
+                  <h3 className="mb-1 text-base font-bold text-bloom-forest dark:text-bloom-light">
+                    {option.title}
+                  </h3>
+
+                  <p className="text-sm leading-6 text-gray-600 dark:text-gray-300">
+                    {option.description}
+                  </p>
+                </button>
+              ))}
+            </div>
+          </>
+        )}
       </section>
     </div>
   );
