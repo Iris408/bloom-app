@@ -234,8 +234,8 @@ export default function LoginModal({
         {modalView === "create" && (
           <>
             <div className="mb-5 rounded-2xl border border-bloom-sage/30 bg-bloom-mint/20 px-4 py-3 text-sm leading-6 text-bloom-forest dark:border-white/10 dark:bg-white/10 dark:text-bloom-light">
-              Account creation is planned for Bloom v2.0.0. For now, you can
-              explore Bloom using demo mode.
+              Account creation is planned for Bloom v2.0.0. For now, demo mode lets
+              you explore Bloom wih sample data before accounts are fully available.
             </div>
 
             <div className="rounded-2xl border border-bloom-sage/30 bg-bloom-light/70 p-4 dark:border-white/10 dark:bg-white/5">

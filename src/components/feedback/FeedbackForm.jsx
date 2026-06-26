@@ -75,7 +75,7 @@ function FeedbackForm() {
         </h3>
 
         <p className="mx-auto mt-3 max-w-xl text-sm leading-7 text-bloom-forest/75 dark:text-gray-300">
-          Your feedback has been saved locally for this beta version. Later,
+          Your feedback has been saved locally in this browser for the beta version. Later,
           Bloom can connect this form to a backend or feedback inbox.
         </p>
 
@@ -197,7 +197,7 @@ function FeedbackForm() {
 
       <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-xs leading-5 text-bloom-forest/60 dark:text-gray-400">
-          Frontend beta version: feedback is saved locally for now.
+          Frontend beta version: feedback is saved locally in this browser for now.
         </p>
 
         <button

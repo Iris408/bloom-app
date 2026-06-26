@@ -103,9 +103,13 @@ Bloom’s public beta experience has been polished with a redesigned landing pag
 
 Feedback is currently stored locally with localStorage. Full account creation, backend-connected feedback, saved user data, and deeper onboarding are planned for later versions.
 
+Small beta polish is focused on stabilising the public landing flow, demo mode, feedback form, mobile layout, and public trust pages before returning to the remaining Bloom v2.0.0 work.
+
 Bloom の公開ベータ体験を改善しました。新しいランディングページ、CTA ボタンから正しいモーダル画面へ移動する導線、About / Privacy / Accessibility ページの更新、フロントエンドのベータフィードバックフォーム、モバイルレイアウトの改善、そしてフッターリンクをクリックしたときに各ページの一番上から表示されるナビゲーションを追加しました。
 
 現在、フィードバックは localStorage を使ってブラウザ内にローカル保存されます。完全なアカウント作成、バックエンド連携のフィードバック保存、ユーザーデータの保存、より深いオンボーディング機能は、今後のバージョンで追加予定です。
+
+小さなベータ版の仕上げでは、Bloom v2.0.0 の残り作業に戻る前に、公開ランディングページ、デモモード、フィードバックフォーム、モバイルレイアウト、公開向けの信頼性ページを安定させることに集中しています。
 
 ## Project Overview / プロジェクト概要
 
