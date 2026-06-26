@@ -83,12 +83,12 @@ function SlidersIcon() {
 
 function SectionTitle({ children }) {
   return (
-    <div className="mb-6 flex items-center justify-center gap-2 text-center">
-      <span className="text-xl text-bloom-mid">
+    <div className="mb-5 flex items-center justify-center gap-2 text-center sm:mb-6">
+      <span className="text-lg text-bloom-mid sm:text-xl">
         <Seedling variant="indigo" />
       </span>
 
-      <h2 className="text-2xl font-bold text-bloom-forest dark:text-bloom-light">
+      <h2 className="text-xl font-bold leading-tight text-bloom-forest dark:text-bloom-light sm:text-2xl">
         {children}
       </h2>
     </div>
@@ -142,8 +142,8 @@ function FeatureCard({ icon, title, text, tone = "sage" }) {
 
 function MiniStepCard({ icon, title }) {
   return (
-    <div className="flex min-h-[92px] flex-col items-center justify-center rounded-2xl border border-bloom-sage/20 bg-bloom-light/60 p-3 text-center text-xs text-bloom-forest dark:border-white/10 dark:bg-white/5 dark:text-bloom-light">
-      <span className="mb-2 flex h-8 w-8 items-center justify-center text-bloom-mid">
+    <div className="flex min-h-[64px] items-center gap-3 rounded-2xl border border-bloom-sage/20 bg-bloom-light/60 p-3 text-left text-xs text-bloom-forest dark:border-white/10 dark:bg-white/5 dark:text-bloom-light sm:min-h-[92px] sm:flex-col sm:justify-center sm:text-center">
+      <span className="flex h-8 w-8 shrink-0 items-center justify-center text-bloom-mid sm:mb-2">
         {icon}
       </span>
 
@@ -167,7 +167,7 @@ function PathCard({ tone = "green", title, steps, buttonText, onClick }) {
         {title}
       </h3>
 
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
         {steps.map((step) => (
           <MiniStepCard key={step.title} icon={step.icon} title={step.title} />
         ))}
@@ -238,32 +238,33 @@ function Overview({
   onTryDemoClick,
   onCreateAccountClick,
 }) {
+
   return (
-    <div className="relative mx-auto flex w-full max-w-7xl flex-col gap-12 overflow-hidden px-4 pb-16 pt-6 text-bloom-forest dark:text-bloom-light sm:px-6 lg:px-8">
+    <div className="relative mx-auto flex w-full max-w-7xl flex-col gap-10 overflow-hidden px-4 pb-12 pt-4 text-bloom-forest dark:text-bloom-light sm:gap-12 sm:px-6 sm:pb-16 sm:pt-6 lg:px-8">
       {/* Decorative botanical background hints */}
 
       {/* HERO */}
-      <section className="grid grid-cols-1 items-center gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(360px,0.95fr)]">
-        <div className="max-w-3xl">
+      <section className="grid grid-cols-1 items-center gap-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(360px,0.95fr)] lg:gap-10">
+        <div className="max-w-3xl text-center sm:text-left">
           <p className="mb-4 text-xs font-bold uppercase tracking-[0.24em] text-bloom-mid dark:text-bloom-sage">
             Welcome to Bloom
           </p>
 
-          <h1 className="text-4xl font-bold leading-[1.08] text-bloom-forest dark:text-bloom-light sm:text-5xl lg:text-6xl">
+          <h1 className="text-3xl font-bold leading-tight text-bloom-forest dark:text-bloom-light sm:text-5xl sm:leading-[1.08] lg:text-6xl">
             Bloom helps you build gentle routines, focus sessions, and daily
             steps without pressure.
           </h1>
 
-          <p className="mt-6 max-w-2xl text-base leading-8 text-bloom-forest/75 dark:text-gray-300">
+          <p className="mx-auto mt-6 max-w-2xl text-sm leading-7 text-bloom-forest/75 dark:text-gray-300 sm:mx-0 sm:mt-6 sm:text-base sm:leading-8">
             A calm, neurodivergent-friendly app for everyday wellbeing —
             designed to support you, your routines, and your way.
           </p>
 
-          <div className="mt-8 grid grid-cols-1 gap-3 sm:max-w-2xl sm:grid-cols-3">
+          <div className="mx-auto mt-6 flex max-w-sm flex-col gap-3 sm:mx-0 sm:mt-8 sm:max-w-2xl sm:flex-row">
             <button
               type="button"
               onClick={onTryDemoClick}
-              className="rounded-2xl bg-bloom-forest px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-bloom-mid"
+              className="w-full rounded-2xl bg-bloom-forest px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-bloom-mid sm:flex-1"
             >
               Try demo
             </button>
@@ -271,7 +272,7 @@ function Overview({
             <button
               type="button"
               onClick={onCreateAccountClick}
-              className="rounded-2xl bg-bloom-mid px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-bloom-forest"
+              className="w-full rounded-2xl bg-bloom-mid px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-bloom-forest sm:flex-1"
             >
               Create account
             </button>
@@ -279,13 +280,13 @@ function Overview({
             <button
               type="button"
               onClick={onLoginClick}
-              className="rounded-2xl border border-bloom-sage/40 bg-white/70 px-6 py-3 text-sm font-semibold text-bloom-forest shadow-sm transition hover:-translate-y-0.5 hover:bg-bloom-mint/25 dark:border-white/10 dark:bg-white/10 dark:hover:bg-bloom-mint/70 dark:text-bloom-light"
+              className="w-full rounded-2xl border border-bloom-sage/40 bg-white/70 px-6 py-3 text-sm font-semibold text-bloom-forest shadow-sm transition hover:-translate-y-0.5 hover:bg-bloom-mint/25 dark:border-white/10 dark:bg-white/10 dark:hover:bg-bloom-mint/70 dark:text-bloom-light sm:flex-1"
             >
               Log in
             </button>
           </div>
 
-          <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-3">
+          <div className="mx-auto mt-6 grid max-w-sm grid-cols-1 gap-3 sm:mx-0 sm:mt-8 sm:max-w-none sm:grid-cols-3">
             <TrustBadge
               title="Made for calm"
               text="Low pressure, high support"
@@ -307,12 +308,12 @@ function Overview({
         </div>
 
         {/* Hero app preview */}
-        <div className="relative mx-auto w-full max-w-md lg:max-w-lg">
+        <div className="relative mx-auto w-full max-w-[22rem] sm:max-w-md lg:max-w-lg">
 
-          <div className="relative rotate-0 rounded-[2rem] border border-bloom-sage/25 bg-white/80 p-5 shadow-xl dark:border-white/10 dark:bg-white/10 sm:rotate-4 sm:p-7">
+          <div className="relative rotate-0 rounded-[1.75rem] border border-bloom-sage/25 bg-white/80 p-5 shadow-xl dark:border-white/10 dark:bg-white/10 sm:rotate-2 sm:rounded-[2rem] sm:p-6">
             <div className="mb-6 flex items-start justify-between gap-4">
               <div>
-                <p className="text-2xl font-bold text-bloom-forest dark:text-bloom-light">
+                <p className="text-xl font-bold text-bloom-forest dark:text-bloom-light sm:text-2xl">
                   Good morning
                 </p>
 
@@ -338,7 +339,7 @@ function Overview({
               ].map(([title, subtitle, done]) => (
                 <div
                   key={title}
-                  className="rounded-2xl border border-bloom-sage/20 bg-white/85 p-4 dark:border-white/10 dark:bg-white/5"
+                  className="rounded-2xl border border-bloom-sage/20 bg-white/85 p-3 dark:border-white/10 dark:bg-white/5 sm:p-4"
                 >
                   <div className="flex items-center justify-between gap-3">
                     <div>
@@ -408,7 +409,7 @@ function Overview({
       </section>
 
       {/* 3 WAYS */}
-      <section className="rounded-[2rem] border border-bloom-sage/25 bg-white/45 p-5 shadow-sm backdrop-blur-sm dark:border-white/10 dark:bg-white/5">
+      <section className="rounded-[1.75rem] border border-bloom-sage/25 bg-white/45 p-4 shadow-sm dark:border-white/10 dark:bg-white/5 sm:rounded-[2rem] sm:p-5">
         <SectionTitle>3 ways to get started</SectionTitle>
 
         <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
@@ -449,7 +450,7 @@ function Overview({
       </section>
 
       {/* DEMO MODE */}
-      <section className="rounded-[2rem] border border-bloom-sage/25 bg-white/45 p-5 shadow-sm backdrop-blur-sm dark:border-white/10 dark:bg-white/5">
+      <section className="rounded-[1.75rem] border border-bloom-sage/25 bg-white/45 p-4 shadow-sm dark:border-white/10 dark:bg-white/5 sm:rounded-[2rem] sm:p-5">
         <div className="mb-6 text-center">
           <h2 className="text-2xl font-bold text-bloom-forest dark:text-bloom-light">
             Explore Bloom with demo mode
@@ -498,7 +499,7 @@ function Overview({
       </section>
 
       {/* ACCESSIBILITY */}
-      <section className="rounded-[2rem] border border-bloom-sage/25 bg-white/45 p-5 shadow-sm backdrop-blur-sm dark:border-white/10 dark:bg-white/5">
+      <section className="rounded-[1.75rem] border border-bloom-sage/25 bg-white/45 p-4 shadow-sm dark:border-white/10 dark:bg-white/5 sm:rounded-[2rem] sm:p-5">
         <SectionTitle>Accessibility & trust</SectionTitle>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">

@@ -1,37 +1,47 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getCurrentUser, loginUser } from "../../api/bloomApi";
 
 const demoOptions = [
   {
     id: "simple-day",
     title: "Simple Day",
-    description: "A calm preview with one routine, one focus block, and gentle tasks.",
+    description:
+      "A calm preview with one routine, one focus block, and gentle tasks.",
   },
   {
     id: "neurodivergent-friendly",
     title: "Neurodivergent-friendly Day",
-    description: "A softer setup with low-pressure routines and recovery-friendly wording.",
+    description:
+      "A softer setup with low-pressure routines and recovery-friendly wording.",
   },
   {
     id: "full-preview",
     title: "Full App Preview",
-    description: "Explore Bloom with sample routines, focus sessions, moments, and settings.",
+    description:
+      "Explore Bloom with sample routines, focus sessions, moments, and settings.",
   },
 ];
 
 export default function LoginModal({
+  initialView = "login",
   setCurrentUser,
   setActivePage,
   onClose,
   onStartDemo,
 }) {
-  const [modalView, setModalView] = useState("login");
+  const [modalView, setModalView] = useState(initialView);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    setModalView(initialView);
+    setError("");
+    setNotice("");
+  }, [initialView]);
 
   async function handleLogin(event) {
     event.preventDefault();
@@ -65,11 +75,22 @@ export default function LoginModal({
     }
   }
 
-  function handleCreateAccountClick() {
+  function handleOpenCreateAccount() {
     setError("");
-    setNotice(
-      "Account creation is planned for Bloom v2.0.0. For now, you can explore Bloom using demo mode."
-    );
+    setNotice("");
+    setModalView("create");
+  }
+
+  function handleOpenDemo() {
+    setError("");
+    setNotice("");
+    setModalView("demo");
+  }
+
+  function handleOpenLogin() {
+    setError("");
+    setNotice("");
+    setModalView("login");
   }
 
   function handleStartDemo(demoType) {
@@ -102,7 +123,9 @@ export default function LoginModal({
               id="login-modal-title"
               className="text-2xl font-bold text-bloom-forest dark:text-bloom-light"
             >
-              {modalView === "login" ? "Log in to Bloom" : "Try Bloom in demo mode"}
+              {modalView === "login" && "Log in to Bloom"}
+              {modalView === "create" && "Create your Bloom space"}
+              {modalView === "demo" && "Try Bloom in demo mode"}
             </h2>
 
             <p className="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-300">
@@ -168,7 +191,7 @@ export default function LoginModal({
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full rounded-full bg-bloom-mid/80 dark:bg-px-4 py-3 text-sm font-semibold text-white transition hover:bg-bloom-forest dark:hover:bg-black/30 disabled:cursor-not-allowed disabled:opacity-60"
+                className="w-full rounded-full bg-bloom-mid px-4 py-3 text-sm font-semibold text-white transition hover:bg-bloom-forest disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {isLoading ? "Preparing your Bloom space..." : "Log in"}
               </button>
@@ -178,11 +201,13 @@ export default function LoginModal({
 
             <div className="space-y-3 text-sm">
               <div className="flex items-center justify-between gap-3">
-                <p className="text-gray-600 dark:text-gray-300">First time here?</p>
+                <p className="text-gray-600 dark:text-gray-300">
+                  First time here?
+                </p>
 
                 <button
                   type="button"
-                  onClick={handleCreateAccountClick}
+                  onClick={handleOpenCreateAccount}
                   className="rounded-full border border-bloom-sage/40 px-4 py-2 font-semibold text-bloom-forest transition hover:bg-bloom-mint/30 dark:bg-green-900/60 dark:text-bloom-light dark:hover:bg-bloom-forest/80"
                 >
                   ꕤ Create your space
@@ -190,16 +215,14 @@ export default function LoginModal({
               </div>
 
               <div className="flex items-center justify-between gap-3">
-                <p className="text-gray-600 dark:text-gray-300">Not ready to commit?</p>
+                <p className="text-gray-600 dark:text-gray-300">
+                  Not ready to commit?
+                </p>
 
                 <button
                   type="button"
-                  onClick={() => {
-                    setError("");
-                    setNotice("");
-                    setModalView("demo");
-                  }}
-                  className="rounded-full border border-bloom-sage/40 dark:border-black/30 bg-bloom-mint/40 px-4 py-2 font-semibold text-bloom-forest transition hover:bg-bloom-mint/60 dark:bg-blue-900/40 dark:text-bloom-light dark:hover:bg-blue-600/20"
+                  onClick={handleOpenDemo}
+                  className="rounded-full border border-bloom-sage/40 bg-bloom-mint/40 px-4 py-2 font-semibold text-bloom-forest transition hover:bg-bloom-mint/60 dark:border-black/30 dark:bg-blue-900/40 dark:text-bloom-light dark:hover:bg-blue-600/20"
                 >
                   ☾ Have a gentle look around
                 </button>
@@ -208,22 +231,59 @@ export default function LoginModal({
           </>
         )}
 
+        {modalView === "create" && (
+          <>
+            <div className="mb-5 rounded-2xl border border-bloom-sage/30 bg-bloom-mint/20 px-4 py-3 text-sm leading-6 text-bloom-forest dark:border-white/10 dark:bg-white/10 dark:text-bloom-light">
+              Account creation is planned for Bloom v2.0.0. For now, you can
+              explore Bloom using demo mode.
+            </div>
+
+            <div className="rounded-2xl border border-bloom-sage/30 bg-bloom-light/70 p-4 dark:border-white/10 dark:bg-white/5">
+              <p className="text-sm font-bold text-bloom-forest dark:text-bloom-light">
+                Coming next
+              </p>
+
+              <ul className="mt-3 space-y-2 text-sm leading-6 text-gray-600 dark:text-gray-300">
+                <li>• Create a Bloom account</li>
+                <li>• Save routines and preferences</li>
+                <li>• Complete calm onboarding</li>
+                <li>• Keep progress across devices</li>
+              </ul>
+            </div>
+
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+              <button
+                type="button"
+                onClick={handleOpenDemo}
+                className="rounded-full bg-bloom-mid px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-bloom-forest"
+              >
+                Try demo instead
+              </button>
+
+              <button
+                type="button"
+                onClick={handleOpenLogin}
+                className="rounded-full border border-bloom-sage/40 px-5 py-2.5 text-sm font-semibold text-bloom-forest transition hover:bg-bloom-mint/30 dark:text-bloom-light dark:hover:bg-white/10"
+              >
+                Back to login
+              </button>
+            </div>
+          </>
+        )}
+
         {modalView === "demo" && (
           <>
             <button
               type="button"
-              onClick={() => {
-                setError("");
-                setNotice("");
-                setModalView("login");
-              }}
+              onClick={handleOpenLogin}
               className="mb-4 text-sm font-semibold text-bloom-mid hover:text-bloom-forest dark:text-bloom-light"
             >
               ← Back to login
             </button>
 
             <div className="mb-5 rounded-2xl border border-bloom-sage/30 bg-bloom-mint/20 px-4 py-3 text-sm leading-6 text-bloom-forest dark:border-white/10 dark:bg-white/10 dark:text-bloom-light">
-              Demo mode uses sample data only. You can explore freely without creating an account.
+              Demo mode uses sample data only. You can explore freely without
+              creating an account.
             </div>
 
             <div className="space-y-3">
@@ -232,7 +292,7 @@ export default function LoginModal({
                   key={option.id}
                   type="button"
                   onClick={() => handleStartDemo(option.id)}
-                  className="w-full rounded-2xl border border-bloom-sage/30 bg-bloom-cream/70 p-4 text-left transition hover:border-bloom-mid hover:bg-bloom-mint/20 dark:border-white/10 dark:bg-white/5"
+                  className="w-full rounded-2xl border border-bloom-sage/30 bg-bloom-light/70 p-4 text-left transition hover:border-bloom-mid hover:bg-bloom-mint/20 dark:border-white/10 dark:bg-white/5"
                 >
                   <h3 className="mb-1 text-base font-bold text-bloom-forest dark:text-bloom-light">
                     {option.title}

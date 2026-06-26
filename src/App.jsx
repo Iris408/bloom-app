@@ -39,6 +39,8 @@ function App() {
   // JP: デモモードを終了する前に表示する確認ポップアップを管理します。
   const [isExitDemoConfirmOpen, setIsExitDemoConfirmOpen] = useState(false);
 
+  const [loginInitialView, setLoginInitialView] =useState("login")
+
   const { isDarkMode } = useApp();
 
   const protectedPages = [
@@ -141,6 +143,11 @@ function App() {
     setActivePage(page);
   }
 
+  function openLoginModal(initialView = "login") {
+    setLoginInitialView(initialView)
+    setIsLoginOpen(true)
+  }
+
   function renderPage() {
     // EN: Public information pages are available to all users.
     // JP: 公開情報ページはすべてのユーザーが閲覧できます。
@@ -154,9 +161,9 @@ function App() {
       return (
         <Overview 
           setActivePage={handlePageChange} 
-          onLoginClick={() => setIsLoginOpen(true)}
-          onTryDemoClick={() => setIsLoginOpen(true)}
-          onCreateAccountClick={() => setIsLoginOpen(true)}
+          onLoginClick={() => openLoginModal("login")}
+          onTryDemoClick={() => openLoginModal("demo")}
+          onCreateAccountClick={() => openLoginModal("create")}
         />
       );
     }
@@ -184,16 +191,16 @@ function App() {
 
   return (
     <>
-      {/* EN: Rendered outside the wrapper so overflow-x-hidden and any future */}
-      {/* EN: transforms on the wrapper cannot clip or reposition fixed children. */}
-      {/* JP: overflow-x-hidden や将来の transform によるクリッピングを防ぐため、 */}
-      {/* JP: ラッパー外に配置します。 */}
-      <BloomBackgroundDecor />
+
+      {/* EN: Background decoration is clipped to the viewport to prevent mobile side-scroll. */}
+      {/* JP: モバイルで横スクロールが出ないように、背景装飾を画面幅内に収めます。 */}
+      <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
+        <BloomBackgroundDecor />
+      </div>
 
       <div
-        className={`relative min-h-screen flex flex-col overflow-x-hidden transition-colors duration-300 ${bgClass}`}
+        className={`relative z-10 min-h-screen w-full max-w-full flex flex-col overflow-x-hidden transition-colors duration-300 ${bgClass}`}
       >
-        <div className="relative z-10 flex min-h-screen flex-col">
           <Header
             setActivePage={handlePageChange}
             activePage={activePage}
@@ -201,7 +208,7 @@ function App() {
             isDemoMode={isDemoMode}
             demoType={demoType}
             onLogout={handleLogout}
-            onLoginClick={() => setIsLoginOpen(true)}
+            onLoginClick={() => openLoginModal("login")}
             onExitDemoClick={() => setIsExitDemoConfirmOpen(true)}
             onCreateAccountClick={handleCreateAccountFromDemo}
           />
@@ -223,7 +230,7 @@ function App() {
               />
             )}
 
-            <main className="flex-1 flex flex-col px-4 py-8 pb-28 md:pb-10 overflow-x-hidden">
+            <main className="min-w-0 w-full max-w-full flex-1 overflow-x-hidden">
               {isCheckingAuth ? (
                 // EN: Centred loading indicator shown while the auth token is verified.
                 // JP: 認証トークンの確認中に表示される中央寄せのローディング表示です。
@@ -241,12 +248,11 @@ function App() {
           {!canUseApp && 
             <Footer
               setActivePage={handlePageChange}
-              onLoginClick={() => setIsLoginOpen(true)}
-              onTryDemoClick={() => setIsLoginOpen(true)}
-              onCreateAccountClick={() => setIsLoginOpen(true)}
+              onLoginClick={() => openLoginModal("login")}
+              onTryDemoClick={() => openLoginModal("demo")}
+              onCreateAccountClick={() => openLoginModal("create")}
             />}
         </div>
-      </div>
 
       {/* EN: BottomNav and LoginModal are fixed-position elements rendered outside */}
       {/* EN: the wrapper to guarantee they are never clipped or stacking-context trapped. */}
@@ -258,6 +264,7 @@ function App() {
 
       {isLoginOpen && !canUseApp && (
         <LoginModal
+          initialView={loginInitialView}
           setCurrentUser={setCurrentUser}
           setActivePage={setActivePage}
           onClose={() => setIsLoginOpen(false)}
