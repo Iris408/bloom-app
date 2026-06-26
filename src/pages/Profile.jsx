@@ -1,7 +1,8 @@
+import { useEffect, useMemo, useState } from "react"
+
 import FontSizeSlider from "../components/ui/FontSizeSlider"
 import DyslexicFontToggle from "../components/ui/DyslexicFontToggle"
 import ReduceMotionToggle from "../components/ui/ReduceMotionToggle"
-import BloomReminder from "../components/ui/BloomReminder"
 
 function Profile() {
   return (
@@ -37,11 +38,31 @@ function Profile() {
         </div>
       </section>
 
-      <BloomReminder
-        reminder="Your settings are yours to change — anytime, no questions asked."
-        phaseTitle="Profile v1"
-        phaseDescription="This page will later manage accessibility preferences, user modes, and personalised routine settings."
-      />
+      <section className="w-full max-w-full overflow-hidden rounded-2xl border border-bloom-sage/25 bg-white/55 p-5 shadow-sm dark:border-white/10 dark:bg-white/5">
+        <p className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-bloom-mid dark:text-bloom-sage">
+          Bloom reminder
+        </p>
+
+        <blockquote className="break-words text-base font-semibold leading-relaxed text-bloom-forest dark:text-bloom-light">
+          “Your profile isn't a scorecard."
+          "It's a space that adapts to you — not the other way around.”
+        </blockquote>
+
+        <div className="mt-5 rounded-2xl bg-bloom-forest p-5 text-bloom-light dark:bg-dark-surface">
+          <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-bloom-mint dark:text-bloom-mid">
+            Current phase
+          </p>
+
+          <h3 className="mb-2 break-words text-lg font-bold text-bloom-light">
+            Profile v2.0.0
+          </h3>
+
+          <p className="break-words text-sm leading-relaxed text-bloom-light/90">
+            Profile is now separate from Settings and focused on identity, Bloom
+            preferences, goals, and avatar choices.
+          </p>
+        </div>
+      </section>
     </div>
   )
 }

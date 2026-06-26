@@ -204,7 +204,16 @@ function App() {
     if (activePage === "focus") return <Focus />;
     if (activePage === "progress") return <Progress />;
     if (activePage === "moments") return <Moments />;
-    if (activePage === "profile") return <Profile />;
+    if (activePage === "profile") {
+      return (
+        <Profile
+          currentUser={currentUser}
+          isDemoMode={isDemoMode}
+          demoType={demoType}
+          onLogout={handleLogout}
+        />
+      );
+    }
 
     return <Home />;
   }

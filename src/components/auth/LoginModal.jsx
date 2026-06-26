@@ -1,434 +1,307 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react"
 import { getCurrentUser, loginUser, registerUser } from "../../api/bloomApi";
 
-const demoOptions = [
-  {
-    id: "simple-day",
-    title: "Simple Day",
-    description:
-      "A calm preview with one routine, one focus block, and gentle tasks.",
-  },
-  {
-    id: "neurodivergent-friendly",
-    title: "Neurodivergent-friendly Day",
-    description:
-      "A softer setup with low-pressure routines and recovery-friendly wording.",
-  },
-  {
-    id: "full-preview",
-    title: "Full App Preview",
-    description:
-      "Explore Bloom with sample routines, focus sessions, moments, and settings.",
-  },
-];
+const avatarOptions = ["🌱", "🌿", "ꕤ", "☾", "✦", "♡"]
 
-export default function LoginModal({
-  initialView = "login",
-  setCurrentUser,
-  setActivePage,
-  onClose,
-  onStartDemo,
-  onAuthSuccess,
+const defaultGoals = [
+  "Build calmer daily routines",
+  "Make focus feel less overwhelming",
+  "Track progress without pressure",
+]
+
+function getStoredValue(key, fallback) {
+  try {
+    return localStorage.getItem(key) || fallback
+  } catch {
+    return fallback
+  }
+}
+
+function getStoredJson(key, fallback) {
+  try {
+    const value = localStorage.getItem(key)
+    return value ? JSON.parse(value) : fallback
+  } catch {
+    return fallback
+  }
+}
+
+function IconCircle({ children }) {
+  return (
+    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-bloom-light text-base text-bloom-forest dark:bg-white/10 dark:text-bloom-light">
+      {children}
+    </span>
+  )
+}
+
+function ProfileRow({ icon, title, description, rightText }) {
+  return (
+    <div className="flex items-center gap-4 rounded-2xl bg-white/70 px-4 py-4 shadow-sm dark:bg-white/5">
+      <IconCircle>{icon}</IconCircle>
+
+      <div className="min-w-0 flex-1">
+        <p className="text-sm font-bold text-bloom-forest dark:text-bloom-light">
+          {title}
+        </p>
+
+        {description && (
+          <p className="mt-1 break-words text-xs leading-5 text-bloom-forest/65 dark:text-gray-300">
+            {description}
+          </p>
+        )}
+      </div>
+
+      {rightText && (
+        <p className="shrink-0 text-xs font-semibold text-bloom-forest/60 dark:text-gray-300">
+          {rightText}
+        </p>
+      )}
+    </div>
+  )
+}
+
+function ProfileSection({ label, children }) {
+  return (
+    <section className="flex flex-col gap-3">
+      <p className="px-1 text-xs font-bold uppercase tracking-[0.2em] text-bloom-mid dark:text-bloom-sage">
+        {label}
+      </p>
+
+      <div className="rounded-[1.75rem] border border-bloom-sage/25 bg-white/45 p-3 shadow-sm dark:border-white/10 dark:bg-white/5 sm:p-4">
+        <div className="flex flex-col gap-3">{children}</div>
+      </div>
+    </section>
+  )
+}
+
+function Profile({
+  currentUser = null,
+  isDemoMode = false,
+  demoType = null,
+  onLogout,
 }) {
-  const [modalView, setModalView] = useState(initialView);
+  const [nickname, setNickname] = useState(() =>
+    getStoredValue("bloom-profile-nickname", "")
+  )
+  const [selectedAvatar, setSelectedAvatar] = useState(() =>
+    getStoredValue("bloom-profile-avatar", "🌱")
+  )
+  const [goals, setGoals] = useState(() =>
+    getStoredJson("bloom-profile-goals", defaultGoals)
+  )
+  const [newGoal, setNewGoal] = useState("")
 
-  const [loginEmail, setLoginEmail] = useState("");
-  const [loginPassword, setLoginPassword] = useState("");
+  const username = currentUser?.username || (isDemoMode ? "Demo user" : "Bloom user")
+  const email = currentUser?.email || (isDemoMode ? "demo@bloom.local" : "Not connected")
+  const displayName = nickname.trim() || username
 
-  const [username, setUsername] = useState("");
-  const [createEmail, setCreateEmail] = useState("");
-  const [createPassword, setCreatePassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-
-  const [error, setError] = useState("");
-  const [notice, setNotice] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const demoLabel = useMemo(() => {
+    if (demoType === "simple-day") return "Simple Day"
+    if (demoType === "neurodivergent-friendly") return "Neurodivergent-friendly Day"
+    if (demoType === "full-preview") return "Full App Preview"
+    return "Demo mode"
+  }, [demoType])
 
   useEffect(() => {
-    setModalView(initialView);
-    setError("");
-    setNotice("");
-    setIsLoading(false);
-  }, [initialView]);
+    localStorage.setItem("bloom-profile-nickname", nickname)
+  }, [nickname])
 
-  function completeAuth(user) {
-    if (onAuthSuccess) {
-      onAuthSuccess(user);
-      return;
-    }
+  useEffect(() => {
+    localStorage.setItem("bloom-profile-avatar", selectedAvatar)
+  }, [selectedAvatar])
 
-    setCurrentUser(user);
-    setActivePage("home");
-    onClose();
+  useEffect(() => {
+    localStorage.setItem("bloom-profile-goals", JSON.stringify(goals))
+  }, [goals])
+
+  function handleAddGoal(event) {
+    event.preventDefault()
+
+    const cleanGoal = newGoal.trim()
+
+    if (!cleanGoal) return
+
+    setGoals((currentGoals) => [...currentGoals, cleanGoal])
+    setNewGoal("")
   }
 
-  async function handleLogin(event) {
-    event.preventDefault();
-
-    setError("");
-    setNotice("");
-    setIsLoading(true);
-
-    try {
-      await loginUser({
-        email: loginEmail.trim(),
-        password: loginPassword,
-      });
-
-      const user = await getCurrentUser();
-
-      completeAuth(user);
-    } catch (error) {
-      setError(error.message || "Login failed. Please check your email and password.");
-    } finally {
-      setIsLoading(false);
-    }
-  }
-
-  async function handleCreateAccount(event) {
-    event.preventDefault();
-
-    setError("");
-    setNotice("");
-
-    const cleanUsername = username.trim();
-    const cleanEmail = createEmail.trim();
-
-    if (!cleanUsername || !cleanEmail || !createPassword) {
-      setError("Please complete all required fields.");
-      return;
-    }
-
-    if (createPassword.length < 6) {
-      setError("Password must be at least 6 characters.");
-      return;
-    }
-
-    if (createPassword !== confirmPassword) {
-      setError("Passwords do not match.");
-      return;
-    }
-
-    setIsLoading(true);
-
-    try {
-      await registerUser({
-        username: cleanUsername,
-        email: cleanEmail,
-        password: createPassword,
-      });
-
-      await loginUser({
-        email: cleanEmail,
-        password: createPassword,
-      });
-
-      const user = await getCurrentUser();
-
-      setNotice("Account created. Opening your Bloom space...");
-      completeAuth(user);
-    } catch (error) {
-      setError(error.message || "Could not create your Bloom account.");
-    } finally {
-      setIsLoading(false);
-    }
-  }
-
-  function handleOpenCreateAccount() {
-    setError("");
-    setNotice("");
-    setModalView("create");
-  }
-
-  function handleOpenDemo() {
-    setError("");
-    setNotice("");
-    setModalView("demo");
-  }
-
-  function handleOpenLogin() {
-    setError("");
-    setNotice("");
-    setModalView("login");
-  }
-
-  function handleStartDemo(demoType) {
-    setError("");
-    setNotice("");
-
-    if (onStartDemo) {
-      onStartDemo(demoType);
-    }
-
-    setActivePage("home");
-    onClose();
+  function handleRemoveGoal(goalToRemove) {
+    setGoals((currentGoals) =>
+      currentGoals.filter((goal) => goal !== goalToRemove)
+    )
   }
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-end justify-center bg-bloom-forest/40 px-3 pb-3 pt-16 backdrop-blur-sm sm:items-center sm:px-4 sm:pb-0 sm:pt-0"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="login-modal-title"
-    >
-      <section className="max-h-[86vh] w-full max-w-md overflow-y-auto rounded-[1.75rem] border border-bloom-sage/30 bg-white p-5 shadow-xl dark:border-white/10 dark:bg-[#343442] sm:max-h-[90vh] sm:rounded-3xl sm:p-6">
-        <div className="mb-5 flex items-start justify-between gap-4">
-          <div>
-            <p className="mb-1 text-sm font-semibold uppercase tracking-wide text-bloom-mid">
-              Welcome to Bloom
-            </p>
+    <div className="mx-auto flex w-full min-w-0 max-w-3xl flex-col gap-6 overflow-x-hidden pb-28 sm:gap-8 sm:pb-0">
+      <section className="rounded-[2rem] border border-bloom-sage/25 bg-white/55 p-5 text-center shadow-sm dark:border-white/10 dark:bg-white/5 sm:p-7">
+        <p className="mb-4 text-xs font-bold uppercase tracking-[0.22em] text-bloom-mid dark:text-bloom-sage">
+          Profile
+        </p>
 
-            <h2
-              id="login-modal-title"
-              className="text-xl font-bold leading-tight text-bloom-forest dark:text-bloom-light sm:text-2xl"
-            >
-              {modalView === "login" && "Log in to Bloom"}
-              {modalView === "create" && "Create your Bloom space"}
-              {modalView === "demo" && "Try Bloom in demo mode"}
-            </h2>
-
-            <p className="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-300">
-              🌱 Continue your calm routines, focus sessions, and daily tasks.
-            </p>
-          </div>
-
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label="Close login modal"
-            className="shrink-0 rounded-full border border-bloom-sage/30 px-3 py-1 text-sm font-bold text-bloom-forest transition hover:bg-bloom-mint/30 dark:text-bloom-light dark:hover:bg-white/10"
-          >
-            x
-          </button>
+        <div className="mx-auto flex h-28 w-28 items-center justify-center rounded-full border-4 border-white bg-bloom-forest text-5xl text-bloom-light shadow-md dark:border-white/10">
+          {selectedAvatar}
         </div>
 
-        {notice && (
-          <p className="mb-4 rounded-2xl border border-bloom-sage/30 bg-bloom-mint/20 px-4 py-3 text-sm leading-6 text-bloom-forest dark:border-white/10 dark:bg-white/10 dark:text-bloom-light">
-            {notice}
-          </p>
-        )}
+        <h2 className="mt-5 break-words text-3xl font-bold text-bloom-forest dark:text-bloom-light">
+          {displayName}
+        </h2>
 
-        {error && (
-          <p className="mb-4 rounded-2xl bg-red-50 px-4 py-3 text-sm text-red-700">
-            {error}
-          </p>
-        )}
+        <p className="mt-1 break-words text-sm text-bloom-forest/65 dark:text-gray-300">
+          {email}
+        </p>
 
-        {modalView === "login" && (
-          <>
-            <form onSubmit={handleLogin}>
-              <label
-                htmlFor="login-email"
-                className="mb-1 block text-sm font-medium text-bloom-forest dark:text-bloom-light"
-              >
-                Email
-              </label>
-
-              <input
-                id="login-email"
-                type="email"
-                value={loginEmail}
-                onChange={(event) => setLoginEmail(event.target.value)}
-                required
-                className="mb-4 w-full rounded-xl border border-bloom-sage/40 bg-white px-3 py-2 text-bloom-forest outline-none transition focus:border-bloom-mid focus:ring-2 focus:ring-bloom-mint/40 dark:bg-white/10 dark:text-bloom-light"
-              />
-
-              <label
-                htmlFor="login-password"
-                className="mb-1 block text-sm font-medium text-bloom-forest dark:text-bloom-light"
-              >
-                Password
-              </label>
-
-              <input
-                id="login-password"
-                type="password"
-                value={loginPassword}
-                onChange={(event) => setLoginPassword(event.target.value)}
-                required
-                className="mb-4 w-full rounded-xl border border-bloom-sage/40 bg-white px-3 py-2 text-bloom-forest outline-none transition focus:border-bloom-mid focus:ring-2 focus:ring-bloom-mint/40 dark:bg-white/10 dark:text-bloom-light"
-              />
-
-              <button
-                type="submit"
-                disabled={isLoading}
-                className="w-full rounded-full bg-bloom-mid px-4 py-3 text-sm font-semibold text-white transition hover:bg-bloom-forest disabled:cursor-not-allowed disabled:opacity-60"
-              >
-                {isLoading ? "Preparing your Bloom space..." : "Log in"}
-              </button>
-            </form>
-
-            <div className="my-6 border-t border-bloom-sage/30 dark:border-white/10" />
-
-            <div className="space-y-3 text-sm">
-              <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
-                <p className="text-gray-600 dark:text-gray-300">
-                  First time here?
-                </p>
-
-                <button
-                  type="button"
-                  onClick={handleOpenCreateAccount}
-                  className="w-full rounded-full border border-bloom-sage/40 px-4 py-2 text-center font-semibold text-bloom-forest transition hover:bg-bloom-mint/30 dark:bg-green-900/60 dark:text-bloom-light dark:hover:bg-bloom-forest/80 sm:w-auto"
-                >
-                  ꕤ Create your space
-                </button>
-              </div>
-
-              <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
-                <p className="text-gray-600 dark:text-gray-300">
-                  Not ready to commit?
-                </p>
-
-                <button
-                  type="button"
-                  onClick={handleOpenDemo}
-                  className="w-full rounded-full border border-bloom-sage/40 bg-bloom-mint/40 px-4 py-2 text-center font-semibold text-bloom-forest transition hover:bg-bloom-mint/60 dark:border-black/30 dark:bg-blue-900/40 dark:text-bloom-light dark:hover:bg-blue-600/20 sm:w-auto"
-                >
-                  ☾ Have a gentle look around
-                </button>
-              </div>
-            </div>
-          </>
-        )}
-
-        {modalView === "create" && (
-          <>
-            <div className="mb-5 rounded-2xl border border-bloom-sage/30 bg-bloom-mint/20 px-4 py-3 text-sm leading-6 text-bloom-forest dark:border-white/10 dark:bg-white/10 dark:text-bloom-light">
-              Create a Bloom account to start moving from demo mode into a saved
-              personal space. This is part of the v2.0.0 account foundation.
-            </div>
-
-            <form onSubmit={handleCreateAccount}>
-              <label
-                htmlFor="create-username"
-                className="mb-1 block text-sm font-medium text-bloom-forest dark:text-bloom-light"
-              >
-                Username
-              </label>
-
-              <input
-                id="create-username"
-                type="text"
-                value={username}
-                onChange={(event) => setUsername(event.target.value)}
-                required
-                className="mb-4 w-full rounded-xl border border-bloom-sage/40 bg-white px-3 py-2 text-bloom-forest outline-none transition focus:border-bloom-mid focus:ring-2 focus:ring-bloom-mint/40 dark:bg-white/10 dark:text-bloom-light"
-              />
-
-              <label
-                htmlFor="create-email"
-                className="mb-1 block text-sm font-medium text-bloom-forest dark:text-bloom-light"
-              >
-                Email
-              </label>
-
-              <input
-                id="create-email"
-                type="email"
-                value={createEmail}
-                onChange={(event) => setCreateEmail(event.target.value)}
-                required
-                className="mb-4 w-full rounded-xl border border-bloom-sage/40 bg-white px-3 py-2 text-bloom-forest outline-none transition focus:border-bloom-mid focus:ring-2 focus:ring-bloom-mint/40 dark:bg-white/10 dark:text-bloom-light"
-              />
-
-              <label
-                htmlFor="create-password"
-                className="mb-1 block text-sm font-medium text-bloom-forest dark:text-bloom-light"
-              >
-                Password
-              </label>
-
-              <input
-                id="create-password"
-                type="password"
-                value={createPassword}
-                onChange={(event) => setCreatePassword(event.target.value)}
-                required
-                className="mb-4 w-full rounded-xl border border-bloom-sage/40 bg-white px-3 py-2 text-bloom-forest outline-none transition focus:border-bloom-mid focus:ring-2 focus:ring-bloom-mint/40 dark:bg-white/10 dark:text-bloom-light"
-              />
-
-              <label
-                htmlFor="confirm-password"
-                className="mb-1 block text-sm font-medium text-bloom-forest dark:text-bloom-light"
-              >
-                Confirm password
-              </label>
-
-              <input
-                id="confirm-password"
-                type="password"
-                value={confirmPassword}
-                onChange={(event) => setConfirmPassword(event.target.value)}
-                required
-                className="mb-4 w-full rounded-xl border border-bloom-sage/40 bg-white px-3 py-2 text-bloom-forest outline-none transition focus:border-bloom-mid focus:ring-2 focus:ring-bloom-mint/40 dark:bg-white/10 dark:text-bloom-light"
-              />
-
-              <button
-                type="submit"
-                disabled={isLoading}
-                className="w-full rounded-full bg-bloom-mid px-4 py-3 text-sm font-semibold text-white transition hover:bg-bloom-forest disabled:cursor-not-allowed disabled:opacity-60"
-              >
-                {isLoading ? "Creating your Bloom space..." : "Create account"}
-              </button>
-            </form>
-
-            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-              <button
-                type="button"
-                onClick={handleOpenDemo}
-                className="w-full rounded-full border border-bloom-sage/40 bg-bloom-mint/40 px-5 py-2.5 text-center text-sm font-semibold text-bloom-forest transition hover:bg-bloom-mint/60 dark:border-black/30 dark:bg-blue-900/40 dark:text-bloom-light dark:hover:bg-blue-600/20 sm:w-auto"
-              >
-                Try demo instead
-              </button>
-
-              <button
-                type="button"
-                onClick={handleOpenLogin}
-                className="w-full rounded-full border border-bloom-sage/40 px-5 py-2.5 text-center text-sm font-semibold text-bloom-forest transition hover:bg-bloom-mint/30 dark:text-bloom-light dark:hover:bg-white/10 sm:w-auto"
-              >
-                Back to login
-              </button>
-            </div>
-          </>
-        )}
-
-        {modalView === "demo" && (
-          <>
-            <button
-              type="button"
-              onClick={handleOpenLogin}
-              className="mb-4 text-sm font-semibold text-bloom-mid hover:text-bloom-forest dark:text-bloom-light"
-            >
-              ← Back to login
-            </button>
-
-            <div className="mb-5 rounded-2xl border border-bloom-sage/30 bg-bloom-mint/20 px-4 py-3 text-sm leading-6 text-bloom-forest dark:border-white/10 dark:bg-white/10 dark:text-bloom-light">
-              Demo mode uses sample data only. You can explore freely without
-              creating an account.
-            </div>
-
-            <div className="space-y-3">
-              {demoOptions.map((option) => (
-                <button
-                  key={option.id}
-                  type="button"
-                  onClick={() => handleStartDemo(option.id)}
-                  className="w-full rounded-2xl border border-bloom-sage/30 bg-bloom-light/70 p-4 text-left transition hover:border-bloom-mid hover:bg-bloom-mint/20 dark:border-white/10 dark:bg-white/5 sm:p-5"
-                >
-                  <h3 className="mb-1 text-base font-bold text-bloom-forest dark:text-bloom-light">
-                    {option.title}
-                  </h3>
-
-                  <p className="text-sm leading-6 text-gray-600 dark:text-gray-300">
-                    {option.description}
-                  </p>
-                </button>
-              ))}
-            </div>
-          </>
-        )}
+        <div className="mx-auto mt-4 flex w-fit rounded-full bg-bloom-light px-4 py-2 text-xs font-bold text-bloom-forest dark:bg-white/10 dark:text-bloom-light">
+          {isDemoMode ? demoLabel : "Bloom account"}
+        </div>
       </section>
+
+      <ProfileSection label="Account">
+        <ProfileRow
+          icon="@" 
+          title="Username"
+          description={username}
+        />
+
+        <div className="rounded-2xl bg-white/70 px-4 py-4 shadow-sm dark:bg-white/5">
+          <label
+            htmlFor="nickname"
+            className="text-sm font-bold text-bloom-forest dark:text-bloom-light"
+          >
+            Nickname
+          </label>
+
+          <p className="mt-1 text-xs leading-5 text-bloom-forest/65 dark:text-gray-300">
+            Optional. This is how Bloom can greet you later.
+          </p>
+
+          <input
+            id="nickname"
+            type="text"
+            value={nickname}
+            onChange={(event) => setNickname(event.target.value)}
+            placeholder="Add a nickname"
+            className="mt-3 w-full rounded-2xl border border-bloom-sage/30 bg-white px-4 py-3 text-sm text-bloom-forest outline-none transition placeholder:text-bloom-forest/40 focus:border-bloom-mid focus:ring-2 focus:ring-bloom-mint/40 dark:border-white/10 dark:bg-white/10 dark:text-bloom-light dark:placeholder:text-gray-500"
+          />
+        </div>
+
+        <ProfileRow
+          icon="✓"
+          title="Joined date"
+          description={
+            isDemoMode
+              ? "Demo sessions are temporary."
+              : "Joined date will be shown after the profile timestamp migration."
+          }
+          rightText={isDemoMode ? "Demo" : "v2.1"}
+        />
+      </ProfileSection>
+
+      <ProfileSection label="Bloom avatar">
+        <div className="rounded-2xl bg-white/70 px-4 py-4 shadow-sm dark:bg-white/5">
+          <p className="text-sm font-bold text-bloom-forest dark:text-bloom-light">
+            Choose a Bloom avatar
+          </p>
+
+          <p className="mt-1 text-xs leading-5 text-bloom-forest/65 dark:text-gray-300">
+            Photo upload can come later. For now, choose a simple Bloom symbol.
+          </p>
+
+          <div className="mt-4 grid grid-cols-6 gap-2">
+            {avatarOptions.map((avatar) => (
+              <button
+                key={avatar}
+                type="button"
+                onClick={() => setSelectedAvatar(avatar)}
+                aria-label={`Choose avatar ${avatar}`}
+                className={`flex h-11 w-full items-center justify-center rounded-2xl border text-xl transition ${
+                  selectedAvatar === avatar
+                    ? "border-bloom-forest bg-bloom-forest text-white dark:border-bloom-sage dark:bg-bloom-sage dark:text-dark-bg"
+                    : "border-bloom-sage/30 bg-bloom-light/60 hover:border-bloom-mid dark:border-white/10 dark:bg-white/10"
+                }`}
+              >
+                {avatar}
+              </button>
+            ))}
+          </div>
+        </div>
+      </ProfileSection>
+
+      <ProfileSection label="Onboarding answers">
+        <ProfileRow
+          icon="1"
+          title="Experience mode"
+          description="Adult mode with calm, mature language."
+          rightText="Adult"
+        />
+
+        <ProfileRow
+          icon="2"
+          title="Routine preference"
+          description="Gentle routines, low pressure, and softer recovery wording."
+          rightText="Calm"
+        />
+
+        <ProfileRow
+          icon="3"
+          title="Support style"
+          description="Small steps, quiet prompts, and progress without punishment."
+          rightText="Gentle"
+        />
+      </ProfileSection>
+
+      <ProfileSection label="Personalised goals">
+        <div className="flex flex-col gap-3">
+          {goals.map((goal) => (
+            <div
+              key={goal}
+              className="flex items-center gap-3 rounded-2xl bg-white/70 px-4 py-4 shadow-sm dark:bg-white/5"
+            >
+              <IconCircle>ꕤ</IconCircle>
+
+              <p className="min-w-0 flex-1 break-words text-sm font-semibold text-bloom-forest dark:text-bloom-light">
+                {goal}
+              </p>
+
+              <button
+                type="button"
+                onClick={() => handleRemoveGoal(goal)}
+                className="shrink-0 rounded-full px-3 py-1 text-xs font-semibold text-bloom-forest/55 transition hover:bg-bloom-mint/30 hover:text-bloom-forest dark:text-gray-300 dark:hover:bg-white/10"
+              >
+                Remove
+              </button>
+            </div>
+          ))}
+
+          <form onSubmit={handleAddGoal} className="flex flex-col gap-3 sm:flex-row">
+            <input
+              type="text"
+              value={newGoal}
+              onChange={(event) => setNewGoal(event.target.value)}
+              placeholder="Add a personal Bloom goal"
+              className="min-w-0 flex-1 rounded-2xl border border-bloom-sage/30 bg-white px-4 py-3 text-sm text-bloom-forest outline-none transition placeholder:text-bloom-forest/40 focus:border-bloom-mid focus:ring-2 focus:ring-bloom-mint/40 dark:border-white/10 dark:bg-white/10 dark:text-bloom-light dark:placeholder:text-gray-500"
+            />
+
+            <button
+              type="submit"
+              className="rounded-2xl bg-bloom-mid px-5 py-3 text-sm font-semibold text-white transition hover:bg-bloom-forest"
+            >
+              Add goal
+            </button>
+          </form>
+        </div>
+      </ProfileSection>
+
+      {onLogout && (
+        <button
+          type="button"
+          onClick={onLogout}
+          className="rounded-2xl bg-bloom-forest px-5 py-4 text-sm font-bold text-white shadow-sm transition hover:bg-bloom-mid sm:hidden"
+        >
+          Log out
+        </button>
+      )}
     </div>
-  );
+  )
 }
+
+export default Profile
