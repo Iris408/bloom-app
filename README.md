@@ -14,13 +14,19 @@ Bloomは、視覚的なルーティン作成とタスク進行を支援するア
 
 ## Live Demo - [Experience Bloom](https://bloom-app-three-xi.vercel.app/)
 
-### Beta Preview Note
+### Latest Beta Updates
 
-Bloom is currently in a beta/frontend polish phase. A demo mode has been added so testers and reviewers can explore the app with sample data before account creation is fully available.
+Recent Bloom beta updates include:
 
-Recent beta updates include the improved login modal, demo mode access, exit demo confirmation, cleaner mobile reminder layout, sidebar reminder placement, and protected-app layout polish.
+- Public landing page redesigned around the Bloom v2.0.0 product vision
+- Improved landing page CTAs for demo, account creation, and login
+- Updated About page with a more personal product journey and design values
+- Frontend beta feedback form added
+- Feedback is currently saved locally using localStorage
+- Footer updated with Product, Company, and Trust links
+- Demo mode and public-page layout polish
 
-Full account creation and onboarding are planned for a later full-stack version.
+Backend-connected feedback collection, full account creation, and deeper onboarding are planned for later versions.
 
 ### Screenshots / スクリーンショット
 

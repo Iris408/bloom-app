@@ -241,8 +241,6 @@ function Overview({
   return (
     <div className="relative mx-auto flex w-full max-w-7xl flex-col gap-12 overflow-hidden px-4 pb-16 pt-6 text-bloom-forest dark:text-bloom-light sm:px-6 lg:px-8">
       {/* Decorative botanical background hints */}
-      <div className="pointer-events-none absolute -left-12 top-40 hidden h-72 w-24 rounded-full bg-bloom-mint/20 blur-2xl md:block" />
-      <div className="pointer-events-none absolute -right-20 top-28 hidden h-80 w-40 rounded-full bg-[#f4cda4]/25 blur-3xl md:block" />
 
       {/* HERO */}
       <section className="grid grid-cols-1 items-center gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(360px,0.95fr)]">
@@ -281,7 +279,7 @@ function Overview({
             <button
               type="button"
               onClick={onLoginClick}
-              className="rounded-2xl border border-bloom-sage/40 bg-white/70 px-6 py-3 text-sm font-semibold text-bloom-forest shadow-sm transition hover:-translate-y-0.5 hover:bg-bloom-mint/25 dark:border-white/10 dark:bg-white/10 dark:text-bloom-light"
+              className="rounded-2xl border border-bloom-sage/40 bg-white/70 px-6 py-3 text-sm font-semibold text-bloom-forest shadow-sm transition hover:-translate-y-0.5 hover:bg-bloom-mint/25 dark:border-white/10 dark:bg-white/10 dark:hover:bg-bloom-mint/70 dark:text-bloom-light"
             >
               Log in
             </button>
@@ -310,9 +308,8 @@ function Overview({
 
         {/* Hero app preview */}
         <div className="relative mx-auto w-full max-w-md lg:max-w-lg">
-          <div className="absolute -bottom-8 -right-8 h-48 w-48 rounded-full bg-bloom-mint/25 blur-3xl" />
 
-          <div className="relative rotate-0 rounded-[2rem] border border-bloom-sage/25 bg-white/80 p-5 shadow-xl backdrop-blur-sm dark:border-white/10 dark:bg-white/10 sm:rotate-2 sm:p-6">
+          <div className="relative rotate-0 rounded-[2rem] border border-bloom-sage/25 bg-white/80 p-5 shadow-xl dark:border-white/10 dark:bg-white/10 sm:rotate-4 sm:p-7">
             <div className="mb-6 flex items-start justify-between gap-4">
               <div>
                 <p className="text-2xl font-bold text-bloom-forest dark:text-bloom-light">
