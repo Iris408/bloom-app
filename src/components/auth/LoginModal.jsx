@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getCurrentUser, loginUser } from "../../api/bloomApi";
+import { getCurrentUser, loginUser, registerUser } from "../../api/bloomApi";
 
 const demoOptions = [
   {
@@ -28,10 +28,17 @@ export default function LoginModal({
   setActivePage,
   onClose,
   onStartDemo,
+  onAuthSuccess,
 }) {
   const [modalView, setModalView] = useState(initialView);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
+
+  const [username, setUsername] = useState("");
+  const [createEmail, setCreateEmail] = useState("");
+  const [createPassword, setCreatePassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
@@ -41,7 +48,19 @@ export default function LoginModal({
     setModalView(initialView);
     setError("");
     setNotice("");
+    setIsLoading(false);
   }, [initialView]);
+
+  function completeAuth(user) {
+    if (onAuthSuccess) {
+      onAuthSuccess(user);
+      return;
+    }
+
+    setCurrentUser(user);
+    setActivePage("home");
+    onClose();
+  }
 
   async function handleLogin(event) {
     event.preventDefault();
@@ -51,25 +70,65 @@ export default function LoginModal({
     setIsLoading(true);
 
     try {
-      // EN: Log in and save the JWT token.
-      // JP: ログインしてJWTトークンを保存します。
-      await loginUser({ email, password });
+      await loginUser({
+        email: loginEmail.trim(),
+        password: loginPassword,
+      });
 
-      // EN: Use the saved token to fetch the logged-in user.
-      // JP: 保存されたトークンを使ってログイン中のユーザーを取得します。
       const user = await getCurrentUser();
 
-      setCurrentUser(user);
-
-      // EN: After login, move into the protected app area.
-      // JP: ログイン後、保護されたアプリ画面へ移動します。
-      setActivePage("home");
-
-      // EN: Close the login modal after successful login.
-      // JP: ログイン成功後、ログインモーダルを閉じます。
-      onClose();
+      completeAuth(user);
     } catch (error) {
-      setError("Login failed. Please check your email and password.");
+      setError(error.message || "Login failed. Please check your email and password.");
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  async function handleCreateAccount(event) {
+    event.preventDefault();
+
+    setError("");
+    setNotice("");
+
+    const cleanUsername = username.trim();
+    const cleanEmail = createEmail.trim();
+
+    if (!cleanUsername || !cleanEmail || !createPassword) {
+      setError("Please complete all required fields.");
+      return;
+    }
+
+    if (createPassword.length < 6) {
+      setError("Password must be at least 6 characters.");
+      return;
+    }
+
+    if (createPassword !== confirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      await registerUser({
+        username: cleanUsername,
+        email: cleanEmail,
+        password: createPassword,
+      });
+
+      await loginUser({
+        email: cleanEmail,
+        password: createPassword,
+      });
+
+      const user = await getCurrentUser();
+
+      setNotice("Account created. Opening your Bloom space...");
+      completeAuth(user);
+    } catch (error) {
+      setError(error.message || "Could not create your Bloom account.");
     } finally {
       setIsLoading(false);
     }
@@ -159,32 +218,34 @@ export default function LoginModal({
           <>
             <form onSubmit={handleLogin}>
               <label
-                htmlFor="email"
+                htmlFor="login-email"
                 className="mb-1 block text-sm font-medium text-bloom-forest dark:text-bloom-light"
               >
                 Email
               </label>
 
               <input
-                id="email"
+                id="login-email"
                 type="email"
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
+                value={loginEmail}
+                onChange={(event) => setLoginEmail(event.target.value)}
+                required
                 className="mb-4 w-full rounded-xl border border-bloom-sage/40 bg-white px-3 py-2 text-bloom-forest outline-none transition focus:border-bloom-mid focus:ring-2 focus:ring-bloom-mint/40 dark:bg-white/10 dark:text-bloom-light"
               />
 
               <label
-                htmlFor="password"
+                htmlFor="login-password"
                 className="mb-1 block text-sm font-medium text-bloom-forest dark:text-bloom-light"
               >
                 Password
               </label>
 
               <input
-                id="password"
+                id="login-password"
                 type="password"
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
+                value={loginPassword}
+                onChange={(event) => setLoginPassword(event.target.value)}
+                required
                 className="mb-4 w-full rounded-xl border border-bloom-sage/40 bg-white px-3 py-2 text-bloom-forest outline-none transition focus:border-bloom-mid focus:ring-2 focus:ring-bloom-mint/40 dark:bg-white/10 dark:text-bloom-light"
               />
 
@@ -234,28 +295,89 @@ export default function LoginModal({
         {modalView === "create" && (
           <>
             <div className="mb-5 rounded-2xl border border-bloom-sage/30 bg-bloom-mint/20 px-4 py-3 text-sm leading-6 text-bloom-forest dark:border-white/10 dark:bg-white/10 dark:text-bloom-light">
-              Account creation is planned for Bloom v2.0.0. For now, demo mode lets
-              you explore Bloom wih sample data before accounts are fully available.
+              Create a Bloom account to start moving from demo mode into a saved
+              personal space. This is part of the v2.0.0 account foundation.
             </div>
 
-            <div className="rounded-2xl border border-bloom-sage/30 bg-bloom-light/70 p-4 dark:border-white/10 dark:bg-white/5">
-              <p className="text-sm font-bold text-bloom-forest dark:text-bloom-light">
-                Coming next
-              </p>
+            <form onSubmit={handleCreateAccount}>
+              <label
+                htmlFor="create-username"
+                className="mb-1 block text-sm font-medium text-bloom-forest dark:text-bloom-light"
+              >
+                Username
+              </label>
 
-              <ul className="mt-3 space-y-2 text-sm leading-6 text-gray-600 dark:text-gray-300">
-                <li>• Create a Bloom account</li>
-                <li>• Save routines and preferences</li>
-                <li>• Complete calm onboarding</li>
-                <li>• Keep progress across devices</li>
-              </ul>
-            </div>
+              <input
+                id="create-username"
+                type="text"
+                value={username}
+                onChange={(event) => setUsername(event.target.value)}
+                required
+                className="mb-4 w-full rounded-xl border border-bloom-sage/40 bg-white px-3 py-2 text-bloom-forest outline-none transition focus:border-bloom-mid focus:ring-2 focus:ring-bloom-mint/40 dark:bg-white/10 dark:text-bloom-light"
+              />
+
+              <label
+                htmlFor="create-email"
+                className="mb-1 block text-sm font-medium text-bloom-forest dark:text-bloom-light"
+              >
+                Email
+              </label>
+
+              <input
+                id="create-email"
+                type="email"
+                value={createEmail}
+                onChange={(event) => setCreateEmail(event.target.value)}
+                required
+                className="mb-4 w-full rounded-xl border border-bloom-sage/40 bg-white px-3 py-2 text-bloom-forest outline-none transition focus:border-bloom-mid focus:ring-2 focus:ring-bloom-mint/40 dark:bg-white/10 dark:text-bloom-light"
+              />
+
+              <label
+                htmlFor="create-password"
+                className="mb-1 block text-sm font-medium text-bloom-forest dark:text-bloom-light"
+              >
+                Password
+              </label>
+
+              <input
+                id="create-password"
+                type="password"
+                value={createPassword}
+                onChange={(event) => setCreatePassword(event.target.value)}
+                required
+                className="mb-4 w-full rounded-xl border border-bloom-sage/40 bg-white px-3 py-2 text-bloom-forest outline-none transition focus:border-bloom-mid focus:ring-2 focus:ring-bloom-mint/40 dark:bg-white/10 dark:text-bloom-light"
+              />
+
+              <label
+                htmlFor="confirm-password"
+                className="mb-1 block text-sm font-medium text-bloom-forest dark:text-bloom-light"
+              >
+                Confirm password
+              </label>
+
+              <input
+                id="confirm-password"
+                type="password"
+                value={confirmPassword}
+                onChange={(event) => setConfirmPassword(event.target.value)}
+                required
+                className="mb-4 w-full rounded-xl border border-bloom-sage/40 bg-white px-3 py-2 text-bloom-forest outline-none transition focus:border-bloom-mid focus:ring-2 focus:ring-bloom-mint/40 dark:bg-white/10 dark:text-bloom-light"
+              />
+
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="w-full rounded-full bg-bloom-mid px-4 py-3 text-sm font-semibold text-white transition hover:bg-bloom-forest disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {isLoading ? "Creating your Bloom space..." : "Create account"}
+              </button>
+            </form>
 
             <div className="mt-6 flex flex-col gap-3 sm:flex-row">
               <button
                 type="button"
                 onClick={handleOpenDemo}
-                className="w-full rounded-full bg-bloom-mid px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-bloom-forest sm:w-auto"
+                className="w-full rounded-full border border-bloom-sage/40 bg-bloom-mint/40 px-5 py-2.5 text-center text-sm font-semibold text-bloom-forest transition hover:bg-bloom-mint/60 dark:border-black/30 dark:bg-blue-900/40 dark:text-bloom-light dark:hover:bg-blue-600/20 sm:w-auto"
               >
                 Try demo instead
               </button>

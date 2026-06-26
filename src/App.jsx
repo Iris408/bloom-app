@@ -39,7 +39,7 @@ function App() {
   // JP: デモモードを終了する前に表示する確認ポップアップを管理します。
   const [isExitDemoConfirmOpen, setIsExitDemoConfirmOpen] = useState(false);
 
-  const [loginInitialView, setLoginInitialView] =useState("login")
+  const [loginInitialView, setLoginInitialView] =useState("login");
 
   const { isDarkMode } = useApp();
 
@@ -125,10 +125,20 @@ function App() {
   }
 
   function handleCreateAccountFromDemo() {
-    // EN: Close the exit confirmation and open the login modal.
-    // JP: 終了確認を閉じて、ログインモーダルを開きます。
-    setIsExitDemoConfirmOpen(false);
-    setIsLoginOpen(true);
+  // EN: Close the exit confirmation and open the create-account modal.
+  // JP: 終了確認を閉じて、アカウント作成モーダルを開きます。
+  setIsExitDemoConfirmOpen(false);
+  openLoginModal("create");
+}
+
+  function handleAuthSuccess(user) {
+    // EN: A real logged-in account should leave demo mode.
+    // JP: 実際のログイン済みアカウントではデモモードを終了します。
+    setCurrentUser(user);
+    setIsDemoMode(false);
+    setDemoType(null);
+    setIsLoginOpen(false);
+    setActivePage("home");
   }
 
   function handlePageChange(page) {
@@ -279,6 +289,7 @@ function App() {
           setActivePage={setActivePage}
           onClose={() => setIsLoginOpen(false)}
           onStartDemo={handleStartDemo}
+          onAuthSuccess={handleAuthSuccess}
         />
       )}
 
