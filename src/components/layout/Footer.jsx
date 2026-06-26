@@ -47,7 +47,7 @@ function Footer({
                 onClick={onTryDemoClick}
                 className="w-fit max-w-full text-left transition hover:text-bloom-forest dark:hover:text-bloom-light"
               >
-                Demo
+                Try Bloom Demo
               </button>
 
               <button
@@ -95,6 +95,14 @@ function Footer({
                 onClick={() => setActivePage("overview")}
                 className="w-fit max-w-full text-left transition hover:text-bloom-forest dark:hover:text-bloom-light"
               >
+                Feedback
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setActivePage("overview")}
+                className="w-fit max-w-full text-left transition hover:text-bloom-forest dark:hover:text-bloom-light"
+              >
                 Roadmap
               </button>
             </div>
@@ -120,6 +128,13 @@ function Footer({
             </div>
           </div>
         </div>
+      </div>
+
+      <div className="mx-auto mt-8 flex w-full max-w-7xl flex-col gap-2 border-t border-bloom-sage/15 pt-5 text-xs text-bloom-forest/55 dark:border-white/10 dark:text-gray-400 sm:flex-row sm:items-center sm:justify-between">
+
+        <p>© 2026 Bloom. All rights reserved.</p>
+        <p>Made with care for all minds.</p>
+
       </div>
     </footer>
   )

@@ -107,12 +107,12 @@ export default function LoginModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-bloom-forest/40 px-4 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-end justify-center bg-bloom-forest/40 px-3 pb-3 pt-16 backdrop-blur-sm sm:items-center sm:px-4 sm:pb-0 sm:pt-0"
       role="dialog"
       aria-modal="true"
       aria-labelledby="login-modal-title"
     >
-      <section className="max-h-[90vh] w-full max-w-md overflow-y-auto rounded-3xl border border-bloom-sage/30 bg-white p-6 shadow-xl dark:border-white/10 dark:bg-[#343442]">
+      <section className="max-h-[86vh] w-full max-w-md overflow-y-auto rounded-[1.75rem] border border-bloom-sage/30 bg-white p-5 shadow-xl dark:border-white/10 dark:bg-[#343442] sm:max-h-[90vh] sm:rounded-3xl sm:p-6">
         <div className="mb-5 flex items-start justify-between gap-4">
           <div>
             <p className="mb-1 text-sm font-semibold uppercase tracking-wide text-bloom-mid">
@@ -121,7 +121,7 @@ export default function LoginModal({
 
             <h2
               id="login-modal-title"
-              className="text-2xl font-bold text-bloom-forest dark:text-bloom-light"
+              className="text-xl font-bold leading-tight text-bloom-forest dark:text-bloom-light sm:text-2xl"
             >
               {modalView === "login" && "Log in to Bloom"}
               {modalView === "create" && "Create your Bloom space"}
@@ -137,7 +137,7 @@ export default function LoginModal({
             type="button"
             onClick={onClose}
             aria-label="Close login modal"
-            className="rounded-full border border-bloom-sage/30 px-3 py-1 text-sm font-bold text-bloom-forest transition hover:bg-bloom-mint/30 dark:text-bloom-light dark:hover:bg-white/10"
+            className="shrink-0 rounded-full border border-bloom-sage/30 px-3 py-1 text-sm font-bold text-bloom-forest transition hover:bg-bloom-mint/30 dark:text-bloom-light dark:hover:bg-white/10"
           >
             x
           </button>
@@ -200,7 +200,7 @@ export default function LoginModal({
             <div className="my-6 border-t border-bloom-sage/30 dark:border-white/10" />
 
             <div className="space-y-3 text-sm">
-              <div className="flex items-center justify-between gap-3">
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
                 <p className="text-gray-600 dark:text-gray-300">
                   First time here?
                 </p>
@@ -208,13 +208,13 @@ export default function LoginModal({
                 <button
                   type="button"
                   onClick={handleOpenCreateAccount}
-                  className="rounded-full border border-bloom-sage/40 px-4 py-2 font-semibold text-bloom-forest transition hover:bg-bloom-mint/30 dark:bg-green-900/60 dark:text-bloom-light dark:hover:bg-bloom-forest/80"
+                  className="w-full rounded-full border border-bloom-sage/40 px-4 py-2 text-center font-semibold text-bloom-forest transition hover:bg-bloom-mint/30 dark:bg-green-900/60 dark:text-bloom-light dark:hover:bg-bloom-forest/80 sm:w-auto"
                 >
                   ꕤ Create your space
                 </button>
               </div>
 
-              <div className="flex items-center justify-between gap-3">
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
                 <p className="text-gray-600 dark:text-gray-300">
                   Not ready to commit?
                 </p>
@@ -222,7 +222,7 @@ export default function LoginModal({
                 <button
                   type="button"
                   onClick={handleOpenDemo}
-                  className="rounded-full border border-bloom-sage/40 bg-bloom-mint/40 px-4 py-2 font-semibold text-bloom-forest transition hover:bg-bloom-mint/60 dark:border-black/30 dark:bg-blue-900/40 dark:text-bloom-light dark:hover:bg-blue-600/20"
+                  className="w-full rounded-full border border-bloom-sage/40 bg-bloom-mint/40 px-4 py-2 text-center font-semibold text-bloom-forest transition hover:bg-bloom-mint/60 dark:border-black/30 dark:bg-blue-900/40 dark:text-bloom-light dark:hover:bg-blue-600/20 sm:w-auto"
                 >
                   ☾ Have a gentle look around
                 </button>
@@ -255,7 +255,7 @@ export default function LoginModal({
               <button
                 type="button"
                 onClick={handleOpenDemo}
-                className="rounded-full bg-bloom-mid px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-bloom-forest"
+                className="w-full rounded-full bg-bloom-mid px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-bloom-forest sm:w-auto"
               >
                 Try demo instead
               </button>
@@ -263,7 +263,7 @@ export default function LoginModal({
               <button
                 type="button"
                 onClick={handleOpenLogin}
-                className="rounded-full border border-bloom-sage/40 px-5 py-2.5 text-sm font-semibold text-bloom-forest transition hover:bg-bloom-mint/30 dark:text-bloom-light dark:hover:bg-white/10"
+                className="w-full rounded-full border border-bloom-sage/40 px-5 py-2.5 text-center text-sm font-semibold text-bloom-forest transition hover:bg-bloom-mint/30 dark:text-bloom-light dark:hover:bg-white/10 sm:w-auto"
               >
                 Back to login
               </button>
@@ -292,7 +292,7 @@ export default function LoginModal({
                   key={option.id}
                   type="button"
                   onClick={() => handleStartDemo(option.id)}
-                  className="w-full rounded-2xl border border-bloom-sage/30 bg-bloom-light/70 p-4 text-left transition hover:border-bloom-mid hover:bg-bloom-mint/20 dark:border-white/10 dark:bg-white/5"
+                  className="w-full rounded-2xl border border-bloom-sage/30 bg-bloom-light/70 p-4 text-left transition hover:border-bloom-mid hover:bg-bloom-mint/20 dark:border-white/10 dark:bg-white/5 sm:p-5"
                 >
                   <h3 className="mb-1 text-base font-bold text-bloom-forest dark:text-bloom-light">
                     {option.title}
