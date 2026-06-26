@@ -151,7 +151,14 @@ function App() {
     // EN: Logged-out users only see the public Overview page.
     // JP: 未ログインのユーザーには公開用Overviewページだけを表示します。
     if (!canUseApp) {
-      return <Overview setActivePage={handlePageChange} />;
+      return (
+        <Overview 
+          setActivePage={handlePageChange} 
+          onLoginClick={() => setIsLoginOpen(true)}
+          onTryDemoClick={() => setIsLoginOpen(true)}
+          onCreateAccountClick={() => setIsLoginOpen(true)}
+        />
+      );
     }
 
     // EN: Logged-in users and demo users can access the protected app pages.
@@ -231,7 +238,13 @@ function App() {
             </main>
           </div>
 
-          {!canUseApp && <Footer setActivePage={handlePageChange} />}
+          {!canUseApp && 
+            <Footer
+              setActivePage={handlePageChange}
+              onLoginClick={() => setIsLoginOpen(true)}
+              onTryDemoClick={() => setIsLoginOpen(true)}
+              onCreateAccountClick={() => setIsLoginOpen(true)}
+            />}
         </div>
       </div>
 

@@ -1,283 +1,546 @@
-import Button from "../components/ui/Button"
-import BloomReminder from "../components/ui/BloomReminder"
-import bloomIllustration from "../assets/bloom-illustration.png"
+import Seedling from "../components/ui/Seedling"
+import FeedbackForm from "../components/feedback/FeedbackForm"
 
-function Overview({ setActivePage }) {
-  const googleFeedbackUrl = "https://forms.gle/b87yyFLq1BEA1yEV9"
+function LeafIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      className="h-5 w-5"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M5 19c8-1 13-6 14-14-8 1-13 6-14 14z" />
+      <path d="M5 19c4-4 8-7 14-14" />
+    </svg>
+  )
+}
 
-  function scrollToSection(sectionId) {
-    const section = document.getElementById(sectionId)
+function LockIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      className="h-5 w-5"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <rect x="5" y="10" width="14" height="10" rx="2" />
+      <path d="M8 10V7a4 4 0 0 1 8 0v3" />
+    </svg>
+  )
+}
 
-    if (!section) return
+function UserPlusIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      className="h-5 w-5"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <circle cx="9" cy="8" r="3.5" />
+      <path d="M3.5 20c1.1-4 3.3-6 6.5-6" />
+      <path d="M18 8v8" />
+      <path d="M14 12h8" />
+    </svg>
+  )
+}
 
-    section.scrollIntoView({
-      behavior: "smooth",
-      block: "center",
-    })
+function SlidersIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      className="h-5 w-5"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M4 7h10" />
+      <path d="M18 7h2" />
+      <path d="M16 5v4" />
+      <path d="M4 12h4" />
+      <path d="M12 12h8" />
+      <path d="M10 10v4" />
+      <path d="M4 17h12" />
+      <path d="M18 15v4" />
+    </svg>
+  )
+}
+
+function SectionTitle({ children }) {
+  return (
+    <div className="mb-6 flex items-center justify-center gap-2 text-center">
+      <span className="text-xl text-bloom-mid">
+        <Seedling variant="indigo" />
+      </span>
+
+      <h2 className="text-2xl font-bold text-bloom-forest dark:text-bloom-light">
+        {children}
+      </h2>
+    </div>
+  )
+}
+
+function TrustBadge({ title, text, icon }) {
+  return (
+    <div className="flex items-start gap-3 rounded-2xl bg-white/45 p-4 dark:bg-white/5">
+      <span className="mt-0.5 text-bloom-mid">{icon}</span>
+
+      <div>
+        <p className="text-sm font-bold text-bloom-forest dark:text-bloom-light">
+          {title}
+        </p>
+
+        <p className="mt-1 text-xs leading-5 text-bloom-forest/65 dark:text-gray-300">
+          {text}
+        </p>
+      </div>
+    </div>
+  )
+}
+
+function FeatureCard({ icon, title, text, tone = "sage" }) {
+  const toneClasses = {
+    sage: "bg-bloom-mint/35 text-bloom-forest",
+    gold: "bg-[#f7df9e]/45 text-[#8a6a16]",
+    forest: "bg-bloom-forest text-bloom-light",
+    cream: "bg-bloom-light text-bloom-forest",
   }
 
   return (
-    <main className="min-h-screen p-6 lg:p-10">
-      <section className="mx-auto max-w-6xl space-y-32">
-        {/* Hero */}
-        <div className="grid gap-8 rounded-3xl bg-bloom-light p-8 shadow-lg dark:bg-dark-surface/95 dark:shadow-xl lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:p-12">
-          {/* EN: Main public introduction for Bloom */}
-          {/* JP: Bloomの公開ページ用メイン紹介エリア */}
-          <div>
-            <p className="mb-4 text-sm font-semibold uppercase tracking-wide text-bloom-forest dark:text-white/40">
-              Bloom Personal · Early Beta
-            </p>
+    <article className="rounded-3xl border border-bloom-sage/25 bg-white/70 p-5 shadow-sm backdrop-blur-sm dark:border-white/10 dark:bg-white/5">
+      <div
+        className={`mb-4 flex h-14 w-14 items-center justify-center rounded-full ${toneClasses[tone]}`}
+      >
+        {icon}
+      </div>
 
-            <h1 className="mb-6 text-4xl font-bold leading-tight text-bloom-mint lg:text-6xl">
-              Calm routines for every brain 🌱
-            </h1>
+      <h3 className="text-base font-bold text-bloom-forest dark:text-bloom-light">
+        {title}
+      </h3>
 
-            <p className="mb-6 max-w-3xl text-lg leading-relaxed text-bloom-forest dark:text-white/60 lg:text-xl">
-              Bloom is a calm routine, focus, and task app designed to help make
-              daily structure feel softer, clearer, and less overwhelming.
-            </p>
+      <p className="mt-2 text-sm leading-6 text-bloom-forest/70 dark:text-gray-300">
+        {text}
+      </p>
+    </article>
+  )
+}
 
-            <p className="mb-8 max-w-2xl text-sm leading-relaxed text-bloom-forest dark:text-white/60">
-              It is currently in early beta, so the main goal is to gather
-              honest feedback on the layout, accessibility, wording, and overall experience.
-            </p>
+function MiniStepCard({ icon, title }) {
+  return (
+    <div className="flex min-h-[92px] flex-col items-center justify-center rounded-2xl border border-bloom-sage/20 bg-bloom-light/60 p-3 text-center text-xs text-bloom-forest dark:border-white/10 dark:bg-white/5 dark:text-bloom-light">
+      <span className="mb-2 flex h-8 w-8 items-center justify-center text-bloom-mid">
+        {icon}
+      </span>
 
-            <div className="space-y-3">
-              {/* EN: Primary actions */}
-              {/* JP: メインアクション */}
-              <div className="flex flex-wrap items-center gap-3">
-                <Button onClick={() => setActivePage("home")}>
-                  Get started
-                </Button>
+      <span className="font-semibold leading-4">{title}</span>
+    </div>
+  )
+}
 
-                <button
-                  type="button"
-                  onClick={() => scrollToSection("roadmap")}
-                  className="rounded-xl border border-bloom-sage/70 bg-white/40 px-4 py-2 text-sm font-semibold text-bloom-forest transition hover:bg-bloom-sage/20 dark:border-bloom-light/30 dark:bg-white/10 dark:text-bloom-light dark:hover:bg-white/20"
-                >
-                  View roadmap
-                </button>
-              </div>
+function PathCard({ tone = "green", title, steps, buttonText, onClick }) {
+  const isGold = tone === "gold"
 
-              {/* EN: Secondary feedback link sits lower than the main buttons */}
-              {/* JP: フィードバックリンクはメインボタンより少し下に配置します */}
-              <button
-                type="button"
-                onClick={() => scrollToSection("feedback")}
-                className="text-sm font-semibold text-bloom-forest underline-offset-4 transition hover:text-bloom-mid hover:underline dark:text-bloom-light dark:hover:text-white"
-              >
-                Give feedback →
-              </button>
-            </div>
+  return (
+    <article
+      className={`rounded-3xl border bg-white/75 p-5 shadow-sm backdrop-blur-sm dark:bg-white/5 ${
+        isGold
+          ? "border-[#e4c36b]/45 dark:border-white/10"
+          : "border-bloom-sage/25 dark:border-white/10"
+      }`}
+    >
+      <h3 className="mb-4 text-lg font-bold text-bloom-forest dark:text-bloom-light">
+        {title}
+      </h3>
 
-            <p className="mt-5 max-w-2xl text-xs leading-relaxed text-bloom-forest/70 dark:text-bloom-light/80">
-              Built with accessibility, calm design and neurodivergent-friendly feedback in mind.
-            </p>  
+      <div className="grid grid-cols-3 gap-3">
+        {steps.map((step) => (
+          <MiniStepCard key={step.title} icon={step.icon} title={step.title} />
+        ))}
+      </div>
+
+      <button
+        type="button"
+        onClick={onClick}
+        className={`mt-5 w-full rounded-2xl px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:-translate-y-0.5 ${
+          isGold
+            ? "bg-[#d99a28] hover:bg-[#b97e17]"
+            : "bg-bloom-forest hover:bg-bloom-mid"
+        }`}
+      >
+        {buttonText}
+      </button>
+    </article>
+  )
+}
+
+function DemoCard({ title, text, label, tone = "sage" }) {
+  const toneClasses = {
+    sage: "bg-bloom-mint/35 text-bloom-forest",
+    pink: "bg-[#f4ccd3]/55 text-[#7a3b48]",
+    gold: "bg-[#f7df9e]/55 text-[#8a6a16]",
+    forest: "bg-bloom-forest text-bloom-light",
+  }
+
+  return (
+    <article className="flex h-full flex-col rounded-3xl border border-bloom-sage/25 bg-white/75 p-5 shadow-sm dark:border-white/10 dark:bg-white/5">
+      <div
+        className={`mb-4 flex h-14 w-14 items-center justify-center rounded-full ${toneClasses[tone]}`}
+      >
+        <LeafIcon />
+      </div>
+
+      <h3 className="text-base font-bold text-bloom-forest dark:text-bloom-light">
+        {title}
+      </h3>
+
+      <p className="mt-2 text-sm leading-6 text-bloom-forest/70 dark:text-gray-300">
+        {text}
+      </p>
+
+      <p className="mt-auto rounded-full bg-bloom-light/70 px-4 py-2 text-center text-xs font-semibold text-bloom-forest/75 dark:bg-white/10 dark:text-bloom-light">
+        {label}
+      </p>
+    </article>
+  )
+}
+
+function AccessibilityItem({ title, text }) {
+  return (
+    <div className="rounded-2xl bg-white/65 p-4 dark:bg-white/5">
+      <p className="text-sm font-bold text-bloom-forest dark:text-bloom-light">
+        {title}
+      </p>
+
+      <p className="mt-1 text-xs leading-5 text-bloom-forest/65 dark:text-gray-300">
+        {text}
+      </p>
+    </div>
+  )
+}
+
+function Overview({
+  onLoginClick,
+  onTryDemoClick,
+  onCreateAccountClick,
+}) {
+  return (
+    <div className="relative mx-auto flex w-full max-w-7xl flex-col gap-12 overflow-hidden px-4 pb-16 pt-6 text-bloom-forest dark:text-bloom-light sm:px-6 lg:px-8">
+      {/* Decorative botanical background hints */}
+      <div className="pointer-events-none absolute -left-12 top-40 hidden h-72 w-24 rounded-full bg-bloom-mint/20 blur-2xl md:block" />
+      <div className="pointer-events-none absolute -right-20 top-28 hidden h-80 w-40 rounded-full bg-[#f4cda4]/25 blur-3xl md:block" />
+
+      {/* HERO */}
+      <section className="grid grid-cols-1 items-center gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(360px,0.95fr)]">
+        <div className="max-w-3xl">
+          <p className="mb-4 text-xs font-bold uppercase tracking-[0.24em] text-bloom-mid dark:text-bloom-sage">
+            Welcome to Bloom
+          </p>
+
+          <h1 className="text-4xl font-bold leading-[1.08] text-bloom-forest dark:text-bloom-light sm:text-5xl lg:text-6xl">
+            Bloom helps you build gentle routines, focus sessions, and daily
+            steps without pressure.
+          </h1>
+
+          <p className="mt-6 max-w-2xl text-base leading-8 text-bloom-forest/75 dark:text-gray-300">
+            A calm, neurodivergent-friendly app for everyday wellbeing —
+            designed to support you, your routines, and your way.
+          </p>
+
+          <div className="mt-8 grid grid-cols-1 gap-3 sm:max-w-2xl sm:grid-cols-3">
+            <button
+              type="button"
+              onClick={onTryDemoClick}
+              className="rounded-2xl bg-bloom-forest px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-bloom-mid"
+            >
+              Try demo
+            </button>
+
+            <button
+              type="button"
+              onClick={onCreateAccountClick}
+              className="rounded-2xl bg-bloom-mid px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-bloom-forest"
+            >
+              Create account
+            </button>
+
+            <button
+              type="button"
+              onClick={onLoginClick}
+              className="rounded-2xl border border-bloom-sage/40 bg-white/70 px-6 py-3 text-sm font-semibold text-bloom-forest shadow-sm transition hover:-translate-y-0.5 hover:bg-bloom-mint/25 dark:border-white/10 dark:bg-white/10 dark:text-bloom-light"
+            >
+              Log in
+            </button>
           </div>
 
-          {/* EN: Bloom visual identity illustration */}
-          {/* JP: Bloomのビジュアルイメージ画像 */}
-          <div className="mx-auto w-full max-w-sm rounded-[2rem] bg-white/40 p-2 shadow-md ring-1 ring-bloom-sage/20 dark:bg-white/10 dark:ring-white/10 lg:max-w-md xl:max-w-lg">
-            <img
-              src={bloomIllustration}
-              alt="Calm Bloom illustration showing routines, focus time, and daily tasks"
-              className="w-full rounded-[1.5rem]"
+          <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-3">
+            <TrustBadge
+              title="Made for calm"
+              text="Low pressure, high support"
+              icon="♡"
+            />
+
+            <TrustBadge
+              title="Privacy first"
+              text="Your data stays yours"
+              icon="♢"
+            />
+
+            <TrustBadge
+              title="For all minds"
+              text="Inclusive by design"
+              icon="✦"
             />
           </div>
         </div>
 
-        {/* Quick summary cards */}
-        <div className="grid gap-4 md:grid-cols-3">
-          <div className="rounded-3xl border border-bloom-sage bg-white p-6 shadow dark:border-bloom-mint dark:bg-dark-surface">
-            <p className="mb-2 text-sm font-semibold text-bloom-mid">
-              Current Build
+        {/* Hero app preview */}
+        <div className="relative mx-auto w-full max-w-md lg:max-w-lg">
+          <div className="absolute -bottom-8 -right-8 h-48 w-48 rounded-full bg-bloom-mint/25 blur-3xl" />
+
+          <div className="relative rotate-0 rounded-[2rem] border border-bloom-sage/25 bg-white/80 p-5 shadow-xl backdrop-blur-sm dark:border-white/10 dark:bg-white/10 sm:rotate-2 sm:p-6">
+            <div className="mb-6 flex items-start justify-between gap-4">
+              <div>
+                <p className="text-2xl font-bold text-bloom-forest dark:text-bloom-light">
+                  Good morning
+                </p>
+
+                <p className="mt-1 text-sm leading-6 text-bloom-forest/65 dark:text-gray-300">
+                  Let's build a calm and kind day together.
+                </p>
+              </div>
+
+              <span className="text-2xl">
+                <Seedling variant="indigo" />
+              </span>
+            </div>
+
+            <p className="mb-3 text-sm font-bold text-bloom-forest dark:text-bloom-light">
+              Today's plan
             </p>
 
-            <h2 className="mb-3 text-2xl font-bold text-bloom-forest dark:text-bloom-light">
-              v1.6.1 Beta Polish
-            </h2>
+            <div className="space-y-3">
+              {[
+                ["Calm routine", "10min gentle reset", true],
+                ["Focus session", "Deep work · 25 min", true],
+                ["Daily step", "Drink water", false],
+              ].map(([title, subtitle, done]) => (
+                <div
+                  key={title}
+                  className="rounded-2xl border border-bloom-sage/20 bg-white/85 p-4 dark:border-white/10 dark:bg-white/5"
+                >
+                  <div className="flex items-center justify-between gap-3">
+                    <div>
+                      <p className="font-semibold text-bloom-forest dark:text-bloom-light">
+                        {title}
+                      </p>
 
-            <p className="leading-relaxed text-gray-600 dark:text-gray-300">
-              Bloom is moving from a protected prototype layout toward a clearer
-              public beta experience with an Overview page, login modal, public
-              information pages, and stronger visual identity.
-            </p>
-          </div>
+                      <p className="text-xs text-bloom-forest/60 dark:text-gray-400">
+                        {subtitle}
+                      </p>
+                    </div>
 
-          <div className="rounded-3xl border border-bloom-sage bg-white p-6 shadow dark:border-bloom-mint dark:bg-dark-surface">
-            <p className="mb-2 text-sm font-semibold text-bloom-mid">
-              Personal Modes
-            </p>
+                    {done ? (
+                      <span className="rounded-full bg-bloom-mid px-2 py-1 text-xs text-white">
+                        ✓
+                      </span>
+                    ) : (
+                      <span className="h-5 w-5 rounded-full border border-bloom-sage/50" />
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
 
-            <h2 className="mb-3 text-2xl font-bold text-bloom-forest dark:text-bloom-light">
-              5 Modes
-            </h2>
-
-            <p className="leading-relaxed text-gray-600 dark:text-gray-300">
-              Standard, Kid, Focus, Review, and Calm Mode are planned to support
-              different routine and accessibility needs.
-            </p>
-          </div>
-
-          <div className="rounded-3xl border border-bloom-sage bg-white p-6 shadow dark:border-bloom-mint dark:bg-dark-surface">
-            <p className="mb-2 text-sm font-semibold text-bloom-mid">
-              Design Goal
-            </p>
-
-            <h2 className="mb-3 text-2xl font-bold text-bloom-forest dark:text-bloom-light">
-              Calm by design
-            </h2>
-
-            <p className="leading-relaxed text-gray-600 dark:text-gray-300">
-              Bloom focuses on predictable layouts, gentle colours, clear
-              language, and one-step-at-a-time task support.
-            </p>
+            <div className="mt-5 rounded-2xl bg-bloom-light/80 p-4 text-center text-sm leading-6 text-bloom-forest/75 dark:bg-white/5 dark:text-gray-300">
+              Small steps, gentle progress. You're doing better than you think.
+            </div>
           </div>
         </div>
-
-        {/* Purpose section */}
-        <div className="rounded-3xl border border-bloom-sage bg-bloom-light p-8 dark:border-bloom-mint dark:bg-bloom-mid/35">
-          <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-bloom-mint dark:text-bloom-mid/90">
-            Why Bloom exists
-          </p>
-
-          <h2 className="mb-4 text-3xl font-bold text-bloom-forest dark:text-white/80">
-            One step at a time
-          </h2>
-
-          <p className="max-w-4xl leading-relaxed text-bloom-navy dark:text-gray-300">
-            Many productivity apps are designed around speed, pressure, and
-            constant reminders. Bloom is designed to feel slower, softer, and
-            more supportive. The goal is to help users reduce overwhelm, follow
-            visual steps, and build confidence through small progress.
-          </p>
-        </div>
-
-        {/* Feedback section */}
-        <div
-          id="feedback"
-          className="rounded-3xl border border-bloom-sage bg-white p-6 shadow dark:border-bloom-mint dark:bg-dark-surface"
-        >
-          <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
-            {/* EN: Feedback explanation text */}
-            {/* JP: フィードバック説明テキスト */}
-            <div className="max-w-3xl">
-              <p className="mb-2 text-sm font-semibold uppercase tracking-wide text-bloom-mid">
-                Beta feedback
-              </p>
-
-              <h2 className="mb-3 text-2xl font-bold text-bloom-forest dark:text-bloom-light">
-                Help improve Bloom
-              </h2>
-
-              <p className="leading-relaxed text-gray-600 dark:text-gray-300">
-                Bloom is currently being tested with early feedback. I’m especially
-                looking for thoughts on layout clarity, accessibility, wording, and
-                whether anything feels confusing, overwhelming, useful, or missing.
-              </p>
-            </div>
-
-            {/* EN: Feedback form button sits on the right side on desktop */}
-            {/* JP: デスクトップではフィードバックボタンを右側に配置します */}
-            <a
-              href={googleFeedbackUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex shrink-0 items-center justify-center rounded-full bg-bloom-forest px-5 py-3 text-sm font-semibold text-white transition hover:bg-bloom-mid dark:bg-bloom-light dark:text-bloom-forest dark:hover:bg-white"
-            >
-              Open feedback form
-            </a>
-          </div>
-        </div>
-
-        {/* Roadmap */}
-        <div
-          id="roadmap"
-          className="rounded-3xl border border-bloom-sage bg-white p-8 shadow dark:border-bloom-mint dark:bg-dark-surface/85"
-        >
-          <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-bloom-mid">
-            Roadmap
-          </p>
-
-          <h2 className="mb-6 text-3xl font-bold text-bloom-forest dark:text-bloom-light/80">
-            Build order
-          </h2>
-
-          <div className="grid gap-4 md:grid-cols-4">
-            <div className="rounded-2xl bg-bloom-light p-4 dark:bg-bloom-mint/65">
-              <p className="font-bold text-bloom-forest">v1.4</p>
-              <p className="text-sm text-bloom-navy dark:text-bloom-light/70">
-                Empty States
-              </p>
-            </div>
-
-            <div className="rounded-2xl bg-bloom-light p-4 dark:bg-bloom-mint/65">
-              <p className="font-bold text-bloom-forest">v1.5</p>
-              <p className="text-sm text-bloom-navy dark:text-bloom-light/70">
-                Portfolio Polish
-              </p>
-            </div>
-
-            <div className="rounded-2xl bg-bloom-light p-4 dark:bg-bloom-mint/65">
-              <p className="font-bold text-bloom-forest">v1.6</p>
-              <p className="text-sm text-bloom-navy dark:text-bloom-light/70">
-                Beta Prep
-              </p>
-            </div>
-
-            <div className="rounded-2xl bg-bloom-light p-4 dark:bg-bloom-mint/65">
-              <p className="font-bold text-bloom-forest">v1.6.1</p>
-              <p className="text-sm text-bloom-navy dark:text-bloom-light/70">
-                Visual Identity
-              </p>
-            </div>
-          </div>
-
-          {/* EN: Short explanations for the current roadmap versions */}
-          {/* JP: 現在のロードマップバージョンの短い説明 */}
-          <div className="mt-6 space-y-3 rounded-2xl bg-bloom-light/70 p-5 text-sm leading-relaxed text-bloom-navy dark:bg-bloom-mid/30 dark:text-gray-300">
-            <p>
-              <span className="font-semibold text-bloom-forest dark:text-bloom-light">
-                v1.4 — Empty States:
-              </span>{" "}
-              Gentle first-use messages for empty tasks, routines, and progress
-              areas.
-            </p>
-
-            <p>
-              <span className="font-semibold text-bloom-forest dark:text-bloom-light">
-                v1.5 — Portfolio Polish:
-              </span>{" "}
-              README updates, screenshots, mobile checks, and portfolio-ready
-              presentation.
-            </p>
-
-            <p>
-              <span className="font-semibold text-bloom-forest dark:text-bloom-light">
-                v1.6 — Beta Prep:
-              </span>{" "}
-              Final frontend polish, tester feedback preparation, and small
-              usability fixes.
-            </p>
-
-            <p>
-              <span className="font-semibold text-bloom-forest dark:text-bloom-light">
-                v1.6.1 — Visual Identity:
-              </span>{" "}
-              Public Overview, login modal, About/Privacy/Accessibility pages,
-              and Bloom illustration direction.
-            </p>
-          </div>
-        </div>
-
-        <BloomReminder
-          reminder="Bloom is being prepared for calm public beta feedback."
-          phaseTitle="Bloom v1.6.1 — Visual Identity & Public Beta Polish"
-          phaseDescription="Public Overview, login modal overlay, About/Privacy/Accessibility pages, Bloom illustration direction, and beta-ready UI polish."
-        />
       </section>
-    </main>
+
+      {/* WHAT BLOOM IS */}
+      <section>
+        <SectionTitle>What Bloom is</SectionTitle>
+
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
+          <FeatureCard
+            icon={<LeafIcon />}
+            title="Calm routines"
+            text="Simple, supportive routines that help you feel steady and in control."
+          />
+
+          <FeatureCard
+            icon="◌"
+            title="Focus support"
+            text="Tools and timers to reduce overwhelm and support focus."
+            tone="gold"
+          />
+
+          <FeatureCard
+            icon={
+              <span className="text-2xl">
+                <Seedling variant="indigo" />
+              </span>
+            }
+            title="Gentle progress"
+            text="Small steps, kind tracking, and celebrating progress in your own time."
+          />
+
+          <FeatureCard
+            icon="♡"
+            title="Accessibility first"
+            text="Inclusive by design with neurodivergent-friendly features and choices."
+            tone="forest"
+          />
+        </div>
+      </section>
+
+      {/* 3 WAYS */}
+      <section className="rounded-[2rem] border border-bloom-sage/25 bg-white/45 p-5 shadow-sm backdrop-blur-sm dark:border-white/10 dark:bg-white/5">
+        <SectionTitle>3 ways to get started</SectionTitle>
+
+        <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
+          <PathCard
+            title="Returning user"
+            buttonText="Log in"
+            onClick={onLoginClick}
+            steps={[
+              { icon: <LockIcon />, title: "Log in" },
+              { icon: <LeafIcon />, title: "Calm loading" },
+              { icon: "⌂", title: "Home" },
+            ]}
+          />
+
+          <PathCard
+            title="New user"
+            buttonText="Create account"
+            onClick={onCreateAccountClick}
+            steps={[
+              { icon: <UserPlusIcon />, title: "Create account" },
+              { icon: <LeafIcon />, title: "Onboarding" },
+              { icon: "⌂", title: "Home" },
+            ]}
+          />
+
+          <PathCard
+            tone="gold"
+            title="Demo user"
+            buttonText="Try demo"
+            onClick={onTryDemoClick}
+            steps={[
+              { icon: <LeafIcon />, title: "Try demo" },
+              { icon: <SlidersIcon />, title: "Choose setup" },
+              { icon: "★", title: "Demo home" },
+            ]}
+          />
+        </div>
+      </section>
+
+      {/* DEMO MODE */}
+      <section className="rounded-[2rem] border border-bloom-sage/25 bg-white/45 p-5 shadow-sm backdrop-blur-sm dark:border-white/10 dark:bg-white/5">
+        <div className="mb-6 text-center">
+          <h2 className="text-2xl font-bold text-bloom-forest dark:text-bloom-light">
+            Explore Bloom with demo mode
+          </h2>
+
+          <p className="mt-2 text-sm leading-6 text-bloom-forest/65 dark:text-gray-300">
+            Demo mode uses sample data only. You can explore freely without
+            creating an account.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
+          <DemoCard
+            title="Simple Day"
+            text="A calm, realistic preview with one routine, one focus block, and gentle tasks."
+            label="Great for a quick look"
+            tone="gold"
+          />
+
+          <DemoCard
+            title="Neurodivergent-friendly Day"
+            text="A softer setup with low-pressure routines and recovery-friendly wording."
+            label="Designed with care"
+            tone="pink"
+          />
+
+          <DemoCard
+            title="Parent / carer preview"
+            text="Experience Bloom from a parent, carer, or teacher perspective."
+            label="Support for carers"
+            tone="gold"
+          />
+
+          <DemoCard
+            title="Full App Preview"
+            text="Explore Bloom with sample routines, focus sessions, moments, and settings."
+            label="See the full experience"
+            tone="sage"
+          />
+        </div>
+      </section>
+
+      {/* FEEDBACK */}
+      <section id="feedback" className="scroll-mt-28">
+        <FeedbackForm />
+      </section>
+
+      {/* ACCESSIBILITY */}
+      <section className="rounded-[2rem] border border-bloom-sage/25 bg-white/45 p-5 shadow-sm backdrop-blur-sm dark:border-white/10 dark:bg-white/5">
+        <SectionTitle>Accessibility & trust</SectionTitle>
+
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
+          <AccessibilityItem
+            title="Text size"
+            text="Adjust text to what feels comfortable."
+          />
+          <AccessibilityItem
+            title="Dyslexia-friendly"
+            text="OpenDyslexic option available."
+          />
+          <AccessibilityItem
+            title="Reduced motion"
+            text="Smoother experience with less movement."
+          />
+          <AccessibilityItem
+            title="Dark mode"
+            text="Easy on the eyes, day or night."
+          />
+          <AccessibilityItem
+            title="Calm visuals"
+            text="Soft colours, gentle shapes, no clutter."
+          />
+        </div>
+
+        <div className="mt-6 rounded-3xl bg-bloom-light/70 p-5 dark:bg-white/5">
+          <p className="text-base font-bold text-bloom-forest dark:text-bloom-light">
+            Privacy comes first
+          </p>
+
+          <p className="mt-2 text-sm leading-6 text-bloom-forest/70 dark:text-gray-300">
+            Personal data is only saved when you create an account. Demo mode
+            uses sample data, and nothing you do in demo mode is connected to a
+            real user account yet.
+          </p>
+        </div>
+      </section>
+    </div>
   )
-}
+}      
 
 export default Overview
