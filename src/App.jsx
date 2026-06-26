@@ -14,6 +14,7 @@ import Progress from "./pages/Progress";
 import Moments from "./pages/Moments";
 import Profile from "./pages/Profile";
 import Footer from "./components/layout/Footer";
+import Settings from "./pages/Settings";
 
 import About from "./pages/About";
 import Privacy from "./pages/Privacy";
@@ -50,6 +51,7 @@ function App() {
     "progress",
     "moments",
     "profile",
+    "settings",
   ];
 
   // EN: Users can access the main app if they are logged in OR using demo mode.
@@ -93,6 +95,14 @@ function App() {
 
     checkExistingLogin();
   }, []);
+
+  useEffect(() => {
+    // EN: If a logged-out user somehow lands on a protected page, return to Overview.
+    // JP: 未ログインのユーザーが保護ページに入った場合、Overviewへ戻します。
+    if (!isCheckingAuth && !canUseApp && protectedPages.includes(activePage)) {
+      setActivePage("overview");
+    }
+  }, [activePage, canUseApp, isCheckingAuth]);
 
   function handleLogout() {
     // EN: Log out the user and return to the public Overview page.
@@ -164,8 +174,9 @@ function App() {
   }
 
   function openLoginModal(initialView = "login") {
-    setLoginInitialView(initialView)
-    setIsLoginOpen(true)
+    console.log("Opening modal:", initialView)
+    setLoginInitialView(initialView);
+    setIsLoginOpen(true);
   }
 
   function renderPage() {
@@ -204,6 +215,7 @@ function App() {
     if (activePage === "focus") return <Focus />;
     if (activePage === "progress") return <Progress />;
     if (activePage === "moments") return <Moments />;
+
     if (activePage === "profile") {
       return (
         <Profile
@@ -214,8 +226,24 @@ function App() {
         />
       );
     }
+    if (activePage === "settings") {
+      return (
+        <Settings
+          currentUser={currentUser}
+          isDemoMode={isDemoMode}
+          onLogout={handleLogout}
+        />
+      );
+    }
 
-    return <Home />;
+    return (
+      <Home
+        isDemoMode={isDemoMode}
+        demoType={demoType}
+        onCreateAccount={handleCreateAccountFromDemo}
+        onExitDemoClick={() => setIsExitDemoConfirmOpen(true)}
+      />
+    );  
   }
 
   return (
@@ -239,7 +267,7 @@ function App() {
             onLogout={handleLogout}
             onLoginClick={() => openLoginModal("login")}
             onExitDemoClick={() => setIsExitDemoConfirmOpen(true)}
-            onCreateAccountClick={handleCreateAccountFromDemo}
+            onCreateAccountClick={() => openLoginModal("create")}
           />
 
           {canUseApp && (
@@ -291,7 +319,7 @@ function App() {
         <BottomNav activePage={activePage} setActivePage={handlePageChange} />
       )}
 
-      {isLoginOpen && !canUseApp && (
+      {isLoginOpen && (
         <LoginModal
           initialView={loginInitialView}
           setCurrentUser={setCurrentUser}

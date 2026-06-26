@@ -97,7 +97,7 @@ export default function ProfileDropdown({
 
         <button
           type="button"
-          onClick={() => handleNavigate("profile")}
+          onClick={() => handleNavigate("settings")}
           className="w-full rounded-xl px-3 py-2 text-left text-sm text-gray-700 hover:bg-green-50"
         >
           Settings

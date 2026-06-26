@@ -234,6 +234,7 @@ function AccessibilityItem({ title, text }) {
 }
 
 function Overview({
+  setActivePage,
   onLoginClick,
   onTryDemoClick,
   onCreateAccountClick,
