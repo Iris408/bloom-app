@@ -135,12 +135,22 @@ function App() {
     // EN: Open the login modal if logged-out users try to access protected pages.
     // JP: 未ログインのユーザーが保護ページへアクセスしようとした場合、ログインモーダルを開きます。
     if (protectedPages.includes(page) && !canUseApp) {
-      setActivePage("overview");
-      setIsLoginOpen(true);
-      return;
+      setActivePage("overview")
+      openLoginModal("login")
+      return
     }
 
-    setActivePage(page);
+    setActivePage(page)
+
+    // EN: After changing pages, return the user to the top of the new page.
+    // JP: ページを切り替えた後、新しいページの一番上へ移動します。
+    requestAnimationFrame(() => {
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: "auto",
+      })
+    })
   }
 
   function openLoginModal(initialView = "login") {
