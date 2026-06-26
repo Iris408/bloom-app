@@ -24,10 +24,6 @@ function Footer({
           <p className="max-w-sm text-sm leading-6 text-bloom-forest/70 dark:text-gray-300">
             Gentle tools for calm days, focus sessions, and steady progress.
           </p>
-
-          <div className="mt-4 max-w-sm rounded-2xl border border-bloom-sage/20 bg-white/45 px-4 py-3 text-sm font-semibold text-bloom-forest/75 dark:border-white/10 dark:bg-white/5 dark:text-gray-300">
-            Made with care for all minds.
-          </div>
         </div>
 
         {/* Footer links */}
