@@ -97,6 +97,16 @@ Backend-connected feedback collection, full account creation, and deeper onboard
 * ロードマップを v1.4、v1.5、v1.6、v1.6.1 の説明付き表示へ更新。
 * 公開ベータフィードバックとv2.0.0 バックエンド開発に向けた準備を継続。
 
+### Latest Beta Updates / 最新ベータ更新
+
+Bloom’s public beta experience has been polished with a redesigned landing page, improved CTA modal routing, updated About/Privacy/Accessibility pages, a frontend beta feedback form, mobile layout improvements, and footer navigation that returns users to the top of each page.
+
+Feedback is currently stored locally with localStorage. Full account creation, backend-connected feedback, saved user data, and deeper onboarding are planned for later versions.
+
+Bloom の公開ベータ体験を改善しました。新しいランディングページ、CTA ボタンから正しいモーダル画面へ移動する導線、About / Privacy / Accessibility ページの更新、フロントエンドのベータフィードバックフォーム、モバイルレイアウトの改善、そしてフッターリンクをクリックしたときに各ページの一番上から表示されるナビゲーションを追加しました。
+
+現在、フィードバックは localStorage を使ってブラウザ内にローカル保存されます。完全なアカウント作成、バックエンド連携のフィードバック保存、ユーザーデータの保存、より深いオンボーディング機能は、今後のバージョンで追加予定です。
+
 ## Project Overview / プロジェクト概要
 
 Bloom is being built as a web-first visual task sequencer and routine builder. The first version focuses on **Bloom Personal**, a personal-use routine app with accessible layouts, task cards, routine pages, progress tracking and multiple user modes.
