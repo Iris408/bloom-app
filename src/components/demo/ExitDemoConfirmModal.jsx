@@ -20,16 +20,15 @@ export default function ExitDemoConfirmModal({
             id="exit-demo-title"
             className="text-2xl font-bold text-bloom-forest dark:text-bloom-light"
           >
-            Exit demo mode?
+            Ready to step out?
           </h2>
 
           <p className="mt-3 text-sm leading-6 text-gray-600 dark:text-gray-300">
-            You're currently exploring Bloom with sample data. If you exit now,
-            you'll return to the Home page.
+            ꕤ Your temporary preview session will close, and you'll return to the home page.
           </p>
 
           <p className="mt-3 text-sm leading-6 text-gray-600 dark:text-gray-300">
-            You can keep exploring, create an account, or exit the demo.
+            ꕤ Feel free to continue looking around, save your space, or head back home.
           </p>
         </div>
 
@@ -37,17 +36,17 @@ export default function ExitDemoConfirmModal({
           <button
             type="button"
             onClick={onClose}
-            className="w-full rounded-full bg-bloom-mid px-4 py-3 text-sm font-semibold text-white transition hover:bg-bloom-forest"
+            className="w-full rounded-full border border-bloom-sage/40 px-4 py-3 text-sm font-semibold text-bloom-forest transition hover:bg-bloom-mint/30 dark:text-bloom-light dark:hover:bg-white/10"
           >
-            ꕤ Keep exploring
+            Keep exploring
           </button>
 
           <button
             type="button"
             onClick={onCreateAccount}
-            className="w-full rounded-full border border-bloom-sage/40 px-4 py-3 text-sm font-semibold text-bloom-forest transition hover:bg-bloom-mint/30 dark:text-bloom-light dark:hover:bg-white/10"
+            className="w-full rounded-full bg-bloom-forest px-4 py-3 text-sm font-semibold text-white transition hover:bg-bloom-mid/70"
           >
-            Create account
+            ꕤ Join Bloom
           </button>
 
           <button

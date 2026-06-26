@@ -4,12 +4,12 @@ export default function DemoBanner({
   onExitDemoClick,
 }) {
   const demoLabels = {
-    "simple-day": "Simple Day",
-    "neurodivergent-friendly": "Neurodivergent-friendly Day",
-    "full-preview": "Full App Preview",
+    "gentle-start": "A Quiet Start",
+    "neurodivergent-friendly": "Neurodivergent-friendly",
+    "full-bloom": "Full Bloom",
   }
 
-  const demoLabel = demoLabels[demoType] || "Demo"
+  const demoLabel = demoLabels[demoType] || "Demo Labels"
 
   return (
     <aside
@@ -24,26 +24,21 @@ export default function DemoBanner({
         {demoLabel}
       </h3>
 
-      <p className="text-sm leading-relaxed text-bloom-forest/75 dark:text-gray-300">
-        You're exploring Bloom with sample data. Nothing here is connected to a
-        real account yet.
+      <p className="text-xs leading-relaxed text-bloom-forest/75 dark:text-gray-300">
+        ꕤ You're currently exploring Bloom with sample data.
+      </p>
+
+      <p className="text-xs leading-relaxed text-bloom-forest/75 dark:text-gray-300">
+        ꕤ Your changes aren't saved to an account just yet.
       </p>
 
       <div className="mt-4 flex flex-col items-start gap-3">
         <button
           type="button"
-          onClick={onCreateAccount}
-          className="rounded-full bg-bloom-mid px-1.5 py-1.75 text-xs font-semibold text-white transition hover:bg-bloom-forest"
-        >
-          Create account
-        </button>
-
-        <button
-          type="button"
           onClick={onExitDemoClick}
           className="text-xs font-semibold text-bloom-forest underline-offset-4 transition hover:underline dark:text-bloom-light"
         >
-          Exit demo
+          Finish Exploring
         </button>
       </div>
     </aside>

@@ -3,24 +3,102 @@ import { getCurrentUser, loginUser, registerUser } from "../../api/bloomApi";
 
 const demoOptions = [
   {
-    id: "simple-day",
-    title: "Simple Day",
+    id: "gentle-start",
+    title: "A Quiet Start",
+    eyebrow: "Gentle preview",
     description:
-      "A calm preview with one routine, one focus block, and gentle tasks.",
+      "A peaceful introduction with a single routine, one focus block, and a few light tasks.",
   },
   {
     id: "neurodivergent-friendly",
     title: "Neurodivergent-friendly Day",
+    eyebrow: "Low-pressure support",
     description:
-      "A softer setup with low-pressure routines and recovery-friendly wording.",
+      "Designed to reduce overwhelm. Features low-pressure structures, calm pacing, and supportive wording.",
   },
   {
-    id: "full-preview",
-    title: "Full App Preview",
+    id: "full-bloom",
+    title: "Full Bloom",
+    eyebrow: "Complete demo",
     description:
-      "Explore Bloom with sample routines, focus sessions, moments, and settings.",
+      "A complete space loaded with sample routines, focus tracking, Bloom Moments, and custom configurations.",
   },
 ];
+
+const modalCopy = {
+  login: {
+    eyebrow: "Welcome back",
+    title: "Log in to Bloom",
+    icon: "🌱",
+    description:
+      "Return to your calm routines, focus sessions, and saved Bloom space.",
+    helperTitle: "Your space is waiting",
+    helperText: "Your account area is part of the v2.0.0 foundation.",
+  },
+  create: {
+    eyebrow: "Start gently",
+    title: "Create your Bloom space",
+    icon: "ꕤ",
+    description:
+      "Make a personal account so your routines and preferences can become yours.",
+    helperTitle: "What this creates",
+    helperText:
+      "A basic account with username, email, secure password login, and a future profile space for goals and preferences.",
+  },
+  demo: {
+    eyebrow: "Explore first",
+    title: "Try Bloom in demo mode",
+    icon: "☾",
+    description:
+      "Choose a gentle setup and discover Bloom.",
+    helperTitle: "No account needed",
+  },
+};
+
+function ModalIntro({ modalView }) {
+  const copy = modalCopy[modalView];
+
+  return (
+    <div className="mb-4 rounded-2xl border border-bloom-sage/25 bg-bloom-light/60 p-4 dark:border-white/10 dark:bg-white/5">
+      <div className="mb-3 flex items-center gap-3">
+        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-bloom-forest text-xl text-bloom-light dark:bg-bloom-sage dark:text-dark-bg">
+          {copy.icon}
+        </span>
+
+        <div>
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-bloom-mid dark:text-bloom-sage">
+            {copy.eyebrow}
+          </p>
+
+          <h2
+            id="login-modal-title"
+            className="mt-1 text-xl font-bold leading-tight text-bloom-forest dark:text-bloom-light sm:text-2xl"
+          >
+            {copy.title}
+          </h2>
+        </div>
+      </div>
+
+      <p className="text-sm leading-6 text-bloom-forest/70 dark:text-gray-300 sm:max-w-[520px]">
+        {copy.description}
+      </p>
+    </div>
+  );
+}
+
+function HelperCard({ modalView }) {
+  const copy = modalCopy[modalView];
+
+  return (
+    <div className="mb-4 rounded-2xl border border-bloom-sage/25 bg-white/70 px-4 py-3 text-sm leading-6 text-bloom-forest dark:border-white/10 dark:bg-white/5 dark:text-bloom-light">
+      <p className="font-bold">{copy.helperTitle}</p>
+
+      <p className="mt-1 text-bloom-forest/65 dark:text-gray-300">
+        {copy.helperText}
+      </p>
+    </div>
+  );
+}
 
 export default function LoginModal({
   initialView = "login",
@@ -136,22 +214,10 @@ export default function LoginModal({
     }
   }
 
-  function handleOpenCreateAccount() {
+  function switchView(nextView) {
     setError("");
     setNotice("");
-    setModalView("create");
-  }
-
-  function handleOpenDemo() {
-    setError("");
-    setNotice("");
-    setModalView("demo");
-  }
-
-  function handleOpenLogin() {
-    setError("");
-    setNotice("");
-    setModalView("login");
+    setModalView(nextView);
   }
 
   function handleStartDemo(demoType) {
@@ -173,26 +239,11 @@ export default function LoginModal({
       aria-modal="true"
       aria-labelledby="login-modal-title"
     >
-      <section className="max-h-[86vh] w-full max-w-md overflow-y-auto rounded-[1.75rem] border border-bloom-sage/30 bg-white p-5 shadow-xl dark:border-white/10 dark:bg-[#343442] sm:max-h-[90vh] sm:rounded-3xl sm:p-6">
-        <div className="mb-5 flex items-start justify-between gap-4">
-          <div>
-            <p className="mb-1 text-sm font-semibold uppercase tracking-wide text-bloom-mid">
-              Welcome to Bloom
-            </p>
-
-            <h2
-              id="login-modal-title"
-              className="text-xl font-bold leading-tight text-bloom-forest dark:text-bloom-light sm:text-2xl"
-            >
-              {modalView === "login" && "Log in to Bloom"}
-              {modalView === "create" && "Create your Bloom space"}
-              {modalView === "demo" && "Try Bloom in demo mode"}
-            </h2>
-
-            <p className="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-300">
-              🌱 Continue your calm routines, focus sessions, and daily tasks.
-            </p>
-          </div>
+      <section className="max-h-[86vh] w-full max-w-[94vw] overflow-y-auto rounded-[1.5rem] border border-bloom-sage/30 bg-white p-4 shadow-xl dark:border-white/10 dark:bg-[#343442] sm:max-h-[82vh] sm:max-w-[620px] sm:p-5">
+        <div className="mb-4 flex items-center justify-between gap-4">
+          <p className="text-xs font-bold uppercase tracking-[0.22em] text-bloom-mid dark:text-bloom-sage">
+            Bloom
+          </p>
 
           <button
             type="button"
@@ -203,6 +254,8 @@ export default function LoginModal({
             x
           </button>
         </div>
+
+        <ModalIntro modalView={modalView} />
 
         {notice && (
           <p className="mb-4 rounded-2xl border border-bloom-sage/30 bg-bloom-mint/20 px-4 py-3 text-sm leading-6 text-bloom-forest dark:border-white/10 dark:bg-white/10 dark:text-bloom-light">
@@ -218,6 +271,8 @@ export default function LoginModal({
 
         {modalView === "login" && (
           <>
+            <HelperCard modalView="login" />
+
             <form onSubmit={handleLogin}>
               <label
                 htmlFor="login-email"
@@ -256,27 +311,27 @@ export default function LoginModal({
                 disabled={isLoading}
                 className="w-full rounded-full bg-bloom-mid px-4 py-3 text-sm font-semibold text-white transition hover:bg-bloom-forest disabled:cursor-not-allowed disabled:opacity-60"
               >
-                {isLoading ? "Preparing your Bloom space..." : "Log in"}
+                {isLoading ? "Opening Bloom..." : "Log in"}
               </button>
             </form>
 
             <div className="my-6 border-t border-bloom-sage/30 dark:border-white/10" />
 
-            <div className="space-y-3 text-sm">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               <button
                 type="button"
-                onClick={handleOpenCreateAccount}
-                className="w-full rounded-full border border-bloom-sage/40 px-4 py-2 text-center font-semibold text-bloom-forest transition hover:bg-bloom-mint/30 dark:bg-green-900/60 dark:text-bloom-light dark:hover:bg-bloom-forest/80"
+                onClick={() => switchView("create")}
+                className="rounded-2xl border border-bloom-sage/40 px-4 py-3 text-sm font-semibold text-bloom-forest transition hover:bg-bloom-mint/30 dark:text-bloom-light dark:hover:bg-white/10"
               >
-                ꕤ Create your space
+                ꕤ Join Bloom
               </button>
 
               <button
                 type="button"
-                onClick={handleOpenDemo}
-                className="w-full rounded-full border border-bloom-sage/40 bg-bloom-mint/40 px-4 py-2 text-center font-semibold text-bloom-forest transition hover:bg-bloom-mint/60 dark:border-black/30 dark:bg-blue-900/40 dark:text-bloom-light dark:hover:bg-blue-600/20"
+                onClick={() => switchView("demo")}
+                className="rounded-2xl border border-bloom-sage/40 bg-bloom-mint/40 px-4 py-3 text-sm font-semibold text-bloom-forest transition hover:bg-bloom-mint/60 dark:border-black/30 dark:bg-blue-900/40 dark:text-bloom-light dark:hover:bg-blue-600/20"
               >
-                ☾ Have a gentle look around
+                ☾ Try demo
               </button>
             </div>
           </>
@@ -284,100 +339,109 @@ export default function LoginModal({
 
         {modalView === "create" && (
           <>
-            <div className="mb-5 rounded-2xl border border-bloom-sage/30 bg-bloom-mint/20 px-4 py-3 text-sm leading-6 text-bloom-forest dark:border-white/10 dark:bg-white/10 dark:text-bloom-light">
-              Create a Bloom account to start moving from demo mode into a saved
-              personal space.
-            </div>
+            <HelperCard modalView="create" />
 
             <form onSubmit={handleCreateAccount}>
-              <label
-                htmlFor="create-username"
-                className="mb-1 block text-sm font-medium text-bloom-forest dark:text-bloom-light"
-              >
-                Username
-              </label>
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div>
+                  <label
+                    htmlFor="create-username"
+                    className="mb-1 block text-sm font-medium text-bloom-forest dark:text-bloom-light"
+                  >
+                    Username
+                  </label>
 
-              <input
-                id="create-username"
-                type="text"
-                value={username}
-                onChange={(event) => setUsername(event.target.value)}
-                required
-                className="mb-4 w-full rounded-xl border border-bloom-sage/40 bg-white px-3 py-2 text-bloom-forest outline-none transition focus:border-bloom-mid focus:ring-2 focus:ring-bloom-mint/40 dark:bg-white/10 dark:text-bloom-light"
-              />
+                  <input
+                    id="create-username"
+                    type="text"
+                    value={username}
+                    onChange={(event) => setUsername(event.target.value)}
+                    required
+                    className="w-full rounded-xl border border-bloom-sage/40 bg-white px-3 py-2 text-bloom-forest outline-none transition focus:border-bloom-mid focus:ring-2 focus:ring-bloom-mint/40 dark:bg-white/10 dark:text-bloom-light"
+                  />
+                </div>
 
-              <label
-                htmlFor="create-email"
-                className="mb-1 block text-sm font-medium text-bloom-forest dark:text-bloom-light"
-              >
-                Email
-              </label>
+                <div>
+                  <label
+                    htmlFor="create-email"
+                    className="mb-1 block text-sm font-medium text-bloom-forest dark:text-bloom-light"
+                  >
+                    Email
+                  </label>
 
-              <input
-                id="create-email"
-                type="email"
-                value={createEmail}
-                onChange={(event) => setCreateEmail(event.target.value)}
-                required
-                className="mb-4 w-full rounded-xl border border-bloom-sage/40 bg-white px-3 py-2 text-bloom-forest outline-none transition focus:border-bloom-mid focus:ring-2 focus:ring-bloom-mint/40 dark:bg-white/10 dark:text-bloom-light"
-              />
+                  <input
+                    id="create-email"
+                    type="email"
+                    value={createEmail}
+                    onChange={(event) => setCreateEmail(event.target.value)}
+                    required
+                    className="w-full rounded-xl border border-bloom-sage/40 bg-white px-3 py-2 text-bloom-forest outline-none transition focus:border-bloom-mid focus:ring-2 focus:ring-bloom-mint/40 dark:bg-white/10 dark:text-bloom-light"
+                  />
+                </div>
 
-              <label
-                htmlFor="create-password"
-                className="mb-1 block text-sm font-medium text-bloom-forest dark:text-bloom-light"
-              >
-                Password
-              </label>
+                <div>
+                  <label
+                    htmlFor="create-password"
+                    className="mb-1 block text-sm font-medium text-bloom-forest dark:text-bloom-light"
+                  >
+                    Password
+                  </label>
 
-              <input
-                id="create-password"
-                type="password"
-                value={createPassword}
-                onChange={(event) => setCreatePassword(event.target.value)}
-                required
-                className="mb-4 w-full rounded-xl border border-bloom-sage/40 bg-white px-3 py-2 text-bloom-forest outline-none transition focus:border-bloom-mid focus:ring-2 focus:ring-bloom-mint/40 dark:bg-white/10 dark:text-bloom-light"
-              />
+                  <input
+                    id="create-password"
+                    type="password"
+                    value={createPassword}
+                    onChange={(event) => setCreatePassword(event.target.value)}
+                    required
+                    className="w-full rounded-xl border border-bloom-sage/40 bg-white px-3 py-2 text-bloom-forest outline-none transition focus:border-bloom-mid focus:ring-2 focus:ring-bloom-mint/40 dark:bg-white/10 dark:text-bloom-light"
+                  />
+                </div>
 
-              <label
-                htmlFor="confirm-password"
-                className="mb-1 block text-sm font-medium text-bloom-forest dark:text-bloom-light"
-              >
-                Confirm password
-              </label>
+                <div>
+                  <label
+                    htmlFor="confirm-password"
+                    className="mb-1 block text-sm font-medium text-bloom-forest dark:text-bloom-light"
+                  >
+                    Confirm password
+                  </label>
 
-              <input
-                id="confirm-password"
-                type="password"
-                value={confirmPassword}
-                onChange={(event) => setConfirmPassword(event.target.value)}
-                required
-                className="mb-4 w-full rounded-xl border border-bloom-sage/40 bg-white px-3 py-2 text-bloom-forest outline-none transition focus:border-bloom-mid focus:ring-2 focus:ring-bloom-mint/40 dark:bg-white/10 dark:text-bloom-light"
-              />
+                  <input
+                    id="confirm-password"
+                    type="password"
+                    value={confirmPassword}
+                    onChange={(event) =>
+                      setConfirmPassword(event.target.value)
+                    }
+                    required
+                    className="w-full rounded-xl border border-bloom-sage/40 bg-white px-3 py-2 text-bloom-forest outline-none transition focus:border-bloom-mid focus:ring-2 focus:ring-bloom-mint/40 dark:bg-white/10 dark:text-bloom-light"
+                  />
+                </div>
+              </div>
 
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full rounded-full bg-bloom-mid px-4 py-3 text-sm font-semibold text-white transition hover:bg-bloom-forest disabled:cursor-not-allowed disabled:opacity-60"
+                className="mt-5 w-full rounded-full bg-bloom-mid px-4 py-3 text-sm font-semibold text-white transition hover:bg-bloom-forest disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {isLoading ? "Creating your Bloom space..." : "Create account"}
               </button>
             </form>
 
-            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+            <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
               <button
                 type="button"
-                onClick={handleOpenDemo}
-                className="w-full rounded-full border border-bloom-sage/40 bg-bloom-mint/40 px-5 py-2.5 text-center text-sm font-semibold text-bloom-forest transition hover:bg-bloom-mint/60 dark:border-black/30 dark:bg-blue-900/40 dark:text-bloom-light dark:hover:bg-blue-600/20 sm:w-auto"
+                onClick={() => switchView("login")}
+                className="rounded-2xl border border-bloom-sage/40 px-4 py-3 text-sm font-semibold text-bloom-forest transition hover:bg-bloom-mint/30 dark:text-bloom-light dark:hover:bg-white/10"
               >
-                Try demo instead
+                Back to login
               </button>
 
               <button
                 type="button"
-                onClick={handleOpenLogin}
-                className="w-full rounded-full border border-bloom-sage/40 px-5 py-2.5 text-center text-sm font-semibold text-bloom-forest transition hover:bg-bloom-mint/30 dark:text-bloom-light dark:hover:bg-white/10 sm:w-auto"
+                onClick={() => switchView("demo")}
+                className="rounded-2xl border border-bloom-sage/40 bg-bloom-mint/40 px-4 py-3 text-sm font-semibold text-bloom-forest transition hover:bg-bloom-mint/60 dark:border-black/30 dark:bg-blue-900/40 dark:text-bloom-light dark:hover:bg-blue-600/20"
               >
-                Back to login
+                ☾ Try demo
               </button>
             </div>
           </>
@@ -385,36 +449,47 @@ export default function LoginModal({
 
         {modalView === "demo" && (
           <>
-            <button
-              type="button"
-              onClick={handleOpenLogin}
-              className="mb-4 text-sm font-semibold text-bloom-mid hover:text-bloom-forest dark:text-bloom-light"
-            >
-              ← Back to login
-            </button>
+            <HelperCard modalView="demo" />
 
-            <div className="mb-5 rounded-2xl border border-bloom-sage/30 bg-bloom-mint/20 px-4 py-3 text-sm leading-6 text-bloom-forest dark:border-white/10 dark:bg-white/10 dark:text-bloom-light">
-              Demo mode uses sample data only. You can explore freely without
-              creating an account.
-            </div>
-
-            <div className="space-y-3">
+            <div className="grid grid-cols-1 items-stretch gap-3 sm:grid-cols-3">
               {demoOptions.map((option) => (
                 <button
                   key={option.id}
                   type="button"
                   onClick={() => handleStartDemo(option.id)}
-                  className="w-full rounded-2xl border border-bloom-sage/30 bg-bloom-light/70 p-4 text-left transition hover:border-bloom-mid hover:bg-bloom-mint/20 dark:border-white/10 dark:bg-white/5 sm:p-5"
+                  className="flex h-full min-h-[32px] w-full flex-col rounded-2xl border border-bloom-sage/30 bg-bloom-light/70 p-4 text-left transition hover:border-bloom-mid hover:bg-bloom-mint/20 dark:border-white/10 dark:bg-white/5"
                 >
-                  <h3 className="mb-1 text-base font-bold text-bloom-forest dark:text-bloom-light">
+                  <p className="mb-3 min-h-[32px] text-xs font-bold uppercase leading-4 tracking-[0.18em] text-bloom-mid dark:text-bloom-sage">
+                    {option.eyebrow}
+                  </p>
+
+                  <h3 className="mb-3 min-h-[40px] text-sm font-bold leading-5 text-bloom-forest dark:text-bloom-light">
                     {option.title}
                   </h3>
 
-                  <p className="text-sm leading-6 text-gray-600 dark:text-gray-300">
+                  <p className="flex-1 text-xs leading-5 text-gray-600 dark:text-gray-300">
                     {option.description}
                   </p>
                 </button>
               ))}
+            </div>
+
+            <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <button
+                type="button"
+                onClick={() => switchView("login")}
+                className="rounded-2xl border border-bloom-sage/40 px-4 py-3 text-sm font-semibold text-bloom-forest transition hover:bg-bloom-mint/30 dark:text-bloom-light dark:hover:bg-white/10"
+              >
+                Back to login
+              </button>
+
+              <button
+                type="button"
+                onClick={() => switchView("create")}
+                className="rounded-2xl bg-bloom-mid px-4 py-3 text-sm font-semibold text-white transition hover:bg-bloom-forest"
+              >
+                Create account
+              </button>
             </div>
           </>
         )}

@@ -142,12 +142,14 @@ function FeatureCard({ icon, title, text, tone = "sage" }) {
 
 function MiniStepCard({ icon, title }) {
   return (
-    <div className="flex min-h-[64px] items-center gap-3 rounded-2xl border border-bloom-sage/20 bg-bloom-light/60 p-3 text-left text-xs text-bloom-forest dark:border-white/10 dark:bg-white/5 dark:text-bloom-light sm:min-h-[92px] sm:flex-col sm:justify-center sm:text-center">
-      <span className="flex h-8 w-8 shrink-0 items-center justify-center text-bloom-mid sm:mb-2">
+    <div className="flex min-h-[86px] flex-1 flex-col items-center gap-2 rounded-2xl border border-bloom-sage/20 bg-bloom-light/60 p-3 text-left text-xs text-bloom-forest dark:border-white/10 dark:bg-white/5 dark:text-bloom-light">
+      <span className="flex h-7 w-7 shrink-0 items-center justify-center text-bloom-mid">
         {icon}
       </span>
 
-      <span className="font-semibold leading-4">{title}</span>
+      <span className="max-w-[90px] text-[11px] font-bold leading-4">
+        {title}
+      </span>
     </div>
   )
 }
@@ -157,17 +159,17 @@ function PathCard({ tone = "green", title, steps, buttonText, onClick }) {
 
   return (
     <article
-      className={`rounded-3xl border bg-white/75 p-5 shadow-sm backdrop-blur-sm dark:bg-white/5 ${
+      className={`flex h-full min-h-[270px] flex-col rounded-3xl border bg-white/75 p-5 shadow-sm backdrop-blur-sm dark:bg-white/5 ${
         isGold
           ? "border-[#e4c36b]/45 dark:border-white/10"
           : "border-bloom-sage/25 dark:border-white/10"
       }`}
     >
-      <h3 className="mb-4 text-lg font-bold text-bloom-forest dark:text-bloom-light">
+      <h3 className="mb-4 min-h-[28px] text-lg font-bold text-bloom-forest dark:text-bloom-light">
         {title}
       </h3>
 
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+      <div className="mb-5 grid grid-cols-3 gap-3">
         {steps.map((step) => (
           <MiniStepCard key={step.title} icon={step.icon} title={step.title} />
         ))}
@@ -176,7 +178,7 @@ function PathCard({ tone = "green", title, steps, buttonText, onClick }) {
       <button
         type="button"
         onClick={onClick}
-        className={`mt-5 w-full rounded-2xl px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:-translate-y-0.5 ${
+        className={`mt-auto w-full rounded-2xl px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:-translate-y-0.5 ${
           isGold
             ? "bg-[#d99a28] hover:bg-[#b97e17]"
             : "bg-bloom-forest hover:bg-bloom-mid"
@@ -267,7 +269,7 @@ function Overview({
               onClick={onTryDemoClick}
               className="w-full rounded-2xl bg-bloom-forest px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-bloom-mid sm:flex-1"
             >
-              Try demo
+              Try Demo
             </button>
 
             <button
@@ -275,7 +277,7 @@ function Overview({
               onClick={onCreateAccountClick}
               className="w-full rounded-2xl bg-bloom-mid px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-bloom-forest sm:flex-1"
             >
-              Create account
+              Create your space
             </button>
 
             <button
@@ -413,9 +415,9 @@ function Overview({
       <section className="rounded-[1.75rem] border border-bloom-sage/25 bg-white/45 p-4 shadow-sm dark:border-white/10 dark:bg-white/5 sm:rounded-[2rem] sm:p-5">
         <SectionTitle>3 ways to get started</SectionTitle>
 
-        <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
+        <div className="grid grid-cols-1 items-stretch gap-5 lg:grid-cols-3">
           <PathCard
-            title="Returning user"
+            title="Returning to Bloom"
             buttonText="Log in"
             onClick={onLoginClick}
             steps={[
@@ -426,25 +428,25 @@ function Overview({
           />
 
           <PathCard
-            title="New user"
+            title="New to Bloom"
             buttonText="Create account"
             onClick={onCreateAccountClick}
             steps={[
-              { icon: <UserPlusIcon />, title: "Create account" },
-              { icon: <LeafIcon />, title: "Onboarding" },
+              { icon: <UserPlusIcon />, title: "Create" },
+              { icon: <LeafIcon />, title: "Setup" },
               { icon: "⌂", title: "Home" },
             ]}
           />
 
           <PathCard
             tone="gold"
-            title="Demo user"
+            title="Just looking around"
             buttonText="Try demo"
             onClick={onTryDemoClick}
             steps={[
-              { icon: <LeafIcon />, title: "Try demo" },
+              { icon: <LeafIcon />, title: "Demo" },
               { icon: <SlidersIcon />, title: "Choose setup" },
-              { icon: "★", title: "Demo home" },
+              { icon: "-`´-", title: "Preview" },
             ]}
           />
         </div>
