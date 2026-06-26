@@ -4,90 +4,112 @@ Calm routines for every brain.
 
 Bloom is an active full-stack capstone project focused on building a calm, accessible visual routine and task sequencing application. The app is designed to help users create, organise, and follow step-by-step routines in a clear, supportive, and neurodivergent-friendly way.
 
-# Bloom 🌱
+Bloom currently focuses on **Bloom Personal**, a personal routine, focus, and task support app. The current version is being prepared for public beta feedback with a public Overview page, login modal flow, accessibility page controls, visual identity polish, and gentle feedback collection.
 
 すべての人にやさしい、落ち着いたルーティン管理アプリ。
 
 Bloomは、視覚的なルーティン作成とタスク進行を支援するアクセシビリティ重視のフルスタック・キャップストーンプロジェクトです。ユーザーがステップごとのルーティンを分かりやすく作成・整理・実行できるように設計しており、ニューロダイバージェントフレンドリーな体験を重視しています。
 
-## Live Demo
+現在は、個人利用向けの **Bloom Personal** を中心に開発しています。現バージョンでは、公開用Overviewページ、ログインモーダル、アクセシビリティ用Page Controls、ビジュアルデザインの改善、ベータフィードバック収集に向けた調整を進めています。
 
-[View Bloom on Vercel](https://bloom-app-three-xi.vercel.app/)
+## Live Demo - [Experience Bloom](https://bloom-app-three-xi.vercel.app/)
 
-## Screenshots / スクリーンショット
+### Latest Beta Updates
+
+Recent Bloom beta updates include:
+
+- Public landing page redesigned around the Bloom v2.0.0 product vision
+- Improved landing page CTAs for demo, account creation, and login
+- Updated About page with a more personal product journey and design values
+- Frontend beta feedback form added
+- Feedback is currently saved locally using localStorage
+- Footer updated with Product, Company, and Trust links
+- Demo mode and public-page layout polish
+
+Backend-connected feedback collection, full account creation, and deeper onboarding are planned for later versions.
+
+### Screenshots / スクリーンショット
 
 <table>
   <tr>
     <td>
-      <img src="./public/bloom-home.png" width="400"/>
+      <img src="./public/bloom_overview.png" width="400"/>
       <br/>
-      <strong>Bloom Home/ホーム</strong>
+      <strong>Public Overview / 公開概要ページ</strong>
     </td>
     <td>
-      <img src="./public/bloom-routines.png" width="400"/>
+      <img src="./public/bloom-login-modal.png" width="400"/>
       <br/>
-      <strong>Routines/ルーティン</strong>
+      <strong>Login Modal / ログインモーダル</strong>
     </td>
   </tr>
   <tr>
     <td>
-      <img src="./public/bloom-progress.png" width="400"/>
+      <img src="./public/bloom-page-controls.png" width="400"/>
       <br/>
-      <strong>Progress/プログレス</strong>
+      <strong>Page Controls / ページ表示設定</strong>
     </td>
     <td>
-      <img src="./public/bloom-focus.png" width="400"/>
+      <img src="./public/bloom_home.png" width="400"/>
       <br/>
-      <strong>Focus Mode/フォーカス</strong>
+      <strong>Home / ホーム</strong>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <img src="./public/bloom_routines.png" width="400"/>
+      <br/>
+      <strong>Routines / ルーティン</strong>
+    </td>
+    <td>
+      <img src="./public/bloom_focus.png" width="400"/>
+      <br/>
+      <strong>Focus / フォーカス</strong>
     </td>
   </tr>
 </table>
 
 ## Current Status / 現在のステータス
 
-### v1.6.0 - Final Frontend Polish
+### v1.6.1 - Visual Identity & Public Beta Polish
 
-* Renamed Rewards to Moments to better match Bloom’s calm, non-gamified tone.
-* Updated the Moments page wording for small wins, gentle reflections, and low-pressure progress.
-* Replaced mobile bottom navigation text symbols with stable SVG icons.
-* Updated Routines, Focus, and Progress page header icons for better visual consistency.
-* Changed the Focus icon to a lightbulb and the Progress icon to three small-to-big progress bars.
-* Added external Reddit beta feedback into the project feedback tracker.
-* Saved Oasis as a future idea for a calm reset/recovery space.
-* Clarified the next major direction: v2.0.0 full-stack backend and user persistence.
+* Added a public Overview page as the main landing page for logged-out users.
+* Replaced the separate login page with a login modal overlay.
+* Updated the Header with public navigation links for Overview, About, and Feedback.
+* Added a feedback section with a Google feedback form link for beta testing.
+* Made OpenDyslexic and text size controls available before login.
+* Added the Bloom illustration to the public Overview hero section.
+* Added subtle floral and botanical desktop background decoration inspired by the Bloom illustration.
+* Tuned dark mode decoration opacity so the interface remains readable and calm.
+* Updated the roadmap section to show v1.4, v1.5, v1.6, and v1.6.1 with short explanations.
+* Continued preparing Bloom for public beta feedback and v2.0.0 backend foundation work.
 
-### v1.6.0 - ポートフォリオ仕上げとベータ準備
+### v1.6.1 - ビジュアルデザインと公開ベータ準備
 
-* Bloom の落ち着いた雰囲気に合わせて、Rewards を Moments に名称変更。
-* Moments ページの文言を、小さな達成・やさしい振り返り・低負荷な進捗確認に合うように調整。
-* モバイル下部ナビゲーションの文字アイコンを、安定した SVG アイコンに変更。
-* Routines、Focus、Progress ページのヘッダーアイコンを更新し、見た目の一貫性を改善。
-* Focus アイコンを電球アイコンに、Progress アイコンを小さいバーから大きいバーへ進むアイコンに変更。
-* Reddit からの外部ベータフィードバックをフィードバックトラッカーに追加。
-* 将来的な落ち着いたリセット・回復スペースとして Oasis をアイデアとして保存。
-* 次の大きな方向性として、v2.0.0 フルスタックバックエンドとユーザー永続化 を明確化。
+* 未ログインユーザー向けに、公開用Overviewページをメインのランディングページとして追加。
+* 独立したログインページを、Overviewページ上に表示されるログインモーダルへ変更。
+* Header に Overview、About、Feedback の公開ナビゲーションリンクを追加。
+* ベータテスト用に、Googleフィードバックフォームへつながるフィードバックセクションを追加。
+* ログイン前でも OpenDyslexic と文字サイズ設定を利用できるように改善。
+* 公開Overviewページのヒーローエリアに Bloom イラストを追加。
+* Bloom イラストの雰囲気に合わせて、デスクトップ用の花・植物の背景装飾を追加。
+* ダークモードで装飾が強くなりすぎないように透明度を調整。
+* ロードマップを v1.4、v1.5、v1.6、v1.6.1 の説明付き表示へ更新。
+* 公開ベータフィードバックとv2.0.0 バックエンド開発に向けた準備を継続。
 
-| Area | Status | Area | Status |
-|---|---|---|---|
-| **Foundation** | | **Progress** | |
-| Vite + React, folder structure, routing | ✅ Complete | Progress v1 - calm routine progress overview | ✅ Complete |
-| Sidebar navigation for desktop and bottom navigation | ✅ Complete | Pre-routine progress bars and weekly progress snapshots | ✅ Complete |
-| Header, footer, reusable UI components | ✅ Complete | Descriptive progress labels | ✅ Complete |
-| **Tasks** | | **UI / UX** | |
-| Task cards, task list, CRUD actions and emoji picker | ✅ Complete | Light/dark mode and accessibility controls | ✅ Complete |
-| Task localStorage persistence | ✅ Complete | Reusable Bloom reminder component across pages | ✅ Complete |
-| Reusable task completion button | ✅ Complete | Daily affirmation/reminder card | ✅ Complete |
-| Completed task styling with tick and line-through state | ✅ Complete | Better mobile-friendly layout improvements | ✅ Complete |
-| **Routines** | | Frontend polish | ✅ Complete |
-| Routine builder — create, edit and delete routines | ✅ Complete | Mobile navigation SVG icons | ✅ Complete |
-| Routine steps — add, remove, edit, reorder and complete | ✅ Complete | Page header icon polish | ✅ Complete |
-| Routine and step localStorage persistence | ✅ Complete | Bloom Moments page rename | ✅ Complete |
-| Demo routine data stored in `src/data/demoData.js` | ✅ Complete | **Planned Updates** | |
-| Auto-close preview and reset selected ticks after loading | ✅ Complete | External beta feedback tracking | ✅ Complete |
-| Load only selected demo routines | ✅ Complete | v2.0.0 backend planning | 🚧 Next |
-| **Focus Mode** | | | |
-| Focus v1 - add, complete and remove daily focus tasks | ✅ Complete | Future full-stack deployment | 🚧 Planned |
-| Focus task localStorage persistence | ✅ Complete | Profile settings, Backend API and database persistence | 🚧 Planned |
+### Latest Beta Updates / 最新ベータ更新
+
+Bloom’s public beta experience has been polished with a redesigned landing page, improved CTA modal routing, updated About/Privacy/Accessibility pages, a frontend beta feedback form, mobile layout improvements, and footer navigation that returns users to the top of each page.
+
+Feedback is currently stored locally with localStorage. Full account creation, backend-connected feedback, saved user data, and deeper onboarding are planned for later versions.
+
+Small beta polish is focused on stabilising the public landing flow, demo mode, feedback form, mobile layout, and public trust pages before returning to the remaining Bloom v2.0.0 work.
+
+Bloom の公開ベータ体験を改善しました。新しいランディングページ、CTA ボタンから正しいモーダル画面へ移動する導線、About / Privacy / Accessibility ページの更新、フロントエンドのベータフィードバックフォーム、モバイルレイアウトの改善、そしてフッターリンクをクリックしたときに各ページの一番上から表示されるナビゲーションを追加しました。
+
+現在、フィードバックは localStorage を使ってブラウザ内にローカル保存されます。完全なアカウント作成、バックエンド連携のフィードバック保存、ユーザーデータの保存、より深いオンボーディング機能は、今後のバージョンで追加予定です。
+
+小さなベータ版の仕上げでは、Bloom v2.0.0 の残り作業に戻る前に、公開ランディングページ、デモモード、フィードバックフォーム、モバイルレイアウト、公開向けの信頼性ページを安定させることに集中しています。
 
 ## Project Overview / プロジェクト概要
 
@@ -112,77 +134,53 @@ Bloomは、Webファーストの視覚的タスクシーケンサーおよびル
 
 ## Current Features / 現在の機能
 
-| EN | 日本語 |
-|---|---|
-| React app structure created with Vite | Viteで作成したReactアプリ構成 |
-| Component-based folder structure | コンポーネントベースのフォルダ構成 |
-| Desktop sidebar and Mobile bottom navigation | デスクトップ用サイドバーナビゲーション/モバイル用ボトムナビゲーション |
-| Header and footer components | ヘッダー・フッターコンポーネント |
-| Reusable Bloom button component | 再利用可能なBloomボタンコンポーネント |
-| Task card and task list components | タスクカード・タスクリストコンポーネント |
-| Emoji picker for new and edited tasks | 新規作成・編集タスク用の絵文字ピッカー |
-| Completed task styling with tick and line-through state | チェック表示と取り消し線による完了タスク表示 |
-| Selectable demo routine preview | 選択可能なデモルーティンプレビュー |
-| Select all and Clear all demo routine controls | デモルーティン用の Select all / Clear all 操作 |
-| Load selected demo routines only | 選択したデモルーティンのみ読み込み |
-| Auto-close demo preview after loading | 読み込み後にデモプレビューを自動で閉じる機能 |
-| Reset selected demo routine ticks after loading | 読み込み後に選択チェックを自動でリセット |
-| Global app context structure | グローバルアプリコンテキスト構成 |
-| Reusable UI component folder | 再利用可能なUIコンポーネントフォルダ |
-| Light and dark mode | ライトモード・ダークモード |
-| Font size controls | フォントサイズ調整 |
-| OpenDyslexic font, Reduce motion toggle | OpenDyslexicフォント切り替え /アニメーション軽減設定|
-| Daily reset behaviour for tasks, routines, routine steps and focus tasks | タスク、ルーティン、ルーティンステップ、集中タスクの日次リセット |
-| Reusable empty state component | 再利用可能な空状態コンポーネント |
-| Empty state microcopy improvements | 空状態メッセージの改善 |
-| Profile accessibility mobile layout polish | Profile のアクセシビリティ設定画面のモバイル表示改善 |
-| Progress mobile layout polish | Progress ページのモバイル表示改善 |
-| Rewards renamed to Moments | Rewards を Moments に名称変更 |
-| Mobile bottom navigation icon polish | モバイル下部ナビゲーションアイコンの改善 |
+| EN | 日本語 | EN | 日本語 |
+|---|---|---|---|
+| Desktop sidebar and Mobile bottom navigation | デスクトップ用サイドバーナビゲーション/モバイル用ボトムナビゲーション | Empty state microcopy improvements | 空状態メッセージの改善 |
+| Reusable Bloom button components | 再利用可能なBloomボタンコンポーネント | Public Overview landing page | 公開用Overviewランディングページ |
+| Task card and task list components | タスクカード・タスクリストコンポーネント | Login modal overlay | ログインモーダル表示 |
+| Emoji picker for new and edited tasks | 新規作成・編集タスク用の絵文字ピッカー | Public About, Privacy, and Accessibility pages | 公開用 About / Privacy / Accessibility ページ |
+| Completed task styling with tick and line-through state | チェック表示と取り消し線による完了タスク表示 | Google feedback form link for beta feedback | ベータフィードバック用Googleフォームリンク |
+| Selectable demo routine preview | 選択可能なデモルーティンプレビュー | Header Page Controls dropdown | Header の Page Controls ドロップダウン |
+| Load selected demo routines only | 選択したデモルーティンのみ読み込み | Text size controls from S to XL | S〜XL の文字サイズ設定 |
+| Global app context structure | グローバルアプリコンテキスト構成 | Light and dark mode | ライトモード・ダークモード |
+| Reusable UI component folder | 再利用可能なUIコンポーネントフォルダ | OpenDyslexic font, Reduce motion toggle | OpenDyslexicフォント切り替え /アニメーション軽減設定|
+| Reusable empty state component | 再利用可能な空状態コンポーネント | Daily reset behaviour for tasks, routines, routine steps and focus tasks | タスク、ルーティン、ルーティンステップ、集中タスクの日次リセット |
 
 ## Pages / ページ構成
 
 | Page | Purpose | ページ | 目的 |
 |---|---|---|---|
-| Overview | High-level app overview | 概要 | アプリ全体の概要 |
-| Home | Today’s focus, task list, task completion and daily reminder | 今日のフォーカス、タスクリスト、タスク完了、デイリーリマインダー |
+| Overview | Public landing page for Bloom, beta information, visual identity, roadmap and feedback link | 概要 | Bloomの公開ランディングページ、ベータ情報、ビジュアル方向性、ロードマップ、フィードバックリンク |
+| Home | Today’s focus, task list, task completion and daily reminder | ホーム | 今日のフォーカス、タスクリスト、タスク完了、デイリーリマインダー |
 | Routines | Routine builder, routine steps and selectable demo routines | ルーティン | ルーティン作成、ステップ管理、選択可能なデモルーティン |
 | Focus | Daily focus task tracking | フォーカス | 日々の集中タスク管理 |
 | Progress | Calm progress overview and weekly snapshots | プログレス | 落ち着いた進捗概要と週間スナップショット |
-| Moments | Placeholder page for future Bloom moments and badges | モーメンツ |「Bloom」で近日公開予定の「Moments」とバッジに関するプレビューページ |
-| Profile | Placeholder page for future user settings and accessibility preferences | プロフィール | 今後のユーザー設定・アクセシビリティ設定用プレースホルダーページ |
+| Moments | Future page for gentle wins, reflections and non-gamified progress moments | モーメンツ | 小さな達成、振り返り、非ゲーム的な進捗確認用の将来ページ |
+| Profile | User settings and accessibility preferences | プロフィール | ユーザー設定とアクセシビリティ設定 |
 
+Additonal pages:
+* About - Deeper explanation of Bloom’s purpose, design goals and beta direction / Bloomの目的、デザイン方針、ベータ段階の説明 |
+* Privacy - Public privacy and data handling information / プライバシーとデータ取り扱いに関する公開情報 |
+* Accessibility - Public accessibility and usability information / アクセシビリティと使いやすさに関する公開情報 |
 
 ## Planned Features / 今後の予定機能
 
 | EN | 日本語 |
 |---|---|
-| Moments view for small wins and gentle reflections | 小さな達成や振り返りを表示する Moments ビュー |
-| Time estimates per routine step | ルーティンステップごとの所要時間目安 |
-| Missed-day recovery wording | できなかった日の回復を支えるメッセージ |
-| Low demand mode | 低負荷モード |
-| Notification/reminder setting | 通知・リマインダー設定 |
+| Onboarding flow | オンボーディングフロー |
 | Mood check-in at app open | アプリ起動時の気分チェックイン |
 | Short version of routines | ルーティンの短縮版 |
 | Oasis calm reset space | Oasis という落ち着いたリセット空間 |
-| Onboarding flow | オンボーディングフロー |
-| Ambient audio toggle | 環境音の切り替え |
+| Time estimates per routine step | ルーティンステップごとの所要時間目安 |
+| Missed-day recovery wording | できなかった日の回復を支えるメッセージ |
+| Low demand mode | 低負荷モード |
 | Exportable progress CSV | 進捗CSVエクスポート |
-| Future FastAPI backend | 将来的なFastAPIバックエンド |
-| Future database persistence | 将来的なデータベース永続化 |
-| Future user authentication | 将来的なユーザー認証 |
+| Dedicated in-app Feedback page | 専用のアプリ内フィードバックページ |
+| Additional accessibility features | その他のアクセシビリティ機能 |
+| Persisted user accessibility preferences | ユーザーごとのアクセシビリティ設定保存 |
+| v2.0.0 full-stack backend with authentication and database persistence | 認証とデータベース永続化を含む v2.0.0 フルスタックバックエンド |
 | Future full-stack deployment | 将来的なフルスタックデプロイ |
-
-## App Modes / アプリモード
-
-| Mode | Purpose | モード | 目的 |
-|---|---|---|---|
-| Standard Mode | Clean adult-friendly layout for personal routines | スタンダードモード | 個人ルーティン向けのシンプルで大人向けのレイアウト |
-| Kid Mode | Simplified, warmer, emoji-heavy experience for children | キッズモード | 子ども向けの分かりやすく温かい絵文字中心のUI |
-| Focus Mode | One step shown at a time to reduce distraction | フォーカスモード | 気が散りにくいように1ステップずつ表示 |
-| Calm Mode | Softer interface with reduced motion and urgency | リラックスモード | 動きや緊急感を抑えた落ち着いたUI |
-| Review Mode | Reflection after completing a routine | レビューモード | ルーティン完了後の振り返り |
-| Education Mode | Long-term future mode for school-based use | 学習・学校モード | 将来的な学校・教育向け利用モード |
 
 ## Tech Stack / 技術スタック
 
@@ -194,3 +192,6 @@ Bloomは、Webファーストの視覚的タスクシーケンサーおよびル
 - Vite
 - Vercel
 - Git/GitHub
+
+## Author
+Built by Iris408

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useApp } from "./context/AppContext";
 import { getAuthToken, getCurrentUser, logoutUser } from "./api/bloomApi";
 
-import Login from "./pages/Login";
+import LoginModal from "./components/auth/LoginModal";
 import Header from "./components/layout/Header";
 import Sidebar from "./components/layout/Sidebar";
 import BottomNav from "./components/layout/BottomNav";
@@ -15,10 +15,31 @@ import Moments from "./pages/Moments";
 import Profile from "./pages/Profile";
 import Footer from "./components/layout/Footer";
 
+import About from "./pages/About";
+import Privacy from "./pages/Privacy";
+import Accessibility from "./pages/Accessibility";
+import BloomBackgroundDecor from "./components/decor/BloomBackgroundDecor";
+
+import DailyAffirmationCard from "./components/home/DailyAffirmationCard"
+import DemoBanner from "./components/demo/DemoBanner";
+import ExitDemoConfirmModal from "./components/demo/ExitDemoConfirmModal";
+
 function App() {
-  const [activePage, setActivePage] = useState("login");
+  const [activePage, setActivePage] = useState("overview");
   const [currentUser, setCurrentUser] = useState(null);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+
+  // EN: Demo mode lets users/recruiters explore Bloom without a real account.
+  // JP: デモモードでは、実際のアカウントなしでBloomを試せます。
+  const [isDemoMode, setIsDemoMode] = useState(false);
+  const [demoType, setDemoType] = useState(null);
+
+  // EN: Controls the confirmation popup shown before leaving demo mode.
+  // JP: デモモードを終了する前に表示する確認ポップアップを管理します。
+  const [isExitDemoConfirmOpen, setIsExitDemoConfirmOpen] = useState(false);
+
+  const [loginInitialView, setLoginInitialView] =useState("login")
 
   const { isDarkMode } = useApp();
 
@@ -30,6 +51,10 @@ function App() {
     "moments",
     "profile",
   ];
+
+  // EN: Users can access the main app if they are logged in OR using demo mode.
+  // JP: ログイン済み、またはデモモードの場合、メインアプリにアクセスできます。
+  const canUseApp = Boolean(currentUser) || isDemoMode;
 
   // EN: Dynamic background based on dark mode.
   // JP: ダークモードに応じて背景を切り替えます。
@@ -52,12 +77,15 @@ function App() {
         const user = await getCurrentUser();
         setCurrentUser(user);
 
-        setActivePage("overview");
-      } catch (error) {
+        // EN: Existing logged-in users enter the protected app area.
+        // JP: 既にログイン済みのユーザーは保護されたアプリ画面へ移動します。
+        setActivePage("home");
+      } catch {
         // EN: Remove invalid or expired token.
         // JP: 無効または期限切れのトークンを削除します。
         logoutUser();
         setCurrentUser(null);
+        setActivePage("overview");
       } finally {
         setIsCheckingAuth(false);
       }
@@ -67,94 +95,201 @@ function App() {
   }, []);
 
   function handleLogout() {
-    // EN: Log out the user and return to the login page.
-    // JP: ユーザーをログアウトし、ログインページへ戻します。
+    // EN: Log out the user and return to the public Overview page.
+    // JP: ユーザーをログアウトし、公開用Overviewページへ戻します。
     logoutUser();
     setCurrentUser(null);
-    setActivePage("login");
+    setIsDemoMode(false);
+    setDemoType(null);
+    setIsLoginOpen(false);
+    setIsExitDemoConfirmOpen(false);
+    setActivePage("overview");
+  }
+
+  function handleStartDemo(selectedDemoType) {
+    // EN: Start demo mode and move the user into the main Bloom app.
+    // JP: デモモードを開始し、ユーザーをBloomのメイン画面へ移動します。
+    setIsDemoMode(true);
+    setDemoType(selectedDemoType);
+    setIsLoginOpen(false);
+    setActivePage("home");
+  }
+
+  function handleConfirmExitDemo() {
+    // EN: Exit demo mode and return to the public Overview page.
+    // JP: デモモードを終了し、公開用Overviewページへ戻します。
+    setIsDemoMode(false);
+    setDemoType(null);
+    setIsExitDemoConfirmOpen(false);
+    setActivePage("overview");
+  }
+
+  function handleCreateAccountFromDemo() {
+    // EN: Close the exit confirmation and open the login modal.
+    // JP: 終了確認を閉じて、ログインモーダルを開きます。
+    setIsExitDemoConfirmOpen(false);
+    setIsLoginOpen(true);
   }
 
   function handlePageChange(page) {
-    // EN: Redirect logged-out users to login if they try to access protected pages.
-    // JP: 未ログインのユーザーが保護ページへアクセスしようとした場合、ログインページへ移動します。
-    if (protectedPages.includes(page) && !currentUser) {
-      setActivePage("login");
-      return;
+    // EN: Open the login modal if logged-out users try to access protected pages.
+    // JP: 未ログインのユーザーが保護ページへアクセスしようとした場合、ログインモーダルを開きます。
+    if (protectedPages.includes(page) && !canUseApp) {
+      setActivePage("overview")
+      openLoginModal("login")
+      return
     }
 
-    setActivePage(page);
+    setActivePage(page)
+
+    // EN: After changing pages, return the user to the top of the new page.
+    // JP: ページを切り替えた後、新しいページの一番上へ移動します。
+    requestAnimationFrame(() => {
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: "auto",
+      })
+    })
+  }
+
+  function openLoginModal(initialView = "login") {
+    setLoginInitialView(initialView)
+    setIsLoginOpen(true)
   }
 
   function renderPage() {
-    // EN: Extra safety guard for protected pages.
-    // JP: 保護ページ用の追加安全チェックです。
-    if (protectedPages.includes(activePage) && !currentUser) {
+    // EN: Public information pages are available to all users.
+    // JP: 公開情報ページはすべてのユーザーが閲覧できます。
+    if (activePage === "about") return <About />;
+    if (activePage === "privacy") return <Privacy />;
+    if (activePage === "accessibility") return <Accessibility />;
+
+    // EN: Logged-out users only see the public Overview page.
+    // JP: 未ログインのユーザーには公開用Overviewページだけを表示します。
+    if (!canUseApp) {
       return (
-        <Login
-          currentUser={currentUser}
-          setCurrentUser={setCurrentUser}
-          setActivePage={handlePageChange}
-          onLogout={handleLogout}
+        <Overview 
+          setActivePage={handlePageChange} 
+          onLoginClick={() => openLoginModal("login")}
+          onTryDemoClick={() => openLoginModal("demo")}
+          onCreateAccountClick={() => openLoginModal("create")}
         />
       );
     }
 
-    if (activePage === "login") {
-      return (
-        <Login
-          currentUser={currentUser}
-          setCurrentUser={setCurrentUser}
-          setActivePage={handlePageChange}
-          onLogout={handleLogout}
-        />
-      );
-    }
-
-    if (activePage === "overview") {
-      return <Overview setActivePage={handlePageChange} />;
-    }
-
-    if (activePage === "home") return <Home />;
+    // EN: Logged-in users and demo users can access the protected app pages.
+    // JP: ログイン済みユーザーとデモユーザーは保護されたアプリ画面にアクセスできます。
+      if (activePage === "home") {
+        return (
+          <Home
+            isDemoMode={isDemoMode}
+            demoType={demoType}
+            onCreateAccount={handleCreateAccountFromDemo}
+            onExitDemoClick={() => setIsExitDemoConfirmOpen(true)}
+          />
+        );
+      }
     if (activePage === "routines") return <Routines />;
     if (activePage === "focus") return <Focus />;
     if (activePage === "progress") return <Progress />;
     if (activePage === "moments") return <Moments />;
     if (activePage === "profile") return <Profile />;
 
-    return <Overview setActivePage={handlePageChange} />;
+    return <Home />;
   }
 
   return (
-    <div
-      className={`min-h-screen flex flex-col overflow-x-hidden transition-colors duration-300 ${bgClass}`}
-    >
-      <Header
-        setActivePage={handlePageChange}
-        activePage={activePage}
-        currentUser={currentUser}
-        onLogout={handleLogout}
-      />
+    <>
 
-      {/* EN: Below header layout with sidebar and main content. */}
-      {/* JP: ヘッダー下のサイドバーとメインコンテンツのレイアウトです。 */}
-      <div className="flex flex-1">
-        <Sidebar activePage={activePage} setActivePage={handlePageChange} />
-
-        <main
-          className={`flex-1 flex flex-col px-4 py-8 pb-28 md:pb-10 overflow-x-hidden ${bgClass}`}
-        >
-          {isCheckingAuth ? (
-            <p className="text-sm text-gray-600">Checking login...</p>
-          ) : (
-            renderPage()
-          )}
-        </main>
+      {/* EN: Background decoration is clipped to the viewport to prevent mobile side-scroll. */}
+      {/* JP: モバイルで横スクロールが出ないように、背景装飾を画面幅内に収めます。 */}
+      <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
+        <BloomBackgroundDecor />
       </div>
 
-      <BottomNav activePage={activePage} setActivePage={handlePageChange} />
+      <div
+        className={`relative z-10 min-h-screen w-full max-w-full flex flex-col overflow-x-hidden transition-colors duration-300 ${bgClass}`}
+      >
+          <Header
+            setActivePage={handlePageChange}
+            activePage={activePage}
+            currentUser={currentUser}
+            isDemoMode={isDemoMode}
+            demoType={demoType}
+            onLogout={handleLogout}
+            onLoginClick={() => openLoginModal("login")}
+            onExitDemoClick={() => setIsExitDemoConfirmOpen(true)}
+            onCreateAccountClick={handleCreateAccountFromDemo}
+          />
 
-      <Footer />
-    </div>
+          {canUseApp && (
+            <div className="relative z-20 md:hidden">
+              <DailyAffirmationCard variant="mobile-strip" />
+            </div>
+          )}
+
+
+          {/* EN: Below-header layout with optional sidebar and main content area. */}
+          {/* JP: ヘッダー下のサイドバーとメインコンテンツのレイアウトです。 */}
+          <div className="flex flex-1">
+            {canUseApp && (
+              <Sidebar
+                activePage={activePage}
+                setActivePage={handlePageChange}
+              />
+            )}
+
+            <main className="min-w-0 w-full max-w-full flex-1 overflow-x-hidden">
+              {isCheckingAuth ? (
+                // EN: Centred loading indicator shown while the auth token is verified.
+                // JP: 認証トークンの確認中に表示される中央寄せのローディング表示です。
+                <div className="flex flex-1 items-center justify-center">
+                  <p className="text-sm text-gray-500 dark:text-gray-400 animate-pulse">
+                    🌱 Loading...
+                  </p>
+                </div>
+              ) : (
+                renderPage()
+              )}
+            </main>
+          </div>
+
+          {!canUseApp && 
+            <Footer
+              setActivePage={handlePageChange}
+              onLoginClick={() => openLoginModal("login")}
+              onTryDemoClick={() => openLoginModal("demo")}
+              onCreateAccountClick={() => openLoginModal("create")}
+            />}
+        </div>
+
+      {/* EN: BottomNav and LoginModal are fixed-position elements rendered outside */}
+      {/* EN: the wrapper to guarantee they are never clipped or stacking-context trapped. */}
+      {/* JP: BottomNav と LoginModal は fixed 要素のため、ラッパー外に配置して */}
+      {/* JP: クリッピングやスタッキングコンテキストの影響を受けないようにします。 */}
+      {canUseApp && (
+        <BottomNav activePage={activePage} setActivePage={handlePageChange} />
+      )}
+
+      {isLoginOpen && !canUseApp && (
+        <LoginModal
+          initialView={loginInitialView}
+          setCurrentUser={setCurrentUser}
+          setActivePage={setActivePage}
+          onClose={() => setIsLoginOpen(false)}
+          onStartDemo={handleStartDemo}
+        />
+      )}
+
+      {isExitDemoConfirmOpen && (
+        <ExitDemoConfirmModal
+          onClose={() => setIsExitDemoConfirmOpen(false)}
+          onCreateAccount={handleCreateAccountFromDemo}
+          onConfirmExit={handleConfirmExitDemo}
+        />
+      )}
+    </>
   );
 }
 
