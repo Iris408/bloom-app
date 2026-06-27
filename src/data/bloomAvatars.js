@@ -89,4 +89,25 @@ export const bloomAvatars = [
     label: "Bloom avatar 18",
     image: "/avatars/bloom-avatar-18.png",
   },
+    {
+    id: "bloom-avatar-19",
+    label: "Bloom avatar 19",
+    image: "/avatars/bloom-avatar-19.png",
+  },
+    {
+    id: "bloom-avatar-20",
+    label: "Bloom avatar 20",
+    image: "/avatars/bloom-avatar-20.png",
+  },
+    {
+    id: "bloom-avatar-21",
+    label: "Bloom avatar 21",
+    image: "/avatars/bloom-avatar-21.png",
+  },
+    {
+    id: "bloom-avatar-22",
+    label: "Bloom avatar 22",
+    image: "/avatars/bloom-avatar-22.png",
+  },  
+
 ]

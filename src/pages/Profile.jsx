@@ -205,7 +205,7 @@ function ProfileAvatarSlider({
   return (
     <div className="flex h-full flex-col gap-4">
       <div className="flex items-center gap-4 rounded-2xl bg-white/70 px-4 py-4 shadow-sm dark:bg-white/5">
-        <div className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-full bg-bloom-forest text-2xl font-bold text-bloom-light">
+        <div className="flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-full bg-bloom-forest text-2xl font-bold text-bloom-light">
           {shouldShowAvatarImage ? (
             <img
               src={selectedAvatarUrl}
@@ -518,7 +518,7 @@ function Profile({
           ꕤ Your Space
         </p>
 
-        <div className="mx-auto flex h-24 w-24 items-center justify-center overflow-hidden rounded-full border-4 border-white bg-bloom-forest text-4xl font-bold text-bloom-light shadow-md dark:border-white/10 sm:h-28 sm:w-28">
+        <div className="mx-auto flex h-24 w-24 items-center justify-center overflow-hidden rounded-full border-4 border-white bg-bloom-forest text-4xl font-bold text-bloom-light shadow-md dark:border-white/10 sm:h-32 sm:w-32">
           {shouldShowAvatarImage ? (
             <img
               src={selectedAvatarUrl}
