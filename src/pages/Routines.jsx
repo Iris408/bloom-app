@@ -134,6 +134,10 @@ function Routines() {
   // JP: ルーティン一覧が変更されるたびに localStorage に保存します
   useEffect(() => {
     localStorage.setItem(ROUTINE_STORAGE_KEY, JSON.stringify(routines))
+
+    // EN: Let Home/Progress know routine data changed.
+    // JP: Home/Progress にルーティンデータの変更を知らせます。
+    window.dispatchEvent(new Event("bloom-routines-updated"))
   }, [routines])
 
   // EN: Add a new routine

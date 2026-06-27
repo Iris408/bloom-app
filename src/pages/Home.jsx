@@ -1,6 +1,102 @@
+import { useEffect, useState } from "react"
+
 import TaskList from "../components/tasks/TaskList"
 import DemoBanner from "../components/demo/DemoBanner"
 import { getAvatarDisplay } from "../utils/avatarStorage"
+
+const TASK_STORAGE_KEY = "bloom-tasks"
+const ROUTINE_STORAGE_KEY = "bloom-routines"
+const FOCUS_OPTIONS = [5, 10, 15, 20]
+
+function getTimeGreeting() {
+  const hour = new Date().getHours()
+
+  if (hour >= 5 && hour < 12) return "Good morning"
+  if (hour >= 12 && hour < 18) return "Good afternoon"
+
+  return "Good night"
+}
+
+function getProgressIcon(progressPercent) {
+  if (progressPercent < 25) return "🌱"
+  if (progressPercent < 50) return "🌿"
+  if (progressPercent < 75) return "🌸"
+
+  return "🌳"
+}
+
+function getStoredTasks() {
+  try {
+    const storedTasks = localStorage.getItem(TASK_STORAGE_KEY)
+    const parsedTasks = storedTasks ? JSON.parse(storedTasks) : []
+
+    return Array.isArray(parsedTasks) ? parsedTasks : []
+  } catch {
+    return []
+  }
+}
+
+function getStoredRoutines() {
+  try {
+    const storedRoutines = localStorage.getItem(ROUTINE_STORAGE_KEY)
+    const parsedRoutines = storedRoutines ? JSON.parse(storedRoutines) : []
+
+    return Array.isArray(parsedRoutines) ? parsedRoutines : []
+  } catch {
+    return []
+  }
+}
+
+function getTaskStats() {
+  const tasks = getStoredTasks()
+  const totalTasks = tasks.length
+  const completedTasks = tasks.filter((task) => task.completed).length
+  const progressPercent =
+    totalTasks === 0 ? 0 : Math.round((completedTasks / totalTasks) * 100)
+
+  return {
+    totalTasks,
+    completedTasks,
+    progressPercent,
+  }
+}
+
+function getRoutineStats(routines) {
+  const totalRoutines = routines.length
+
+  const totalSteps = routines.reduce((total, routine) => {
+    return total + (routine.steps?.length || 0)
+  }, 0)
+
+  const completedSteps = routines.reduce((total, routine) => {
+    const routineCompletedSteps =
+      routine.steps?.filter((step) => step.completed).length || 0
+
+    return total + routineCompletedSteps
+  }, 0)
+
+  const completedRoutines = routines.filter((routine) => {
+    const steps = routine.steps || []
+
+    return steps.length > 0 && steps.every((step) => step.completed)
+  }).length
+
+  return {
+    totalRoutines,
+    completedRoutines,
+    totalSteps,
+    completedSteps,
+  }
+}
+
+function getCombinedProgressPercent(taskStats, routineStats) {
+  const totalItems = taskStats.totalTasks + routineStats.totalSteps
+  const completedItems = taskStats.completedTasks + routineStats.completedSteps
+
+  if (totalItems === 0) return 0
+
+  return Math.round((completedItems / totalItems) * 100)
+}
 
 function Home({
   currentUser = null,
@@ -10,15 +106,44 @@ function Home({
   onExitDemoClick,
   setActivePage,
 }) {
+  const [selectedFocusMinutes, setSelectedFocusMinutes] = useState(10)
+  const [taskStats, setTaskStats] = useState(() => getTaskStats())
+  const [routines, setRoutines] = useState(() => getStoredRoutines())
+
   const avatarDisplay = getAvatarDisplay(currentUser)
 
   const username =
     currentUser?.username || (isDemoMode ? "Demo user" : "Bloom user")
 
   const displayName = username
+  const greeting = getTimeGreeting()
+
+  const routineStats = getRoutineStats(routines)
+  const combinedProgressPercent = getCombinedProgressPercent(
+    taskStats,
+    routineStats
+  )
+  const progressIcon = getProgressIcon(combinedProgressPercent)
 
   const shouldShowAvatar =
     avatarDisplay.avatarType === "bloom" && avatarDisplay.avatarUrl
+
+  useEffect(() => {
+    function syncHomeData() {
+      setTaskStats(getTaskStats())
+      setRoutines(getStoredRoutines())
+    }
+
+    window.addEventListener("bloom-tasks-updated", syncHomeData)
+    window.addEventListener("bloom-routines-updated", syncHomeData)
+    window.addEventListener("storage", syncHomeData)
+
+    return () => {
+      window.removeEventListener("bloom-tasks-updated", syncHomeData)
+      window.removeEventListener("bloom-routines-updated", syncHomeData)
+      window.removeEventListener("storage", syncHomeData)
+    }
+  }, [])
 
   function goToPage(page) {
     if (!setActivePage) return
@@ -44,12 +169,12 @@ function Home({
             </p>
 
             <h2 className="break-words text-3xl font-bold leading-tight text-bloom-forest dark:text-bloom-light sm:text-4xl">
-              Good morning, {displayName} ꕤ
+              {greeting}, {displayName} ꕤ
             </h2>
 
-            <p className="mt-3 max-w-2xl break-words text-sm leading-relaxed text-bloom-forest/65 dark:text-gray-300">
-              Let&apos;s take today one step at a time. Choose what feels
-              manageable, pause when needed, and come back gently.
+            <p className="mt-3 max-w-5xl text-sm leading-relaxed text-bloom-forest/65 dark:text-gray-300 lg:whitespace-nowrap">
+              Choose one gentle step, pause when needed, and come back when
+              you&apos;re ready.
             </p>
           </div>
 
@@ -69,16 +194,14 @@ function Home({
 
       <section className="grid gap-6 xl:grid-cols-[minmax(0,1.35fr)_minmax(280px,0.85fr)_minmax(260px,0.75fr)]">
         <div className="rounded-[1.75rem] border border-bloom-sage/25 bg-white/55 p-4 shadow-sm dark:border-white/10 dark:bg-white/5 sm:p-5">
-          <div className="mb-4 flex items-center justify-between gap-3">
-            <div>
-              <p className="text-xs font-bold uppercase tracking-[0.2em] text-bloom-mid dark:text-bloom-sage">
-                Today
-              </p>
+          <div className="mb-4">
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-bloom-mid dark:text-bloom-sage">
+              Today
+            </p>
 
-              <h3 className="mt-2 text-lg font-bold text-bloom-forest dark:text-bloom-light">
-                Today&apos;s tasks
-              </h3>
-            </div>
+            <h3 className="mt-2 text-lg font-bold text-bloom-forest dark:text-bloom-light">
+              Today&apos;s tasks
+            </h3>
           </div>
 
           <TaskList />
@@ -96,7 +219,7 @@ function Home({
               </p>
 
               <p className="mt-1 text-4xl font-bold text-bloom-forest dark:text-bloom-light">
-                25:00
+                {selectedFocusMinutes}:00
               </p>
             </div>
 
@@ -104,12 +227,29 @@ function Home({
               Start with one quiet block. You can stop, pause, or restart
               whenever you need.
             </p>
+
+            <div className="mt-4 grid grid-cols-4 gap-2">
+              {FOCUS_OPTIONS.map((minutes) => (
+                <button
+                  key={minutes}
+                  type="button"
+                  onClick={() => setSelectedFocusMinutes(minutes)}
+                  className={`rounded-full px-3 py-2 text-xs font-bold transition ${
+                    selectedFocusMinutes === minutes
+                      ? "bg-bloom-mid text-white dark:bg-bloom-forest"
+                      : "bg-bloom-light text-bloom-forest hover:bg-bloom-mint/60 dark:bg-white/10 dark:text-bloom-light dark:hover:bg-white/15"
+                  }`}
+                >
+                  {minutes}
+                </button>
+              ))}
+            </div>
           </div>
 
           <button
             type="button"
             onClick={() => goToPage("focus")}
-            className="mx-auto mt-5 rounded-full bg-bloom-mid dark:bg-bloom-forest/80 px-6 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-bloom-forest dark:hover:bg-bloom-mid/80"
+            className="mx-auto mt-5 rounded-full bg-bloom-mid px-6 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-bloom-forest dark:bg-bloom-forest/80 dark:hover:bg-bloom-mid/80"
           >
             Start focus
           </button>
@@ -123,11 +263,15 @@ function Home({
               </p>
 
               <h3 className="mt-2 text-lg font-bold text-bloom-forest dark:text-bloom-light">
-                Morning Routine
+                Active routines
               </h3>
 
               <p className="mt-1 text-xs text-bloom-forest/60 dark:text-gray-300">
-                4 gentle steps
+                {routineStats.totalRoutines === 0
+                  ? "No routines yet"
+                  : `${routineStats.totalRoutines} routine${
+                      routineStats.totalRoutines === 1 ? "" : "s"
+                    } saved`}
               </p>
             </div>
 
@@ -136,37 +280,121 @@ function Home({
             </span>
           </div>
 
-          <div className="flex flex-col gap-3">
-            {["Drink water", "Stretch", "Plan my day", "Gratitude moment"].map(
-              (step, index) => (
-                <div
-                  key={step}
-                  className="flex items-center gap-3 rounded-2xl bg-white/70 px-4 py-3 shadow-sm dark:bg-white/5"
-                >
-                  <span
-                    className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-bold ${
-                      index < 2
-                        ? "bg-bloom-mid text-white"
-                        : "border border-bloom-sage/40 text-bloom-forest/50 dark:text-gray-300"
-                    }`}
-                  >
-                    {index < 2 ? "✓" : ""}
-                  </span>
+          {routines.length === 0 ? (
+            <div className="rounded-2xl bg-white/70 px-4 py-5 text-center shadow-sm dark:bg-white/5">
+              <p className="text-3xl">🌿</p>
 
-                  <p className="text-sm font-semibold text-bloom-forest dark:text-bloom-light">
-                    {step}
-                  </p>
-                </div>
-              )
-            )}
-          </div>
+              <p className="mt-3 text-sm font-bold text-bloom-forest dark:text-bloom-light">
+                No routines yet
+              </p>
+
+              <p className="mt-1 text-xs leading-5 text-bloom-forest/60 dark:text-gray-300">
+                Create your first routine when you&apos;re ready.
+              </p>
+            </div>
+          ) : (
+            <div className="max-h-[240px] overflow-y-auto pr-1">
+              <div className="flex flex-col gap-3">
+                {routines.map((routine) => {
+                  const steps = routine.steps || []
+                  const completedSteps = steps.filter(
+                    (step) => step.completed
+                  ).length
+                  const totalSteps = steps.length
+                  const previewSteps = steps.slice(0, 3)
+
+                  return (
+                    <div
+                      key={routine.id}
+                      className="rounded-2xl bg-white/70 px-4 py-4 shadow-sm dark:bg-white/5"
+                    >
+                      <div className="mb-3 flex items-start justify-between gap-3">
+                        <div className="min-w-0">
+                          <p className="truncate text-sm font-bold text-bloom-forest dark:text-bloom-light">
+                            {routine.name}
+                          </p>
+
+                          <p className="mt-1 text-xs text-bloom-forest/60 dark:text-gray-300">
+                            {completedSteps}/{totalSteps} steps complete
+                          </p>
+                        </div>
+
+                        <span className="rounded-full bg-bloom-light px-2.5 py-1 text-xs font-bold text-bloom-forest/70 dark:bg-white/10 dark:text-gray-300">
+                          {totalSteps === 0
+                            ? "New"
+                            : completedSteps === totalSteps
+                              ? "Done"
+                              : "Active"}
+                        </span>
+                      </div>
+
+                      {totalSteps > 0 && (
+                        <div className="mb-3 h-2 overflow-hidden rounded-full bg-bloom-light dark:bg-white/10">
+                          <div
+                            className="h-full rounded-full bg-bloom-mid transition-all dark:bg-bloom-sage"
+                            style={{
+                              width: `${Math.round(
+                                (completedSteps / totalSteps) * 100
+                              )}%`,
+                            }}
+                          />
+                        </div>
+                      )}
+
+                      {previewSteps.length === 0 ? (
+                        <p className="rounded-xl bg-bloom-light/60 px-3 py-2 text-xs font-semibold text-bloom-forest/60 dark:bg-white/10 dark:text-gray-300">
+                          No steps added yet.
+                        </p>
+                      ) : (
+                        <div className="flex flex-col gap-2">
+                          {previewSteps.map((step) => (
+                            <div
+                              key={step.id}
+                              className="flex items-center gap-2 text-xs font-semibold text-bloom-forest/75 dark:text-gray-300"
+                            >
+                              <span
+                                className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[10px] ${
+                                  step.completed
+                                    ? "bg-bloom-mid text-white"
+                                    : "bg-bloom-light text-transparent ring-1 ring-bloom-sage/40 dark:bg-white/10"
+                                }`}
+                              >
+                                ✓
+                              </span>
+
+                              <span
+                                className={
+                                  step.completed
+                                    ? "line-through opacity-60"
+                                    : ""
+                                }
+                              >
+                                {step.text}
+                              </span>
+                            </div>
+                          ))}
+
+                          {steps.length > 3 && (
+                            <p className="text-xs font-semibold text-bloom-forest/45 dark:text-gray-400">
+                              +{steps.length - 3} more step
+                              {steps.length - 3 === 1 ? "" : "s"}
+                            </p>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          )}
 
           <button
             type="button"
             onClick={() => goToPage("routines")}
-            className="mt-5 w-full rounded-2xl bg-bloom-light px-5 py-3 text-sm font-bold text-bloom-forest transition hover:bg-bloom-mint/60 dark:bg-white/10 dark:text-bloom-light dark:hover:bg-mid/80"
+            className="mt-5 w-full rounded-2xl bg-bloom-light px-5 py-3 text-sm font-bold text-bloom-forest transition hover:bg-bloom-mint/60 dark:bg-white/10 dark:text-bloom-light dark:hover:bg-bloom-mid/80"
           >
-            View routine
+            View routines
           </button>
         </div>
       </section>
@@ -187,7 +415,7 @@ function Home({
             <button
               type="button"
               onClick={() => goToPage("progress")}
-              className="rounded-full bg-bloom-light px-3 py-1.5 text-xs font-bold text-bloom-forest/70 transition hover:bg-bloom-mint/50 dark:bg-bloom-forest/85 dark:hover:bg-bloom-mid/80 dark:text-gray-300"
+              className="rounded-full bg-bloom-light px-3 py-1.5 text-xs font-bold text-bloom-forest/70 transition hover:bg-bloom-mint/50 dark:bg-bloom-forest/85 dark:text-gray-300 dark:hover:bg-bloom-mid/80"
             >
               Open progress
             </button>
@@ -200,35 +428,35 @@ function Home({
               </div>
 
               <p className="mt-3 text-2xl font-bold text-bloom-forest dark:text-bloom-light">
-                4/6
+                {taskStats.completedTasks}/{taskStats.totalTasks}
               </p>
 
               <p className="text-xs font-semibold text-bloom-forest/60 dark:text-gray-300">
-                Routines completed
+                Tasks completed
               </p>
             </div>
 
             <div className="rounded-2xl bg-white/70 p-4 text-center shadow-sm dark:bg-white/5">
               <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full border-4 border-bloom-sage/40 text-xl dark:border-white/10">
-                ꕤ
+                🌿
               </div>
 
               <p className="mt-3 text-2xl font-bold text-bloom-forest dark:text-bloom-light">
-                3
+                {routineStats.completedSteps}/{routineStats.totalSteps}
               </p>
 
               <p className="text-xs font-semibold text-bloom-forest/60 dark:text-gray-300">
-                Focus sessions
+                Routine steps
               </p>
             </div>
 
             <div className="rounded-2xl bg-white/70 p-4 text-center shadow-sm dark:bg-white/5">
               <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full border-4 border-bloom-sage/40 text-xl dark:border-white/10">
-                ☆
+                {progressIcon}
               </div>
 
               <p className="mt-3 text-2xl font-bold text-bloom-forest dark:text-bloom-light">
-                85%
+                {combinedProgressPercent}%
               </p>
 
               <p className="text-xs font-semibold text-bloom-forest/60 dark:text-gray-300">
