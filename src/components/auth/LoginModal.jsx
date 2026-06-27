@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { getCurrentUser, loginUser, registerUser } from "../../api/bloomApi";
+import { saveBloomAvatarChoice } from "../../utils/avatarStorage";
+
 import AvatarChoiceGrid from "../profile/AvatarChoiceGrid";
 
 const demoOptions = [
@@ -177,18 +179,11 @@ export default function LoginModal({
   }
 
   function saveAvatarChoice(user) {
-    if (!user?.id) return;
-
-    const avatarChoice = {
+    saveBloomAvatarChoice(user, {
       avatarType: selectedAvatarType,
       avatarId: selectedAvatarId,
       avatarUrl: selectedAvatarUrl,
-    };
-
-    localStorage.setItem(
-      `bloom-avatar-choice-${user.id}`,
-      JSON.stringify(avatarChoice)
-    );
+    })
   }
 
   async function handleCreateAccount(event) {
