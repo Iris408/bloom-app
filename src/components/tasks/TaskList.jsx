@@ -189,7 +189,7 @@ function TaskList() {
           <button
             type="button"
             onClick={handleAddTask}
-            className="rounded-full bg-bloom-light px-4 py-2 text-xs font-bold text-bloom-forest transition hover:bg-bloom-mint/60 dark:bg-white/10 dark:text-bloom-light dark:hover:bg-white/20"
+            className="rounded-full bg-bloom-light px-4 py-2 text-xs font-bold text-bloom-forest transition hover:bg-bloom-mint/60 dark:bg-white/10 dark:text-bloom-light dark:hover:bg-bloom-mint/40"
           >
             Add
           </button>
@@ -265,7 +265,7 @@ function TaskList() {
                   <button
                     type="button"
                     onClick={handleEditCancel}
-                    className="rounded-full bg-bloom-light px-2 py-1 text-xs font-bold text-bloom-forest transition hover:bg-bloom-mint/60 dark:bg-white/10 dark:text-bloom-light dark:hover:bg-white/15"
+                    className="rounded-full bg-bloom-light px-2 py-1 text-xs font-bold text-bloom-forest transition hover:bg-bloom-mint/60 dark:bg-white/10 dark:text-bloom-light dark:hover:bg-bloom-mid/50"
                   >
                     Cancel
                   </button>

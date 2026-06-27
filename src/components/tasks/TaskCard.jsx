@@ -46,7 +46,7 @@ function TaskCard({ task, onEdit, onDelete, onToggleComplete }) {
         <button
           type="button"
           onClick={() => onEdit(task)}
-          className="flex h-5.5 w-7 items-center justify-center rounded-full text-xl text-bloom-mid transition hover:bg-bloom-light hover:text-bloom-forest dark:text-bloom-sage dark:hover:bg-white/10 dark:hover:text-bloom-light"
+          className="flex h-5.5 w-7 items-center justify-center rounded-full text-xl text-bloom-mid transition hover:bg-bloom-light hover:text-bloom-forest dark:text-bloom-light/70 dark:hover:bg-bloom-mint/40 dark:hover:text-bloom-light"
           aria-label="Edit task"
           title="Edit task"
         >
@@ -56,7 +56,7 @@ function TaskCard({ task, onEdit, onDelete, onToggleComplete }) {
         <button
           type="button"
           onClick={() => onDelete(task.id)}
-          className="flex h-5.5 w-7 items-center justify-center rounded-full text-sm font-bold text-rose-600 transition hover:bg-rose-50 hover:text-rose-700 dark:text-rose-300 dark:hover:bg-rose-950/30 dark:hover:text-rose-200"
+          className="flex h-5.5 w-7 items-center justify-center rounded-full text-sm font-bold text-rose-600 transition hover:bg-rose-50 hover:text-rose-700 dark:text-rose-300 dark:hover:bg-rose-900/40 dark:hover:text-rose-200"
           aria-label="Delete task"
           title="Delete task"
         >
