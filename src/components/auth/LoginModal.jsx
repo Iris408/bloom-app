@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getCurrentUser, loginUser, registerUser } from "../../api/bloomApi";
+import AvatarChoiceGrid from "../profile/AvatarChoiceGrid";
 
 const demoOptions = [
   {
@@ -118,6 +119,10 @@ export default function LoginModal({
   const [createPassword, setCreatePassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  const [selectedAvatarType, setSelectedAvatarType] = useState("initial");
+  const [selectedAvatarId, setSelectedAvatarId] = useState(null);
+  const [selectedAvatarUrl, setSelectedAvatarUrl] = useState(null);
+
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -165,6 +170,27 @@ export default function LoginModal({
     }
   }
 
+  function handleSelectAvatar({ avatarType, avatarId, avatarUrl }) {
+    setSelectedAvatarType(avatarType);
+    setSelectedAvatarId(avatarId);
+    setSelectedAvatarUrl(avatarUrl);
+  }
+
+  function saveAvatarChoice(user) {
+    if (!user?.id) return;
+
+    const avatarChoice = {
+      avatarType: selectedAvatarType,
+      avatarId: selectedAvatarId,
+      avatarUrl: selectedAvatarUrl,
+    };
+
+    localStorage.setItem(
+      `bloom-avatar-choice-${user.id}`,
+      JSON.stringify(avatarChoice)
+    );
+  }
+
   async function handleCreateAccount(event) {
     event.preventDefault();
 
@@ -205,6 +231,8 @@ export default function LoginModal({
 
       const user = await getCurrentUser();
 
+      saveAvatarChoice(user);
+
       setNotice("Account created. Opening your Bloom space...");
       completeAuth(user);
     } catch (error) {
@@ -231,6 +259,11 @@ export default function LoginModal({
     setActivePage("home");
     onClose();
   }
+
+  const createInitial =
+    username.trim().charAt(0).toUpperCase() ||
+    createEmail.trim().charAt(0).toUpperCase() ||
+    "?";
 
   return (
     <div
@@ -416,6 +449,16 @@ export default function LoginModal({
                     className="w-full rounded-xl border border-bloom-sage/40 bg-white px-3 py-2 text-bloom-forest outline-none transition focus:border-bloom-mid focus:ring-2 focus:ring-bloom-mint/40 dark:bg-white/10 dark:text-bloom-light"
                   />
                 </div>
+              </div>
+
+              <div className="mt-5">
+                <AvatarChoiceGrid
+                  selectedAvatarType={selectedAvatarType}
+                  selectedAvatarId={selectedAvatarId}
+                  onSelectAvatar={handleSelectAvatar}
+                  currentInitial={createInitial}
+                  showUploadOption={true}
+                />  
               </div>
 
               <button

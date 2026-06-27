@@ -4,7 +4,7 @@ function AvatarChoiceGrid({
   selectedAvatarType,
   selectedAvatarId,
   onSelectAvatar,
-  currentInitial = "?",
+  currentInitial = "Aa",
   showUploadOption = true,
 }) {
   return (
@@ -31,7 +31,7 @@ function AvatarChoiceGrid({
           }
           className={`flex aspect-square flex-col items-center justify-center rounded-2xl border text-center transition ${
             selectedAvatarType === "initial"
-              ? "border-bloom-forest bg-bloom-forest text-white"
+              ? "border-bloom-forest bg-bloom-forest text-white dark:border-dark-card dark:hover:border-bloom-light/50"
               : "border-bloom-sage/30 bg-bloom-light/70 text-bloom-forest hover:border-bloom-mid"
           }`}
         >

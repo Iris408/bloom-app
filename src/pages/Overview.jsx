@@ -313,7 +313,7 @@ function Overview({
         {/* Hero app preview */}
         <div className="relative mx-auto w-full max-w-[22rem] sm:max-w-md lg:max-w-lg">
 
-          <div className="relative rotate-0 rounded-[1.75rem] border border-bloom-sage/25 bg-white/80 p-5 shadow-xl dark:border-white/10 dark:bg-white/10 sm:rotate-2 sm:rounded-[2rem] sm:p-6">
+          <div className="relative rotate-0 rounded-[1.75rem] border border-bloom-sage/25 bg-white/80 p-5 shadow-xl dark:border-white/10 dark:bg-bloom-forest/80 sm:rotate-2 sm:rounded-[2rem] sm:p-6">
             <div className="mb-6 flex items-start justify-between gap-4">
               <div>
                 <p className="text-xl font-bold text-bloom-forest dark:text-bloom-light sm:text-2xl">
@@ -367,7 +367,7 @@ function Overview({
               ))}
             </div>
 
-            <div className="mt-5 rounded-2xl bg-bloom-light/80 p-4 text-center text-sm leading-6 text-bloom-forest/75 dark:bg-white/5 dark:text-gray-300">
+            <div className="mt-5 rounded-2xl bg-bloom-light/80 p-4 text-center text-sm leading-6 text-bloom-forest/75 dark:bg-bloom-mint/40 dark:text-gray-300">
               Small steps, gentle progress. You're doing better than you think.
             </div>
           </div>
