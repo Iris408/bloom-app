@@ -245,7 +245,7 @@ function ProfileAvatarSlider({
             Profile Avatar
           </p>
 
-          <div className="flex gap-3 overflow-x-auto pb-2">
+          <div className="flex gap-4 overflow-x-auto pb-3">
             <button
               type="button"
               onClick={() =>
@@ -255,10 +255,10 @@ function ProfileAvatarSlider({
                   avatarUrl: null,
                 })
               }
-              className={`flex h-20 w-20 shrink-0 flex-col items-center justify-center rounded-2xl border text-center transition ${
+              className={`flex h-28 w-28 shrink-0 flex-col items-center justify-center rounded-[1.4rem] border text-center transition sm:h-32 sm:w-32 ${
                 selectedAvatarType === "initial"
                   ? "border-bloom-forest bg-bloom-forest text-white"
-                  : "border-bloom-sage/30 bg-bloom-light/70 text-bloom-forest hover:border-bloom-mid"
+                  : "border-bloom-sage/30 bg-bloom-light/70 text-bloom-forest hover:border-bloom-mid dark:border-bloom-light"
               }`}
             >
               <span className="text-2xl font-bold">{currentInitial}</span>
@@ -281,7 +281,7 @@ function ProfileAvatarSlider({
                       avatarUrl: avatar.image,
                     })
                   }
-                  className={`h-20 w-20 shrink-0 overflow-hidden rounded-2xl border transition ${
+                  className={`h-28 w-28 shrink-0 overflow-hidden rounded-[1.4rem] border transition sm:h-32 sm:w-32 ${
                     isSelected
                       ? "border-bloom-forest ring-2 ring-bloom-forest/30"
                       : "border-bloom-sage/30 hover:border-bloom-mid"
@@ -299,7 +299,7 @@ function ProfileAvatarSlider({
             <button
               type="button"
               disabled
-              className="flex h-20 w-20 shrink-0 flex-col items-center justify-center rounded-2xl border border-dashed border-bloom-sage/40 bg-white/50 text-center text-bloom-forest/45 dark:border-white/10 dark:bg-white/5 dark:text-gray-400"
+              className="flex h-28 w-28 shrink-0 flex-col items-center justify-center rounded-[1.4rem] border border-dashed border-bloom-sage/40 bg-white/50 text-center text-bloom-forest/45 dark:border-white/10 dark:bg-white/5 dark:text-gray-400 sm:h-32 sm:w-32"
             >
               <span className="text-xl">+</span>
               <span className="mt-1 px-2 text-[10px] font-semibold leading-4">
@@ -326,8 +326,8 @@ function OnboardingSelect({
 
   return (
     <div className="rounded-2xl bg-white/70 px-4 py-4 shadow-sm dark:bg-white/5">
-      <div className="flex items-start gap-4">
-        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-bloom-light text-sm font-bold text-bloom-forest dark:bg-white/10 dark:text-bloom-light">
+      <div className="flex items-start gap-3">
+        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-bloom-light text-sm font-bold text-bloom-forest dark:bg-white/10 dark:text-bloom-light">
           {icon}
         </span>
 
@@ -340,7 +340,7 @@ function OnboardingSelect({
             value={value}
             onChange={(event) => onChange(event.target.value)}
             disabled={disabled}
-            className="mt-2 w-full rounded-2xl border border-bloom-sage/30 bg-white px-3 py-2 text-sm font-semibold text-bloom-forest outline-none transition focus:border-bloom-mid focus:ring-2 focus:ring-bloom-mint/40 disabled:cursor-not-allowed disabled:opacity-60 dark:border-white/10 dark:bg-white/10 dark:text-bloom-light"
+            className="mt-2 w-full rounded-2xl border border-bloom-sage/30 bg-white px-3 py-1.5 text-sm font-semibold text-bloom-forest outline-none transition focus:border-bloom-mid focus:ring-2 focus:ring-bloom-mint/40 disabled:cursor-not-allowed disabled:opacity-60 dark:border-white/10 dark:bg-white/10 dark:text-bloom-light"
           >
             {options.map((option) => (
               <option key={option.value} value={option.value}>
@@ -550,7 +550,7 @@ function Profile({
         >
           <ProfileRow icon="@" title="Username" description={username} />
 
-          <div className="rounded-2xl bg-white/70 px-4 py-4 shadow-sm dark:bg-white/5">
+          <div className="rounded-2xl bg-white/70 px-4 py-3 shadow-sm dark:bg-white/5">
             <div className="flex items-start justify-between gap-3">
               <div className="min-w-0">
                 <p className="text-sm font-bold text-bloom-forest dark:text-bloom-light">
@@ -631,8 +631,8 @@ function Profile({
         </ProfileSection>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-2 lg:items-start">
-        <ProfileSection label="Onboarding answers">
+      <div className="grid gap-6 lg:grid-cols-2 lg:items-stretch">
+        <ProfileSection label="Onboarding answers" cardClassName="h-full lg:h-[450px]">
           <OnboardingSelect
             icon="1"
             title="Experience mode"
@@ -663,8 +663,8 @@ function Profile({
           />
         </ProfileSection>
 
-        <ProfileSection label="Personalised goals">
-          <div className="flex max-h-64 flex-col gap-3 overflow-y-auto pr-1">
+        <ProfileSection label="Personalised goals" cardClassName="h-full lg:h-[450px]">
+          <div className="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto pr-1">
             {goals.length > 0 ? (
               goals.map((goal) => (
                 <div
