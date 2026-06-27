@@ -9,11 +9,12 @@ function Profile() {
     <div className="flex w-full min-w-0 max-w-3xl flex-col gap-6 overflow-x-hidden pb-28 sm:gap-8 sm:pb-0">
       <section className="w-full min-w-0 max-w-full overflow-hidden">
         <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-bloom-mid dark:text-blue-500/80">
-          Profile
+          <span aria-hidden="true">ꕤ</span>
+          Your Space
         </p>
 
         <h2 className="break-words text-4xl font-bold leading-tight text-bloom-forest dark:text-bloom-light sm:text-4xl">
-          Profile & Settings
+          Profile
         </h2>
 
         <p className="mt-4 max-w-2xl break-words text-sm leading-relaxed text-gray-600 dark:text-gray-300">

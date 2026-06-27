@@ -114,6 +114,14 @@ function App() {
     setIsLoginOpen(false);
     setIsExitDemoConfirmOpen(false);
     setActivePage("overview");
+
+    requestAnimationFrame(() => {
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: "auto",
+      });
+    })
   }
 
   function handleStartDemo(selectedDemoType) {
@@ -251,13 +259,14 @@ function App() {
 
       {/* EN: Background decoration is clipped to the viewport to prevent mobile side-scroll. */}
       {/* JP: モバイルで横スクロールが出ないように、背景装飾を画面幅内に収めます。 */}
-      <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
-        <BloomBackgroundDecor />
-      </div>
-
-      <div
-        className={`relative z-10 min-h-screen w-full max-w-full flex flex-col overflow-x-hidden transition-colors duration-300 ${bgClass}`}
+      <div 
+        className={`relative min-h-screen w-full max-w-full overflow-x-hidden transition-colors duration-300 ${bgClass}`}
       >
+        <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
+          <BloomBackgroundDecor />
+        </div>
+
+      <div className="relative z-10 flex min-h-screen w-full flex-col">
           <Header
             setActivePage={handlePageChange}
             activePage={activePage}
@@ -292,12 +301,20 @@ function App() {
                 // EN: Centred loading indicator shown while the auth token is verified.
                 // JP: 認証トークンの確認中に表示される中央寄せのローディング表示です。
                 <div className="flex flex-1 items-center justify-center">
-                  <p className="text-sm text-gray-500 dark:text-gray-400 animate-pulse">
+                  <p className="animate-pulse text-sm text-gray-500 dark:text-gray-400">
                     🌱 Loading...
                   </p>
                 </div>
               ) : (
-                renderPage()
+                <div
+                  className={
+                    canUseApp
+                      ? "mx-auto w-full max-w-6xl px-5 py-6 sm:px-8 lg:px-10"
+                      : ""
+                  }
+                >
+                  {renderPage()}
+                </div>  
               )}
             </main>
           </div>
@@ -310,6 +327,7 @@ function App() {
               onCreateAccountClick={() => openLoginModal("create")}
             />}
         </div>
+      </div>  
 
       {/* EN: BottomNav and LoginModal are fixed-position elements rendered outside */}
       {/* EN: the wrapper to guarantee they are never clipped or stacking-context trapped. */}
