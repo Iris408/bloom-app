@@ -212,10 +212,12 @@ function App() {
       if (activePage === "home") {
         return (
           <Home
+            currentUser={currentUser}
             isDemoMode={isDemoMode}
             demoType={demoType}
             onCreateAccount={handleCreateAccountFromDemo}
             onExitDemoClick={() => setIsExitDemoConfirmOpen(true)}
+            setActivePage={setActivePage}
           />
         );
       }
