@@ -1,30 +1,46 @@
 import { useEffect, useState } from "react"
+
 import TaskCard from "./TaskCard"
-import { shouldRunDailyReset, markDailyResetComplete, resetCompletedItems } from "../../utils/dailyResetUtils"
+import {
+  markDailyResetComplete,
+  resetCompletedItems,
+  shouldRunDailyReset,
+} from "../../utils/dailyResetUtils"
 import EmptyState from "../ui/EmptyState"
 
 const emojis = [
-  // Morning / daily routine
   "🌅", "☀️", "🛏️", "⏰", "🪥", "🚿", "🧴", "🪞",
-  // Food / drink
-  "🥣", "🍳", "🍎", "🥪", "🍝", "🍵", "💧",
-  // School / work / focus
+  "🥣", "🍳", "🍎", "🥪", "🍝", "🍵", "💧","🛒",
   "🎒", "📚", "✏️", "💻", "📝", "📅", "✅", "🎯",
-  // Movement / health
-  "🏃", "🚶", "💪", "🧘", "💊", "🩺",
-  // Chores / home
-  "🧹", "🧺", "🧼", "🗑️", "🐾", "🪴",
-  // Fun / creativity
-  "🎮", "🎨", "🎵", "📺", "🧩", "🧸",
-  // Outside / travel
-  "🚗", "🚌", "🏫", "🏠", "🌳", "🌧️",
-  // Rest / evening
-  "🛁", "🌙", "💤", "📖", "🕯️",
-  // Moments / motivation
-  "🌟", "⭐", "🏆", "🎁", "💖", "👏"
+  "🏃", "🚶", "🏋", "🧘", "🚴", "🥊", "⚽", "🏟", "🥅", "💊", "🩺",
+  "🧹", "🧺", "🧼", "🗑️", "🦮", "🪴","🏀",
+  "🎮", "🎨", "🎵", "📺", "🏓", "📱", "🧩", "🧸",
+  "🚗", "🚌", "🏫", "🏠", "🌳", "🌧️","🎾","🌱",
+  "🛁", "🌙", "💤", "📖", "🕯️","🛍️","🎨","🖌️",
+  "💼", "📫", "🌸", "🌟", "⚽", "🏆", "🎁", "🐈", "👏",
 ]
+
 const TASK_STORAGE_KEY = "bloom-tasks"
 const TASK_DAILY_RESET_KEY = "bloom-tasks-last-reset"
+
+function EmojiPicker({ onSelect }) {
+  return (
+    <div className="absolute left-0 top-full z-40 mt-2 max-h-52 w-full overflow-y-auto rounded-2xl border border-bloom-sage/25 bg-white/95 p-3 shadow-xl backdrop-blur-lg dark:border-dark-border dark:bg-dark-soil/35">
+      <div className="grid grid-cols-6 gap-2 sm:grid-cols-8">
+        {emojis.map((emoji) => (
+          <button
+            type="button"
+            key={emoji}
+            onClick={() => onSelect(emoji)}
+            className="flex h-10 w-10 items-center justify-center rounded-xl text-xl transition hover:bg-bloom-light dark:hover:bg-white/10"
+          >
+            {emoji}
+          </button>
+        ))}
+      </div>
+    </div>
+  )
+}
 
 function TaskList() {
   const [tasks, setTasks] = useState(() => {
@@ -37,7 +53,6 @@ function TaskList() {
         if (shouldRunDailyReset(TASK_DAILY_RESET_KEY)) {
           const resetTasks = resetCompletedItems(parsedTasks)
 
-          localStorage.setItem(TASK_DAILY_RESET_KEY, JSON.stringify(resetTasks))
           markDailyResetComplete(TASK_DAILY_RESET_KEY)
 
           return resetTasks
@@ -51,77 +66,76 @@ function TaskList() {
       return []
     }
   })
-  
-  // EN: Save tasks to localStorage whenever the task list changes
-  // JP: タスクリストが変更されるたびに localStorage に保存します
-  useEffect(() => {
-    localStorage.setItem(TASK_STORAGE_KEY, JSON.stringify(tasks))
-  }, [tasks])
 
   const [inputText, setInputText] = useState("")
-  const [selectedEmoji, setSelectedEmoji] = useState("📝")
+  const [selectedEmoji, setSelectedEmoji] = useState("🌱")
   const [showPicker, setShowPicker] = useState(false)
 
   const [editingId, setEditingId] = useState(null)
   const [editText, setEditText] = useState("")
-  const [editEmoji, setEditEmoji] = useState("")
+  const [editEmoji, setEditEmoji] = useState("🌱")
   const [showEditPicker, setShowEditPicker] = useState(false)
 
-  // EN: Add a new task
-  // JP: 新しいタスクを追加します
-  function handleAddTask() {
-    if (inputText.trim() === "") return
+  useEffect(() => {
+    localStorage.setItem(TASK_STORAGE_KEY, JSON.stringify(tasks))
 
-    setTasks([
-      ...tasks,
+    // EN: Let Home/Progress read updated task data later.
+    // JP: 後でHome/Progressが更新されたタスクデータを読めるようにします。
+    window.dispatchEvent(new Event("bloom-tasks-updated"))
+  }, [tasks])
+
+  function handleAddTask() {
+    const cleanText = inputText.trim()
+
+    if (!cleanText) return
+
+    setTasks((currentTasks) => [
+      ...currentTasks,
       {
         id: Date.now(),
         emoji: selectedEmoji,
-        text: inputText.trim(),
+        text: cleanText,
         completed: false,
       },
     ])
 
     setInputText("")
-    setSelectedEmoji("📝")
+    setSelectedEmoji("🌱")
     setShowPicker(false)
   }
 
-  // EN: Toggle a task between complete and incomplete
-  // JP: タスクの完了・未完了を切り替えます
   function handleToggleComplete(id) {
-    setTasks(
-      tasks.map((task) =>
+    setTasks((currentTasks) =>
+      currentTasks.map((task) =>
         task.id === id
           ? {
               ...task,
-              completed: !task.completed, 
-            } : task
+              completed: !task.completed,
+            }
+          : task
       )
     )
   }
 
-
-  // EN: Start editing a task
-  // JP: タスクの編集を開始します
   function handleEditStart(task) {
     setEditingId(task.id)
     setEditText(task.text)
-    setEditEmoji(task.emoji)
+    setEditEmoji(task.emoji || "🌱")
     setShowEditPicker(false)
+    setShowPicker(false)
   }
 
-  // EN: Save edited task
-  // JP: 編集したタスクを保存します
   function handleEditSave(id) {
-    if (editText.trim() === "") return
+    const cleanText = editText.trim()
 
-    setTasks(
-      tasks.map((task) =>
+    if (!cleanText) return
+
+    setTasks((currentTasks) =>
+      currentTasks.map((task) =>
         task.id === id
           ? {
               ...task,
-              text: editText.trim(),
+              text: cleanText,
               emoji: editEmoji,
             }
           : task
@@ -130,157 +144,147 @@ function TaskList() {
 
     setEditingId(null)
     setEditText("")
-    setEditEmoji("")
+    setEditEmoji("🌱")
     setShowEditPicker(false)
   }
 
-  // EN: Cancel editing
-  // JP: 編集をキャンセルします
   function handleEditCancel() {
     setEditingId(null)
     setEditText("")
-    setEditEmoji("")
+    setEditEmoji("🌱")
     setShowEditPicker(false)
   }
 
-  // EN: Delete a task
-  // JP: タスクを削除します
   function handleDelete(id) {
-    setTasks(tasks.filter((task) => task.id !== id))
+    setTasks((currentTasks) => currentTasks.filter((task) => task.id !== id))
   }
 
   return (
-    <div className="flex flex-col gap-8 w-full">
-      {/* ADD INPUT AREA */}
-      <div className="flex flex-col gap-4">
-        <div className="flex items-center gap-2 border border-gray-300 dark:border-dark-border rounded-xl px-3 py-2 bg-white dark:bg-dark-surface/70 focus-within:ring-1 focus-within:ring-bloom-mid/70">
+    <div className="flex w-full flex-col gap-4">
+      <div className="relative">
+        <div className="flex items-center gap-2 rounded-2xl border border-bloom-sage/30 bg-white/80 px-3 py-2 shadow-sm transition focus-within:border-bloom-mid dark:focus-within:border-bloom-sage/50 focus-within:ring-2 focus-within:ring-bloom-mid/35 dark:focus-within:ring-bloom-light/35 dark:border-dark-border dark:bg-dark-surface/95">
           <button
             type="button"
-            onClick={() => setShowPicker(!showPicker)}
-            className="text-2xl flex items-center justify-center hover:bg-bloom-light dark:hover:bg-bloom-light/70 rounded-lg p-1 transition">
+            onClick={() => {
+              setShowPicker((currentValue) => !currentValue)
+              setShowEditPicker(false)
+            }}
+            className="flex h-8 w-10 shrink-0 items-center justify-center rounded-xl text-lg border border-bloom-sage dark:border-dark-border transition hover:bg-bloom-light dark:hover:bg-white/10"
+            aria-label="Choose task emoji"
+          >
             {selectedEmoji}
           </button>
 
           <input
             type="text"
             value={inputText}
-            onChange={(e) => setInputText(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") handleAddTask()
+            onChange={(event) => setInputText(event.target.value)}
+            onKeyDown={(event) => {
+              if (event.key === "Enter") handleAddTask()
             }}
-            placeholder="Add a new task..."
-            className="flex-1 text-gray-700 dark:text-gray-100 dark:bg-transparent placeholder:text-gray-400 dark:placeholder:text-bloom-light/80 focus:outline-none"
+            placeholder="Add one small task..."
+            className="min-w-0 flex-1 bg-transparent text-sm font-medium text-bloom-forest outline-none placeholder:text-bloom-forest/40 dark:text-gray-100 dark:placeholder:text-bloom-light/60"
           />
+
           <button
             type="button"
             onClick={handleAddTask}
-            className="text-sm font-semibold text-bloom-mid dark:text-bloom-sage/85 hover:text-bloom-forest dark:hover:text-bloom-light/70 transition"
+            className="rounded-full bg-bloom-light px-4 py-2 text-xs font-bold text-bloom-forest transition hover:bg-bloom-mint/60 dark:bg-white/10 dark:text-bloom-light dark:hover:bg-white/20"
           >
             Add
           </button>
-          </div>
+        </div>
 
         {showPicker && (
-          <div className="bg-white dark:bg-dark-surface/80 border border-gray-200 dark:border-dark-border rounded-2xl shadow p-3 grid grid-cols-8 gap-2">
-            {emojis.map((emoji) => (
-              <button
-                type="button"
-                key={emoji}
-                onClick={() => {
-                  setSelectedEmoji(emoji)
-                  setShowPicker(false)
-                }}
-                className="text-2xl w-10 h-10 rounded-lg flex items-center justify-center border-t border-dark-border hover:bg-bloom-light dark:hover:bg-bloom-light/70 transition"
-              >
-                {emoji}
-              </button>
-            ))}
-          </div>
+          <EmojiPicker
+            onSelect={(emoji) => {
+              setSelectedEmoji(emoji)
+              setShowPicker(false)
+            }}
+          />
         )}
       </div>
 
-      {/* TASK CARDS */}
       {tasks.length === 0 ? (
-          <EmptyState
-            icon="🌱"
-            title="No tasks yet"
-            message="Add one small task when you're ready."
-          /> 
+        <EmptyState
+          icon="🌱"
+          title="No tasks yet"
+          message="Add one small task when you're ready."
+        />
       ) : (
-        tasks.map((task) =>
-          editingId === task.id ? (
-            <div
-              key={task.id}
-              className="flex flex-col gap-3 border border-gray-300 dark:border-dark-border rounded-xl px-3 py-3 bg-white dark:bg-bloom-mint/30"
-            >
-              <div className="flex items-center gap-2">
-                <button
-                  type="button"
-                  onClick={() => setShowEditPicker(!showEditPicker)}
-                  className="text-2xl flex items-center justify-center hover:bg-bloom-light dark:hover:bg-bloom-light/80 rounded-lg p-1 transition"
-                >
-                  {editEmoji}
-                </button>
+        <div className="max-h-[340px] overflow-y-auto pr-1">
+          <div className="flex flex-col gap-3">
+            {tasks.map((task) =>
+              editingId === task.id ? (
+              <div
+                key={task.id}
+                className="relative rounded-2xl border border-bloom-sage/30 bg-white/80 px-3 py-3 shadow-sm dark:border-dark-border dark:bg-dark-surface/70"
+              >
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowEditPicker((currentValue) => !currentValue)
+                      setShowPicker(false)
+                    }}
+                    className="flex h-8 w-10 shrink-0 items-center justify-center rounded-xl text-2xl transition border border-bloom-sage/40 dark:border-dark-border hover:bg-bloom-light dark:hover:bg-white/10"
+                    aria-label="Choose edited task emoji"
+                  >
+                    {editEmoji}
+                  </button>
 
-                <input
-                  type="text"
-                  value={editText}
-                  onChange={(e) => setEditText(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") handleEditSave(task.id)
-                  }}
-                  className="flex-1 text-gray-700 dark:text-gray-100 dark:bg-transparent placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none"
-                />
-              </div>
-
-              {showEditPicker && (
-                <div className="bg-white dark:bg-transparent border border-gray-200 dark:border-transparent border-t rounded-2xl p-3 grid grid-cols-8 gap-2">
-                  {emojis.map((emoji) => (
-                    <button
-                      type="button"
-                      key={emoji}
-                      onClick={() => {
-                        setEditEmoji(emoji)
-                        setShowEditPicker(false)
-                      }}
-                      className="text-2xl w-10 h-10 rounded-lg flex items-center justify-center border-t border-dark-border hover:bg-bloom-light transition"
-                    >
-                      {emoji}
-                    </button>
-                  ))}
+                  <input
+                    type="text"
+                    value={editText}
+                    onChange={(event) => setEditText(event.target.value)}
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter") handleEditSave(task.id)
+                    }}
+                    className="min-w-0 flex-1 bg-transparent text-sm font-medium text-bloom-forest outline-none placeholder:text-bloom-forest/40 dark:text-gray-100 dark:placeholder:text-gray-500"
+                  />
                 </div>
-              )}
 
-              <div className="flex gap-4 justify-end">
-                <button
-                  type="button"
-                  onClick={() => handleEditSave(task.id)}
-                  className="text-sm font-medium font-semibold text-bloom-mid dark:text-bloom-sage hover:text-bloom-forest dark:hover:text-bloom-mid transition"
-                >
-                  Save
-                </button>
+                {showEditPicker && (
+                  <EmojiPicker
+                    onSelect={(emoji) => {
+                      setEditEmoji(emoji)
+                      setShowEditPicker(false)
+                    }}
+                  />
+                )}
 
-                <button
-                  type="button"
-                  onClick={handleEditCancel}
-                  className="text-sm font-lg font-semibold text-bloom-forest dark:text-red-400 hover:text-dark-card dark:hover:text-red-500/90 transition"
-                >
-                  Cancel
-                </button>
+                <div className="mt-3 flex justify-end gap-2">
+                  <button
+                    type="button"
+                    onClick={() => handleEditSave(task.id)}
+                    className="rounded-full bg-bloom-mid px-2 py-1 text-xs font-bold text-white transition hover:bg-bloom-forest"
+                  >
+                    Save
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={handleEditCancel}
+                    className="rounded-full bg-bloom-light px-2 py-1 text-xs font-bold text-bloom-forest transition hover:bg-bloom-mint/60 dark:bg-white/10 dark:text-bloom-light dark:hover:bg-white/15"
+                  >
+                    Cancel
+                  </button>
+                </div>
               </div>
-            </div>
-          ) : (
-            <TaskCard
-              key={task.id}
-              task={task}
-              onEdit={handleEditStart}
-              onDelete={handleDelete}
-              onToggleComplete={handleToggleComplete}
-            />
-          )
-        )
+            ) : (
+              <TaskCard
+                key={task.id}
+                task={task}
+                onEdit={handleEditStart}
+                onDelete={handleDelete}
+                onToggleComplete={handleToggleComplete}
+              />
+            )
+          )}
+          </div>
+        </div>
       )}
-    </div>  
+    </div>
   )
 }
 

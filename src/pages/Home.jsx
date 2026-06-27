@@ -79,13 +79,6 @@ function Home({
                 Today&apos;s tasks
               </h3>
             </div>
-
-            <button
-              type="button"
-              className="rounded-full bg-bloom-light px-3 py-1.5 text-xs font-bold text-bloom-forest/70 transition hover:bg-bloom-mint/50 dark:bg-white/10 dark:text-gray-300"
-            >
-              See all
-            </button>
           </div>
 
           <TaskList />
@@ -116,7 +109,7 @@ function Home({
           <button
             type="button"
             onClick={() => goToPage("focus")}
-            className="mx-auto mt-5 rounded-full bg-bloom-mid px-6 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-bloom-forest"
+            className="mx-auto mt-5 rounded-full bg-bloom-mid dark:bg-bloom-forest/80 px-6 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-bloom-forest dark:hover:bg-bloom-mid/80"
           >
             Start focus
           </button>
@@ -139,7 +132,7 @@ function Home({
             </div>
 
             <span className="rounded-full bg-bloom-light px-3 py-2 text-sm dark:bg-white/10">
-              ☀️
+              ➤
             </span>
           </div>
 
@@ -171,7 +164,7 @@ function Home({
           <button
             type="button"
             onClick={() => goToPage("routines")}
-            className="mt-5 w-full rounded-2xl bg-bloom-light px-5 py-3 text-sm font-bold text-bloom-forest transition hover:bg-bloom-mint/60 dark:bg-white/10 dark:text-bloom-light dark:hover:bg-white/15"
+            className="mt-5 w-full rounded-2xl bg-bloom-light px-5 py-3 text-sm font-bold text-bloom-forest transition hover:bg-bloom-mint/60 dark:bg-white/10 dark:text-bloom-light dark:hover:bg-mid/80"
           >
             View routine
           </button>
@@ -194,7 +187,7 @@ function Home({
             <button
               type="button"
               onClick={() => goToPage("progress")}
-              className="rounded-full bg-bloom-light px-3 py-1.5 text-xs font-bold text-bloom-forest/70 transition hover:bg-bloom-mint/50 dark:bg-white/10 dark:text-gray-300"
+              className="rounded-full bg-bloom-light px-3 py-1.5 text-xs font-bold text-bloom-forest/70 transition hover:bg-bloom-mint/50 dark:bg-bloom-forest/85 dark:hover:bg-bloom-mid/80 dark:text-gray-300"
             >
               Open progress
             </button>
@@ -247,7 +240,7 @@ function Home({
 
         <div className="relative overflow-hidden rounded-[1.75rem] border border-bloom-sage/25 bg-white/55 p-5 shadow-sm dark:border-white/10 dark:bg-white/5">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-bloom-mid dark:text-bloom-sage">
-            Daily reminder
+            ꕤ Daily reminder
           </p>
 
           <h3 className="mt-3 text-xl font-bold leading-snug text-bloom-forest dark:text-bloom-light">
