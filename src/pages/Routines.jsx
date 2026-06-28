@@ -376,7 +376,7 @@ function Routines() {
     <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 overflow-x-hidden pb-28 sm:gap-7 sm:pb-0">
       {/* Hero */}
       <section className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(320px,430px)]">
-        <div className="rounded-[2rem] border border-bloom-sage/25 bg-white/55 p-5 shadow-sm dark:border-white/10 dark:bg-white/5 sm:p-7">
+        <div className="min-w-0 rounded-[2rem] border border-bloom-sage/25 bg-white/55 p-5 shadow-sm dark:border-white/10 dark:bg-white/5 sm:p-7">
           <div className="flex h-full flex-col justify-center">
             <div className="mb-5 flex items-center gap-3">
               <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-bloom-light text-bloom-forest shadow-sm dark:bg-white/10 dark:text-bloom-light">
@@ -401,7 +401,10 @@ function Routines() {
               <button
                 type="button"
                 onClick={() => {
+                  setShowDemoRoutines(true)
+
                   const starterSection = document.getElementById("starter-routines-card")
+                  
                   starterSection?.scrollIntoView({
                     behavior: "smooth",
                     block: "center",
@@ -600,7 +603,7 @@ function Routines() {
           </h3>
 
           <p className="mx-auto mt-3 max-w-sm text-sm leading-relaxed text-bloom-forest/65 dark:text-gray-300">
-            Create a routine that works for you. You&apos;re in control.
+            Create a routine that works for you. You're in control.
           </p>
 
           <div className="mx-auto mt-6 flex w-full max-w-md flex-col gap-2 rounded-2xl border border-bloom-sage/30 bg-white/80 px-3 py-3 shadow-sm transition focus-within:border-bloom-mid focus-within:ring-2 focus-within:ring-bloom-mint/35 dark:border-white/10 dark:bg-dark-surface/70 sm:flex-row sm:items-center sm:py-2">
@@ -636,7 +639,7 @@ function Routines() {
 
       {/* All routines + reminder */}
       <section className="grid gap-5 overflow-x-hidden lg:grid-cols-[minmax(0,1fr)_240px]">
-        <div className="rounded-[2rem] border border-bloom-sage/25 bg-white/55 p-5 shadow-sm dark:border-white/10 dark:bg-white/5 sm:p-6">
+        <div className="min-w-0 rounded-[2rem] border border-bloom-sage/25 bg-white/55 p-5 shadow-sm dark:border-white/10 dark:bg-white/5 sm:p-6">
           <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="text-xl font-bold text-bloom-forest dark:text-bloom-light">
@@ -662,7 +665,7 @@ function Routines() {
               message="Add your first routine when you're ready, or choose a starter routine above."
             />
           ) : (
-            <div className="w-full -mx-1 flex gap-4 overflow-x-auto px-1 pb-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            <div className="w-full min-w-0 -mx-1 flex gap-4 overflow-x-auto px-1 pb-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
               {routines.map((routine, index) => {
                 const progress = getRoutineStats(routine)
                 const isExpanded = expandedRoutineId === routine.id
@@ -782,7 +785,7 @@ function Routines() {
                             {routine.name || routine.title}
                           </p>
 
-                          <div classname="ml-auto flex items-center gap-2">
+                          <div className="ml-auto flex items-center gap-2">
                             <button
                               type="button"
                               onClick={() => setExpandedWideId(
