@@ -71,11 +71,11 @@ function RoutinesIcon() {
 
 function BloomRoutineHeroImage() {
   return (
-    <div className="hidden overflow-hidden rounded-[1.75rem] border border-bloom-sage/20 bg-bloom-light/70 p-3 shadow-sm dark:border-white/10 dark:bg-white/10 lg:block lg:w-full">
+    <div className="hidden min-h-[300px] overflow-hidden rounded-[1.75rem] border border-bloom-sage/20 bg-bloom-light/70 p-3 shadow-sm dark:border-white/10 dark:bg-white/10 lg:block lg:w-full">
       <img
         src="/illustrations/bloom-routines.png"
         alt=""
-        className="h-64 w-full rounded-[1.4rem] object-contain"
+        className="h-[300px] w-full rounded-[1.8rem] object-contain"
       />
     </div>
   )
@@ -410,7 +410,7 @@ function Routines() {
                     block: "center",
                   })
                 }}
-                className="rounded-full bg-bloom-forest px-5 py-3 text-sm font-bold text-bloom-light shadow-sm transition hover:bg-bloom-mid dark:bg-bloom-sage dark:text-bloom-forest"
+                className="rounded-full bg-bloom-forest px-5 py-3 text-sm font-bold text-bloom-light shadow-sm transition hover:bg-bloom-mid dark:bg-bloom-mid/90 dark:text-bloom-light/90 dark:hover:bg-bloom-mint/50"
               >
                 🌱 Browse starter routines
               </button>
@@ -548,7 +548,7 @@ function Routines() {
                           isExplored ? null : routine.id
                         )
                       }
-                      className="flex-1 rounded-full border border-bloom-sage/25 bg-white/70 px-4 py-2 text-xs font-bold text-bloom-forest/70 transition hover:bg-bloom-light dark:border-white/10 dark:bg-white/10 dark:text-bloom-light"
+                      className="flex-1 rounded-full border border-bloom-sage/25 bg-white/70 px-4 py-2 text-xs font-bold text-bloom-forest/70 transition hover:bg-bloom-light dark:border-white/10 dark:bg-white/10 dark:text-bloom-light dark:hover:bg-bloom-mid/50"
                     >
                       {isExplored ? "Close routine" : "View routine"}
                     </button>
@@ -580,7 +580,7 @@ function Routines() {
             type="button"
             onClick={handleLoadDemoRoutines}
             disabled={selectedStarterCount === 0}
-            className="mt-5 w-full rounded-full bg-bloom-forest px-5 py-3 text-sm font-bold text-bloom-light shadow-sm transition hover:bg-bloom-mid disabled:cursor-not-allowed disabled:opacity-40 dark:bg-bloom-sage dark:text-bloom-forest"
+            className="mt-5 w-full rounded-full bg-bloom-forest px-5 py-3 text-sm font-bold text-bloom-light shadow-sm transition hover:bg-bloom-mid disabled:cursor-not-allowed disabled:opacity-40 dark:bg-bloom-mint dark:text-bloom-forest"
           >
             {selectedStarterCount === 0
               ? "Select starter routines"
@@ -621,7 +621,7 @@ function Routines() {
             <button
               type="button"
               onClick={handleAddRoutine}
-              className="w-full rounded-full bg-bloom-forest px-4 py-2 text-xs font-bold text-bloom-light transition hover:bg-bloom-mid dark:bg-bloom-sage dark:text-bloom-forest sm:w-auto"
+              className="w-full rounded-full bg-bloom-forest px-4 py-2 text-xs font-bold text-bloom-light transition hover:bg-bloom-mid dark:bg-bloom-mint/50 dark:text-bloom-forest sm:w-auto"
             >
               Create
             </button>

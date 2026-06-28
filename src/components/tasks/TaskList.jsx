@@ -162,7 +162,7 @@ function TaskList() {
   return (
     <div className="flex w-full flex-col gap-4">
       <div className="relative">
-        <div className="flex items-center gap-2 rounded-2xl border border-bloom-sage/30 bg-white/80 px-3 py-2 shadow-sm transition focus-within:border-bloom-mid dark:focus-within:border-bloom-sage/50 focus-within:ring-2 focus-within:ring-bloom-mid/35 dark:focus-within:ring-bloom-light/35 dark:border-dark-border dark:bg-dark-surface/95">
+        <div className="flex items-center gap-2 rounded-2xl border border-bloom-sage/30 bg-white/80 px-3 py-2 shadow-sm transition focus-within:border-bloom-mid dark:focus-within:border-bloom-sage/50 focus-within:ring-2 focus-within:ring-bloom-mid/35 dark:focus-within:ring-bloom-light/35 dark:border-dark-border dark:bg-dark-surface/80">
           <button
             type="button"
             onClick={() => {
@@ -183,7 +183,7 @@ function TaskList() {
               if (event.key === "Enter") handleAddTask()
             }}
             placeholder="Add one small task..."
-            className="min-w-0 flex-1 bg-transparent text-sm font-medium text-bloom-forest outline-none placeholder:text-bloom-forest/40 dark:text-gray-100 dark:placeholder:text-bloom-light/60"
+            className="min-w-0 flex-1 bg-transparent text-sm font-medium text-bloom-forest outline-none placeholder:text-bloom-forest/40 dark:text-gray-100 dark:placeholder:text-bloom-light/70"
           />
 
           <button
