@@ -75,7 +75,7 @@ function BloomRoutineHeroImage() {
       <img
         src="/illustrations/bloom-routines.png"
         alt=""
-        className="h-[300px] w-full rounded-[1.8rem] object-contain"
+        className="h-[300px] w-full rounded-[1.4rem] object-contain"
       />
     </div>
   )

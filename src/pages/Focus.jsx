@@ -85,11 +85,11 @@ function FocusIcon() {
 
 function FocusHeroImage() {
   return (
-    <div className="hidden min-h-[340px] overflow-hidden rounded-[1.75rem] border border-bloom-sage/20 bg-bloom-light/70 p-3 shadow-sm dark:border-white/10 dark:bg-white/10 lg:block lg:w-full">
+    <div className="hidden overflow-hidden rounded-[1.75rem] border border-bloom-sage/20 bg-bloom-light/70 p-3 shadow-sm dark:border-white/10 dark:bg-white/10 lg:block lg:w-full">
       <img
         src="/illustrations/bloom-focus.png"
         alt=""
-        className="h-[340px] w-full rounded-[1.4rem] object-contain"
+        className="h-full w-full rounded-[1.4rem] object-contain"
       />
     </div>
   )
