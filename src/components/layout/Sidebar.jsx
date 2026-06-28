@@ -23,8 +23,8 @@ function Sidebar({ activePage, setActivePage }) {
               onClick={() => setActivePage(item.id)}
               className={`group flex items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-medium transition-all duration-200 ${
                 isActive
-                  ? "bg-bloom-light text-bloom-forest dark:bg-[#70708F]/35 dark:text-bloom-light"
-                  : "text-bloom-forest/65 hover:bg-bloom-light/50 hover:text-bloom-forest dark:text-bloom-light/55 dark:hover:bg-[#70708F]/75 dark:hover:text-bloom-light"
+                  ? "bg-bloom-light text-bloom-forest dark:bg-[#70708F]/65 dark:text-bloom-light"
+                  : "text-bloom-forest/65 hover:bg-bloom-light/50 hover:text-bloom-forest dark:text-bloom-light/55 dark:hover:bg-[#70708F]/35 dark:hover:text-bloom-light"
               }`}
             >
               <span className="flex-1">{item.label}</span>

@@ -208,7 +208,7 @@ function Home({
 
             <p className="mt-3 max-w-5xl text-sm leading-relaxed text-bloom-forest/65 dark:text-gray-300 lg:whitespace-nowrap">
               Choose one gentle step, pause when needed, and come back when
-              you&apos;re ready.
+              you're ready.
             </p>
           </div>
 
@@ -341,7 +341,7 @@ function Home({
               </p>
 
               <p className="mt-1 text-xs leading-5 text-bloom-forest/60 dark:text-gray-300">
-                Create your first routine when you&apos;re ready.
+                Create your first routine when you're ready.
               </p>
             </div>
           ) : (

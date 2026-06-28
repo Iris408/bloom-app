@@ -12,7 +12,7 @@ function DailyAffirmationCard({ variant = "panel" }) {
       <section className="w-full border-b border-bloom-sage/20 bg-white/40 px-4 py-1.5 backdrop-blur-sm dark:border-white/10 dark:bg-white/5">
         <div className="mx-auto flex max-w-7xl items-center gap-2">
           <p className="shrink-0 text-[10px] font-semibold uppercase tracking-widest text-bloom-mid dark:text-bloom-sage">
-            Today&apos;s reminder
+            Today's reminder
           </p>
 
           <p className="truncate text-[11px] leading-5 text-bloom-forest/75 dark:text-gray-300">
@@ -29,7 +29,7 @@ function DailyAffirmationCard({ variant = "panel" }) {
     return (
       <section className="rounded-2xl border border-bloom-sage/20 bg-white/55 p-4 shadow-sm backdrop-blur-sm dark:border-white/10 dark:bg-white/5">
         <p className="mb-2 text-[11px] font-semibold uppercase tracking-widest text-bloom-mid dark:text-bloom-sage">
-          Today&apos;s reminder
+          Today's reminder
         </p>
 
         <p className="text-sm leading-6 text-bloom-forest/80 dark:text-gray-300">
@@ -44,7 +44,7 @@ function DailyAffirmationCard({ variant = "panel" }) {
   return (
     <section className="w-full rounded-2xl border border-bloom-sage/30 bg-white/70 px-4 py-4 shadow-sm backdrop-blur-sm dark:border-dark-border dark:bg-dark-surface/55">
       <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-bloom-mid dark:text-bloom-sage">
-        Today&apos;s reminder
+        Today's reminder
       </p>
 
       <p className="text-sm leading-relaxed text-bloom-forest dark:text-bloom-light">
