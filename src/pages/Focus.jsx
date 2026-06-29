@@ -95,6 +95,30 @@ function FocusHeroImage() {
   )
 }
 
+function FocusHeroReminder() {
+  return (
+    <div className="hidden h-[110px] overflow-hidden rounded-[1.5rem] border border-bloom-sage/20 bg-white/60 px-5 py-4 shadow-sm dark:border-white/10 dark:bg-white/5 lg:block">
+      <div className="flex h-full items-center justify-between gap-4">
+        <div className="min-w-0">
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-bloom-mid dark:text-bloom-sage">
+            Before you begin
+          </p>
+
+          <h3 className="mt-1 text-lg font-bold text-bloom-forest dark:text-bloom-light">
+            One small thing is enough.
+          </h3>
+
+          <p className="mt-1 text-xs leading-5 text-bloom-forest/60 dark:text-gray-300">
+            Start gently. Pause when needed.
+          </p>
+        </div>
+
+        <div className="shrink-0 text-5xl opacity-80">🌿</div>
+      </div>
+    </div>
+  )
+}
+
 function formatTime(totalSeconds) {
   const minutes = Math.floor(totalSeconds / 60)
   const seconds = totalSeconds % 60
@@ -344,8 +368,11 @@ function Focus() {
             </div>
           </div>
         </div>
-
-        <FocusHeroImage />
+        
+        <div className="flex flex-col gap-3">
+          <FocusHeroImage />
+          <FocusHeroReminder />
+        </div>
       </section>
 
       {/* Timer + today's focus */}
