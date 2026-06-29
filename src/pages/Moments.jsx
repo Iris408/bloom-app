@@ -1,28 +1,104 @@
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 
 const HERO_IMAGE = "/illustrations/bloom-memories-ii.png"
 const QUOTE_IMAGE = "/illustrations/bloom-memories-quote.png"
 const JOURNAL_IMAGE = "/illustrations/bloom-memories-journal.png"
 
-function MomentsIcon() {
-  return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 24 24"
-      className="h-7 w-7"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M12 21s-6.5-4.35-9-8.15C1.05 9.95 2.7 6 6.6 6c2.14 0 3.3 1.1 4.1 2.3.8-1.2 1.96-2.3 4.1-2.3C18.7 6 20.35 9.95 21 12.85 18.5 16.65 12 21 12 21z" />
-    </svg>
-  )
+const MEMORIES_STORAGE_KEY = "bloom-memories"
+
+const MEMORY_FILTERS = [
+  { value: "all", label: "All memories" },
+  { value: "grateful", label: "Grateful" },
+  { value: "reset", label: "Reset" },
+  { value: "accomplished", label: "Accomplished" },
+  { value: "reflective", label: "Reflective" },
+]
+
+const MEMORY_SORT_OPTIONS = [
+  { value: "newest", label: "Newest first" },
+  { value: "oldest", label: "Oldest first" },
+]
+
+const MEMORY_IMAGE_OPTIONS = [
+  {
+    value: HERO_IMAGE,
+    label: "Warm coffee moment",
+  },
+  {
+    value: JOURNAL_IMAGE,
+    label: "Journal reflection",
+  },
+  {
+    value: QUOTE_IMAGE,
+    label: "Favorite quote",
+  },
+]
+
+function getMemoryTagClass(tag) {
+  const normalisedTag = tag.toLowerCase()
+
+  if (normalisedTag === "grateful" || normalisedTag === "reflective") {
+    return "bg-orange-100 text-orange-600 dark:bg-orange-300/15 dark:text-orange-200"
+  }
+
+  return "bg-bloom-light text-bloom-forest/70 dark:bg-white/10 dark:text-gray-300"
+}
+
+function getDefaultMemoryImage(tag) {
+  const normalisedTag = tag.toLowerCase()
+
+  if (normalisedTag === "grateful") return HERO_IMAGE
+  if (normalisedTag === "reflective") return QUOTE_IMAGE
+
+  return JOURNAL_IMAGE
+}
+
+function getDisplayDate(dateValue) {
+  if (!dateValue) return "Today"
+
+  const date = new Date(dateValue)
+  const today = new Date()
+
+  const isToday = date.toDateString() === today.toDateString()
+
+  if (isToday) return "Today"
+
+  return date.toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "short",
+  })
+}
+
+function loadStoredMemories() {
+  try {
+    const savedMemories = localStorage.getItem(MEMORIES_STORAGE_KEY)
+    const parsedMemories = savedMemories ? JSON.parse(savedMemories) : []
+
+    return Array.isArray(parsedMemories) ? parsedMemories : []
+  } catch {
+    return []
+  }
+}
+
+function sortMemories(memories, sortOrder) {
+  return [...memories].sort((firstMemory, secondMemory) => {
+    const firstDate = new Date(firstMemory.createdAt ?? 0).getTime()
+    const secondDate = new Date(secondMemory.createdAt ?? 0).getTime()
+
+    if (sortOrder === "oldest") {
+      return firstDate - secondDate
+    }
+
+    return secondDate - firstDate
+  })
 }
 
 function SectionIcon() {
-  return <span className="text-lg text-bloom-forest/70 dark:text-bloom-sage">🌿</span>
+  return (
+    <span className="text-lg text-bloom-forest/70 dark:text-bloom-sage">
+      🌿
+    </span>
+  )
 }
 
 function MemoryHeroIllustration() {
@@ -30,7 +106,7 @@ function MemoryHeroIllustration() {
     <div className="hidden h-[320px] overflow-hidden rounded-[1.75rem] border border-bloom-sage/20 bg-bloom-light/70 shadow-sm dark:border-white/10 dark:bg-white/10 lg:block">
       <img
         src={HERO_IMAGE}
-        alt="A calm Bloom memories illustration with a coffee cup, journal, flowers, and a reflective quote."
+        alt=""
         className="h-full w-full object-cover object-center"
       />
     </div>
@@ -42,12 +118,9 @@ function HeroMemoryReminder() {
     <section className="hidden h-[120px] overflow-hidden rounded-[1.5rem] border border-orange-100 bg-orange-50/60 px-5 py-4 shadow-sm dark:border-white/10 dark:bg-white/5 lg:block">
       <div className="flex h-full items-center justify-between gap-4">
         <div className="min-w-0">
-          <div className="flex items-center gap-2">
-
-            <p className="text-xs font-bold uppercase tracking-[0.18em] text-bloom-mid dark:text-bloom-sage">
-              Bloom reminder
-            </p>
-          </div>
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-bloom-mid dark:text-bloom-sage">
+            Bloom reminder
+          </p>
 
           <h3 className="mt-2 text-lg font-bold leading-snug text-bloom-forest dark:text-bloom-light">
             You are allowed to remember the good.
@@ -58,24 +131,22 @@ function HeroMemoryReminder() {
           </p>
         </div>
 
-        <div className="mt-1 flex items-center justify-between gap-4">
-          <div className="pointer-events-none text-3xl text-bloom-forest opacity-80">
-            𖥸
-          </div>
-        </div>  
+        <div className="pointer-events-none shrink-0 text-3xl text-bloom-forest opacity-80">
+          𖥸
+        </div>
       </div>
     </section>
   )
 }
 
-function MemoryStatCard({ title, value, label, image, action }) {
+function MemoryStatCard({ title, value, label, action }) {
   return (
     <article className="rounded-[1.75rem] border border-bloom-sage/25 bg-white/55 p-5 shadow-sm dark:border-white/10 dark:bg-white/5">
-      <div className="mb-4 flex items-center justify-between gap-3">
+      <div className="mb-4 flex items-start justify-between gap-3">
         <div className="flex items-center gap-2">
           <SectionIcon />
 
-          <h3 className="text-lg font-bold text-bloom-forest dark:text-bloom-light">
+          <h3 className="text-lg font-bold leading-tight text-bloom-forest dark:text-bloom-light">
             {title}
           </h3>
         </div>
@@ -96,15 +167,7 @@ function MemoryStatCard({ title, value, label, image, action }) {
           </p>
         </div>
 
-        {image ? (
-          <img
-            src={image}
-            alt=""
-            className="h-24 w-24 rounded-2xl object-cover opacity-90"
-          />
-        ) : (
-          <div className="text-5xl opacity-80">🌿</div>
-        )}
+        <div className="text-5xl opacity-80">🌿</div>
       </div>
 
       <button
@@ -123,11 +186,15 @@ function MemoriesTimeline({
   memoryFilter,
   onFilterChange,
   onViewAll,
+  openMemoryMenuId,
+  onToggleMemoryMenu,
+  onEditMemory,
+  onDeleteMemory,
 }) {
   const hasMemories = memories.length > 0
 
   return (
-    <section className="flex min-h-[720px] flex-col rounded-[1.75rem] border border-bloom-sage/25 bg-white/55 p-5 shadow-sm dark:border-white/10 dark:bg-white/5 sm:p-6">
+    <section className="flex min-h-[620px] flex-col rounded-[1.75rem] border border-bloom-sage/25 bg-white/55 p-5 shadow-sm dark:border-white/10 dark:bg-white/5 sm:p-6">
       <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-2">
           <SectionIcon />
@@ -142,11 +209,11 @@ function MemoriesTimeline({
           onChange={(event) => onFilterChange(event.target.value)}
           className="w-[150px] rounded-full border border-bloom-sage/25 bg-white/80 px-4 py-2 text-xs font-bold text-bloom-forest/70 outline-none transition hover:bg-bloom-light dark:border-white/10 dark:bg-white/10 dark:text-gray-300"
         >
-          <option value="all">All memories</option>
-          <option value="grateful">Grateful</option>
-          <option value="reset">Reset</option>
-          <option value="accomplished">Accomplished</option>
-          <option value="reflective">Reflective</option>
+          {MEMORY_FILTERS.map((filter) => (
+            <option key={filter.value} value={filter.value}>
+              {filter.label}
+            </option>
+          ))}
         </select>
       </div>
 
@@ -180,13 +247,36 @@ function MemoriesTimeline({
                       </h4>
                     </div>
 
-                    <button
-                      type="button"
-                      aria-label="Memory options"
-                      className="text-xl font-bold text-bloom-forest/45 transition hover:text-bloom-forest dark:text-gray-400 dark:hover:text-bloom-light"
-                    >
-                      …
-                    </button>
+                    <div className="relative">
+                      <button
+                        type="button"
+                        aria-label="Memory options"
+                        onClick={() => onToggleMemoryMenu(memory.id)}
+                        className="text-xl font-bold text-bloom-forest/45 transition hover:text-bloom-forest dark:text-gray-400 dark:hover:text-bloom-light"
+                      >
+                        …
+                      </button>
+
+                      {openMemoryMenuId === memory.id && (
+                        <div className="absolute right-0 top-8 z-30 w-32 overflow-hidden rounded-2xl border border-bloom-sage/25 bg-white shadow-lg dark:border-white/10 dark:bg-dark-surface">
+                          <button
+                            type="button"
+                            onClick={() => onEditMemory(memory)}
+                            className="block w-full px-4 py-3 text-left text-xs font-bold text-bloom-forest transition hover:bg-bloom-light dark:text-bloom-light dark:hover:bg-white/10"
+                          >
+                            Edit
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={() => onDeleteMemory(memory.id)}
+                            className="block w-full px-4 py-3 text-left text-xs font-bold text-red-500 transition hover:bg-red-50 dark:hover:bg-white/10"
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      )}
+                    </div>
                   </div>
 
                   <p className="mt-2 text-sm leading-relaxed text-bloom-forest/60 dark:text-gray-300">
@@ -213,7 +303,7 @@ function MemoriesTimeline({
             </h4>
 
             <p className="mx-auto mt-2 max-w-xs text-sm leading-relaxed text-bloom-forest/60 dark:text-gray-300">
-              Try another filter, or add a small moment when you are ready.
+              Add a small moment when you are ready.
             </p>
           </div>
         </div>
@@ -261,7 +351,7 @@ function FavoriteQuoteCard() {
   )
 }
 
-function FeaturedMemoryCard({ featuredMemory, onUseLatest, onRemove }) {
+function FeaturedMemoryCard({ featuredMemory, onUseLatest, onRemove, hasMemories }) {
   return (
     <section className="rounded-[1.75rem] border border-bloom-sage/25 bg-white/55 p-5 shadow-sm dark:border-white/10 dark:bg-white/5">
       <div className="mb-5 flex items-center justify-between gap-3">
@@ -345,39 +435,13 @@ function FeaturedMemoryCard({ featuredMemory, onUseLatest, onRemove }) {
           <button
             type="button"
             onClick={onUseLatest}
-            className="mt-5 rounded-full bg-bloom-forest px-5 py-3 text-sm font-bold text-bloom-light shadow-sm transition hover:bg-bloom-mid dark:bg-bloom-sage dark:text-bloom-forest"
+            disabled={!hasMemories}
+            className="mt-5 rounded-full bg-bloom-forest px-5 py-3 text-sm font-bold text-bloom-light shadow-sm transition hover:bg-bloom-mid disabled:cursor-not-allowed disabled:opacity-40 dark:bg-bloom-sage dark:text-bloom-forest"
           >
             Use latest memory
           </button>
         </div>
       )}
-    </section>
-  )
-}
-
-function BloomMemoryReminder() {
-  return (
-    <section className="relative overflow-hidden rounded-[1.75rem] border border-orange-100 bg-orange-50/60 p-5 shadow-sm dark:border-white/10 dark:bg-white/5">
-      <div className="relative z-10">
-        <div className="mb-4 flex items-center justify-between gap-3">
-          <div className="flex items-center gap-2">
-
-            <h3 className="text-lg font-bold text-bloom-forest dark:text-bloom-light">
-              Bloom reminder
-            </h3>
-          </div>
-
-          <span className="text-xl font-bold text-bloom-forest/50">…</span>
-        </div>
-
-        <h4 className="max-w-[220px] text-2xl font-bold leading-snug text-bloom-forest dark:text-bloom-light">
-          You are allowed to remember the good.
-        </h4>
-
-        <p className="mt-4 text-sm leading-relaxed text-bloom-forest/60 dark:text-gray-300">
-          Hold on to it. You deserve it.
-        </p>
-      </div>
     </section>
   )
 }
@@ -440,11 +504,49 @@ function MoodSnapshotCard() {
   )
 }
 
-function TopThemesCard() {
+function TopThemesCard({ memories }) {
+  const themeCounts = useMemo(() => {
+    const counts = {
+      Grateful: 0,
+      Reset: 0,
+      Accomplished: 0,
+      Reflective: 0,
+    }
+
+    memories.forEach((memory) => {
+      if (counts[memory.tag] !== undefined) {
+        counts[memory.tag] += 1
+      }
+    })
+
+    return counts
+  }, [memories])
+
   const themes = [
-    { id: "peace", icon: "◷", label: "Peace", value: 6, width: "86%", color: "bg-bloom-forest" },
-    { id: "growth", icon: "🌿", label: "Growth", value: 4, width: "62%", color: "bg-orange-300" },
-    { id: "connection", icon: "✿", label: "Connection", value: 3, width: "48%", color: "bg-orange-300" },
+    {
+      id: "grateful",
+      icon: "♡",
+      label: "Grateful",
+      value: themeCounts.Grateful,
+      width: `${Math.min(themeCounts.Grateful * 20, 100)}%`,
+      color: "bg-bloom-forest",
+    },
+    {
+      id: "reset",
+      icon: "🌿",
+      label: "Reset",
+      value: themeCounts.Reset,
+      width: `${Math.min(themeCounts.Reset * 20, 100)}%`,
+      color: "bg-orange-300",
+    },
+    {
+      id: "reflective",
+      icon: "✿",
+      label: "Reflective",
+      value: themeCounts.Reflective,
+      width: `${Math.min(themeCounts.Reflective * 20, 100)}%`,
+      color: "bg-orange-300",
+    },
   ]
 
   return (
@@ -465,7 +567,10 @@ function TopThemesCard() {
 
       <div className="flex flex-col gap-5">
         {themes.map((theme) => (
-          <div key={theme.id} className="grid grid-cols-[36px_1fr_90px_24px] items-center gap-3">
+          <div
+            key={theme.id}
+            className="grid grid-cols-[36px_1fr_90px_24px] items-center gap-3"
+          >
             <span className="text-xl text-bloom-forest/70">{theme.icon}</span>
 
             <span className="text-sm font-bold text-bloom-forest/75 dark:text-gray-200">
@@ -473,7 +578,10 @@ function TopThemesCard() {
             </span>
 
             <div className="h-2 overflow-hidden rounded-full bg-bloom-light dark:bg-white/10">
-              <div className={`h-full rounded-full ${theme.color}`} style={{ width: theme.width }} />
+              <div
+                className={`h-full rounded-full ${theme.color}`}
+                style={{ width: theme.width }}
+              />
             </div>
 
             <span className="text-sm font-bold text-bloom-forest/70 dark:text-gray-300">
@@ -486,7 +594,14 @@ function TopThemesCard() {
   )
 }
 
-function AllMemoriesView({ memories, onBack }) {
+function AllMemoriesView({
+  memories,
+  memoryFilter,
+  memorySortOrder,
+  onFilterChange,
+  onSortChange,
+  onBack,
+}) {
   return (
     <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 overflow-x-hidden pb-28 sm:gap-7 sm:pb-0">
       <section className="rounded-[2rem] border border-bloom-sage/25 bg-white/55 p-5 shadow-sm dark:border-white/10 dark:bg-white/5 sm:p-7">
@@ -510,6 +625,32 @@ function AllMemoriesView({ memories, onBack }) {
           Browse your saved reflections, small wins, resets, and grateful
           moments in one calm place.
         </p>
+
+        <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+          <select
+            value={memoryFilter}
+            onChange={(event) => onFilterChange(event.target.value)}
+            className="rounded-full border border-bloom-sage/25 bg-white/80 px-4 py-3 text-sm font-bold text-bloom-forest outline-none dark:border-white/10 dark:bg-white/10 dark:text-gray-100"
+          >
+            {MEMORY_FILTERS.map((filter) => (
+              <option key={filter.value} value={filter.value}>
+                {filter.label}
+              </option>
+            ))}
+          </select>
+
+          <select
+            value={memorySortOrder}
+            onChange={(event) => onSortChange(event.target.value)}
+            className="rounded-full border border-bloom-sage/25 bg-white/80 px-4 py-3 text-sm font-bold text-bloom-forest outline-none dark:border-white/10 dark:bg-white/10 dark:text-gray-100"
+          >
+            {MEMORY_SORT_OPTIONS.map((sortOption) => (
+              <option key={sortOption.value} value={sortOption.value}>
+                {sortOption.label}
+              </option>
+            ))}
+          </select>
+        </div>
       </section>
 
       {memories.length === 0 ? (
@@ -521,8 +662,7 @@ function AllMemoriesView({ memories, onBack }) {
           </h3>
 
           <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-bloom-forest/60 dark:text-gray-300">
-            There are no memories for this filter yet. Go back to Moments and choose
-            another filter, or add a new memory later.
+            There are no memories for this filter yet.
           </p>
         </section>
       ) : (
@@ -556,96 +696,296 @@ function AllMemoriesView({ memories, onBack }) {
                 >
                   {memory.tag}
                 </span>
-              </div>  
+              </div>
             </article>
           ))}
-        </section>  
+        </section>
       )}
     </div>
   )
 }
 
-export default function Moments() {
-  const memories = useMemo(
-    () => [
-      {
-        id: 1,
-        date: "Today",
-        title: "Morning sunlight and a quiet cup of tea",
-        description: "A soft start before the day became busy.",
-        image: HERO_IMAGE,
-        tag: "Grateful",
-        tagClass: "bg-orange-100 text-orange-600 dark:bg-orange-300/15 dark:text-orange-200",
-      },
-      {
-        id: 2,
-        date: "Yesterday",
-        title: "A slow walk that cleared my head",
-        description: "Fresh air helped me come back to myself.",
-        image: JOURNAL_IMAGE,
-        tag: "Reset",
-        tagClass: "bg-bloom-light text-bloom-forest/70 dark:bg-white/10 dark:text-gray-300",
-      },
-      {
-        id: 3,
-        date: "May 10",
-        title: "Completed a task I’d been putting off",
-        description: "A small win that felt bigger than expected.",
-        image: QUOTE_IMAGE,
-        tag: "Accomplished",
-        tagClass: "bg-bloom-light text-bloom-forest/70 dark:bg-white/10 dark:text-gray-300",
-      },
-      {
-        id: 4,
-        date: "May 8",
-        title: "Wrote down what I’m proud of",
-        description: "A quiet moment of reflection.",
-        image: JOURNAL_IMAGE,
-        tag: "Reflective",
-        tagClass: "bg-orange-100 text-orange-600 dark:bg-orange-300/15 dark:text-orange-200",
-      },
-    ],
-    []
+function MemoryFormOverlay({ mode, initialMemory, onSave, onCancel }) {
+  const [title, setTitle] = useState(initialMemory?.title ?? "")
+  const [description, setDescription] = useState(
+    initialMemory?.description ?? ""
   )
+  const [tag, setTag] = useState(initialMemory?.tag ?? "Grateful")
+  const [image, setImage] = useState(
+  initialMemory?.image ?? getDefaultMemoryImage(initialMemory?.tag ?? "Grateful")
+)
 
-  const [featuredMemory, setFeaturedMemory] = useState({
-    title: "A page just for me",
-    date: "May 6, 2025",
-    description:
-      "Took time to write, breathe, and be present with my thoughts. It felt like coming home.",
-    image: JOURNAL_IMAGE,
-  })
+  function handleTagChange(nextTag) {
+    setTag(nextTag)
 
+    if (!initialMemory?.image) {
+      setImage(getDefaultMemoryImage(nextTag))
+    }
+  }
+
+  function handleSave() {
+    if (title.trim() === "") return
+
+    const createdAt = initialMemory?.createdAt ?? new Date().toISOString()
+
+    onSave({
+      ...initialMemory,
+      id: initialMemory?.id ?? Date.now(),
+      title: title.trim(),
+      description:
+        description.trim() || "A small moment I want to remember.",
+      tag,
+      tagClass: getMemoryTagClass(tag),
+      image,
+      date: getDisplayDate(createdAt),
+      createdAt,
+    })
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-bloom-forest/30 px-4 py-8 backdrop-blur-sm">
+      <div className="mx-auto max-w-xl rounded-[2rem] border border-bloom-sage/25 bg-white p-5 shadow-xl dark:border-white/10 dark:bg-dark-surface sm:p-6">
+        <div className="mb-5 flex items-start justify-between gap-4">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-bloom-mid dark:text-bloom-sage">
+              {mode === "edit" ? "Edit memory" : "Add memory"}
+            </p>
+
+            <h3 className="mt-2 text-2xl font-bold text-bloom-forest dark:text-bloom-light">
+              {mode === "edit"
+                ? "Update this gentle moment."
+                : "Save one gentle moment."}
+            </h3>
+          </div>
+
+          <button
+            type="button"
+            onClick={onCancel}
+            className="rounded-full bg-bloom-light px-3 py-2 text-xs font-bold text-bloom-forest transition hover:bg-bloom-mint/60 dark:bg-white/10 dark:text-bloom-light"
+          >
+            Close
+          </button>
+        </div>
+
+        <div className="max-h-[70vh] overflow-y-auto pr-1">
+          <label className="block text-sm font-bold text-bloom-forest dark:text-bloom-light">
+            Memory title
+          </label>
+
+          <input
+            type="text"
+            value={title}
+            onChange={(event) => setTitle(event.target.value)}
+            placeholder="A quiet cup of tea..."
+            className="mt-2 w-full rounded-2xl border border-bloom-sage/25 bg-white/80 px-4 py-3 text-sm text-bloom-forest outline-none focus:border-bloom-mid dark:border-white/10 dark:bg-white/10 dark:text-gray-100"
+          />
+
+          <label className="mt-5 block text-sm font-bold text-bloom-forest dark:text-bloom-light">
+            What happened?
+          </label>
+
+          <textarea
+            value={description}
+            onChange={(event) => setDescription(event.target.value)}
+            placeholder="Write a small note about this moment..."
+            className="mt-2 min-h-[140px] w-full resize-none rounded-2xl border border-bloom-sage/25 bg-white/80 px-4 py-3 text-sm text-bloom-forest outline-none focus:border-bloom-mid dark:border-white/10 dark:bg-white/10 dark:text-gray-100"
+          />
+
+          <label className="mt-5 block text-sm font-bold text-bloom-forest dark:text-bloom-light">
+            Category
+          </label>
+
+          <select
+            value={tag}
+            onChange={(event) => handleTagChange(event.target.value)}
+            className="mt-2 w-full rounded-2xl border border-bloom-sage/25 bg-white/80 px-4 py-3 text-sm font-bold text-bloom-forest outline-none focus:border-bloom-mid dark:border-white/10 dark:bg-white/10 dark:text-gray-100"
+          >
+            <option value="Grateful">Grateful</option>
+            <option value="Reset">Reset</option>
+            <option value="Accomplished">Accomplished</option>
+            <option value="Reflective">Reflective</option>
+          </select>
+
+          <div className="mt-5">
+            <div className="flex items-center justify-between gap-3">
+              <label className="block text-sm font-bold text-bloom-forest dark:text-bloom-light">
+                Add image
+              </label>
+
+              <span className="text-xs font-semibold text-bloom-forest/45 dark:text-gray-400">
+                Upload coming later
+              </span>
+            </div>
+
+            <p className="mt-2 text-xs leading-5 text-bloom-forest/55 dark:text-gray-400">
+              Feel free to choose a sample Bloom image. The upload option will be available at
+              a later time.
+            </p>
+
+            <div className="mt-3 grid gap-3 sm:grid-cols-3">
+              {MEMORY_IMAGE_OPTIONS.map((imageOption) => {
+                const isSelected = image === imageOption.value
+
+                return (
+                  <button
+                    key={imageOption.value}
+                    type="button"
+                    onClick={() => setImage(imageOption.value)}
+                    className={`overflow-hidden rounded-2xl border text-left transition ${
+                      isSelected
+                        ? "border-bloom-forest bg-bloom-light shadow-sm dark:border-bloom-sage dark:bg-white/10"
+                        : "border-bloom-sage/20 bg-white/70 hover:border-bloom-sage/50 dark:border-white/10 dark:bg-white/5"
+                    }`}
+                  >
+                    <img
+                      src={imageOption.value}
+                      alt=""
+                      className="h-24 w-full object-cover"
+                    />
+
+                    <div className="p-3">
+                      <p className="text-xs font-bold text-bloom-forest dark:text-bloom-light">
+                        {imageOption.label}
+                      </p>
+
+                      {isSelected && (
+                        <p className="mt-1 text-xs font-semibold text-bloom-mid dark:text-bloom-sage">
+                          Selected
+                        </p>
+                      )}
+                    </div>
+                  </button>
+                )
+              })}
+            </div>
+
+            <button
+              type="button"
+              disabled
+              className="mt-3 w-full rounded-2xl border border-dashed border-bloom-sage/35 bg-white/50 px-4 py-3 text-sm font-bold text-bloom-forest/45 dark:border-white/10 dark:bg-white/5 dark:text-gray-500"
+            >
+              + Upload your own image (coming later)
+            </button>
+          </div>
+
+          <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+            <button
+              type="button"
+              onClick={handleSave}
+              className="rounded-full bg-bloom-forest px-5 py-3 text-sm font-bold text-bloom-light shadow-sm transition hover:bg-bloom-mid dark:bg-bloom-sage dark:text-bloom-forest"
+            >
+              Save memory
+            </button>
+
+            <button
+              type="button"
+              onClick={onCancel}
+              className="rounded-full border border-bloom-sage/30 bg-white/70 px-5 py-3 text-sm font-bold text-bloom-forest/80 shadow-sm transition hover:bg-bloom-light dark:border-white/10 dark:bg-white/10 dark:text-bloom-light"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default function Moments() {
+  const [memories, setMemories] = useState(() => loadStoredMemories())
+  const [featuredMemory, setFeaturedMemory] = useState(null)
   const [activeMomentsView, setActiveMomentsView] = useState("dashboard")
   const [memoryFilter, setMemoryFilter] = useState("all")
+  const [memorySortOrder, setMemorySortOrder] = useState("newest")
+  const [editingMemory, setEditingMemory] = useState(null)
+  const [isMemoryFormOpen, setIsMemoryFormOpen] = useState(false)
+  const [openMemoryMenuId, setOpenMemoryMenuId] = useState(null)
+
+  useEffect(() => {
+    localStorage.setItem(MEMORIES_STORAGE_KEY, JSON.stringify(memories))
+  }, [memories])
 
   const filteredMemories = useMemo(() => {
-    if (memoryFilter === "all") return memories
+    const categoryFilteredMemories =
+      memoryFilter === "all"
+        ? memories
+        : memories.filter((memory) => {
+            return memory.tag.toLowerCase() === memoryFilter
+          })
 
-    return memories.filter((memory) => {
-      return memory.tag.toLowerCase() === memoryFilter
-    })
-  }, [memories, memoryFilter])
+    return sortMemories(categoryFilteredMemories, memorySortOrder)
+  }, [memories, memoryFilter, memorySortOrder])
 
   const dashboardMemories = useMemo(() => {
     return filteredMemories.slice(0, 3)
   }, [filteredMemories])
 
-  function handleUseLatestMemory() {
-    const latestMemory = memories[0]
+  const reflectionCount = memories.filter(
+    (memory) => memory.tag === "Reflective"
+  ).length
 
-    setFeaturedMemory({
-      title: latestMemory.title,
-      date: latestMemory.date,
-      description: latestMemory.description,
-      image: latestMemory.image,
+  const smallWinCount = memories.filter(
+    (memory) => memory.tag === "Accomplished"
+  ).length
+
+  function handleOpenAddMemory() {
+    setEditingMemory(null)
+    setIsMemoryFormOpen(true)
+  }
+
+  function handleEditMemory(memory) {
+    setEditingMemory(memory)
+    setIsMemoryFormOpen(true)
+    setOpenMemoryMenuId(null)
+  }
+
+  function handleSaveMemory(memoryToSave) {
+    setMemories((currentMemories) => {
+      const memoryExists = currentMemories.some(
+        (memory) => memory.id === memoryToSave.id
+      )
+
+      if (memoryExists) {
+        return currentMemories.map((memory) =>
+          memory.id === memoryToSave.id ? memoryToSave : memory
+        )
+      }
+
+      return [memoryToSave, ...currentMemories]
     })
+
+    setEditingMemory(null)
+    setIsMemoryFormOpen(false)
+  }
+
+  function handleDeleteMemory(memoryId) {
+    setMemories((currentMemories) =>
+      currentMemories.filter((memory) => memory.id !== memoryId)
+    )
+
+    if (featuredMemory?.id === memoryId) {
+      setFeaturedMemory(null)
+    }
+
+    setOpenMemoryMenuId(null)
+  }
+
+  function handleUseLatestMemory() {
+    const latestMemory = sortMemories(memories, "newest")[0]
+
+    if (!latestMemory) return
+
+    setFeaturedMemory(latestMemory)
   }
 
   if (activeMomentsView === "all-memories") {
     return (
       <AllMemoriesView
         memories={filteredMemories}
+        memoryFilter={memoryFilter}
+        memorySortOrder={memorySortOrder}
+        onFilterChange={setMemoryFilter}
+        onSortChange={setMemorySortOrder}
         onBack={() => setActiveMomentsView("dashboard")}
       />
     )
@@ -673,6 +1013,7 @@ export default function Moments() {
             <div className="mt-7 flex flex-col gap-3 sm:flex-row">
               <button
                 type="button"
+                onClick={handleOpenAddMemory}
                 className="rounded-full bg-bloom-forest px-5 py-3 text-sm font-bold text-bloom-light shadow-sm transition hover:bg-bloom-mid dark:bg-bloom-sage dark:text-bloom-forest"
               >
                 ꕤ Add a memory
@@ -680,6 +1021,7 @@ export default function Moments() {
 
               <button
                 type="button"
+                onClick={() => setActiveMomentsView("all-memories")}
                 className="rounded-full border border-bloom-sage/30 bg-white/70 px-5 py-3 text-sm font-bold text-bloom-forest/80 shadow-sm transition hover:bg-bloom-light dark:border-white/10 dark:bg-white/10 dark:text-bloom-light dark:hover:bg-white/15"
               >
                 Browse all memories
@@ -695,7 +1037,7 @@ export default function Moments() {
         <div className="flex flex-col gap-3">
           <MemoryHeroIllustration />
           <HeroMemoryReminder />
-        </div>  
+        </div>
       </section>
 
       {/* Dashboard */}
@@ -708,7 +1050,16 @@ export default function Moments() {
             memoryFilter={memoryFilter}
             onFilterChange={setMemoryFilter}
             onViewAll={() => setActiveMomentsView("all-memories")}
+            openMemoryMenuId={openMemoryMenuId}
+            onToggleMemoryMenu={(memoryId) =>
+              setOpenMemoryMenuId((currentId) =>
+                currentId === memoryId ? null : memoryId
+              )
+            }
+            onEditMemory={handleEditMemory}
+            onDeleteMemory={handleDeleteMemory}
           />
+
           <FavoriteQuoteCard />
         </div>
 
@@ -717,14 +1068,14 @@ export default function Moments() {
           <div className="grid gap-6 md:grid-cols-2">
             <MemoryStatCard
               title="Reflections"
-              value="4"
+              value={reflectionCount}
               label="Moments reflected on"
               action="See all reflections"
             />
 
             <MemoryStatCard
               title="Small wins"
-              value="5"
+              value={smallWinCount}
               label="Small wins celebrated"
               action="View all wins"
             />
@@ -734,6 +1085,7 @@ export default function Moments() {
             featuredMemory={featuredMemory}
             onUseLatest={handleUseLatestMemory}
             onRemove={() => setFeaturedMemory(null)}
+            hasMemories={memories.length > 0}
           />
 
           <FavoriteQuoteCard />
@@ -742,9 +1094,21 @@ export default function Moments() {
         {/* Right column */}
         <div className="flex min-w-0 flex-col gap-6">
           <MoodSnapshotCard />
-          <TopThemesCard />
+          <TopThemesCard memories={memories} />
         </div>
       </section>
+
+      {isMemoryFormOpen && (
+        <MemoryFormOverlay
+          mode={editingMemory ? "edit" : "add"}
+          initialMemory={editingMemory}
+          onSave={handleSaveMemory}
+          onCancel={() => {
+            setEditingMemory(null)
+            setIsMemoryFormOpen(false)
+          }}
+        />
+      )}
     </div>
   )
 }
