@@ -180,6 +180,36 @@ function WeekDay({ dateKey, snapshot, isSelected, isToday, onClick }) {
   )
 }
 
+function ProgressHeroReminder() {
+  return (
+    <div className="hidden h-[110px] overflow-hidden rounded-[1.5rem] border border-orange-100 bg-orange-50/60 p-5 shadow-sm dark:border-white/10 dark:bg-white/5 lg:block">
+      <div className="flex h-full items-center justify-between gap-4">
+        <div>
+          <p className="text-xs font-bold uppercase tracking-[0.1em] text-bloom-mid dark:text-bloom-sage">
+            Bloom reminder
+          </p>
+
+          <h3 className="mt-2 text-xl font-bold text-bloom-forest dark:text-bloom-light">
+            Progress, not perfection.
+          </h3>
+
+          <p className="mt-3 text-xs leading-relaxed text-bloom-forest/60 dark:text-gray-300">
+            Be kind to your mind today.
+          </p>
+        </div>
+      </div>
+
+      <div className="mt-1 flex items-center justify-between gap-4">
+        <div className="text-lg text-peach-400">🧡</div>
+
+        <div className="pointer-events-none text-6xl opacity-80">
+          🌸
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function Progress() {
   const { loadDay, syncToday } = useProgressStore()
 
@@ -285,9 +315,9 @@ export default function Progress() {
     <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 overflow-x-hidden pb-28 sm:gap-7 sm:pb-0">
       {/* Hero */}
       <section className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(340px,500px)]">
-        <div className="relative overflow-hidden rounded-[2rem] border border-bloom-sage/25 bg-white/55 p-5 shadow-sm dark:border-white/10 dark:bg-white/5 sm:p-7">
-          <div className="relative z-10 flex h-full flex-col justify-center">
-            <div className="mb-5 inline-flex w-fit items-center gap-2 rounded-full bg-bloom-light/80 px-3 py-2 text-xs font-bold text-bloom-forest/70 dark:bg-white/10 dark:text-gray-300">
+        <div className="relative overflow-hidden rounded-[2rem] border border-bloom-sage/25 bg-white/55 p-5 shadow-sm dark:border-white/10 dark:bg-white/5 sm:p-6">
+          <div className="relative z-10 flex h-full flex-col justify-start">
+            <div className="mb-3 inline-flex w-fit items-center gap-2 rounded-full bg-bloom-light/80 px-2 py-1.5 text-sm font-bold text-bloom-forest/70 dark:bg-white/10 dark:text-gray-300">
               <span>🌿</span>
               <span>Welcome back</span>
             </div>
@@ -296,11 +326,11 @@ export default function Progress() {
               Progress gently, one small step at a time.
             </h2>
 
-            <p className="mt-5 max-w-xl text-sm leading-relaxed text-bloom-forest/65 dark:text-gray-300 sm:text-base">
+            <p className="mt-3 max-w-xl text-sm leading-relaxed text-bloom-forest/65 dark:text-gray-300 sm:text-base">
               Every effort matters. Keep going at your own pace.
             </p>
 
-            <p className="mt-3 max-w-xl text-sm leading-relaxed text-bloom-forest/65 dark:text-gray-300 sm:text-base">
+            <p className="mt-1 max-w-xl text-sm leading-relaxed text-bloom-forest/65 dark:text-gray-300 sm:text-base">
               You are building a rhythm, not chasing perfection.
             </p>
 
@@ -314,7 +344,7 @@ export default function Progress() {
                   block: "center",
                 })
               }}
-              className="mt-7 w-fit rounded-full bg-bloom-forest px-5 py-3 text-sm font-bold text-bloom-light shadow-sm transition hover:bg-bloom-mid dark:bg-bloom-sage dark:text-bloom-forest"
+              className="mt-24 w-fit rounded-full bg-bloom-forest px-5 py-3 text-sm font-bold text-bloom-light shadow-sm transition hover:bg-bloom-mid dark:bg-bloom-sage dark:text-bloom-forest"
             >
               View weekly overview
             </button>
@@ -324,8 +354,11 @@ export default function Progress() {
             🌸
           </div>
         </div>
-
-        <ProgressHeroImage />
+        
+        <div className="flex flex-col gap-3">
+          <ProgressHeroImage />
+          <ProgressHeroReminder />
+        </div>  
       </section>
 
       {/* Metric cards */}
@@ -538,12 +571,6 @@ export default function Progress() {
           </div>
         </div>
       </section>
-
-      <BloomReminder
-        reminder="Small steps still count."
-        phaseTitle="Progress v1.1.0"
-        phaseDescription="Progress is built through gentle returns, small actions, and rest when needed."
-      />
     </div>
   )
 }
