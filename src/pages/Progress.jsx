@@ -5,12 +5,7 @@ import { useEffect, useMemo, useState } from "react"
 
 import BloomReminder from "../components/ui/BloomReminder"
 import { useProgressStore } from "../hooks/useProgressStore"
-import {
-  dayLabel,
-  getProgressState,
-  getWeekKeys,
-  todayKey,
-} from "../utils/progressUtils"
+import { dayLabel, getProgressState, getWeekKeys, todayKey } from "../utils/progressUtils"
 
 const ROUTINE_STORAGE_KEY = "bloom-routines"
 const FOCUS_HISTORY_STORAGE_KEY = "bloom-focus-history"
@@ -514,17 +509,34 @@ export default function Progress() {
             so you can return gently whenever you are ready.
           </p>
 
-          <div className="mt-5 rounded-2xl bg-bloom-light/65 p-4 dark:bg-white/5">
-            <p className="text-sm font-bold text-bloom-forest dark:text-bloom-light">
-              A soft reminder
-            </p>
+          <div className="mt-5 grid gap-4 sm:grid-cols-2">
+            <div className="rounded-2xl bg-bloom-light/65 p-4 dark:bg-white/5">
+              <p className="text-sm font-bold text-bloom-forest dark:text-bloom-light">
+                A soft reminder
+              </p>
 
-            <p className="mt-2 text-sm leading-relaxed text-bloom-forest/60 dark:text-gray-300">
-              You do not need to make up for yesterday. One small step today is
-              enough.
-            </p>
+              <p className="mt-2 text-sm leading-relaxed text-bloom-forest/60 dark:text-gray-300">
+                You do not need to make up for yesterday. One small step today is
+                enough.
+              </p>
+            </div>
+
+            <div className="rounded-2xl border border-dashed border-bloom-sage/35 bg-white/50 p-4 dark:border-white/10 dark:bg-white/5">
+              <p className="text-sm font-bold text-bloom-forest dark:text-bloom-light">
+                Support space coming later
+              </p>
+
+              <p className="mt-2 text-sm leading-relaxed text-bloom-forest/60 dark:text-gray-300">
+                Future alumni reach-out, gentle support, and shared recovery
+                resources can live here.
+              </p>
+
+              <span className="mt-3 inline-flex rounded-full bg-bloom-light px-3 py-1 text-xs font-bold text-bloom-forest/60 dark:bg-white/10 dark:text-gray-300">
+                Planned feature
+              </span>
+            </div>
           </div>
-        </div>
+        </div>  
 
         <div className="rounded-[2rem] border border-orange-100 bg-orange-50/60 p-5 shadow-sm dark:border-white/10 dark:bg-white/5">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-bloom-mid dark:text-bloom-sage">
