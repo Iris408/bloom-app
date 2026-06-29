@@ -428,7 +428,7 @@ function Routines() {
                 }}
                 className="rounded-full border border-bloom-sage/30 bg-white/70 px-5 py-3 text-sm font-bold text-bloom-forest/80 shadow-sm transition hover:bg-bloom-light dark:border-white/10 dark:bg-white/10 dark:text-bloom-light dark:hover:bg-white/15"
               >
-                + Add a new routine
+                ꕤ Add a new routine
               </button>
             </div>
           </div>
