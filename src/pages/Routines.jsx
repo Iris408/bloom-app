@@ -389,7 +389,7 @@ function Routines() {
             </div>
 
             <h2 className="max-w-xl text-4xl font-bold leading-tight text-bloom-forest dark:text-bloom-light sm:text-5xl">
-              Build gentle routines, one small step at a time.
+              Nurture your daily rhythms, step by step
             </h2>
 
             <p className="mt-5 max-w-xl text-sm leading-relaxed text-bloom-forest/65 dark:text-gray-300 sm:text-base">

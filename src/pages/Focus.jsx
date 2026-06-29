@@ -97,7 +97,7 @@ function FocusHeroImage() {
 
 function FocusHeroReminder() {
   return (
-    <div className="hidden h-[110px] overflow-hidden rounded-[1.5rem] border border-bloom-sage/20 bg-white/60 px-5 py-4 shadow-sm dark:border-white/10 dark:bg-white/5 lg:block">
+    <div className="hidden h-[120px] overflow-hidden rounded-[1.5rem] border border-bloom-sage/20 bg-white/60 px-5 py-4 shadow-sm dark:border-white/10 dark:bg-white/5 lg:block">
       <div className="flex h-full items-center justify-between gap-4">
         <div className="min-w-0">
           <p className="text-xs font-bold uppercase tracking-[0.18em] text-bloom-mid dark:text-bloom-sage">
@@ -109,11 +109,11 @@ function FocusHeroReminder() {
           </h3>
 
           <p className="mt-1 text-xs leading-5 text-bloom-forest/60 dark:text-gray-300">
-            Start gently. Pause when needed.
+            Start slowly, and remember to pause when you need a break.
           </p>
         </div>
 
-        <div className="shrink-0 text-5xl opacity-80">🌿</div>
+        <div className="shrink-0 text-5xl opacity-60 text-bloom-forest dark:text-bloom-light">ꫂ❁</div>
       </div>
     </div>
   )
@@ -326,12 +326,11 @@ function Focus() {
             </h2>
 
             <p className="mt-5 max-w-xl text-sm leading-relaxed text-bloom-forest/65 dark:text-gray-300 sm:text-base">
-              Choose one task, start a calm timer, and give yourself space to
-              begin.
+              Clear away the digital noise and set a calm timer.
             </p>
 
             <p className="mt-3 max-w-xl text-sm leading-relaxed text-bloom-forest/65 dark:text-gray-300 sm:text-base">
-              Pick one small thing. Start gently. Stop when you need to.
+              Give yourself the physical and mental space to build momentum at your own pace.
             </p>
 
             <div className="mt-7 flex flex-col gap-3 sm:flex-row">
