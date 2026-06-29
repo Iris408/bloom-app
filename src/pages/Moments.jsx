@@ -1,8 +1,21 @@
 import { useEffect, useMemo, useState } from "react"
 
-const HERO_IMAGE = "/illustrations/bloom-memories-ii.png"
-const QUOTE_IMAGE = "/illustrations/bloom-memories-quote.png"
-const JOURNAL_IMAGE = "/illustrations/bloom-memories-journal.png"
+const MEMORY_HERO_IMAGE = "/illustrations/bloom-memories-hero.png"
+const MEMORY_QUOTE_IMAGE = "/illustrations/bloom-memories-quote.png"
+const MEMORY_JOURNAL_IMAGE = "/illustrations/bloom-memories-journal.png"
+
+const IMAGE_1 = "/illustrations/sample-image-1.png"
+const IMAGE_2 = "/illustrations/sample-image-2.png"
+const IMAGE_4 = "/illustrations/sample-image-4.png"
+const IMAGE_5 = "/illustrations/sample-image-5.png"
+const IMAGE_8 = "/illustrations/sample-image-8.png"
+const IMAGE_9 = "/illustrations/sample-image-9.png"
+const IMAGE_10 = "/illustrations/sample-image-10.png"
+const IMAGE_12 = "/illustrations/sample-image-12.png"
+const IMAGE_13 = "/illustrations/sample-image-13.png"
+const IMAGE_14 = "/illustrations/sample-image-14.png"
+const IMAGE_15 = "/illustrations/sample-image-15.png"
+const IMAGE_16 = "/illustrations/sample-image-16.png"
 
 const MEMORIES_STORAGE_KEY = "bloom-memories"
 
@@ -21,16 +34,88 @@ const MEMORY_SORT_OPTIONS = [
 
 const MEMORY_IMAGE_OPTIONS = [
   {
-    value: HERO_IMAGE,
-    label: "Warm coffee moment",
+    id: "soft-morning",
+    label: "Soft Morning",
+    category: "Rest",
+    src: "/images/memories/soft-morning.png",
+    alt: "A cosy bedroom corner with books, plants, tea, and warm morning sunlight.",
   },
   {
-    value: JOURNAL_IMAGE,
-    label: "Journal reflection",
+    id: "coffee-pause",
+    label: "Coffee Pause",
+    category: "Pause",
+    src: "/images/memories/coffee-pause.png",
+    alt: "A quiet café table with coffee, a notebook, flowers, and golden light.",
   },
   {
-    value: QUOTE_IMAGE,
-    label: "Favorite quote",
+    id: "together-outside",
+    label: "Together Outside",
+    category: "Friends",
+    src: "/images/memories/together-outside.png",
+    alt: "A group of friends having a peaceful picnic in a sunny park.",
+  },
+  {
+    id: "gentle-ride",
+    label: "Gentle Ride",
+    category: "Movement",
+    src: "/images/memories/gentle-ride.png",
+    alt: "Two people cycling through a sunny park with flowers and soft greenery.",
+  },
+  {
+    id: "gratitude-notes",
+    label: "Gratitude Notes",
+    category: "Gratitude",
+    src: "/images/memories/gratitude-notes.png",
+    alt: "An open gratitude journal with flowers, a candle, and a pen.",
+  },
+  {
+    id: "quiet-work-moment",
+    label: "Quiet Work Moment",
+    category: "Work",
+    src: "/images/memories/quiet-work-moment.png",
+    alt: "A calm Bloom-style workspace with people working quietly at laptops.",
+  },
+  {
+    id: "morning-gratitude",
+    label: "Morning Gratitude",
+    category: "Gratitude",
+    src: "/images/memories/morning-gratitude.png",
+    alt: "An open gratitude journal with coffee, flowers, and warm morning sunlight.",
+  },
+  {
+    id: "park-pause",
+    label: "Park Pause",
+    category: "Outdoors",
+    src: "/images/memories/park-pause.png",
+    alt: "A peaceful park bench with a Bloom book, tea, flowers, and a soft lakeside view.",
+  },
+  {
+    id: "gentle-walk",
+    label: "Gentle Walk",
+    category: "Outdoors",
+    src: "/images/memories/gentle-walk.png",
+    alt: "A sunlit garden path surrounded by flowers, trees, and soft greenery.",
+  },
+  {
+    id: "small-reflection",
+    label: "Small Reflection",
+    category: "Reflection",
+    src: "/images/memories/small-reflection.png",
+    alt: "A warm desk scene with a journal, flowers, tea, and soft sunlight.",
+  },
+  {
+    id: "memory-collection",
+    label: "Memory Collection",
+    category: "Memories",
+    src: "/images/memories/memory-collection.png",
+    alt: "A scrapbook-style collection of peaceful photos, notes, flowers, and keepsakes.",
+  },
+  {
+    id: "reading-rest",
+    label: "Reading Rest",
+    category: "Rest",
+    src: "/images/memories/reading-rest.png",
+    alt: "A cosy Bloom-style scene of someone reading with a warm drink and soft flowers.",
   },
 ]
 
@@ -47,10 +132,23 @@ function getMemoryTagClass(tag) {
 function getDefaultMemoryImage(tag) {
   const normalisedTag = tag.toLowerCase()
 
-  if (normalisedTag === "grateful") return HERO_IMAGE
-  if (normalisedTag === "reflective") return QUOTE_IMAGE
+  if (normalisedTag === "grateful") {
+    return "/images/memories/morning-gratitude.png"
+  }
 
-  return JOURNAL_IMAGE
+  if (normalisedTag === "reflective") {
+    return "/images/memories/small-reflection.png"
+  }
+
+  if (normalisedTag === "accomplished") {
+    return "/images/memories/quiet-work-moment.png"
+  }
+
+  if (normalisedTag === "reset") {
+    return "/images/memories/park-pause.png"
+  }
+
+  return "/images/memories/coffee-pause.png"
 }
 
 function getDisplayDate(dateValue) {
@@ -105,7 +203,7 @@ function MemoryHeroIllustration() {
   return (
     <div className="hidden h-[320px] overflow-hidden rounded-[1.75rem] border border-bloom-sage/20 bg-bloom-light/70 shadow-sm dark:border-white/10 dark:bg-white/10 lg:block">
       <img
-        src={HERO_IMAGE}
+        src={MEMORY_HERO_IMAGE}
         alt=""
         className="h-full w-full object-cover object-center"
       />
@@ -343,7 +441,7 @@ function FavoriteQuoteCard() {
       </div>
 
       <img
-        src={QUOTE_IMAGE}
+        src={MEMORY_QUOTE_IMAGE}
         alt=""
         className="pointer-events-none absolute bottom-2 right-3 h-28 w-32 rounded-2xl object-cover opacity-75"
       />
@@ -744,14 +842,14 @@ function MemoryFormOverlay({ mode, initialMemory, onSave, onCancel }) {
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-bloom-forest/30 px-4 py-8 backdrop-blur-sm">
-      <div className="mx-auto max-w-xl rounded-[2rem] border border-bloom-sage/25 bg-white p-5 shadow-xl dark:border-white/10 dark:bg-dark-surface sm:p-6">
+      <div className="mx-auto max-w-xl rounded-[1.75rem] border border-bloom-sage/25 bg-white p-4 shadow-xl dark:border-white/10 dark:bg-dark-surface sm:p-5">
         <div className="mb-5 flex items-start justify-between gap-4">
           <div>
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-bloom-mid dark:text-bloom-sage">
               {mode === "edit" ? "Edit memory" : "Add memory"}
             </p>
 
-            <h3 className="mt-2 text-2xl font-bold text-bloom-forest dark:text-bloom-light">
+            <h3 className="mt-2 text-xl font-bold text-bloom-forest dark:text-bloom-light">
               {mode === "edit"
                 ? "Update this gentle moment."
                 : "Save one gentle moment."}
@@ -767,7 +865,7 @@ function MemoryFormOverlay({ mode, initialMemory, onSave, onCancel }) {
           </button>
         </div>
 
-        <div className="max-h-[70vh] overflow-y-auto pr-1">
+        <div className="max-h-[62vh] overflow-y-auto pr-1">
           <label className="block text-sm font-bold text-bloom-forest dark:text-bloom-light">
             Memory title
           </label>
@@ -788,7 +886,7 @@ function MemoryFormOverlay({ mode, initialMemory, onSave, onCancel }) {
             value={description}
             onChange={(event) => setDescription(event.target.value)}
             placeholder="Write a small note about this moment..."
-            className="mt-2 min-h-[140px] w-full resize-none rounded-2xl border border-bloom-sage/25 bg-white/80 px-4 py-3 text-sm text-bloom-forest outline-none focus:border-bloom-mid dark:border-white/10 dark:bg-white/10 dark:text-gray-100"
+            className="mt-2 min-h-[96px]] w-full resize-none rounded-2xl border border-bloom-sage/25 bg-white/80 px-4 py-3 text-sm text-bloom-forest outline-none focus:border-bloom-mid dark:border-white/10 dark:bg-white/10 dark:text-gray-100"
           />
 
           <label className="mt-5 block text-sm font-bold text-bloom-forest dark:text-bloom-light">
@@ -813,39 +911,43 @@ function MemoryFormOverlay({ mode, initialMemory, onSave, onCancel }) {
               </label>
 
               <span className="text-xs font-semibold text-bloom-forest/45 dark:text-gray-400">
-                Upload coming later
+                Scroll to choose
               </span>
             </div>
 
             <p className="mt-2 text-xs leading-5 text-bloom-forest/55 dark:text-gray-400">
-              Feel free to choose a sample Bloom image. The upload option will be available at
-              a later time.
+              Choose a sample Bloom image for now. Upload support will be
+              available later.
             </p>
 
-            <div className="mt-3 grid gap-3 sm:grid-cols-3">
+            <div className="mt-3 flex gap-3 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
               {MEMORY_IMAGE_OPTIONS.map((imageOption) => {
-                const isSelected = image === imageOption.value
+                const isSelected = image === imageOption.src
 
                 return (
                   <button
-                    key={imageOption.value}
+                    key={imageOption.id}
                     type="button"
-                    onClick={() => setImage(imageOption.value)}
-                    className={`overflow-hidden rounded-2xl border text-left transition ${
+                    onClick={() => setImage(imageOption.src)}
+                    className={`w-[135px] shrink-0 overflow-hidden rounded-2xl border text-left transition ${
                       isSelected
                         ? "border-bloom-forest bg-bloom-light shadow-sm dark:border-bloom-sage dark:bg-white/10"
                         : "border-bloom-sage/20 bg-white/70 hover:border-bloom-sage/50 dark:border-white/10 dark:bg-white/5"
                     }`}
                   >
                     <img
-                      src={imageOption.value}
-                      alt=""
-                      className="h-24 w-full object-cover"
+                      src={imageOption.src}
+                      alt={imageOption.alt}
+                      className="h-20 w-full object-cover"
                     />
 
                     <div className="p-3">
                       <p className="text-xs font-bold text-bloom-forest dark:text-bloom-light">
                         {imageOption.label}
+                      </p>
+
+                      <p className="mt-1 text-[11px] font-semibold text-bloom-forest/45 dark:text-gray-400">
+                        {imageOption.category}
                       </p>
 
                       {isSelected && (
@@ -864,7 +966,7 @@ function MemoryFormOverlay({ mode, initialMemory, onSave, onCancel }) {
               disabled
               className="mt-3 w-full rounded-2xl border border-dashed border-bloom-sage/35 bg-white/50 px-4 py-3 text-sm font-bold text-bloom-forest/45 dark:border-white/10 dark:bg-white/5 dark:text-gray-500"
             >
-              + Upload your own image (coming later)
+              ꕤ Upload your own image later
             </button>
           </div>
 
