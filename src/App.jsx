@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { act, useEffect, useState } from "react";
 import { useApp } from "./context/AppContext";
 import { getAuthToken, getCurrentUser, logoutUser } from "./api/bloomApi";
+import { getAvatarDisplay } from "./utils/avatarStorage";
 
 import LoginModal from "./components/auth/LoginModal";
 import Header from "./components/layout/Header";
@@ -42,7 +43,9 @@ function App() {
 
   const [loginInitialView, setLoginInitialView] =useState("login");
 
-  const { isDarkMode } = useApp();
+  const { isDarkMode, toggleDarkMode } = useApp();
+
+  const avatarDisplay = getAvatarDisplay(currentUser);
 
   const protectedPages = [
     "home",
@@ -268,68 +271,99 @@ function App() {
           <BloomBackgroundDecor />
         </div>
 
-      <div className="relative z-10 flex min-h-screen w-full flex-col">
-          <Header
-            setActivePage={handlePageChange}
-            activePage={activePage}
-            currentUser={currentUser}
-            isDemoMode={isDemoMode}
-            demoType={demoType}
-            onLogout={handleLogout}
-            onLoginClick={() => openLoginModal("login")}
-            onExitDemoClick={() => setIsExitDemoConfirmOpen(true)}
-            onCreateAccountClick={() => openLoginModal("create")}
-          />
+      {/* EN: Below-header layout with optional sidebar and main content area. */}
+      {/* JP: ヘッダー下のサイドバーとメインコンテンツのレイアウトです。 */}
+      <div className="relative z-10 min-h-screen w-full">
+        {canUseApp ? (
+          <div className="flex min-h-screen w-full">
+            <Sidebar
+              activePage={activePage}
+              setActivePage={handlePageChange}
+              onOpenHelp={() => handlePageChange("accessibility")}
+            />
 
-          {canUseApp && (
-            <div className="relative z-20 md:hidden">
-              <DailyAffirmationCard variant="mobile-strip" />
-            </div>
-          )}
-
-
-          {/* EN: Below-header layout with optional sidebar and main content area. */}
-          {/* JP: ヘッダー下のサイドバーとメインコンテンツのレイアウトです。 */}
-          <div className="flex flex-1">
-            {canUseApp && (
-              <Sidebar
-                activePage={activePage}
+            <div className="flex min-w-0 flex-1 flex-col"> 
+              {/* public pages */} 
+              <Header
+                canUseApp={canUseApp}
                 setActivePage={handlePageChange}
+                activePage={activePage}
+                currentUser={currentUser}
+                avatarDisplay={avatarDisplay}
+                isDarkMode={isDarkMode}
+                onToggleTheme={toggleDarkMode}
+                onProfileClick={() => handlePageChange("profile")}
+                isDemoMode={isDemoMode}
+                demoType={demoType}
+                onLogout={handleLogout}
+                onLoginClick={() => openLoginModal("login")}
+                onExitDemoClick={() => setIsExitDemoConfirmOpen(true)}
+                onCreateAccountClick={() => openLoginModal("create")}
               />
-            )}
+
+              <div className="relative z-20 md:hidden">
+                <DailyAffirmationCard variant="mobile-strip" />
+              </div>
+   
+              <main className="min-w-0 w-full max-w-full flex-1 overflow-x-hidden">
+                {isCheckingAuth ? (
+                  // EN: Centred loading indicator shown while the auth token is verified.
+                  // JP: 認証トークンの確認中に表示される中央寄せのローディング表示です。
+                  <div className="flex min-h-[60vh] items-center justify-center">
+                    <p className="animate-pulse text-sm text-gray-500 dark:text-gray-400">
+                      🌱 Loading...
+                    </p>
+                  </div>
+                ) : (
+                  <div className="mx-auto w-full max-w-7xl px-5 py-6 sm:px-8 lg:px-10">
+                    {renderPage()}
+                  </div>  
+                )}
+              </main>
+            </div>
+          </div>  
+        ) : (
+          <div className="flex min-h-screen w-full flex-col">
+            {/* protected pages */}
+            <Header 
+              canUseApp={canUseApp}
+              setActivePage={handlePageChange}
+              activePage={activePage}
+              currentUser={currentUser}
+              avatarDisplay={avatarDisplay}
+              isDarkMode={isDarkMode}
+              onToggleTheme={toggleDarkMode}
+              onProfileClick={() => handlePageChange("profile")}
+              isDemoMode={isDemoMode}
+              demoType={demoType}
+              onLogout={handleLogout}
+              onLoginClick={() => openLoginModal("login")}
+              onExitDemoClick={() => setIsExitDemoConfirmOpen(true)}
+              onCreateAccountClick={() => openLoginModal("create")}
+            />
 
             <main className="min-w-0 w-full max-w-full flex-1 overflow-x-hidden">
               {isCheckingAuth ? (
-                // EN: Centred loading indicator shown while the auth token is verified.
-                // JP: 認証トークンの確認中に表示される中央寄せのローディング表示です。
-                <div className="flex flex-1 items-center justify-center">
+                <div className="flex min-h-[60vh] items-center justify-center">
                   <p className="animate-pulse text-sm text-gray-500 dark:text-gray-400">
                     🌱 Loading...
                   </p>
                 </div>
               ) : (
-                <div
-                  className={
-                    canUseApp
-                      ? "mx-auto w-full max-w-6xl px-5 py-6 sm:px-8 lg:px-10"
-                      : ""
-                  }
-                >
-                  {renderPage()}
-                </div>  
-              )}
+                renderPage()
+              )}  
             </main>
-          </div>
 
-          {!canUseApp && 
             <Footer
               setActivePage={handlePageChange}
               onLoginClick={() => openLoginModal("login")}
               onTryDemoClick={() => openLoginModal("demo")}
               onCreateAccountClick={() => openLoginModal("create")}
-            />}
-        </div>
-      </div>  
+            />
+          </div>
+        )}
+      </div>
+      </div>
 
       {/* EN: BottomNav and LoginModal are fixed-position elements rendered outside */}
       {/* EN: the wrapper to guarantee they are never clipped or stacking-context trapped. */}
