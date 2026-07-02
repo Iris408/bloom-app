@@ -1,8 +1,9 @@
-import { useEffect, useMemo, useState } from "react"
+import { React, useEffect, useMemo, useState } from "react"
 
 const MEMORY_HERO_IMAGE = "/illustrations/bloom-memories-hero.png"
 const MEMORY_QUOTE_IMAGE = "/illustrations/bloom-memories-quote.png"
 const MEMORY_JOURNAL_IMAGE = "/illustrations/bloom-memories-journal.png"
+const MEMORIES_STORAGE_KEY = "bloom-memories"
 
 const IMAGE_1 = "/illustrations/sample-image-1.png"
 const IMAGE_2 = "/illustrations/sample-image-2.png"
@@ -17,7 +18,6 @@ const IMAGE_14 = "/illustrations/sample-image-14.png"
 const IMAGE_15 = "/illustrations/sample-image-15.png"
 const IMAGE_16 = "/illustrations/sample-image-16.png"
 
-const MEMORIES_STORAGE_KEY = "bloom-memories"
 
 const MEMORY_FILTERS = [
   { value: "all", label: "All memories" },
@@ -237,15 +237,15 @@ function HeroMemoryReminder() {
   )
 }
 
-function MemoryStatCard({ title, value, label, action }) {
+function SmallWinsCard() {
   return (
-    <article className="rounded-[1.75rem] border border-bloom-sage/25 bg-white/55 p-5 shadow-sm dark:border-white/10 dark:bg-white/5">
-      <div className="mb-4 flex items-start justify-between gap-3">
+    <section className="relative overflow-hidden rounded-[1.75rem] border border-bloom-sage/25 bg-white/55 p-5 shadow-sm dark:border-white/10 dark:bg-white/5">
+      <div className="mb-5 flex items-center justify-between gap-3">
         <div className="flex items-center gap-2">
           <SectionIcon />
 
-          <h3 className="text-lg font-bold leading-tight text-bloom-forest dark:text-bloom-light">
-            {title}
+          <h3 className="text-xl font-bold text-bloom-forest dark:text-bloom-light">
+            Small wins
           </h3>
         </div>
 
@@ -257,11 +257,11 @@ function MemoryStatCard({ title, value, label, action }) {
       <div className="flex items-end justify-between gap-4">
         <div>
           <p className="text-5xl font-bold leading-none text-bloom-forest dark:text-bloom-light">
-            {value}
+            5
           </p>
 
           <p className="mt-3 text-sm leading-relaxed text-bloom-forest/65 dark:text-gray-300">
-            {label}
+            Small wins celebrated
           </p>
         </div>
 
@@ -272,9 +272,48 @@ function MemoryStatCard({ title, value, label, action }) {
         type="button"
         className="mt-6 text-sm font-bold text-bloom-forest/70 transition hover:text-bloom-forest dark:text-gray-300 dark:hover:text-bloom-light"
       >
-        {action} →
+        View all wins →
       </button>
-    </article>
+    </section>
+  )
+}
+
+function FavoriteQuoteCard() {
+  return (
+    <section
+      className="relative min-h-[260px] overflow-hidden rounded-[1.75rem] border border-bloom-sage/25 bg-cover bg-center p-5 shadow-sm dark:border-white/10"
+      style={{
+        backgroundImage: `url(${MEMORY_QUOTE_IMAGE})`,
+      }}
+    >
+      <div className="absolute inset-0 bg-white/72 backdrop-blur-[1px] dark:bg-[#343442]/72" />
+
+      <div className="relative z-10 flex h-full flex-col justify-between">
+        <div>
+          <div className="mb-4 flex items-center gap-2">
+            <span className="text-xl text-bloom-mid dark:text-bloom-sage">
+              ”
+            </span>
+
+            <h3 className="text-xl font-bold text-bloom-forest dark:text-bloom-light">
+              Favorite quote
+            </h3>
+          </div>
+
+          <blockquote className="max-w-sm text-lg font-semibold leading-relaxed text-bloom-forest/85 dark:text-bloom-light">
+            “The little things? The little things are everything.”
+          </blockquote>
+
+          <p className="mt-4 text-sm font-bold text-bloom-forest/60 dark:text-gray-300">
+            — Jon Kabat-Zinn
+          </p>
+        </div>
+
+        <p className="mt-8 w-fit rounded-full bg-white/70 px-4 py-2 text-xs font-bold text-bloom-forest/65 shadow-sm dark:bg-white/10 dark:text-gray-300">
+          A gentle reminder
+        </p>
+      </div>
+    </section>
   )
 }
 
@@ -292,7 +331,7 @@ function MemoriesTimeline({
   const hasMemories = memories.length > 0
 
   return (
-    <section className="flex min-h-[620px] flex-col rounded-[1.75rem] border border-bloom-sage/25 bg-white/55 p-5 shadow-sm dark:border-white/10 dark:bg-white/5 sm:p-6">
+    <section className="flex min-h-[420px] flex-col rounded-[1.75rem] border border-bloom-sage/25 bg-white/55 p-5 shadow-sm dark:border-white/10 dark:bg-white/5 sm:p-6">
       <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-2">
           <SectionIcon />
@@ -419,35 +458,6 @@ function MemoriesTimeline({
   )
 }
 
-function FavoriteQuoteCard() {
-  return (
-    <section className="relative overflow-hidden rounded-[1.75rem] border border-bloom-sage/25 bg-white/55 p-5 shadow-sm dark:border-white/10 dark:bg-white/5">
-      <div className="relative z-10">
-        <div className="mb-4 flex items-center gap-2">
-          <span className="text-2xl text-bloom-forest/70">❞</span>
-
-          <h3 className="text-xl font-bold text-bloom-forest dark:text-bloom-light">
-            Favorite quote
-          </h3>
-        </div>
-
-        <p className="max-w-md text-lg leading-relaxed text-bloom-forest/75 dark:text-gray-200">
-          “The little things? The little things are everything.”
-        </p>
-
-        <p className="mt-2 text-sm font-semibold text-bloom-forest/50 dark:text-gray-400">
-          — Jon Kabat-Zinn
-        </p>
-      </div>
-
-      <img
-        src={MEMORY_QUOTE_IMAGE}
-        alt=""
-        className="pointer-events-none absolute bottom-2 right-3 h-28 w-32 rounded-2xl object-cover opacity-75"
-      />
-    </section>
-  )
-}
 
 function FeaturedMemoryCard({ featuredMemory, onUseLatest, onRemove, hasMemories }) {
   return (
@@ -473,11 +483,11 @@ function FeaturedMemoryCard({ featuredMemory, onUseLatest, onRemove, hasMemories
       </div>
 
       {featuredMemory ? (
-        <div className="grid gap-4 lg:grid-cols-[minmax(220px,0.9fr)_minmax(0,1fr)]">
+        <div className="h-full min-h-[220px] w-full rounded-[1.4rem] object-cover">
           <img
             src={featuredMemory.image}
             alt=""
-            className="h-full min-h-[190px] w-full rounded-[1.4rem] object-cover"
+            className="h-52 w-full rounded-[1.4rem] object-cover"
           />
 
           <div className="flex flex-col justify-center">
@@ -544,34 +554,77 @@ function FeaturedMemoryCard({ featuredMemory, onUseLatest, onRemove, hasMemories
   )
 }
 
+function ReflectionsCard() {
+  return (
+    <section className="relative min-h-[260px] overflow-hidden rounded-[1.75rem] border border-bloom-sage/25 bg-white/55 p-5 shadow-sm dark:border-white/10 dark:bg-white/5">
+      <div className="mb-5 flex items-center justify-between gap-3">
+        <div className="flex items-center gap-2">
+          <SectionIcon />
+
+          <h3 className="text-xl font-bold text-bloom-forest dark:text-bloom-light">
+            Reflections
+          </h3>
+        </div>
+
+        <span className="rounded-full bg-bloom-light px-3 py-1 text-xs font-bold text-bloom-forest/55 dark:bg-white/10 dark:text-gray-300">
+          Planned
+        </span>
+      </div>
+
+      <div className="rounded-[1.4rem] border border-dashed border-bloom-sage/30 bg-white/45 p-5 text-center dark:border-white/10 dark:bg-white/5">
+        <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-bloom-light text-2xl dark:bg-white/10">
+          🪞
+        </div>
+
+        <p className="text-base font-bold text-bloom-forest dark:text-bloom-light">
+          Reflection space coming later
+        </p>
+
+        <p className="mx-auto mt-2 max-w-xs text-sm leading-relaxed text-bloom-forest/60 dark:text-gray-300">
+          This can become a gentle place for notes, thoughts, or small end-of-day reflections.
+        </p>
+      </div>
+    </section>
+  )
+}
+
 function MoodSnapshotCard() {
   const [selectedMood, setSelectedMood] = useState(4)
 
   const moods = [
-    { id: 1, label: "Hard", icon: "☹" },
-    { id: 2, label: "Low", icon: "☹" },
-    { id: 3, label: "Okay", icon: "😐" },
-    { id: 4, label: "Good", icon: "🙂" },
-    { id: 5, label: "Bright", icon: "☺" },
+    { id: 1, label: "Overwhelmed", icon: "😫" },
+    { id: 2, label: "Low energy", icon: "😔" },
+    { id: 3, label: "Getting through", icon: "😐" },
+    { id: 4, label: "Doing good", icon: "😌" },
+    { id: 5, label: "Bright", icon: "😄" },
   ]
 
-  return (
-    <section className="rounded-[1.75rem] border border-bloom-sage/25 bg-white/55 p-5 text-center shadow-sm dark:border-white/10 dark:bg-white/5">
-      <div className="mb-5 flex items-center justify-between gap-3 text-left">
-        <h3 className="text-xl font-bold text-bloom-forest dark:text-bloom-light">
-          Mood snapshot
-        </h3>
+  const selectedMoodLabel =
+    moods.find((mood) => mood.id === selectedMood)?.label ?? "Good"
 
-        <span className="text-xs font-bold text-bloom-forest/50 dark:text-gray-400">
-          This week
+  return (
+    <section className="min-h-[260px] rounded-[1.75rem] border border-bloom-sage/25 bg-white/55 p-5 shadow-sm dark:border-white/10 dark:bg-white/5">
+      <div className="mb-4 flex items-start justify-between gap-3">
+        <div>
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-bloom-mid dark:text-bloom-sage">
+            Mood snapshot
+          </p>
+
+          <h3 className="mt-2 text-xl font-bold leading-tight text-bloom-forest dark:text-bloom-light">
+            How are you feeling today?
+          </h3>
+        </div>
+
+        <span className="w-[70px] shrink-0 rounded-full bg-bloom-light px-3 py-1 text-center text-xs font-bold text-bloom-forest/65 dark:bg-white/10 dark:text-gray-300">
+          {selectedMoodLabel}
         </span>
       </div>
 
-      <p className="text-sm font-bold text-bloom-forest/70 dark:text-gray-300">
-        How have you been feeling?
-      </p>
-
-      <div className="mt-5 flex justify-center gap-3">
+      <div
+        role="radiogroup"
+        aria-label="Mood selector"
+        className="grid grid-cols-5 gap-1 rounded-2xl bg-white/45 p-1 dark:bg-white/5"
+      >
         {moods.map((mood) => {
           const isSelected = selectedMood === mood.id
 
@@ -579,30 +632,42 @@ function MoodSnapshotCard() {
             <button
               key={mood.id}
               type="button"
+              role="radio"
+              aria-checked={isSelected}
               onClick={() => setSelectedMood(mood.id)}
-              aria-label={mood.label}
-              className={`flex h-11 w-11 items-center justify-center rounded-full text-xl transition ${
+              className={`flex h-[78px] min-w-0 flex-col items-center justify-center gap-2 rounded-xl px-1 py-2 text-center transition ${
                 isSelected
-                  ? "bg-bloom-forest text-white shadow-sm dark:bg-bloom-sage dark:text-bloom-forest"
-                  : "bg-bloom-light/70 text-bloom-forest/35 hover:text-bloom-forest dark:bg-white/10 dark:text-gray-400"
+                  ? "bg-bloom-light text-bloom-forest shadow-sm dark:bg-white/10 dark:text-bloom-light"
+                  : "text-bloom-forest/55 hover:bg-bloom-light/55 dark:text-gray-400 dark:hover:bg-white/10"
               }`}
             >
-              {mood.icon}
+              <span
+                className="flex h-8 w-8 items-center justify-center text-[22px] leading-none"
+                aria-hidden="true"
+              >
+                {mood.icon}
+              </span>
+
+              <span
+                className={`block w-full truncate text-[11px] leading-none ${
+                  isSelected ? "font-bold" : "font-semibold"
+                }`}
+              >
+                {mood.label}
+              </span>
             </button>
           )
         })}
       </div>
 
-      <p className="mt-6 text-sm font-semibold text-bloom-forest/60 dark:text-gray-300">
-        More good days. Keep going.
+      <p className="mt-4 text-xs leading-5 text-bloom-forest/55 dark:text-gray-400">
+        This is just a gentle check-in, not a score.
       </p>
-
-      <p className="mt-3 text-xl">🌿</p>
     </section>
   )
 }
 
-function TopThemesCard({ memories }) {
+function TopThemesCard({ memories = [] }) {
   const themeCounts = useMemo(() => {
     const counts = {
       Grateful: 0,
@@ -1094,7 +1159,7 @@ export default function Moments() {
   }
 
   return (
-    <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 overflow-x-hidden pb-28 sm:gap-7 sm:pb-0">
+    <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 overflow-x-hidden pb-28 sm:gap-7 sm:pb-0">
       {/* Hero */}
       <section className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(360px,0.95fr)]">
         <div className="relative overflow-hidden rounded-[2rem] border border-bloom-sage/25 bg-white/55 p-5 shadow-sm dark:border-white/10 dark:bg-white/5 sm:p-7">
@@ -1143,9 +1208,9 @@ export default function Moments() {
       </section>
 
       {/* Dashboard */}
-      <section className="grid gap-6 xl:grid-cols-[minmax(420px,1fr)_minmax(0,1fr)_300px]">
-        {/* Left column */}
-        <div className="flex min-w-0 flex-col gap-6">
+      <section className="grid gap-6 xl:grid-cols-3">
+        {/* Row 1: Your memories wide + Small wins */}
+        <div className="xl:col-span-2">
           <MemoriesTimeline
             memories={dashboardMemories}
             totalMemoryCount={filteredMemories.length}
@@ -1157,47 +1222,30 @@ export default function Moments() {
               setOpenMemoryMenuId((currentId) =>
                 currentId === memoryId ? null : memoryId
               )
-            }
+            }  
             onEditMemory={handleEditMemory}
-            onDeleteMemory={handleDeleteMemory}
+            onDeleteMemory={handleDeleteMemory}  
           />
+        </div>  
 
-          <FavoriteQuoteCard />
-        </div>
+        <SmallWinsCard />
 
-        {/* Middle column */}
-        <div className="flex min-w-0 flex-col gap-6">
-          <div className="grid gap-6 md:grid-cols-2">
-            <MemoryStatCard
-              title="Reflections"
-              value={reflectionCount}
-              label="Moments reflected on"
-              action="See all reflections"
-            />
+        {/* Row 2: Favorite quote + Reflections + Mood */}
+        <FavoriteQuoteCard />
+        <ReflectionsCard />
+        <MoodSnapshotCard />
 
-            <MemoryStatCard
-              title="Small wins"
-              value={smallWinCount}
-              label="Small wins celebrated"
-              action="View all wins"
-            />
-          </div>
-
+        {/* Row 3: Featured memory wide + Top themes */}
+        <div className="xl:col-span-2">
           <FeaturedMemoryCard
             featuredMemory={featuredMemory}
             onUseLatest={handleUseLatestMemory}
             onRemove={() => setFeaturedMemory(null)}
             hasMemories={memories.length > 0}
           />
-
-          <FavoriteQuoteCard />
         </div>
 
-        {/* Right column */}
-        <div className="flex min-w-0 flex-col gap-6">
-          <MoodSnapshotCard />
-          <TopThemesCard memories={memories} />
-        </div>
+        <TopThemesCard memories={memories} />
       </section>
 
       {isMemoryFormOpen && (
