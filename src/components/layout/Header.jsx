@@ -1,5 +1,6 @@
 import PageControlsDropdown from "./PageControlsDropdown"
 import ProfileDropdown from "../auth/ProfileDropdown"
+import Seedling from "../ui/Seedling"
 
 function MoonIcon() {
   return (
@@ -73,16 +74,16 @@ function PublicHeader({
   ]
 
   return (
-    <header className="sticky top-0 z-40 px-4 py-4">
+    <header className="absolute inset-x-0 top-0 z-40 px-4 py-5">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 bg-transparent">
         <button
           type="button"
           onClick={() => setActivePage("overview")}
-          className="flex items-center gap-3 text-left"
+          className="flex items-center gap-3 text-left text-3xl"
           aria-label="Go to Bloom overview"
         >
-          <span className="text-3xl leading-none text-bloom-forest dark:text-bloom-light">
-            🌱
+          <span className="text-bloom-forest dark:text-indigo-300">
+            {isDarkMode ? <Seedling variant="indigo" /> : <Seedling />}
           </span>
 
           <div className="flex items-center gap-2">
@@ -90,7 +91,7 @@ function PublicHeader({
               Bloom
             </p>
 
-            <span className="hidden rounded-full border border-bloom-sage/25 bg-bloom-light px-2 py-1 text-[11px] font-bold text-bloom-forest/65 dark:border-white/10 dark:bg-white/10 dark:text-gray-300 sm:inline-flex">
+            <span className="hidden rounded-full border border-bloom-sage/20 bg-white/20 px-2 py-1 text-[11px] font-bold text-bloom-forest/65 dark:border-white/10 dark:bg-white/5 dark:text-gray-300 sm:inline-flex">
               v2.0.0
             </span>
           </div>
@@ -121,7 +122,7 @@ function PublicHeader({
           <button
             type="button"
             onClick={onToggleTheme}
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-bloom-sage/25 bg-white/70 text-bloom-forest shadow-sm transition hover:bg-bloom-light dark:border-white/10 dark:bg-white/10 dark:text-bloom-light dark:hover:bg-white/15"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-bloom-sage/15 bg-white/20 text-bloom-forest transition hover:bg-white/35 dark:border-white/10 dark:bg-white/5 dark:text-bloom-light dark:hover:bg-white/10"
             aria-label={
               isDarkMode ? "Switch to light mode" : "Switch to dark mode"
             }
@@ -134,10 +135,10 @@ function PublicHeader({
           <button
             type="button"
             onClick={onLoginClick}
-            className="flex items-center gap-2 rounded-2xl border border-bloom-sage/25 bg-forest/70 px-3 py-2.5 text-sm font-bold text-bloom-forest shadow-sm transition hover:bg-bloom-light dark:border-white/10 dark:bg-white/10 dark:text-bloom-light dark:hover:bg-white/15 sm:px-4"
+            className="inline-flex items-center gap-2 rounded-2xl border border-bloom-sage/15 bg-white/20 px-3 py-2.5 text-sm font-bold text-bloom-forest transition hover:bg-white/35 dark:border-white/10 dark:bg-white/5 dark:text-bloom-light dark:hover:bg-white/10 sm:px-4"
           >
             <LockIcon />
-            Log in
+            <span className="hidden sm:inline">Log in</span>
           </button>
         </div>
       </div>
@@ -170,19 +171,19 @@ function ProtectedHeader({
   const activePageLabel = pageLabels[activePage] ?? "Bloom"
 
   return (
-    <header className="sticky top-0 z-30 flex h-14 shrink-0 items-center justify-between border-b border-bloom-sage/15 bg-[#FFFCF5] px-4 backdrop-blur-md dark:border-white/10 dark:bg-bloom-light/5 md:h-16 md:justify-end md:px-6 lg:px-8">
+    <header className="sticky top-0 z-40 w-full border-b border-bloom-sage/20 bg-white/70 backdrop-blur-sm dark:border-white/10 dark:bg-white/5">
       <button
         type="button"
         onClick={() => onProfileClick?.()}
         className="flex items-center gap-3 rounded-2xl px-2 py-2 text-left transition hover:bg-white/45 dark:hover:bg-white/10 md:hidden"
         aria-label="Open profile"
-      >
-        <span className="text-2xl leading-none text-bloom-forest dark:text-bloom-light">
-          🌱
+      >          
+        <span className="text-2xl leading-none">
+          <Seedling variant="indigo" />
         </span>
 
         <div>
-          <p className="font-serif text-2xl font-bold leading-none text-bloom-forest dark:text-bloom-light">
+          <p className="font-serif text-2xl font-bold leading-none text-bloom-forest dark:text-bloom-light">    
             Bloom
           </p>
 
@@ -208,8 +209,8 @@ function ProtectedHeader({
 
         <ProfileDropdown
           avatarDisplay={avatarDisplay}
-          currentUser={currentUser}
-          setActivePage={setActivePage}
+           currentUser={currentUser}
+           setActivePage={setActivePage}
           onLogout={onLogout}
           reduceMotion={reduceMotion}
         />

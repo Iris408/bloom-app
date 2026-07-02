@@ -331,7 +331,7 @@ function AccessibilityCard({ title, text }) {
 
 function HeroAppPreview() {
   return (
-    <div className="relative mx-auto w-full max-w-[320px] lg:rotate-[3deg]">
+    <div className="relative mx-auto w-full max-w-[320px] lg:rotate-[5deg]">
       {/* Soft decorative glow */}
       <div className="absolute -left-6 -top-6 h-28 w-28 rounded-full bg-bloom-mint/30 blur-2xl" />
       <div className="absolute -bottom-8 -right-8 h-32 w-32 rounded-full bg-[#f7df9e]/35 blur-2xl" />
@@ -340,13 +340,13 @@ function HeroAppPreview() {
       <div className="absolute inset-6 rounded-[2.5rem] bg-black/10 blur-2xl dark:bg-black/25" />
 
       {/* Main card */}
-      <div className="relative min-h-[620px] overflow-hidden rounded-[2.5rem] border border-bloom-sage/25 bg-white/78 p-5 shadow-[0_30px_80px_rgba(45,90,67,0.18)] backdrop-blur-md dark:border-white/10 dark:bg-white/5">
+      <div className="relative min-h-[420px] overflow-hidden rounded-[2.25rem] border border-bloom-sage/25 bg-white/78 p-5 shadow-[0_30px_80px_rgba(45,90,67,0.18)] backdrop-blur-md dark:border-white/10 dark:bg-white/5">
         {/* Phone top bar */}
-        <div className="mx-auto mb-6 h-1.5 w-16 rounded-full bg-bloom-sage/30 dark:bg-white/20" />
+        <div className="mx-auto mb-4 h-1.5 w-14 rounded-full bg-bloom-sage/30 dark:bg-white/20" />
 
-        <div className="mb-7 flex items-start justify-between gap-4">
+        <div className="mb-4 flex items-start justify-between gap-4">
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.22em] text-bloom-mid dark:text-bloom-sage">
+            <p className="text-xs font-bold uppercase tracking-[0.1em] text-bloom-mid dark:text-bloom-sage">
               Today in Bloom
             </p>
 
@@ -354,7 +354,7 @@ function HeroAppPreview() {
               A softer start
             </h3>
 
-            <p className="mt-2 text-sm leading-6 text-bloom-forest/60 dark:text-gray-300">
+            <p className="mt-2 text-xs leading-6 text-bloom-forest/60 dark:text-gray-300">
               One calm step at a time.
             </p>
           </div>
@@ -364,7 +364,7 @@ function HeroAppPreview() {
           </span>
         </div>
 
-        <div className="space-y-4">
+        <div className="space-y-3">
           {[
             ["Morning routine", "3 gentle steps", "Done"],
             ["Focus session", "One small task", "Next"],
@@ -372,7 +372,7 @@ function HeroAppPreview() {
           ].map(([title, text, status]) => (
             <div
               key={title}
-              className="rounded-[1.5rem] border border-bloom-sage/20 bg-white/80 p-4 dark:border-white/10 dark:bg-white/5"
+              className="rounded-[1.35rem] border border-bloom-sage/20 bg-white/80 p-4 dark:border-white/10 dark:bg-white/5"
             >
               <div className="flex items-start justify-between gap-3">
                 <div>
@@ -418,11 +418,11 @@ function Overview({
   onCreateAccountClick,
 }) {
   return (
-    <div className="relative min-h-screen w-full overflow-hidden bg-transparent text-bloom-forest dark:bg-[#24242f] dark:text-bloom-light">
+    <div className="relative min-h-screen w-full overflow-hidden bg-transparent text-bloom-forest dark:text-bloom-light">
       <div className="pointer-events-none absolute left-[-10rem] top-20 h-80 w-80 rounded-full bg-bloom-mint/20 blur-3xl" />
       <div className="pointer-events-none absolute right-[-8rem] top-[32rem] h-96 w-96 rounded-full bg-[#f7df9e]/25 blur-3xl" />
 
-      <main className="relative mx-auto flex w-full max-w-7xl flex-col gap-16 px-4 pb-16 pt-4 sm:px-6 sm:pb-20 lg:px-8">
+      <main className="relative mx-auto flex w-full max-w-7xl flex-col gap-16 px-4 pb-16 pt-28 sm:px-6 sm:pb-20 sm:pt-32 lg:px-8">
         {/* HERO */}
         <section className="grid min-h-[680px] items-start gap-10 py-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(320px,0.75fr)] lg:py-12">
           <div className="max-w-3xl pt-4 text-center lg:text-left">
@@ -667,7 +667,7 @@ function Overview({
 
         {/* GENTLE SUPPORT */}
         <section className="grid gap-5 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
-          <div className="rounded-[2rem] border border-bloom-sage/25 bg-bloom-forest p-6 text-bloom-light shadow-sm dark:border-white/10 dark:bg-bloom-sage dark:text-bloom-forest">
+          <div className="rounded-[2rem] border border-bloom-sage/25 bg-bloom-forest p-6 text-bloom-light shadow-sm dark:border-white/10 dark:bg-bloom-forest/75 dark:text-bloom-mint">
             <p className="text-xs font-bold uppercase tracking-[0.22em] opacity-75">
               Gentle support
             </p>

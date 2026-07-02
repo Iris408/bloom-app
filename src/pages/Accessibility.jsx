@@ -24,7 +24,7 @@ function StatusBadge({ children }) {
 
 function Accessibility() {
   return (
-    <div className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 pb-16 pt-8 text-bloom-forest dark:text-bloom-light sm:px-6 lg:px-8">
+    <div className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 pb-16 pt-8 text-bloom-forest dark:text-bloom-light sm:px-6 lg:px-8 pt-28 sm:pt-32">
       {/* Hero */}
       <section className="rounded-[2rem] border border-bloom-sage/25 bg-white/55 p-6 shadow-sm dark:border-white/10 dark:bg-white/5 md:p-8">
         <div className="mb-4 flex items-center gap-3">

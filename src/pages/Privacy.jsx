@@ -16,7 +16,7 @@ function InfoCard({ title, children }) {
 
 function Privacy() {
   return (
-    <div className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 pb-16 pt-8 text-bloom-forest dark:text-bloom-light sm:px-6 lg:px-8">
+    <div className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 pb-16 pt-8 text-bloom-forest dark:text-bloom-light sm:px-6 lg:px-8 pt-28 sm:pt-32">
       {/* Hero */}
       <section className="rounded-[2rem] border border-bloom-sage/25 bg-white/55 p-6 shadow-sm dark:border-white/10 dark:bg-white/5 md:p-8">
         <div className="mb-4 flex items-center gap-3">
@@ -85,7 +85,7 @@ function Privacy() {
 
         <InfoCard title="Account creation is planned later">
           <p>
-            Bloom’s account creation flow is currently a placeholder. Full
+            Bloom's account creation flow is currently a placeholder. Full
             account creation, onboarding, saved routines, and cross-device
             progress are planned for Bloom v2.0.0 and later.
           </p>

@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { getCurrentUser, loginUser, registerUser } from "../../api/bloomApi";
 import { saveBloomAvatarChoice } from "../../utils/avatarStorage";
+import { useApp } from "../../context/AppContext"
 
+import Seedling from "../ui/Seedling"
 import AvatarChoiceGrid from "../profile/AvatarChoiceGrid";
 
 const demoOptions = [
@@ -59,13 +61,22 @@ const modalCopy = {
 };
 
 function ModalIntro({ modalView }) {
-  const copy = modalCopy[modalView];
+  const { isDarkMode } = useApp();
+  const copy = modalCopy[modalView]
 
   return (
     <div className="mb-4 rounded-2xl border border-bloom-sage/25 bg-bloom-light/60 p-4 dark:border-white/10 dark:bg-white/5">
       <div className="mb-3 flex items-center gap-3">
-        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-bloom-forest text-xl text-bloom-light dark:bg-bloom-sage dark:text-dark-bg">
-          {copy.icon}
+        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-bloom-forest text-xl text-bloom-light dark:bg-white/10 dark:text-indigo-300">
+          {modalView === "login" ? (
+            isDarkMode ? (
+              <Seedling variant="indigo" />
+            ) : (
+              <Seedling />
+            )
+          ) : (
+            copy.icon
+          )}
         </span>
 
         <div>
