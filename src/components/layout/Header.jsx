@@ -1,11 +1,12 @@
 import PageControlsDropdown from "./PageControlsDropdown"
+import ProfileDropdown from "../auth/ProfileDropdown"
 
 function MoonIcon() {
   return (
     <svg
       aria-hidden="true"
       viewBox="0 0 24 24"
-      className="h-5 w-5"
+      className="h-5 w-5 translate-x-[1px]"
       fill="none"
       stroke="currentColor"
       strokeWidth="1.8"
@@ -84,7 +85,7 @@ function PublicHeader({
           aria-label="Go to Bloom overview"
         >
           <span className="text-3xl leading-none text-bloom-forest dark:text-bloom-light">
-            𖥸
+            🌱
           </span>
 
           <div className="flex items-center gap-2">
@@ -149,11 +150,14 @@ function PublicHeader({
 
 function ProtectedHeader({
   activePage,
+  setActivePage,
   isDarkMode,
   onToggleTheme,
   avatarDisplay,
   currentUser,
   onProfileClick,
+  onLogout,
+  reduceMotion = false,
   showPageControls = true,
 }) {
   const pageLabels = {
@@ -167,7 +171,6 @@ function ProtectedHeader({
   }
 
   const activePageLabel = pageLabels[activePage] ?? "Bloom"
-  const shouldShowAvatar = Boolean(avatarDisplay?.avatarUrl)
 
   return (
     <header className="sticky top-0 z-30 flex h-14 shrink-0 items-center justify-between border-b border-bloom-sage/15 bg-bloom-cream/65 px-4 backdrop-blur-md dark:border-white/10 dark:bg-bloom-light/5 md:h-16 md:justify-end md:px-6 lg:px-8">
@@ -197,31 +200,22 @@ function ProtectedHeader({
           type="button"
           onClick={onToggleTheme}
           className="flex h-10 w-10 items-center justify-center rounded-full border border-bloom-sage/25 bg-white/70 text-bloom-forest shadow-sm transition hover:bg-bloom-light dark:border-white/10 dark:bg-white/10 dark:text-bloom-light dark:hover:bg-white/15"
-          aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
+          aria-label={
+            isDarkMode ? "Switch to light mode" : "Switch to dark mode"
+          }
         >
           {isDarkMode ? <SunIcon /> : <MoonIcon />}
         </button>
 
         {showPageControls && <PageControlsDropdown />}
 
-        <button
-          type="button"
-          onClick={() => onProfileClick?.()}
-          className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-bloom-forest text-sm font-bold text-bloom-light shadow-sm transition hover:bg-bloom-mid dark:bg-bloom-sage dark:text-bloom-forest"
-          aria-label="Open profile"
-        >
-          {shouldShowAvatar ? (
-            <img
-              src={avatarDisplay.avatarUrl}
-              alt=""
-              className="h-full w-full object-cover"
-            />
-          ) : (
-            avatarDisplay?.initial ??
-            currentUser?.username?.[0]?.toUpperCase() ??
-            "A"
-          )}
-        </button>
+        <ProfileDropdown
+          avatarDisplay={avatarDisplay}
+          currentUser={currentUser}
+          setActivePage={setActivePage}
+          onLogout={onLogout}
+          reduceMotion={reduceMotion}
+        />
       </div>
     </header>
   )
@@ -237,6 +231,8 @@ function Header({
   currentUser,
   onProfileClick,
   onLoginClick,
+  onLogout,
+  reduceMotion = false,
   showPageControls = true,
 }) {
   if (!canUseApp) {
@@ -254,11 +250,14 @@ function Header({
   return (
     <ProtectedHeader
       activePage={activePage}
+      setActivePage={setActivePage}
       isDarkMode={isDarkMode}
       onToggleTheme={onToggleTheme}
       avatarDisplay={avatarDisplay}
       currentUser={currentUser}
       onProfileClick={onProfileClick}
+      onLogout={onLogout}
+      reduceMotion={reduceMotion}
       showPageControls={showPageControls}
     />
   )

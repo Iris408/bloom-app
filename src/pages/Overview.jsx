@@ -503,7 +503,7 @@ function Overview({
 
       {/* ACCESSIBILITY */}
       <section className="rounded-[1.75rem] border border-bloom-sage/25 bg-white/45 p-4 shadow-sm dark:border-white/10 dark:bg-white/5 sm:rounded-[2rem] sm:p-5">
-        <SectionTitle>Accessibility & trust</SectionTitle>
+        <SectionTitle>Accessibility & Trust</SectionTitle>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
           <AccessibilityItem

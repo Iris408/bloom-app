@@ -229,7 +229,7 @@ function Privacy() {
 
         <p className="mt-2">
           This privacy note is written for Bloom's current beta/frontend version
-          and should be reviewed again before any full account, backend,
+          and will be reviewed again before any full account, backend,
           analytics, or education-focused release.
         </p>
       </section>
