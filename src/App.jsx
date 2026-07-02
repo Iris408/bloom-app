@@ -63,9 +63,15 @@ function App() {
 
   // EN: Dynamic background based on dark mode.
   // JP: ダークモードに応じて背景を切り替えます。
-  const bgClass = isDarkMode
+  const publicBgClass = isDarkMode
     ? "bg-gradient-to-b from-[#202029] via-[#343442] to-[#48485B]"
-    : "bg-gradient-to-t from-[#f3f7ed] via-[#e8f0dd] to-[#dde9ce]";
+    : "bg-[#fbf6ed]"
+
+  const protectedBgClass = isDarkMode
+    ? "bg-gradient-to-b from-[#202029] via-[#343442] to-[#48485B]"
+    : "bg-gradient-to-t from-[#f3f7ed] via-[#e8f0dd] to-[#dde9ce]"
+
+  const bgClass = canUseApp ? protectedBgClass : publicBgClass
 
   useEffect(() => {
     async function checkExistingLogin() {

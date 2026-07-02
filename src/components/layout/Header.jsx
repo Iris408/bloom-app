@@ -3,18 +3,15 @@ import ProfileDropdown from "../auth/ProfileDropdown"
 
 function MoonIcon() {
   return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 24 24"
-      className="h-5 w-5 translate-x-[1px]"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M21 14.5A8.5 8.5 0 0 1 9.5 3 7 7 0 1 0 21 14.5z" />
-    </svg>
+    <span className="grid h-5 w-5 place-items-center" aria-hidden="true">
+      <svg
+        viewBox="0 0 20 20"
+        className="h-[18px] w-[18px]"
+        fill="currentColor"
+      >
+        <path d="M17.3 13.3A8 8 0 0 1 6.7 2.7a7 7 0 1 0 10.6 10.6z" />
+      </svg>
+    </span>
   )
 }
 
@@ -77,7 +74,7 @@ function PublicHeader({
 
   return (
     <header className="sticky top-0 z-40 px-4 py-4">
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 rounded-[2rem] border border-bloom-sage/25 bg-white/55 px-4 py-3 shadow-sm backdrop-blur-md dark:border-white/10 dark:bg-white/5 sm:px-5">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 bg-transparent">
         <button
           type="button"
           onClick={() => setActivePage("overview")}
@@ -137,7 +134,7 @@ function PublicHeader({
           <button
             type="button"
             onClick={onLoginClick}
-            className="hidden items-center gap-2 rounded-2xl border border-bloom-sage/25 bg-white/70 px-4 py-2.5 text-sm font-bold text-bloom-forest shadow-sm transition hover:bg-bloom-light dark:border-white/10 dark:bg-white/10 dark:text-bloom-light dark:hover:bg-white/15 sm:inline-flex"
+            className="flex items-center gap-2 rounded-2xl border border-bloom-sage/25 bg-forest/70 px-3 py-2.5 text-sm font-bold text-bloom-forest shadow-sm transition hover:bg-bloom-light dark:border-white/10 dark:bg-white/10 dark:text-bloom-light dark:hover:bg-white/15 sm:px-4"
           >
             <LockIcon />
             Log in
@@ -173,7 +170,7 @@ function ProtectedHeader({
   const activePageLabel = pageLabels[activePage] ?? "Bloom"
 
   return (
-    <header className="sticky top-0 z-30 flex h-14 shrink-0 items-center justify-between border-b border-bloom-sage/15 bg-bloom-cream/65 px-4 backdrop-blur-md dark:border-white/10 dark:bg-bloom-light/5 md:h-16 md:justify-end md:px-6 lg:px-8">
+    <header className="sticky top-0 z-30 flex h-14 shrink-0 items-center justify-between border-b border-bloom-sage/15 bg-[#FFFCF5] px-4 backdrop-blur-md dark:border-white/10 dark:bg-bloom-light/5 md:h-16 md:justify-end md:px-6 lg:px-8">
       <button
         type="button"
         onClick={() => onProfileClick?.()}
@@ -181,7 +178,7 @@ function ProtectedHeader({
         aria-label="Open profile"
       >
         <span className="text-2xl leading-none text-bloom-forest dark:text-bloom-light">
-          𖥸
+          🌱
         </span>
 
         <div>
