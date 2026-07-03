@@ -72,14 +72,14 @@ Feedback is currently handled on the frontend. Backend-connected feedback collec
     <td>
       <img src="./public/images/bloom-create-account.png" width="400"/>
       <br/>
-      <strong>Login Modal / ログインモーダル</strong>
+      <strong>Create Account Modal / アカウント作成モーダル</strong>
     </td>
   </tr>
   <tr>
     <td>
       <img src="./public/images/bloom-moments.png" width="400"/>
       <br/>
-      <strong>Page Controls / ページ表示設定</strong>
+      <strong>Moments / モーメント</strong>
     </td>
     <td>
       <img src="./public/images/bloom-home.png" width="400"/>
@@ -91,12 +91,12 @@ Feedback is currently handled on the frontend. Backend-connected feedback collec
     <td>
       <img src="./public/images/bloom-routines-dark.png" width="400"/>
       <br/>
-      <strong>Routines / ルーティン</strong>
+      <strong>Routines - Dark Mode / ルーティン</strong>
     </td>
     <td>
       <img src="./public/images/bloom-focus-dark.png" width="400"/>
       <br/>
-      <strong>Focus / フォーカス</strong>
+      <strong>Focus - Dark Mode / フォーカス</strong>
     </td>
   </tr>
 </table>
