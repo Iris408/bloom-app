@@ -19,7 +19,7 @@ function AvatarChoiceGrid({
         </p>
       </div>
 
-      <div className="grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-5">
+      <div className="flex gap-3 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         <button
           type="button"
           onClick={() =>
@@ -29,10 +29,10 @@ function AvatarChoiceGrid({
               avatarUrl: null,
             })
           }
-          className={`flex aspect-square flex-col items-center justify-center rounded-2xl border text-center transition ${
+          className={`flex h-20 w-20 shrink-0 flex-col items-center justify-center rounded-2xl border text-center transition ${
             selectedAvatarType === "initial"
-              ? "border-bloom-forest bg-bloom-forest text-white dark:border-dark-card dark:hover:border-bloom-light/50"
-              : "border-bloom-sage/30 bg-bloom-light/70 text-bloom-forest hover:border-bloom-mid"
+              ? "border-bloom-forest bg-bloom-forest text-white dark:border-bloom-light/40"
+              : "border-bloom-sage/30 bg-bloom-light/70 text-bloom-forest hover:border-bloom-mid dark:border-white/10 dark:bg-white/5 dark:text-bloom-light"
           }`}
         >
           <span className="text-2xl font-bold">{currentInitial}</span>
@@ -54,10 +54,10 @@ function AvatarChoiceGrid({
                   avatarUrl: avatar.image,
                 })
               }
-              className={`aspect-square overflow-hidden rounded-2xl border transition ${
+              className={`h-20 w-20 shrink-0 overflow-hidden rounded-2xl border transition ${
                 isSelected
-                  ? "border-bloom-forest ring-2 ring-bloom-forest/30"
-                  : "border-bloom-sage/30 hover:border-bloom-mid"
+                  ? "border-bloom-forest ring-2 ring-bloom-forest/30 dark:border-bloom-light dark:ring-bloom-light/20"
+                  : "border-bloom-sage/30 hover:border-bloom-mid dark:border-white/10"
               }`}
             >
               <img
@@ -73,7 +73,7 @@ function AvatarChoiceGrid({
           <button
             type="button"
             disabled
-            className="flex aspect-square flex-col items-center justify-center rounded-2xl border border-dashed border-bloom-sage/40 bg-white/50 text-center text-bloom-forest/45 dark:border-white/10 dark:bg-white/5 dark:text-gray-400"
+            className="flex h-20 w-20 shrink-0 flex-col items-center justify-center rounded-2xl border border-dashed border-bloom-sage/40 bg-white/50 text-center text-bloom-forest/45 dark:border-white/10 dark:bg-white/5 dark:text-gray-400"
           >
             <span className="text-xl">+</span>
             <span className="mt-1 px-2 text-[10px] font-semibold leading-4">
@@ -82,6 +82,10 @@ function AvatarChoiceGrid({
           </button>
         )}
       </div>
+
+      <p className="mt-2 text-[11px] font-semibold text-bloom-forest/45 dark:text-gray-400">
+        Scroll sideways to see more avatars.
+      </p>
     </div>
   )
 }

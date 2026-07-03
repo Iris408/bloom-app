@@ -171,7 +171,7 @@ function ProtectedHeader({
   const activePageLabel = pageLabels[activePage] ?? "Bloom"
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-bloom-sage/20 bg-white/70 backdrop-blur-sm dark:border-white/10 dark:bg-white/5">
+    <header className="sticky top-0 z-30 flex h-14 shrink-0 items-center justify-between border-b border-bloom-sage/15 bg-transparent px-4 backdrop-blur-md dark:border-white/10 dark:bg-transparent md:h-16 md:justify-end md:px-6 md:h-16 lg:px-8">
       <button
         type="button"
         onClick={() => onProfileClick?.()}
@@ -188,7 +188,7 @@ function ProtectedHeader({
           </p>
 
           <p className="mt-1 text-[11px] font-semibold text-bloom-forest/50 dark:text-gray-400">
-            {activePageLabel} v1.1.0
+            {activePageLabel} v2.0.0
           </p>
         </div>
       </button>
@@ -209,8 +209,8 @@ function ProtectedHeader({
 
         <ProfileDropdown
           avatarDisplay={avatarDisplay}
-           currentUser={currentUser}
-           setActivePage={setActivePage}
+          currentUser={currentUser}
+          setActivePage={setActivePage}
           onLogout={onLogout}
           reduceMotion={reduceMotion}
         />

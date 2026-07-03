@@ -119,6 +119,7 @@ const MEMORY_IMAGE_OPTIONS = [
   },
 ]
 
+
 function getMemoryTagClass(tag) {
   const normalisedTag = tag.toLowerCase()
 
@@ -128,6 +129,7 @@ function getMemoryTagClass(tag) {
 
   return "bg-bloom-light text-bloom-forest/70 dark:bg-white/10 dark:text-gray-300"
 }
+
 
 function getDefaultMemoryImage(tag) {
   const normalisedTag = tag.toLowerCase()
@@ -151,6 +153,7 @@ function getDefaultMemoryImage(tag) {
   return "/images/memories/coffee-pause.png"
 }
 
+
 function getDisplayDate(dateValue) {
   if (!dateValue) return "Today"
 
@@ -167,6 +170,7 @@ function getDisplayDate(dateValue) {
   })
 }
 
+
 function loadStoredMemories() {
   try {
     const savedMemories = localStorage.getItem(MEMORIES_STORAGE_KEY)
@@ -177,6 +181,7 @@ function loadStoredMemories() {
     return []
   }
 }
+
 
 function sortMemories(memories, sortOrder) {
   return [...memories].sort((firstMemory, secondMemory) => {
@@ -191,6 +196,7 @@ function sortMemories(memories, sortOrder) {
   })
 }
 
+
 function SectionIcon() {
   return (
     <span className="text-lg text-bloom-forest/70 dark:text-bloom-sage">
@@ -198,6 +204,7 @@ function SectionIcon() {
     </span>
   )
 }
+
 
 function MemoryHeroIllustration() {
   return (
@@ -210,6 +217,7 @@ function MemoryHeroIllustration() {
     </div>
   )
 }
+
 
 function HeroMemoryReminder() {
   return (
@@ -236,6 +244,7 @@ function HeroMemoryReminder() {
     </section>
   )
 }
+
 
 function SmallWinsCard() {
   return (
@@ -278,44 +287,19 @@ function SmallWinsCard() {
   )
 }
 
+
 function FavoriteQuoteCard() {
   return (
-    <section
-      className="relative min-h-[260px] overflow-hidden rounded-[1.75rem] border border-bloom-sage/25 bg-cover bg-center p-5 shadow-sm dark:border-white/10"
-      style={{
-        backgroundImage: `url(${MEMORY_QUOTE_IMAGE})`,
-      }}
-    >
-      <div className="absolute inset-0 bg-white/72 backdrop-blur-[1px] dark:bg-[#343442]/72" />
-
-      <div className="relative z-10 flex h-full flex-col justify-between">
-        <div>
-          <div className="mb-4 flex items-center gap-2">
-            <span className="text-xl text-bloom-mid dark:text-bloom-sage">
-              ”
-            </span>
-
-            <h3 className="text-xl font-bold text-bloom-forest dark:text-bloom-light">
-              Favorite quote
-            </h3>
-          </div>
-
-          <blockquote className="max-w-sm text-lg font-semibold leading-relaxed text-bloom-forest/85 dark:text-bloom-light">
-            “The little things? The little things are everything.”
-          </blockquote>
-
-          <p className="mt-4 text-sm font-bold text-bloom-forest/60 dark:text-gray-300">
-            — Jon Kabat-Zinn
-          </p>
-        </div>
-
-        <p className="mt-8 w-fit rounded-full bg-white/70 px-4 py-2 text-xs font-bold text-bloom-forest/65 shadow-sm dark:bg-white/10 dark:text-gray-300">
-          A gentle reminder
-        </p>
-      </div>
+    <section className="relative min-h-[260px] overflow-hidden rounded-[1.75rem] border border-bloom-sage/25 bg-white/55 shadow-sm dark:border-white/10 dark:bg-white/5">
+      <img
+        src={MEMORY_QUOTE_IMAGE}
+        alt=""
+        className="absolute inset-0 h-full w-full object-cover opacity-35 dark:brightness-100"
+      />
     </section>
   )
 }
+
 
 function MemoriesTimeline({
   memories,

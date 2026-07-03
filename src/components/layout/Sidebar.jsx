@@ -94,7 +94,7 @@ function Sidebar({ activePage, setActivePage, onOpenHelp }) {
           aria-label="Go to Bloom home"
         >
           <div className="flex items-center gap-3">
-            <span className="text-3xl leading-none text-bloom-forest dark:text-bloom-light">
+            <span className="text-3xl leading-none text-bloom-forest dark:text-bloom-mid lg:rotate-[180deg]">
               𖥸
             </span>
 
