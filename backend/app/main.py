@@ -1,4 +1,5 @@
 import http
+import os
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -21,11 +22,17 @@ app = FastAPI(
 # EN: Allow frontend apps to call this backend API
 # JP: フロントエンドアプリがこのバックエンドAPIを呼び出せるようにする
 
-CORS_ORIGINS = "http://localhost:5173,https://your-vercel-url.vercel.app"
+CORS_ORIGINS = os.getenv("CORS_ORIGINS", "http://localhost:5173")
+
+allowed_origins = [
+    origin.strip()
+    for origin in CORS_ORIGINS.split(",")
+    if origin.strip()
+]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=CORS_ORIGINS.split(","),
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
