@@ -1,3 +1,5 @@
+import http
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -6,6 +8,10 @@ from app.database import Base, engine
 from app import models
 
 
+# EN: Backend setup - a FastAPI app backed by SQLAlchemy (SQLite for local dev),
+# with each feature (users, tasks, routines, etc.) split into its own router file.
+# JP: バックエンド構成 - SQLAlchemy（ローカル開発ではSQLite）を使ったFastAPIアプリ。
+# 機能ごと（ユーザー、タスク、ルーティンなど）に別々のルーターファイルへ分割しています。
 app = FastAPI(
     title="Bloom Backend API",
     description="Backend API for Bloom routines, tasks, profile settings and progress.",
@@ -15,14 +21,11 @@ app = FastAPI(
 # EN: Allow frontend apps to call this backend API
 # JP: フロントエンドアプリがこのバックエンドAPIを呼び出せるようにする
 
-origins = [
-    "http://localhost:5173",
-    "https://bloom-app-three-xi.vercel.app"
-]
+CORS_ORIGINS = "http://localhost:5173,https://your-vercel-url.vercel.app"
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=CORS_ORIGINS.split(","),
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
