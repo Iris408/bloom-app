@@ -56,8 +56,6 @@ function FeedbackForm() {
       JSON.stringify([feedbackEntry, ...existingFeedback])
     )
 
-    console.log("Bloom beta feedback:", feedbackEntry)
-
     setIsSubmitted(true)
     setMessage("")
     setEmail("")

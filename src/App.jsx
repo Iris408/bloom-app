@@ -191,7 +191,6 @@ function App() {
   }
 
   function openLoginModal(initialView = "login") {
-    console.log("Opening modal:", initialView)
     setLoginInitialView(initialView);
     setIsLoginOpen(true);
   }
