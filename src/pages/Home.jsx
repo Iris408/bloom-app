@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 import TaskList from "../components/tasks/TaskList"
 import DemoBanner from "../components/demo/DemoBanner"
+import StartHerePanel from "../components/StartHerePanel"
+
 import { getAvatarDisplay } from "../utils/avatarStorage"
 import { useApp } from "../context/AppContext"
 import { todayKey } from "../utils/progressUtils"
@@ -135,6 +137,11 @@ function Home({
   const [selectedFocusMinutes, setSelectedFocusMinutes] = useState(10)
   const [taskStats, setTaskStats] = useState(() => getTaskStats())
   const [routines, setRoutines] = useState(() => getStoredRoutines())
+
+  const taskPanelRef = useRef(null)
+  const focusPanelRef = useRef(null)
+  const routinePanelRef = useRef(null)
+
   const { focusTasks } = useApp()
   const today = todayKey()
 
@@ -185,6 +192,25 @@ function Home({
     setActivePage(page)
   }
 
+  function scrollToPanel(panelRef) {
+    panelRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+    })
+  }
+
+  function handleStartRoutine() {
+    scrollToPanel(routinePanelRef)
+  }
+
+  function handleAddTask() {
+    scrollToPanel(taskPanelRef)
+  }
+
+  function handleStartFocus() {
+    scrollToPanel(focusPanelRef)
+  }
+
   return (
     <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 overflow-x-hidden pb-28 sm:gap-7 sm:pb-0">
       {isDemoMode && (
@@ -226,8 +252,17 @@ function Home({
         </div>
       </section>
 
+      <StartHerePanel
+        onStartRoutine={handleStartRoutine}
+        onAddTask={handleAddTask}
+        onStartFocus={handleStartFocus}
+      />
+
       <section className="grid gap-6 xl:grid-cols-[minmax(0,1.35fr)_minmax(280px,0.85fr)_minmax(260px,0.75fr)]">
-        <div className="rounded-[1.75rem] border border-bloom-sage/25 bg-white/55 p-4 shadow-sm dark:border-white/10 dark:bg-white/5 sm:p-5">
+        <div 
+          ref={taskPanelRef}
+          className="rounded-[1.75rem] border border-bloom-sage/25 bg-white/55 p-4 shadow-sm dark:border-white/10 dark:bg-white/5 sm:p-5"
+        >
           <div className="mb-4">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-bloom-mid dark:text-bloom-sage">
               Today
@@ -241,7 +276,10 @@ function Home({
           <TaskList />
         </div>
 
-        <div className="flex flex-col justify-between rounded-[1.75rem] border border-bloom-sage/25 bg-white/55 p-5 text-center shadow-sm dark:border-white/10 dark:bg-white/5">
+        <div 
+          ref={focusPanelRef}
+          className="flex flex-col justify-between rounded-[1.75rem] border border-bloom-sage/25 bg-white/55 p-5 text-center shadow-sm dark:border-white/10 dark:bg-white/5"
+        >
           <div>
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-bloom-mid dark:text-bloom-sage">
               Focus
@@ -307,7 +345,10 @@ function Home({
           </button>
         </div>
 
-        <div className="rounded-[1.75rem] border border-bloom-sage/25 bg-white/55 p-5 shadow-sm dark:border-white/10 dark:bg-white/5">
+        <div 
+          ref={routinePanelRef}
+          className="rounded-[1.75rem] border border-bloom-sage/25 bg-white/55 p-5 shadow-sm dark:border-white/10 dark:bg-white/5"
+        >
           <div className="mb-5 flex items-start justify-between gap-3">
             <div>
               <p className="text-xs font-bold uppercase tracking-[0.2em] text-bloom-mid dark:text-bloom-sage">

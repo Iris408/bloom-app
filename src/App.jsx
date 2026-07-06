@@ -1,4 +1,4 @@
-import { act, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useApp } from "./context/AppContext";
 import { getAuthToken, getCurrentUser, logoutUser } from "./api/bloomApi";
 import { getAvatarDisplay } from "./utils/avatarStorage";
@@ -21,6 +21,9 @@ import About from "./pages/About";
 import Privacy from "./pages/Privacy";
 import Accessibility from "./pages/Accessibility";
 import BloomBackgroundDecor from "./components/decor/BloomBackgroundDecor";
+import FAQPage from "./pages/FAQPage";
+import RoadmapPage from "./pages/RoadmapPage";
+import FeedbackPage from "./pages/FeedbackPage";
 
 import DailyAffirmationCard from "./components/home/DailyAffirmationCard"
 import DemoBanner from "./components/demo/DemoBanner";
@@ -201,6 +204,9 @@ function App() {
     if (activePage === "about") return <About />;
     if (activePage === "privacy") return <Privacy />;
     if (activePage === "accessibility") return <Accessibility />;
+    if (activePage === "faq") return <FAQPage />;
+    if (activePage === "roadmap") return <RoadmapPage />;
+    if (activePage === "feedback") return <FeedbackPage />;
 
     // EN: Logged-out users only see the public Overview page.
     // JP: 未ログインのユーザーには公開用Overviewページだけを表示します。
@@ -315,7 +321,7 @@ function App() {
                   // EN: Centred loading indicator shown while the auth token is verified.
                   // JP: 認証トークンの確認中に表示される中央寄せのローディング表示です。
                   <div className="flex min-h-[60vh] items-center justify-center">
-                    <p className="animate-pulse text-sm text-gray-500 dark:text-gray-400">
+                    <p className="animate-pulse text-2xl text-gray-500 dark:text-gray-400">
                       🌱 Loading...
                     </p>
                   </div>

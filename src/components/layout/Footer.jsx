@@ -92,7 +92,16 @@ function Footer({
 
               <button
                 type="button"
-                onClick={() => setActivePage("overview")}
+                onClick={() => setActivePage("faq")}
+                className="w-fit max-w-full text-left transition hover:text-bloom-forest dark:hover:text-bloom-light"
+              >
+                FAQ
+              </button>
+
+
+              <button
+                type="button"
+                onClick={() => setActivePage("feedback")}
                 className="w-fit max-w-full text-left transition hover:text-bloom-forest dark:hover:text-bloom-light"
               >
                 Feedback
@@ -100,7 +109,7 @@ function Footer({
 
               <button
                 type="button"
-                onClick={() => setActivePage("overview")}
+                onClick={() => setActivePage("roadmap")}
                 className="w-fit max-w-full text-left transition hover:text-bloom-forest dark:hover:text-bloom-light"
               >
                 Roadmap

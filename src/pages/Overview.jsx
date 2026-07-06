@@ -1,5 +1,4 @@
 import Seedling from "../components/ui/Seedling"
-import FeedbackForm from "../components/feedback/FeedbackForm"
 
 function LeafIcon({ className = "h-5 w-5" }) {
   return (
@@ -291,13 +290,32 @@ function StartPathCard({ icon, title, text, buttonText, buttonIcon, onClick, fea
 }
 
 
-function DemoPreviewCard({ icon, title, text, label, tone = "sage" }) {
+function DemoPreviewCard({
+  icon,
+  title,
+  text,
+  label,
+  tone = "sage",
+  featured = false,
+}) {
   return (
-    <article className="flex h-full flex-col rounded-[1.5rem] border border-bloom-sage/20 bg-white/65 p-4 shadow-sm backdrop-blur-sm dark:border-white/10 dark:bg-white/5">
+    <article
+      className={`flex h-full flex-col rounded-[1.5rem] border p-4 shadow-sm backdrop-blur-sm ${
+        featured
+          ? "border-bloom-forest/25 bg-white/80 ring-2 ring-bloom-sage/20 dark:border-white/15 dark:bg-white/10 dark:ring-white/10"
+          : "border-bloom-sage/20 bg-white/65 dark:border-white/10 dark:bg-white/5"
+      }`}
+    >
       <div className="mb-4 flex items-center justify-between gap-3">
         <RoundIconBadge tone={tone}>{icon}</RoundIconBadge>
 
-        <span className="rounded-full bg-bloom-mint/30 px-3 py-1 text-[11px] font-bold text-bloom-forest/60 dark:bg-white/10 dark:text-gray-300">
+        <span
+          className={`rounded-full px-3 py-1 text-[11px] font-bold ${
+            featured
+              ? "bg-bloom-forest text-bloom-light dark:bg-bloom-light dark:text-bloom-forest"
+              : "bg-bloom-mint/30 text-bloom-forest/60 dark:bg-white/10 dark:text-gray-300"
+          }`}
+        >
           {label}
         </span>
       </div>
@@ -331,7 +349,7 @@ function AccessibilityCard({ title, text }) {
 
 function HeroAppPreview() {
   return (
-    <div className="relative mx-auto w-full max-w-[320px] lg:rotate-[5deg]">
+    <div className="relative mx-auto w-full max-w-[340px] lg:rotate-[4deg]">
       {/* Soft decorative glow */}
       <div className="absolute -left-6 -top-6 h-28 w-28 rounded-full bg-bloom-mint/30 blur-2xl" />
       <div className="absolute -bottom-8 -right-8 h-32 w-32 rounded-full bg-[#f7df9e]/35 blur-2xl" />
@@ -340,7 +358,7 @@ function HeroAppPreview() {
       <div className="absolute inset-6 rounded-[2.5rem] bg-black/10 blur-2xl dark:bg-black/25" />
 
       {/* Main card */}
-      <div className="relative min-h-[420px] overflow-hidden rounded-[2.25rem] border border-bloom-sage/25 bg-white/78 p-5 shadow-[0_30px_80px_rgba(45,90,67,0.18)] backdrop-blur-md dark:border-white/10 dark:bg-white/5">
+      <div className="relative overflow-hidden rounded-[2.25rem] border border-bloom-sage/25 bg-white/78 p-5 shadow-[0_30px_80px_rgba(45,90,67,0.18)] backdrop-blur-md dark:border-white/10 dark:bg-white/5">
         {/* Phone top bar */}
         <div className="mx-auto mb-4 h-1.5 w-14 rounded-full bg-bloom-sage/30 dark:bg-white/20" />
 
@@ -423,8 +441,8 @@ function Overview({
       <div className="pointer-events-none absolute right-[-8rem] top-[32rem] h-96 w-96 rounded-full bg-[#f7df9e]/25 blur-3xl" />
 
       <main className="relative mx-auto flex w-full max-w-7xl flex-col gap-16 px-4 pb-16 pt-28 sm:px-6 sm:pb-20 sm:pt-32 lg:px-8">
-        {/* HERO */}
-        <section className="grid min-h-[680px] items-start gap-10 py-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(320px,0.75fr)] lg:py-12">
+        {/* HERO */}  
+        <section className="grid items-center gap-10 py-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(320px,0.75fr)] lg:py-12">
           <div className="max-w-3xl pt-4 text-center lg:text-left">
             <div className="mb-5 flex flex-wrap justify-center gap-2 lg:justify-start">
               <TrustPill>
@@ -457,27 +475,27 @@ function Overview({
             </p>
 
             <p className="mx-auto mt-3 max-w-2xl text-sm leading-7 text-bloom-forest/60 dark:text-gray-400 lg:mx-0">
-              Designed for people who need structure, softness, and space to
-              move at their own pace.
+              Designed for people who need structure, softness, and space to move at
+              their own pace.
             </p>
 
             <div className="mx-auto mt-8 flex max-w-sm flex-col gap-3 sm:max-w-none sm:flex-row lg:mx-0">
               <button
                 type="button"
                 onClick={onTryDemoClick}
-                className="inline-flex items-center justify-center gap-2 rounded-2xl bg-bloom-forest px-6 py-3.5 text-sm font-bold text-bloom-light shadow-[0_14px_28px_rgba(45,90,67,0.18)] transition hover:-translate-y-0.5 hover:bg-bloom-mid"
+                className="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#d99a28] px-6 py-3.5 text-sm font-bold text-white shadow-[0_14px_28px_rgba(120,90,30,0.2)] transition hover:-translate-y-0.5 hover:bg-[#bd8420]"
               >
                 <PlantIcon className="h-4 w-4 text-white" />
-                Try demo
+                  Try demo
               </button>
 
               <button
                 type="button"
                 onClick={onCreateAccountClick}
-                className="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#9ca447] px-6 py-3.5 text-sm font-bold text-white shadow-[0_14px_28px_rgba(120,130,45,0.18)] transition hover:-translate-y-0.5 hover:bg-[#858d38]"
+                className="inline-flex items-center justify-center gap-2 rounded-2xl bg-bloom-forest px-6 py-3.5 text-sm font-bold text-bloom-light shadow-[0_14px_28px_rgba(45,90,67,0.18)] transition hover:-translate-y-0.5 hover:bg-bloom-mid"
               >
-                {<UserPlusIcon className="h-4 w-4" />}
-                Create your space
+                <UserPlusIcon className="h-4 w-4" />
+                  Create your space
               </button>
 
               <button
@@ -486,64 +504,13 @@ function Overview({
                 className="inline-flex items-center justify-center gap-2 rounded-2xl border border-bloom-sage/30 bg-white/72 px-6 py-3.5 text-sm font-bold text-bloom-forest shadow-sm transition hover:-translate-y-0.5 hover:bg-bloom-light dark:border-white/10 dark:bg-white/10 dark:text-bloom-light dark:hover:bg-white/15"
               >
                 <LockIcon className="h-4 w-4" />
-                Log in
+                  Log in
               </button>
             </div>
           </div>
 
           <div className="pt-2 lg:pt-0">
             <HeroAppPreview />
-          </div>
-        </section>
-
-        {/* WHAT BLOOM IS */}
-        <section>
-          <SectionHeader
-            eyebrow="What Bloom is"
-            title="A gentle space for routines, focus, progress, and memories."
-            text="Bloom is built around small steps. It helps you organise the day without turning your wellbeing into a productivity score."
-          />
-
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
-            <FeatureCard
-              icon={
-                <RoundIconBadge tone="sage">
-                  <LeafIcon />
-                </RoundIconBadge>
-              }
-              title="Calm routines"
-              text="Simple, supportive routines that help you feel more steady and in control."
-            />
-
-            <FeatureCard
-              icon={
-                <RoundIconBadge tone="gold">
-                  <SunSmallIcon />
-                </RoundIconBadge>
-              }
-              title="Focus support"
-              text="Tools and timers to reduce overwhelm and help you build focus."
-            />
-
-            <FeatureCard
-              icon={
-                <RoundIconBadge tone="sage">
-                  <PlantIcon />
-                </RoundIconBadge>
-              }
-              title="Gentle progress"
-              text="Small steps, kind tracking, and celebrating progress in your own time."
-            />
-
-            <FeatureCard
-              icon={
-                <RoundIconBadge tone="green">
-                  <HeartIcon />
-                </RoundIconBadge>
-              }
-              title="Accessibility first"
-              text="Inclusive by design with neurodivergent-friendly features and choices."
-            />
           </div>
         </section>
 
@@ -567,7 +534,7 @@ function Overview({
 
             <StartPathCard
               icon={<UserPlusIcon />}
-              title="New to Bloom ?"
+              title="New to Bloom?"
               text="Create your space and slowly shape Bloom around your routines, preferences, and support needs."
               buttonText="Create account"
               buttonIcon={<UserPlusIcon className="h-4 w-4" />}
@@ -591,7 +558,7 @@ function Overview({
           <SectionHeader
             eyebrow="Demo mode"
             title="Explore Bloom before creating an account."
-            text="Demo mode gives you a calm preview with sample data, so you can see whether Bloom feels right for you."
+            text="Demo mode gives you sample routines, focus tools, and settings to try without needing to sign up."
           />
 
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
@@ -614,12 +581,13 @@ function Overview({
             <DemoPreviewCard
               icon={<PeopleIcon />}
               title="Parent / carer preview"
-              text="A future-facing preview for support, guidance, and gentle structure."
-              label="Planned"
+              text="A future preview for support, guidance, and gentle structure."
+              label="Coming soon"
               tone="gold"
             />
 
             <DemoPreviewCard
+              featured
               icon={<SparkleIcon />}
               title="Full App Preview"
               text="Explore routines, focus, progress, moments, and settings together."
@@ -698,11 +666,6 @@ function Overview({
               alongside real support, not replace it.
             </p>
           </div>
-        </section>
-
-        {/* FEEDBACK */}
-        <section id="feedback" className="scroll-mt-28">
-          <FeedbackForm />
         </section>
       </main>
     </div>
