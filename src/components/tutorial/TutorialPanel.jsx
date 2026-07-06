@@ -66,12 +66,31 @@ const tutorialSteps = {
   ],
 }
 
+const tutorialSurfaceMeta = {
+  landing: {
+    buttonLabel: "Start here",
+    eyebrow: "Bloom guide",
+    title: "Public guide",
+  },
+  demo: {
+    buttonLabel: "Demo start",
+    eyebrow: "Demo guide",
+    title: "Demo mode guide",
+  },
+  app: {
+    buttonLabel: "App guide",
+    eyebrow: "Bloom app guide",
+    title: "Protected app guide",
+  },
+}
+
 function TutorialPanel({
   surface = "landing",
   reduceMotion = false,
   onCreateAccount,
 }) {
   const steps = tutorialSteps[surface] ?? tutorialSteps.landing
+  const surfaceMeta = tutorialSurfaceMeta[surface] ?? tutorialSurfaceMeta.landing
 
   const storagePrefix = `bloom-${surface}-tutorial`
   const stepKey = `${storagePrefix}-step`
@@ -121,10 +140,15 @@ function TutorialPanel({
   }
 
   function handleSkip() {
-    localStorage.setItem(dismissedKey, "true")
-    setIsDismissed(true)
-    setIsOpen(false)
-  }
+    if (isLastStep) {
+      localStorage.setItem(dismissedKey, "true")
+      setIsDismissed(true)
+      setIsOpen(false)
+      return
+    }
+
+  saveStep(currentStep + 1)
+}
 
   function handleToggle() {
     setIsOpen((current) => !current)
@@ -153,16 +177,17 @@ function TutorialPanel({
       <button
         type="button"
         onClick={handleToggle}
-        className="fixed bottom-6 right-6 z-40 flex h-11 w-11 items-center justify-center rounded-full bg-bloom-forest text-sm font-bold text-bloom-light shadow-lg transition hover:bg-bloom-mid dark:bg-bloom-sage dark:text-bloom-forest dark:hover:bg-bloom-light"
+        className="fixed bottom-6 right-6 z-40 inline-flex h-11 items-center justify-center gap-2 rounded-full bg-bloom-forest px-4 text-xs font-bold text-bloom-light shadow-lg transition hover:bg-bloom-mid dark:bg-bloom-sage dark:text-bloom-forest dark:hover:bg-bloom-light"
         aria-label={isOpen ? "Close Bloom guide" : "Open Bloom guide"}
         title="How to use Bloom"
       >
-        {isOpen ? "𝒙" : "?"}
+        <span aria-hidden="true">{isOpen ? "𝒙" : "?"}</span>
+        {!isOpen && <span>{surfaceMeta.buttonLabel}</span>}
       </button>
 
       {isOpen && (
         <aside
-          className={`fixed bottom-20 right-4 z-40 w-[min(22rem,calc(100vw-2rem))] rounded-[1.75rem] border border-bloom-sage/25 bg-white/90 p-5 text-bloom-forest shadow-2xl backdrop-blur-md dark:border-white/10 dark:bg-[#252532]/95 dark:text-bloom-light ${
+          className={`fixed bottom-20 right-4 z-40 flex h-[28rem]w-[min(22rem,calc(100vw-2rem))] flex-col ounded-[1.75rem] border border-bloom-sage/25 bg-white/90 p-5 text-bloom-forest shadow-2xl backdrop-blur-md dark:border-white/10 dark:bg-[#252532]/95 dark:text-bloom-light ${
             reduceMotion
               ? "animate-none"
               : "transition duration-300 ease-out"
@@ -184,8 +209,10 @@ function TutorialPanel({
             </button>
           </div>
 
-          <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-bloom-light text-2xl dark:bg-white/10">
-            {step.icon}
+          <div className="flex min-h-0 flex-1 flex-col"> 
+            <div className="mb-4 flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-bloom-light text-2xl dark:bg-white/10">
+              {step.icon}
+            </div>
           </div>
 
           <h2 className="text-lg font-bold leading-tight text-bloom-forest dark:text-bloom-light">
@@ -206,13 +233,13 @@ function TutorialPanel({
             </button>
           )}
 
-          <div className="mt-5 flex items-center justify-between gap-3">
+          <div className="mt-5 flex shrink-0items-center justify-between gap-3">
             <button
               type="button"
               onClick={handleSkip}
               className="text-sm font-bold text-bloom-forest/50 underline-offset-4 transition hover:text-bloom-forest hover:underline dark:text-gray-400 dark:hover:text-bloom-light"
             >
-              Skip
+              {isLastStep ? "Finish" : "Skip step"}
             </button>
 
             <div className="flex items-center gap-2">
