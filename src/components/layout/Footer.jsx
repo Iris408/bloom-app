@@ -22,7 +22,7 @@ function Footer({
           </div>
 
           <p className="max-w-sm text-sm leading-6 text-bloom-forest/70 dark:text-gray-300">
-            Gentle tools for calm days, focus sessions, and steady progress.
+            Calm tools for steady days and gentle progress.
           </p>
         </div>
 

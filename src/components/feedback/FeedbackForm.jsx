@@ -195,7 +195,7 @@ function FeedbackForm() {
 
       <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-xs leading-5 text-bloom-forest/60 dark:text-gray-400">
-          Frontend beta version: feedback is saved locally in this browser for now.
+          This is an early beta — your feedback is saved in this browser for now.
         </p>
 
         <button

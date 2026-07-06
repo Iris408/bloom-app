@@ -71,6 +71,7 @@ function PublicHeader({
     { id: "about", label: "About" },
     { id: "privacy", label: "Privacy" },
     { id: "accessibility", label: "Accessibility" },
+    { id: "faq", label: "FAQ" },
   ]
 
   return (
@@ -122,7 +123,7 @@ function PublicHeader({
           <button
             type="button"
             onClick={onToggleTheme}
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-bloom-sage/15 bg-white/20 text-bloom-forest transition hover:bg-white/35 dark:border-white/10 dark:bg-white/5 dark:text-bloom-light dark:hover:bg-white/10"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-bloom-sage/15 bg-white/20 text-bloom-forest transition hover:bg-bloom-mint/30 dark:border-white/10 dark:bg-white/5 dark:text-bloom-light dark:hover:bg-white/10"
             aria-label={
               isDarkMode ? "Switch to light mode" : "Switch to dark mode"
             }
@@ -197,7 +198,7 @@ function ProtectedHeader({
         <button
           type="button"
           onClick={onToggleTheme}
-          className="flex h-10 w-10 items-center justify-center rounded-full border border-bloom-sage/25 bg-white/70 text-bloom-forest shadow-sm transition hover:bg-bloom-mint/30 dark:border-white/10 dark:bg-white/10 dark:text-bloom-light dark:hover:bg-white/15"
+          className="flex h-10 w-10 items-center justify-center rounded-full border border-bloom-sage/25 bg-white/70 text-bloom-forest shadow-sm transition hover:bg-bloom-light dark:border-white/10 dark:bg-white/10 dark:text-bloom-light dark:hover:bg-white/15"
           aria-label={
             isDarkMode ? "Switch to light mode" : "Switch to dark mode"
           }

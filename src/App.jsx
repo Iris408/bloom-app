@@ -204,9 +204,16 @@ function App() {
     if (activePage === "about") return <About />;
     if (activePage === "privacy") return <Privacy />;
     if (activePage === "accessibility") return <Accessibility />;
-    if (activePage === "faq") return <FAQPage />;
     if (activePage === "roadmap") return <RoadmapPage />;
     if (activePage === "feedback") return <FeedbackPage />;
+    if (activePage === "faq") {
+      return (
+        <FAQPage
+          setActivePage={handlePageChange}
+          onTryDemoClick={() => openLoginModal("demo")}
+        />
+      );
+    }
 
     // EN: Logged-out users only see the public Overview page.
     // JP: 未ログインのユーザーには公開用Overviewページだけを表示します。
