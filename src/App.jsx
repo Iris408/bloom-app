@@ -16,6 +16,7 @@ import Moments from "./pages/Moments";
 import Profile from "./pages/Profile";
 import Footer from "./components/layout/Footer";
 import Settings from "./pages/Settings";
+import TutorialPanel from "./components/tutorial/TutorialPanel";
 
 import About from "./pages/About";
 import Privacy from "./pages/Privacy";
@@ -390,6 +391,17 @@ function App() {
       {canUseApp && (
         <BottomNav activePage={activePage} setActivePage={handlePageChange} />
       )}
+      
+      <TutorialPanel
+        surface={
+          !canUseApp
+            ? "landing"
+            : isDemoMode
+              ? "demo"
+              : "app"
+        }
+        onCreateAccount={handleCreateAccountFromDemo}
+      />
 
       {isLoginOpen && (
         <LoginModal
