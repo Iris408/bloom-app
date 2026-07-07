@@ -32,6 +32,10 @@ export default function DemoBanner({
         ꕤ Your changes aren't saved to an account just yet.
       </p>
 
+      <p className="text-xs leading-relaxed text-bloom-forest/75 dark:text-gray-300">
+        ꕤ Feel free to look around freely at your own pace.
+      </p>
+
       <div className="mt-4 flex flex-col items-start gap-3">
         <button
           type="button"

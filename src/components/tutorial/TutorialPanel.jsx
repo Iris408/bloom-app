@@ -200,7 +200,7 @@ function TutorialPanel({
             <button
               type="button"
               onClick={onCreateAccount}
-              className="mt-5 w-full rounded-2xl bg-bloom-forest px-5 py-3 text-sm font-bold text-bloom-light transition hover:bg-bloom-mid dark:bg-bloom-sage dark:text-bloom-forest dark:hover:bg-bloom-light"
+              className="mt-3 mb-2 w-full rounded-xl bg-bloom-forest px-2 py-3 text-sm font-bold text-bloom-light transition hover:bg-bloom-mid dark:bg-bloom-sage dark:text-bloom-forest dark:hover:bg-bloom-light"
             >
               Create your space
             </button>
