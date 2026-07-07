@@ -93,23 +93,12 @@ function TutorialPanel({
   const surfaceMeta = tutorialSurfaceMeta[surface] ?? tutorialSurfaceMeta.landing
 
   const storagePrefix = `bloom-${surface}-tutorial`
+
   const stepKey = `${storagePrefix}-step`
   const dismissedKey = `${storagePrefix}-dismissed`
 
   const [isOpen, setIsOpen] = useState(false)
   const [currentStep, setCurrentStep] = useState(0)
-  const [isDismissed, setIsDismissed] = useState(false)
-
-  useEffect(() => {
-    const savedStep = Number(localStorage.getItem(stepKey))
-    const savedDismissed = localStorage.getItem(dismissedKey) === "true"
-
-    if (!Number.isNaN(savedStep)) {
-      setCurrentStep(Math.min(savedStep, steps.length - 1))
-    }
-
-    setIsDismissed(savedDismissed)
-  }, [dismissedKey, stepKey, steps.length])
 
   const step = useMemo(
     () => steps[currentStep] ?? steps[0],
@@ -125,51 +114,35 @@ function TutorialPanel({
 
   function handleNext() {
     if (isLastStep) {
-      localStorage.setItem(dismissedKey, "true")
-      setIsDismissed(true)
       setIsOpen(false)
+      setCurrentStep(0)
       return
     }
 
-    saveStep(currentStep + 1)
+    setCurrentStep((step) => step + 1)
   }
 
   function handleBack() {
     if (currentStep === 0) return
-    saveStep(currentStep - 1)
+
+    setCurrentStep((step) => step - 1)
   }
-
-  function handleSkip() {
-    if (isLastStep) {
-      localStorage.setItem(dismissedKey, "true")
-      setIsDismissed(true)
-      setIsOpen(false)
-      return
-    }
-
-  saveStep(currentStep + 1)
-}
 
   function handleToggle() {
-    setIsOpen((current) => !current)
+    setIsOpen((current) => {
+      const nextOpenState = !current
+
+      if (nextOpenState) {
+        setCurrentStep(0)
+      }
+
+      return nextOpenState
+    })
   }
 
-  if (isDismissed && !isOpen) {
-    return (
-      <button
-        type="button"
-        onClick={() => {
-          setIsDismissed(false)
-          localStorage.removeItem(dismissedKey)
-          setIsOpen(true)
-        }}
-        className="fixed bottom-6 right-6 z-40 flex h-11 w-11 items-center justify-center rounded-full bg-bloom-forest text-sm font-bold text-bloom-light shadow-lg transition hover:bg-bloom-mid dark:bg-bloom-sage dark:text-bloom-forest dark:hover:bg-bloom-light"
-        aria-label="Open Bloom guide"
-        title="How to use Bloom"
-      >
-        ?
-      </button>
-    )
+  function handleClose() {
+    setIsOpen(false)
+    setCurrentStep(0)
   }
 
   return (
@@ -187,7 +160,7 @@ function TutorialPanel({
 
       {isOpen && (
         <aside
-          className={`fixed bottom-20 right-4 z-40 flex h-[28rem]w-[min(22rem,calc(100vw-2rem))] flex-col ounded-[1.75rem] border border-bloom-sage/25 bg-white/90 p-5 text-bloom-forest shadow-2xl backdrop-blur-md dark:border-white/10 dark:bg-[#252532]/95 dark:text-bloom-light ${
+          className={`fixed bottom-18 right-4 z-40 flex w-[min(20rem,calc(100vw-2rem))] flex-col rounded-[1.75rem] border border-bloom-sage/25 bg-white/92 p-4 text-bloom-forest shadow-2xl backdrop-blur-md dark:border-white/10 dark:bg-[#252532]/95 dark:text-bloom-light sm:bottom-20 sm:right-5 sm:w-[21rem] sm:p-5 ${
             reduceMotion
               ? "animate-none"
               : "transition duration-300 ease-out"
@@ -233,15 +206,6 @@ function TutorialPanel({
             </button>
           )}
 
-          <div className="mt-5 flex shrink-0items-center justify-between gap-3">
-            <button
-              type="button"
-              onClick={handleSkip}
-              className="text-sm font-bold text-bloom-forest/50 underline-offset-4 transition hover:text-bloom-forest hover:underline dark:text-gray-400 dark:hover:text-bloom-light"
-            >
-              {isLastStep ? "Finish" : "Skip step"}
-            </button>
-
             <div className="flex items-center gap-2">
               {currentStep > 0 && (
                 <button
@@ -261,7 +225,6 @@ function TutorialPanel({
                 {isLastStep ? "Got it" : "Next"}
               </button>
             </div>
-          </div>
         </aside>
       )}
     </>
