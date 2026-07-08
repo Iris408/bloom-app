@@ -7,6 +7,7 @@ import {
   resetRoutineStepCompletion,
   shouldRunDailyReset,
 } from "../utils/dailyResetUtils"
+import { triggerDemoCompletionEvent } from "../utils/demoCompletionEvent"
 
 const ROUTINE_STORAGE_KEY = "bloom-routines"
 const ROUTINE_DAILY_RESET_KEY = "bloom-routines-last-reset"
@@ -291,24 +292,58 @@ function Routines() {
     )
   }
 
-  function handleToggleStepComplete(routineId, stepId) {
-    setRoutines(
-      routines.map((routine) =>
-        routine.id === routineId
-          ? {
-              ...routine,
-              steps: (routine.steps || []).map((step) =>
-                step.id === stepId
-                  ? {
-                      ...step,
-                      completed: !step.completed,
-                    }
-                  : step
-              ),
-            }
-          : routine
-      )
+  function handleToggleStep(routineId, stepId) {
+    setRoutines((currentRoutines) =>
+      currentRoutines.map((routine) => {
+        if (routine.id !== routineId) return routine
+
+        const currentSteps = routine.steps || []
+
+        const updatedSteps = currentSteps.map((step) =>
+          step.id === stepId
+            ? {
+                ...step,
+                completed: !step.completed,
+              }
+            : step
+        )
+
+        const wasIncomplete = currentSteps.some((step) => !step.completed)
+
+        const isNowComplete =
+          updatedSteps.length > 0 &&
+          updatedSteps.every((step) => step.completed)
+
+        if (wasIncomplete && isNowComplete) {
+          triggerDemoCompletionEvent("routine")
+        }
+
+        return {
+          ...routine,
+          steps: updatedSteps,
+        }
+      })
     )
+  }
+
+  function handleCompleteRoutine(routineId) {
+    setRoutines((currentRoutines) =>
+      currentRoutines.map((routine) => {
+        if (routine.id !== routineId) return routine
+
+        const currentSteps = routine.steps || []
+
+        return {
+          ...routine,
+          steps: currentSteps.map((step) => ({
+            ...step,
+            completed: true,
+          })),
+        }
+      })
+    )
+
+    triggerDemoCompletionEvent("routine")
   }
 
   function handleEditStepStart(step) {
@@ -859,7 +894,7 @@ function Routines() {
                                         <button
                                           type="button"
                                           onClick={() =>
-                                            handleToggleStepComplete(
+                                            handleToggleStep(
                                               routine.id,
                                               step.id
                                             )
