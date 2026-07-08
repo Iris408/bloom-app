@@ -17,6 +17,7 @@ import Profile from "./pages/Profile";
 import Footer from "./components/layout/Footer";
 import Settings from "./pages/Settings";
 import TutorialPanel from "./components/tutorial/TutorialPanel";
+import Wins from "./pages/Wins";
 
 import About from "./pages/About";
 import Privacy from "./pages/Privacy";
@@ -29,6 +30,8 @@ import FeedbackPage from "./pages/FeedbackPage";
 import DailyAffirmationCard from "./components/home/DailyAffirmationCard"
 import DemoBanner from "./components/demo/DemoBanner";
 import ExitDemoConfirmModal from "./components/demo/ExitDemoConfirmModal";
+import DemoCompletionModal from "./components/demo/DemoCompletionModal";
+import GuidedDemoNotice from "./components/demo/GuidedDemoNotice";
 
 function App() {
   const [activePage, setActivePage] = useState("overview");
@@ -40,6 +43,18 @@ function App() {
   // JP: デモモードでは、実際のアカウントなしでBloomを試せます。
   const [isDemoMode, setIsDemoMode] = useState(false);
   const [demoType, setDemoType] = useState(null);
+  const [isDemoCompletionOpen, setIsDemoCompletionOpen] = useState(false);
+  const guidedDemoPages = ["routines", "focus", "moments"];
+  const isGuidedDemo = isDemoMode &&
+    demoType !== "full" &&
+    demoType !== "full-app-preview" &&
+    demoType !== "fullPreview"
+
+  const guidedDemoPageName = {
+    routines: "Routines",
+    focus: "Focus",
+    moments: "Moments",
+  }
 
   // EN: Controls the confirmation popup shown before leaving demo mode.
   // JP: デモモードを終了する前に表示する確認ポップアップを管理します。
@@ -57,8 +72,10 @@ function App() {
     "focus",
     "progress",
     "moments",
+    "wins",
     "profile",
     "settings",
+    "help",
   ];
 
   // EN: Users can access the main app if they are logged in OR using demo mode.
@@ -108,6 +125,27 @@ function App() {
 
     checkExistingLogin();
   }, []);
+
+  useEffect(() => {
+    function handleDemoCompletion() {
+      if (!isDemoMode) return
+
+      const alreadyShown = sessionStorage.getItem(
+        "bloom-demo-completion-shown"
+      )
+
+      if (alreadyShown) return
+
+      sessionStorage.setItem("bloom-demo-completion-shown", "true")
+      setIsDemoCompletionOpen(true)
+    }
+
+    window.addEventListener("bloom-demo-completion", handleDemoCompletion)
+
+    return () => {
+      window.removeEventListener("bloom-demo-completion", handleDemoCompletion)
+    }
+  }, [isDemoMode])
 
   useEffect(() => {
     // EN: If a logged-out user somehow lands on a protected page, return to Overview.
@@ -243,11 +281,30 @@ function App() {
           />
         );
       }
+    
+    if (isGuidedDemo && guidedDemoPages.includes(activePage)) {
+      return (
+        <GuidedDemoNotice
+          pageName={guidedDemoPageName[activePage]}
+          demoType={demoType}
+          onGoHome={() => handlePageChange("home")}
+          onCreateAccount={handleCreateAccountFromDemo}
+        />
+      );
+    }
+
     if (activePage === "routines") return <Routines />;
     if (activePage === "focus") return <Focus />;
-    if (activePage === "progress") return <Progress />;
+    if (activePage === "progress") {
+      return (
+        <Progress
+          isDemoMode={isDemoMode}
+          demoType={demoType}
+        />
+      );
+    }
     if (activePage === "moments") return <Moments />;
-
+    if (activePage === "wins") return <Wins />;
     if (activePage === "profile") {
       return (
         <Profile
@@ -267,6 +324,17 @@ function App() {
         />
       );
     }
+    if (activePage === "help") return <HelpPage />
+   
+    // EN: If the active page is not recognized, return to the Overview page.
+    // JP: アクティブページが認識されない場合、Overviewページへ戻します。
+    setActivePage("overview");
+    return null;
+  }
+
+  if (isDemoMode && !canUseApp) {
+    // EN: If the user is in demo mode but cannot access the app, show the Home page.
+    // JP: ユーザーがデモモード中でアプリにアクセスできない場合、Homeページを表示します。
 
     return (
       <Home
@@ -401,6 +469,20 @@ function App() {
               : "app"
         }
         onCreateAccount={handleCreateAccountFromDemo}
+      />
+
+      <DemoCompletionModal
+        isOpen={isDemoCompletionOpen}
+        onClose={() => setIsDemoCompletionOpen(false)}
+        onCreateAccount={() => {
+          setIsDemoCompletionOpen(false)
+          handleCreateAccountFromDemo()
+        }}
+        onFinishDemo={() => {
+          setIsDemoCompletionOpen(false)
+          handleExitDemo()
+          handlePageChange("overview")
+        }}
       />
 
       {isLoginOpen && (

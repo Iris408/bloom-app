@@ -5,7 +5,7 @@ export default function DemoBanner({
 }) {
   const demoLabels = {
     "gentle-start": "A Quiet Start",
-    "neurodivergent-friendly": "Neurodivergent-friendly",
+    "neurodivergent-friendly": "No pressure, no clutter",
     "full-bloom": "Full Bloom",
   }
 
@@ -25,15 +25,15 @@ export default function DemoBanner({
       </h3>
 
       <p className="text-xs leading-relaxed text-bloom-forest/75 dark:text-gray-300">
-        ꕤ You're currently exploring Bloom with sample data.
+        ꕤ You're looking through sample data.
       </p>
 
       <p className="text-xs leading-relaxed text-bloom-forest/75 dark:text-gray-300">
-        ꕤ Your changes aren't saved to an account just yet.
+        ꕤ Nothings is being saved, and that's okay.
       </p>
 
       <p className="text-xs leading-relaxed text-bloom-forest/75 dark:text-gray-300">
-        ꕤ Feel free to look around freely at your own pace.
+        ꕤ Look around at whatever pace feels right - there's no wrong way to do this.
       </p>
 
       <div className="mt-4 flex flex-col items-start gap-3">
