@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 
 import EmptyState from "../components/ui/EmptyState"
 import { useApp } from "../context/AppContext"
@@ -158,6 +158,8 @@ function Focus() {
     deleteFocusTask,
   } = useApp()
 
+  const timerRef = useRef(null)
+
   const today = todayKey()
 
   const [taskTitle, setTaskTitle] = useState("")
@@ -270,12 +272,18 @@ function Focus() {
   }
 
   function handleStartBreak() {
-    setSelectedFocusMinutes(5)
+    const resetFocusType =
+      FOCUS_TYPES.find((focusType) => focusType.id === "reset") || FOCUS_TYPES[0]
+
+    setSelectedFocusTypeId(resetFocusType.id)
+    setSecondsRemaining(resetFocusType.minutes * 60)
+    setIsTimerRunning(true)
+    setIsSessionComplete(false)
 
     requestAnimationFrame(() => {
       timerRef.current?.scrollIntoView({
         behavior: "smooth",
-        block: "start",
+        block: "center",
       })
     })
   }
@@ -376,8 +384,9 @@ function Focus() {
       </section>
 
       {/* Timer + today's focus */}
-      <section ref={timerRef} className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_360px]">
+      <section className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_360px]">
         <div
+          ref={timerRef}
           id="focus-timer"
           className="rounded-[2rem] border border-bloom-sage/25 bg-white/55 p-5 shadow-sm dark:border-white/10 dark:bg-white/5 sm:p-7"
         >

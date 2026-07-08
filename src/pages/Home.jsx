@@ -6,6 +6,7 @@ import DemoBanner from "../components/demo/DemoBanner"
 import { getAvatarDisplay } from "../utils/avatarStorage"
 import { useApp } from "../context/AppContext"
 import { todayKey } from "../utils/progressUtils"
+import { isNeurodivergentDemoType } from "../data/demoData"
 
 const TASK_STORAGE_KEY = "bloom-tasks"
 const ROUTINE_STORAGE_KEY = "bloom-routines"
@@ -176,11 +177,7 @@ function Home({
   const shouldShowAvatar =
     avatarDisplay.avatarType === "bloom" && avatarDisplay.avatarUrl
 
-  const isNeurodivergentDemo =
-    isDemoMode &&
-    (demoType === "neurodivergent" ||
-      demoType === "neurodivergent-day" ||
-      demoType === "neurodivergentFriendly")
+  const isNeurodivergentDemo = isDemoMode && isNeurodivergentDemoType(demoType)
 
   const focusTimerLabel = formatFocusTime(focusRemainingSeconds)
 

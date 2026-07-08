@@ -1,10 +1,12 @@
+import { isNeurodivergentDemoType } from "../../data/demoData"
+
 function GuidedDemoNotice({
   pageName = "this page",
   demoType = "simple",
   onGoHome,
   onCreateAccount,
 }) {
-  const isNeurodivergentDemo = demoType === "neurodivergent"
+  const isNeurodivergentDemo = isNeurodivergentDemoType(demoType)
 
   return (
     <section className="mx-auto flex min-h-[60vh] w-full max-w-3xl items-center justify-center px-4 py-10">

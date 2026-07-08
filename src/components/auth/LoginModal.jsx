@@ -8,27 +8,27 @@ import AvatarChoiceGrid from "../profile/AvatarChoiceGrid";
 
 const demoOptions = [
   {
-    id: "gentle-start",
+    id: "simple",
     title: "A Quiet Start",
     eyebrow: "Gentle preview",
     description:
       "A peaceful introduction with a single routine, one focus block, and a few light tasks.",
   },
   {
-    id: "neurodivergent-friendly",
+    id: "neurodivergent-day",
     title: "Neurodivergent-friendly Day",
     eyebrow: "Low-pressure support",
     description:
       "Designed to reduce overwhelm. Features low-pressure structures, calm pacing, and supportive wording.",
   },
   {
-    id: "full-bloom",
+    id: "full-app-preview",
     title: "Full Bloom",
     eyebrow: "Complete demo",
     description:
       "A complete space loaded with sample routines, focus tracking, Bloom Moments, and custom configurations.",
   },
-];
+]
 
 const modalCopy = {
   login: {
@@ -246,24 +246,6 @@ export default function LoginModal({
     } finally {
       setIsLoading(false);
     }
-  }
-
-  function switchView(nextView) {
-    setError("");
-    setNotice("");
-    setModalView(nextView);
-  }
-
-  function handleStartDemo(demoType) {
-    setError("");
-    setNotice("");
-
-    if (onStartDemo) {
-      onStartDemo(demoType);
-    }
-
-    setActivePage("home");
-    onClose();
   }
 
   const createInitial =
@@ -505,7 +487,7 @@ export default function LoginModal({
                 <button
                   key={option.id}
                   type="button"
-                  onClick={() => handleStartDemo(option.id)}
+                  onClick={() => onStartDemo(option.id)}
                   className="flex h-full min-h-[32px] w-full flex-col rounded-2xl border border-bloom-sage/30 bg-bloom-light/70 p-4 text-left transition hover:border-bloom-mid hover:bg-bloom-mint/20 dark:border-white/10 dark:bg-white/5"
                 >
                   <p className="mb-3 min-h-[32px] text-xs font-bold uppercase leading-4 tracking-[0.18em] text-bloom-mid dark:text-bloom-sage">

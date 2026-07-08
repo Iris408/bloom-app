@@ -256,25 +256,43 @@ export const fullPreviewRoutines = [
   },
 ]
 
+export function normalizeDemoType(demoType) {
+  if (!demoType) return "simple"
+
+  return String(demoType)
+    .trim()
+    .toLowerCase()
+    .replace(/_/g, "-")
+    .replace(/\s+/g, "-")
+}
+
 export function isNeurodivergentDemoType(demoType) {
+  const normalizedType = normalizeDemoType(demoType)
+
   return [
     "neurodivergent",
     "neurodivergent-day",
-    "neurodivergentFriendly",
     "neurodivergent-friendly",
-    "neurodivergentFriendlyDay",
-  ].includes(demoType)
+    "neurodivergent-friendly-day",
+  ].includes(normalizedType)
 }
 
 export function isFullPreviewDemoType(demoType) {
+  const normalizedType = normalizeDemoType(demoType)
+
   return [
     "full",
     "full-app",
     "full-app-preview",
-    "fullPreview",
-    "fullAppPreview",
-    "full_app_preview",
-  ].includes(demoType)
+    "full-preview",
+    "full-preview-demo",
+    "full-app-demo",
+    "full-app-preview-demo",
+    "fullapppreview",
+    "fullpreview",
+    "fullapp",
+    "full-bloom",
+  ].includes(normalizedType)
 }
 
 export function getDemoTasksByType(demoType) {

@@ -5,6 +5,7 @@ import { useRef, useEffect, useMemo, useState } from "react"
 
 import { useProgressStore } from "../hooks/useProgressStore"
 import { dayLabel, getProgressState, getWeekKeys, todayKey } from "../utils/progressUtils"
+import { isFullPreviewDemoType, isNeurodivergentDemoType } from "../data/demoData"
 
 const ROUTINE_STORAGE_KEY = "bloom-routines"
 const FOCUS_HISTORY_STORAGE_KEY = "bloom-focus-history"
@@ -184,7 +185,7 @@ function ProgressHeroReminder() {
 }
 
 function GuidedProgressNote({ demoType }) {
-  const isNeurodivergentDemo = demoType === "neurodivergent"
+  const isNeurodivergentDemo = isNeurodivergentDemoType(demoType)
 
   return (
     <section className="rounded-[1.75rem] border border-bloom-sage/25 bg-bloom-light/55 p-4 shadow-sm dark:border-white/10 dark:bg-white/5 sm:p-5">
@@ -309,16 +310,7 @@ export default function Progress({ isDemoMode = false, demoType = null }) {
   ).length
 
   const selectedDayTitle = isSelectedToday ? "Today" : selectedDate
-  const isGuidedDemo =
-    isDemoMode &&
-    ![
-      "full",
-      "full-app-preview",
-      "fullPreview",
-      "full-app",
-      "fullAppPreview",
-      "full_app_preview",
-    ].includes(demoType)
+  const isGuidedDemo = isDemoMode && !isFullPreviewDemoType(demoType)
 
   return (
     <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 overflow-x-hidden pb-28 sm:gap-7 sm:pb-0">

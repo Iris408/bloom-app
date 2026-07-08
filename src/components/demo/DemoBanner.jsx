@@ -4,9 +4,9 @@ export default function DemoBanner({
   onExitDemoClick,
 }) {
   const demoLabels = {
-    "gentle-start": "A Quiet Start",
-    "neurodivergent-friendly": "No pressure, no clutter",
-    "full-bloom": "Full Bloom",
+    "simple": "A Quiet Start",
+    "neurodivergent-day": "No pressure, no clutter",
+    "full-app-preview": "Full Bloom",
   }
 
   const demoLabel = demoLabels[demoType] || "Demo Labels"

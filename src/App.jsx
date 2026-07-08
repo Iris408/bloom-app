@@ -3,6 +3,7 @@ import { useApp } from "./context/AppContext";
 import { getAuthToken, getCurrentUser, logoutUser } from "./api/bloomApi";
 import { getAvatarDisplay } from "./utils/avatarStorage";
 import { seedDemoData } from "./utils/seedDemoData"
+import { isFullPreviewDemoType } from "./data/demoData"
 
 import LoginModal from "./components/auth/LoginModal";
 import Header from "./components/layout/Header";
@@ -45,13 +46,13 @@ function App() {
   const [isDemoMode, setIsDemoMode] = useState(false);
   const [demoType, setDemoType] = useState(null);
   const [isDemoCompletionOpen, setIsDemoCompletionOpen] = useState(false);
-  const guidedDemoPages = ["routines", "focus", "moments"];
-  const isGuidedDemo = isDemoMode && !isFullDemoType(demoType)
+  const guidedDemoPages = ["routines", "focus", "moments"]
+  const isGuidedDemo = isDemoMode && !isFullPreviewDemoType(demoType)
 
-  const guidedDemoPageName = {
-    routines: "Routines",
-    focus: "Focus",
-    moments: "Moments",
+  const guidedDemoPageNames = {
+    routines: "routines",
+    focus: "focus",
+    moments: "moments",
   }
 
   // EN: Controls the confirmation popup shown before leaving demo mode.
@@ -174,25 +175,20 @@ function App() {
   }
 
   function handleStartDemo(selectedDemoType) {
-    seedDemoData(demoType)
-    
-    // EN: Start demo mode and move the user into the main Bloom app.
-    // JP: デモモードを開始し、ユーザーをBloomのメイン画面へ移動します。
-    setIsDemoMode(true);
-    setDemoType(selectedDemoType);
-    setIsLoginOpen(false);
-    setActivePage("home");
-  }
+    const nextDemoType =
+      typeof selectedDemoType === "string"
+        ? selectedDemoType
+        : selectedDemoType?.id ||
+          selectedDemoType?.type ||
+          selectedDemoType?.value ||
+          "simple"
 
-  function isFullDemoType(type) {
-    return [
-      "full",
-      "full-app-preview",
-      "fullPreview",
-      "full-app",
-      "fullAppPreview",
-      "full_app_preview",
-    ].includes(type)
+    seedDemoData(nextDemoType)
+
+    setIsDemoMode(true)
+    setDemoType(nextDemoType)
+    setIsLoginOpen(false)
+    setActivePage("home")
   }
 
   function handleConfirmExitDemo() {
@@ -296,7 +292,7 @@ function App() {
     if (isGuidedDemo && guidedDemoPages.includes(activePage)) {
       return (
         <GuidedDemoNotice
-          pageName={guidedDemoPageName[activePage]}
+          pageName={guidedDemoPageNames[activePage]}
           demoType={demoType}
           onGoHome={() => handlePageChange("home")}
           onCreateAccount={handleCreateAccountFromDemo}
@@ -491,8 +487,7 @@ function App() {
         }}
         onFinishDemo={() => {
           setIsDemoCompletionOpen(false)
-          handleExitDemo()
-          handlePageChange("overview")
+          handleConfirmExitDemo()
         }}
       />
 

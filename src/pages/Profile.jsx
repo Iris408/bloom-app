@@ -387,11 +387,11 @@ function Profile({
   const displayName = nickname.trim() || username
 
   const demoLabel = useMemo(() => {
-    if (demoType === "gentle-start") return "Gentle Start Demo Mode"
-    if (demoType === "neurodivergent-friendly") {
+    if (demoType === "simple") return "Gentle Start Demo Mode"
+    if (demoType === "neurodivergent-day") {
       return "No pressure, no clutter Demo Mode"
     }
-    if (demoType === "full-bloom") return "Full Bloom Demo Mode"
+    if (demoType === "full-app-preview") return "Full Bloom Demo Mode"
 
     return "Demo Mode"
   }, [demoType])

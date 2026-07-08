@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 
 import EmptyState from "../components/ui/EmptyState"
-import { quietStartTasks, quietStartRoutines, neurodivergentFriendlyTasks, neurodivergentFriendlyRoutines, fullPreviewTasks, fullPreviewRoutines } from "../data/demoData"
+import { quietStartRoutines } from "../data/demoData"
 import {
   markDailyResetComplete,
   resetRoutineStepCompletion,
@@ -177,9 +177,11 @@ function Routines() {
   const [exploredStarterRoutineId, setExploredStarterRoutineId] = useState(null)
   const [expandedWideId, setExpandedWideId] = useState(null)
 
+  const starterRoutines = quietStartRoutines
+
   const visibleStarterRoutines = showDemoRoutines
-    ? demoRoutines
-    : demoRoutines.slice(0, 4)
+    ? starterRoutines
+    : starterRoutines.slice(0, 4)
 
   const selectedStarterCount = selectedDemoRoutineIds.length
 
@@ -187,7 +189,7 @@ function Routines() {
     setRoutines((prevRoutines) => {
       const existingIds = new Set(prevRoutines.map((routine) => routine.id))
 
-      const routinesToAdd = demoRoutines
+      const routinesToAdd = starterRoutines
         .filter((routine) => selectedDemoRoutineIds.includes(routine.id))
         .filter((routine) => !existingIds.has(routine.id))
         .map((routine) => normaliseStarterRoutine(routine))
@@ -488,7 +490,7 @@ function Routines() {
               </p>
             </div>
 
-            {demoRoutines.length > 2 && (
+            {starterRoutines.length > 2 && (
               <button
                 type="button"
                 onClick={() => setShowDemoRoutines(!showDemoRoutines)}
