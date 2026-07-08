@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { triggerDemoCompletionEvent } from "../../utils/demoCompletionEvent"
 
 import TaskCard from "./TaskCard"
 import {
@@ -114,6 +115,25 @@ function TaskList() {
             }
           : task
       )
+    )
+  }
+
+  function handleToggleTask(taskId) {
+    setTasks((currentTasks) =>
+      currentTasks.map((task) => {
+        if (task.id !== taskId) return task
+
+        const nextCompleted = !task.completed
+
+        if (nextCompleted) {
+          triggerDemoCompletionEvent("task")
+        }
+
+        return {
+          ...task,
+          completed: nextCompleted,
+        }
+      })
     )
   }
 

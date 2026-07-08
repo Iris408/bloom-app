@@ -389,7 +389,7 @@ function Profile({
   const demoLabel = useMemo(() => {
     if (demoType === "gentle-start") return "Gentle Start Demo Mode"
     if (demoType === "neurodivergent-friendly") {
-      return "Neurodivergent-friendly Demo Mode"
+      return "No pressure, no clutter Demo Mode"
     }
     if (demoType === "full-bloom") return "Full Bloom Demo Mode"
 
@@ -478,6 +478,15 @@ function Profile({
     })
   }
 
+  function handleAvatarChange(nextAvatar) {
+    if (isDemoMode) {
+      setPreviewAvatar(nextAvatar)
+      return
+    }
+
+    saveAvatar(nextAvatar)
+  }
+
   function handleUpdateOnboarding(key, value) {
     if (isDemoMode) return
 
@@ -510,6 +519,12 @@ function Profile({
 
   const shouldShowAvatarImage =
     selectedAvatarType === "bloom" && selectedAvatarUrl
+
+  const [previewAvatar, setPreviewAvatar] = useState(null)
+
+  const visibleAvatar = isDemoMode && previewAvatar
+    ? previewAvatar
+    : selectedAvatarType === "bloom" && selectedAvatarUrl  
 
   return (
     <div className="mx-auto flex w-full min-w-0 max-w-6xl flex-col gap-6 overflow-x-hidden pb-28 sm:gap-7 sm:pb-0">
@@ -612,7 +627,7 @@ function Profile({
                 ? "Demo sessions are temporary."
                 : "Joined date will be shown after backend profile timestamps are added."
             }
-            rightText={isDemoMode ? "Demo" : "v1.1"}
+            rightText={isDemoMode ? "Demo" : "v2.0.0"}
           />
         </ProfileSection>
 

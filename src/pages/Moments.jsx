@@ -279,6 +279,7 @@ function SmallWinsCard() {
 
       <button
         type="button"
+        onClick={() => setActivePage("wins")}
         className="mt-6 text-sm font-bold text-bloom-forest/70 transition hover:text-bloom-forest dark:text-gray-300 dark:hover:text-bloom-light"
       >
         View all wins →

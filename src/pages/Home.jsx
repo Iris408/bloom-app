@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react"
 
 import TaskList from "../components/tasks/TaskList"
 import DemoBanner from "../components/demo/DemoBanner"
-import StartHerePanel from "../components/demo/StartHerePanel"
 
 import { getAvatarDisplay } from "../utils/avatarStorage"
 import { useApp } from "../context/AppContext"
@@ -27,6 +26,13 @@ function getProgressIcon(progressPercent) {
   if (progressPercent < 75) return "🌸"
 
   return "🌳"
+}
+
+function formatFocusTime(totalSeconds) {
+  const minutes = Math.floor(totalSeconds / 60)
+  const seconds = totalSeconds % 60
+
+  return `${minutes}:${String(seconds).padStart(2, "0")}`
 }
 
 function getStoredTasks() {
@@ -135,6 +141,9 @@ function Home({
   setActivePage,
 }) {
   const [selectedFocusMinutes, setSelectedFocusMinutes] = useState(10)
+  const [focusRemainingSeconds, setFocusRemainingSeconds] = useState(10 * 60)
+  const [isFocusRunning, setIsFocusRunning] = useState(false)
+
   const [taskStats, setTaskStats] = useState(() => getTaskStats())
   const [routines, setRoutines] = useState(() => getStoredRoutines())
 
@@ -153,8 +162,6 @@ function Home({
   const displayName = username
   const greeting = getTimeGreeting()
 
-  // Routine
-
   const routineStats = getRoutineStats(routines)
   const focusStats = getFocusStats(focusTasks, today)
 
@@ -168,6 +175,14 @@ function Home({
 
   const shouldShowAvatar =
     avatarDisplay.avatarType === "bloom" && avatarDisplay.avatarUrl
+
+  const isNeurodivergentDemo =
+    isDemoMode &&
+    (demoType === "neurodivergent" ||
+      demoType === "neurodivergent-day" ||
+      demoType === "neurodivergentFriendly")
+
+  const focusTimerLabel = formatFocusTime(focusRemainingSeconds)
 
   useEffect(() => {
     function syncHomeData() {
@@ -186,6 +201,26 @@ function Home({
     }
   }, [])
 
+  useEffect(() => {
+    if (!isFocusRunning) return undefined
+
+    const intervalId = window.setInterval(() => {
+      setFocusRemainingSeconds((currentSeconds) => {
+        if (currentSeconds <= 1) {
+          window.clearInterval(intervalId)
+          setIsFocusRunning(false)
+          return 0
+        }
+
+        return currentSeconds - 1
+      })
+    }, 1000)
+
+    return () => {
+      window.clearInterval(intervalId)
+    }
+  }, [isFocusRunning])
+
   function goToPage(page) {
     if (!setActivePage) return
 
@@ -199,20 +234,57 @@ function Home({
     })
   }
 
-  function handleStartRoutine() {
-    scrollToPanel(routinePanelRef)
-  }
-
-  function handleAddTask() {
-    scrollToPanel(taskPanelRef)
+  function handleSelectFocusMinutes(minutes) {
+    setSelectedFocusMinutes(minutes)
+    setFocusRemainingSeconds(minutes * 60)
+    setIsFocusRunning(false)
   }
 
   function handleStartFocus() {
-    scrollToPanel(focusPanelRef)
+    if (focusRemainingSeconds <= 0) {
+      setFocusRemainingSeconds(selectedFocusMinutes * 60)
+    }
+
+    setIsFocusRunning(true)
+
+    requestAnimationFrame(() => {
+      scrollToPanel(focusPanelRef)
+    })
+  }
+
+  function handlePauseFocus() {
+    setIsFocusRunning(false)
+  }
+
+  function handleResetFocus() {
+    setIsFocusRunning(false)
+    setFocusRemainingSeconds(selectedFocusMinutes * 60)
+  }
+
+  function handleToggleRoutineStep(routineId, stepId) {
+    const updatedRoutines = routines.map((routine) => {
+      if (routine.id !== routineId) return routine
+
+      return {
+        ...routine,
+        steps: (routine.steps || []).map((step) =>
+          step.id === stepId
+            ? {
+                ...step,
+                completed: !step.completed,
+              }
+            : step
+        ),
+      }
+    })
+
+    setRoutines(updatedRoutines)
+    localStorage.setItem(ROUTINE_STORAGE_KEY, JSON.stringify(updatedRoutines))
+    window.dispatchEvent(new Event("bloom-routines-updated"))
   }
 
   return (
-    <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 overflow-x-hidden pb-28 sm:gap-7 sm:pb-0">
+    <div className="mx-auto flex w-full max-w-6xl flex-col gap-5 overflow-x-hidden pb-28 sm:gap-6 sm:pb-0">
       {isDemoMode && (
         <DemoBanner
           demoType={demoType}
@@ -220,83 +292,115 @@ function Home({
           onExitDemoClick={onExitDemoClick}
         />
       )}
- 
-      <div className="grid grid-cols-1 items-stretch gap-5 lg:grid-cols-2">
+
+      <div
+        className={
+          isDemoMode
+            ? "grid grid-cols-1 items-stretch gap-4 lg:grid-cols-2"
+            : "grid grid-cols-1"
+        }
+      >
         {/* GOOD MORNING / HOME PANEL */}
-          <section className="flex h-full rounded-[2rem] border border-bloom-sage/25 bg-white/55 p-5 shadow-sm dark:border-white/10 dark:bg-white/5 sm:p-7">
-      <div className="flex w-full flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
-        <div className="min-w-0">
-          <p className="mb-3 text-xs font-bold uppercase tracking-[0.22em] text-bloom-mid dark:text-bloom-sage">
-            Home
-          </p>
+        <section className="flex h-full rounded-[1.75rem] border border-bloom-sage/25 bg-white/55 p-4 shadow-sm dark:border-white/10 dark:bg-white/5 sm:p-5">
+          <div className="flex w-full flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="min-w-0">
+              <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.2em] text-bloom-mid dark:text-bloom-sage">
+                Home
+              </p>
 
-          <h2 className="break-words text-3xl font-bold leading-tight text-bloom-forest dark:text-bloom-light sm:text-4xl">
-            {greeting}, {displayName} ꕤ
-          </h2>
+              <h2 className="break-words text-2xl font-bold leading-tight text-bloom-forest dark:text-bloom-light sm:text-3xl">
+                {greeting}, {displayName} ꕤ
+              </h2>
 
-          <p className="mt-3 max-w-xl text-sm leading-relaxed text-bloom-forest/65 dark:text-gray-300">
-            Choose one gentle step, pause when needed, and come back when you're
-            ready.
-          </p>
-        </div>
+              <p className="mt-2 max-w-xl text-sm leading-6 text-bloom-forest/65 dark:text-gray-300">
+                Choose one gentle step, pause when needed, and come back when
+                you're ready.
+              </p>
+            </div>
 
-        <div className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-[1.4rem] bg-bloom-forest text-2xl font-bold text-bloom-light shadow-sm">
-          {shouldShowAvatar ? (
-            <img
-              src={avatarDisplay.avatarUrl}
-              alt=""
-              className="h-full w-full object-cover"
-            />
-          ) : (
-            avatarDisplay.initial
-          )}
-        </div>
+            <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-[1.2rem] bg-bloom-forest text-xl font-bold text-bloom-light shadow-sm">
+              {shouldShowAvatar ? (
+                <img
+                  src={avatarDisplay.avatarUrl}
+                  alt=""
+                  className="h-full w-full object-cover"
+                />
+              ) : (
+                avatarDisplay.initial
+              )}
+            </div>
+          </div>
+        </section>
+
+        {/* DEMO FOCUS PANEL */}
+        {isDemoMode && (
+          <section
+            ref={focusPanelRef}
+            className="flex h-full rounded-[1.75rem] border border-bloom-sage/25 bg-gradient-to-br from-bloom-light/80 via-white/70 to-bloom-mint/35 p-4 shadow-sm dark:border-white/10 dark:from-white/10 dark:via-bloom-mid/15 dark:to-bloom-forest/35 sm:p-5"
+          >
+            <div className="flex w-full flex-col justify-between gap-4">
+              <div>
+                <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.2em] text-bloom-mid dark:text-bloom-sage">
+                  Focus mode
+                </p>
+
+                <h2 className="break-words text-2xl font-bold leading-tight text-bloom-forest dark:text-bloom-light sm:text-3xl">
+                  {isNeurodivergentDemo
+                    ? "Try one calm pause ꕤ"
+                    : "Try one calm focus block ꕤ"}
+                </h2>
+
+                <p className="mt-2 max-w-xl text-sm leading-6 text-bloom-forest/65 dark:text-gray-300">
+                  {isNeurodivergentDemo
+                    ? "Start with a short, quiet timer from Home. You can stop whenever you need."
+                    : "Start with a short timer directly from Home. Demo mode has been designed so you can experience Bloom without needing to open another page."}
+                </p>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-3">
+                <div className="rounded-2xl bg-white/70 px-4 py-3 text-sm font-bold text-bloom-forest dark:bg-white/10 dark:text-bloom-light">
+                  {focusTimerLabel}
+                </div>
+
+                {isFocusRunning ? (
+                  <button
+                    type="button"
+                    onClick={handlePauseFocus}
+                    className="rounded-2xl bg-bloom-forest px-4 py-2.5 text-sm font-bold text-bloom-light transition hover:bg-bloom-mid dark:bg-bloom-sage dark:text-bloom-forest dark:hover:bg-bloom-light"
+                  >
+                    Pause focus
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={handleStartFocus}
+                    className="rounded-2xl bg-bloom-forest px-4 py-2.5 text-sm font-bold text-bloom-light transition hover:bg-bloom-mid dark:bg-bloom-sage dark:text-bloom-forest dark:hover:bg-bloom-light"
+                  >
+                    Start focus
+                  </button>
+                )}
+
+                <button
+                  type="button"
+                  onClick={handleResetFocus}
+                  className="rounded-2xl border border-bloom-sage/25 bg-white/70 px-4 py-2.5 text-sm font-bold text-bloom-forest transition hover:bg-bloom-light dark:border-white/10 dark:bg-white/10 dark:text-bloom-light dark:hover:bg-white/15"
+                >
+                  Reset
+                </button>
+              </div>
+            </div>
+          </section>
+        )}
       </div>
-    </section> 
 
-    {/* DEMO START PANEL */}
-    {isDemoMode && (
-      <section className="flex h-full rounded-[2rem] border border-bloom-sage/25 bg-gradient-to-br from-bloom-light/80 via-white/70 to-bloom-mint/35 p-5 shadow-sm dark:border-white/10 dark:from-white/10 dark:via-bloom-mid/15 dark:to-bloom-forest/35 sm:p-7">
-        <div className="flex w-full flex-col justify-between gap-5">
-          <div>
-            <p className="mb-3 text-xs font-bold uppercase tracking-[0.22em] text-bloom-mid dark:text-bloom-sage">
-              Demo mode
-            </p>
-
-            <h2 className="break-words text-3xl font-bold leading-tight text-bloom-forest dark:text-bloom-light sm:text-4xl">
-              Try a routine first 🌱
-            </h2>
-
-            <p className="mt-3 max-w-xl text-sm leading-relaxed text-bloom-forest/65 dark:text-gray-300">
-              Routines are the easiest way to understand how Bloom supports small,
-              calm steps. This demo uses sample data only.
-            </p>
-          </div>
-
-          <div className="flex flex-wrap gap-3">
-            <button
-              type="button"
-              onClick={handleStartRoutine}
-              className="rounded-2xl bg-bloom-forest px-5 py-3 text-sm font-bold text-bloom-light transition hover:bg-bloom-mid dark:bg-bloom-sage dark:text-bloom-forest dark:hover:bg-bloom-sage/70"
-            >
-              Start with routines
-            </button>
-
-            <button
-              type="button"
-              onClick={onCreateAccount}
-              className="rounded-2xl border border-bloom-sage/25 bg-white/70 px-5 py-3 text-sm font-bold text-bloom-forest transition hover:bg-bloom-light dark:border-white/10 dark:bg-white/10 dark:text-bloom-light dark:hover:bg-white/15"
-            >
-              Create your space
-            </button>
-          </div>
-        </div>
-      </section>
-    )}
-  </div>
-
-      <section className="grid gap-4 xl:grid-cols-[minmax(0,1.25fr)_minmax(260px,0.75fr)_minmax(260px,0.75fr)]">
-        <div 
+      <section
+        className={
+          isDemoMode
+            ? "grid gap-4 xl:grid-cols-[minmax(0,0.75fr)_minmax(0,1.55fr)]"
+            : "grid gap-4 xl:grid-cols-[minmax(0,1.25fr)_minmax(260px,0.75fr)_minmax(240px,0.7fr)]"
+        }
+      >
+        <div
           ref={taskPanelRef}
           className="rounded-[1.5rem] border border-bloom-sage/25 bg-white/55 p-4 shadow-sm dark:border-white/10 dark:bg-white/5 sm:p-5 lg:p-6"
         >
@@ -313,78 +417,104 @@ function Home({
           <TaskList />
         </div>
 
-        <div 
-          ref={focusPanelRef}
-          className="flex flex-col justify-between rounded-[1.5rem] border border-bloom-sage/25 bg-white/55 p-4 text-center shadow-sm dark:border-white/10 dark:bg-white/5"
-        >
-          <div>
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-bloom-mid dark:text-bloom-sage">
-              Focus
-            </p>
-
-            <div className="mx-auto mt-4 flex h-34 w-34 flex-col items-center justify-center rounded-full border-[10px] border-bloom-sage/35 bg-bloom-light/50 dark:border-white/10 dark:bg-white/5">
-              <p className="text-xs font-semibold text-bloom-forest/60 dark:text-gray-300">
-                Deep Focus
+        {!isDemoMode && (
+          <div
+            ref={focusPanelRef}
+            className="flex flex-col justify-between rounded-[1.5rem] border border-bloom-sage/25 bg-white/55 p-4 text-center shadow-sm dark:border-white/10 dark:bg-white/5"
+          >
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-bloom-mid dark:text-bloom-sage">
+                Focus
               </p>
 
-              <p className="mt-1 text-3xl font-bold text-bloom-forest dark:text-bloom-light">
-                {selectedFocusMinutes}:00
+              <div className="mx-auto mt-4 flex h-32 w-32 flex-col items-center justify-center rounded-full border-[8px] border-bloom-sage/35 bg-bloom-light/50 dark:border-white/10 dark:bg-white/5">
+                <p className="text-xs font-semibold text-bloom-forest/60 dark:text-gray-300">
+                  Deep Focus
+                </p>
+
+                <p className="mt-1 text-3xl font-bold text-bloom-forest dark:text-bloom-light">
+                  {focusTimerLabel}
+                </p>
+              </div>
+
+              <p className="mt-3 text-xs leading-5 text-bloom-forest/65 dark:text-gray-300">
+                Start with one quiet block. You can stop, pause, or restart
+                whenever you need.
               </p>
+
+              <div className="mt-3 rounded-2xl bg-white/70 px-4 py-3 shadow-sm dark:bg-white/5">
+                <p className="text-xs font-bold uppercase tracking-[0.1em] text-bloom-mid dark:text-bloom-sage">
+                  Today's focus
+                </p>
+
+                <p className="mt-2 text-sm font-bold text-bloom-forest dark:text-bloom-light">
+                  {focusStats.completedFocusTasks}/{focusStats.totalFocusTasks}{" "}
+                  focus tasks
+                </p>
+
+                <p className="mt-1 text-xs leading-4 text-bloom-forest/60 dark:text-gray-300">
+                  {focusStats.totalFocusTasks === 0
+                    ? "No focus tasks yet. Add one when you're ready."
+                    : focusStats.completedFocusTasks ===
+                        focusStats.totalFocusTasks
+                      ? "All focus tasks complete for today."
+                      : "Keep going at your own pace."}
+                </p>
+              </div>
+
+              <div className="mt-3 grid grid-cols-4 gap-2">
+                {FOCUS_OPTIONS.map((minutes) => (
+                  <button
+                    key={minutes}
+                    type="button"
+                    onClick={() => handleSelectFocusMinutes(minutes)}
+                    className={`rounded-full px-3 py-2 text-xs font-bold transition ${
+                      selectedFocusMinutes === minutes
+                        ? "bg-bloom-mid text-white dark:bg-bloom-forest"
+                        : "bg-bloom-light text-bloom-forest hover:bg-bloom-mint/60 dark:bg-white/10 dark:text-bloom-light dark:hover:bg-white/15"
+                    }`}
+                  >
+                    {minutes}
+                  </button>
+                ))}
+              </div>
             </div>
 
-            <p className="mt-3 text-xs leading-5 text-bloom-forest/65 dark:text-gray-300">
-              Start with one quiet block. You can stop, pause, or restart
-              whenever you need.
-            </p>
-
-            <div className="mt-3 rounded-2xl bg-white/70 px-4 py-3 shadow-sm dark:bg-white/5">
-              <p className="text-xs font-bold uppercase tracking-[0.1em] text-bloom-mid dark:text-bloom-sage">
-                Today's focus
-              </p>
-
-              <p className="mt-2 text-sm font-bold text-bloom-forest dark:text-bloom-light">
-                {focusStats.completedFocusTasks}/{focusStats.totalFocusTasks} focus tasks
-              </p>
-
-              <p className="mt-1 text-xs leading-4 text-bloom-forest/60 dark:text-gray-300">
-                {focusStats.totalFocusTasks === 0
-                  ? "No focus tasks yet. Add one when you're ready."
-                  : focusStats.completedFocusTasks === focusStats.totalFocusTasks
-                    ? "All focus tasks complete for today."
-                    : "Keep going at your own pace."}
-              </p>
-            </div>
-
-            <div className="mt-3 grid grid-cols-4 gap-2">
-              {FOCUS_OPTIONS.map((minutes) => (
+            <div className="mt-3 flex justify-center gap-2">
+              {isFocusRunning ? (
                 <button
-                  key={minutes}
                   type="button"
-                  onClick={() => setSelectedFocusMinutes(minutes)}
-                  className={`rounded-full px-3 py-2 text-xs font-bold transition ${
-                    selectedFocusMinutes === minutes
-                      ? "bg-bloom-mid text-white dark:bg-bloom-forest"
-                      : "bg-bloom-light text-bloom-forest hover:bg-bloom-mint/60 dark:bg-white/10 dark:text-bloom-light dark:hover:bg-white/15"
-                  }`}
+                  onClick={handlePauseFocus}
+                  className="rounded-full bg-bloom-mid px-5 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-bloom-forest dark:bg-bloom-forest/80 dark:hover:bg-bloom-mid/80"
                 >
-                  {minutes}
+                  Pause focus
                 </button>
-              ))}
+              ) : (
+                <button
+                  type="button"
+                  onClick={handleStartFocus}
+                  className="rounded-full bg-bloom-mid px-5 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-bloom-forest dark:bg-bloom-forest/80 dark:hover:bg-bloom-mid/80"
+                >
+                  Start focus
+                </button>
+              )}
+
+              <button
+                type="button"
+                onClick={handleResetFocus}
+                className="rounded-full bg-bloom-light px-5 py-2.5 text-sm font-bold text-bloom-forest transition hover:bg-bloom-mint/60 dark:bg-white/10 dark:text-bloom-light dark:hover:bg-white/15"
+              >
+                Reset
+              </button>
             </div>
           </div>
+        )}
 
-          <button
-            type="button"
-            onClick={() => goToPage("focus")}
-            className="mx-auto mt-3 rounded-full bg-bloom-mid px-6 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-bloom-forest dark:bg-bloom-forest/80 dark:hover:bg-bloom-mid/80"
-          >
-            Start focus
-          </button>
-        </div>
-
-        <div 
+        <div
           ref={routinePanelRef}
-          className="rounded-[1.5rem] border border-bloom-sage/25 bg-white/55 p-4 shadow-sm dark:border-white/10 dark:bg-white/5"
+          className={`rounded-[1.5rem] border border-bloom-sage/25 bg-white/55 shadow-sm dark:border-white/10 dark:bg-white/5 ${
+            isDemoMode ? "p-5 sm:p-6" : "p-4"
+          }`}
         >
           <div className="mb-4 flex items-start justify-between gap-3">
             <div>
@@ -423,7 +553,13 @@ function Home({
               </p>
             </div>
           ) : (
-            <div className="max-h-[200px] overflow-y-auto pr-1">
+            <div
+              className={
+                isDemoMode
+                  ? "max-h-[360px] overflow-y-auto pr-1"
+                  : "max-h-[200px] overflow-y-auto pr-1"
+              }
+            >
               <div className="flex flex-col gap-3">
                 {routines.map((routine) => {
                   const steps = routine.steps || []
@@ -431,7 +567,7 @@ function Home({
                     (step) => step.completed
                   ).length
                   const totalSteps = steps.length
-                  const previewSteps = steps.slice(0, 3)
+                  const previewSteps = steps.slice(0, isDemoMode ? 5 : 3)
 
                   return (
                     <div
@@ -478,9 +614,11 @@ function Home({
                       ) : (
                         <div className="flex flex-col gap-2">
                           {previewSteps.map((step) => (
-                            <div
+                            <button
                               key={step.id}
-                              className="flex items-center gap-2 text-xs font-semibold text-bloom-forest/75 dark:text-gray-300"
+                              type="button"
+                              onClick={() => handleToggleRoutineStep(routine.id, step.id)}
+                              className="flex w-full items-center gap-2 rounded-xl px-2 py-1.5 text-left text-xs font-semibold text-bloom-forest/75 transition hover:bg-bloom-light/60 dark:text-gray-300 dark:hover:bg-white/10"
                             >
                               <span
                                 className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[10px] ${
@@ -492,22 +630,17 @@ function Home({
                                 ✓
                               </span>
 
-                              <span
-                                className={
-                                  step.completed
-                                    ? "line-through opacity-60"
-                                    : ""
-                                }
-                              >
+                              <span className={step.completed ? "line-through opacity-60" : ""}>
                                 {step.text}
                               </span>
-                            </div>
+                            </button>
                           ))}
-
-                          {steps.length > 3 && (
+                          {steps.length > previewSteps.length && (
                             <p className="text-xs font-semibold text-bloom-forest/45 dark:text-gray-400">
-                              +{steps.length - 3} more step
-                              {steps.length - 3 === 1 ? "" : "s"}
+                              +{steps.length - previewSteps.length} more step
+                              {steps.length - previewSteps.length === 1
+                                ? ""
+                                : "s"}
                             </p>
                           )}
                         </div>
@@ -519,13 +652,15 @@ function Home({
             </div>
           )}
 
-          <button
-            type="button"
-            onClick={() => goToPage("routines")}
-            className="mt-3 w-full rounded-2xl bg-bloom-light px-5 py-3 text-sm font-bold text-bloom-forest transition hover:bg-bloom-mint/60 dark:bg-white/10 dark:text-bloom-light dark:hover:bg-bloom-mid/80"
-          >
-            View routines
-          </button>
+          {!isDemoMode && (
+            <button
+              type="button"
+              onClick={() => goToPage("routines")}
+              className="mt-3 w-full rounded-2xl bg-bloom-light px-5 py-3 text-sm font-bold text-bloom-forest transition hover:bg-bloom-mint/60 dark:bg-white/10 dark:text-bloom-light dark:hover:bg-bloom-mid/80"
+            >
+              View routines
+            </button>
+          )}
         </div>
       </section>
 
@@ -635,7 +770,7 @@ function Home({
           <div className="pointer-events-none absolute -bottom-4 -right-4 text-8xl opacity-20">
             🌸
           </div>
-        </div>  
+        </div>
       </section>
     </div>
   )

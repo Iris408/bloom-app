@@ -1,20 +1,28 @@
+// EN: Demo data for Bloom guided demos and full app preview.
+// JP: Bloom のガイド付きデモとフルアプリプレビュー用のデモデータ。
+
+// Quiet start — a calm, low-key entry point into Bloom.
+// 静かなスタート — Bloom への穏やかな入り口。
 export const quietStartTasks = [
   {
     id: "quiet-task-1",
-    text: "Choose one gentle step for today",
+    text: "Choose one small thing to begin with",
     category: "Daily care",
+    icon: "🌱",
     completed: false,
   },
   {
     id: "quiet-task-2",
-    text: "Start with a short focus block",
+    text: "Try a gentle focus block",
     category: "Focus",
+    icon: "⏳",
     completed: false,
   },
   {
     id: "quiet-task-3",
-    text: "Notice one small win before you leave",
+    text: "Notice one tiny thing that went well today",
     category: "Reflection",
+    icon: "✨",
     completed: false,
   },
 ]
@@ -23,49 +31,85 @@ export const quietStartRoutines = [
   {
     id: "quiet-routine-1",
     name: "Quiet start routine",
-    description: "A small routine for easing into the day.",
+    description: "A gentle sequence for slowly easing into the day.",
+    icon: "🌊",
     steps: [
       {
         id: "quiet-routine-1-step-1",
         text: "Take one slow breath",
+        time: "1 min",
         completed: false,
       },
       {
         id: "quiet-routine-1-step-2",
-        text: "Drink some water",
+        text: "Drink some water slowly",
+        time: "2 min",
         completed: false,
       },
       {
         id: "quiet-routine-1-step-3",
         text: "Choose one thing to begin with",
+        time: "1 min",
         completed: false,
       },
       {
         id: "quiet-routine-1-step-4",
         text: "Pause before moving on",
+        time: "1 min",
+        completed: false,
+      },
+    ],
+  },
+  {
+    id: "quiet-routine-2",
+    name: "Soft reset routine",
+    description: "A gentle reset for when the day feels slow or heavy.",
+    icon: "🍃",
+    steps: [
+      {
+        id: "quiet-routine-2-step-1",
+        text: "Clear one small space around you",
+        time: "3 min",
+        completed: false,
+      },
+      {
+        id: "quiet-routine-2-step-2",
+        text: "Put one helpful item nearby",
+        time: "1 min",
+        completed: false,
+      },
+      {
+        id: "quiet-routine-2-step-3",
+        text: "Write down one small next step",
+        time: "2 min",
         completed: false,
       },
     ],
   },
 ]
 
+// Neurodivergent-friendly — the softest, most permission-giving demo set.
+// 神経多様性に配慮した — 最も許容的なデモセット。
 export const neurodivergentFriendlyTasks = [
   {
     id: "nd-task-1",
     text: "Check what your body needs first",
-    category: "Body check",
+    category: "Check-in",
+    icon: "🧠",
     completed: false,
   },
   {
     id: "nd-task-2",
     text: "Pick the easiest next step",
-    category: "Low pressure",
+    category: "Ease",
+    icon: "☁️",
     completed: false,
   },
   {
     id: "nd-task-3",
     text: "Take a break without needing to earn it",
-    category: "Recovery",
+    category: "Permission",
+    icon: "🕊️",
     completed: false,
   },
 ]
@@ -73,27 +117,32 @@ export const neurodivergentFriendlyTasks = [
 export const neurodivergentFriendlyRoutines = [
   {
     id: "nd-routine-1",
-    name: "Low-pressure reset",
-    description: "A calm reset routine with no pressure to finish everything.",
+    name: "Pressure-free reset",
+    description: "A no-judgment routine with permission to stop at any point.",
+    icon: "🌸",
     steps: [
       {
         id: "nd-routine-1-step-1",
-        text: "Notice your energy level",
+        text: "Notice your current energy level",
+        time: "1 min",
         completed: false,
       },
       {
         id: "nd-routine-1-step-2",
-        text: "Reduce one source of overwhelm",
+        text: "Set aside one expectation that feels too heavy",
+        time: "1 min",
         completed: false,
       },
       {
         id: "nd-routine-1-step-3",
-        text: "Choose a tiny task or pause",
+        text: "Choose a small comfort or take an intentional pause",
+        time: "3 min",
         completed: false,
       },
       {
         id: "nd-routine-1-step-4",
-        text: "Give yourself permission to stop",
+        text: "Give yourself permission to stop or rest",
+        time: "1 min",
         completed: false,
       },
     ],
@@ -102,43 +151,52 @@ export const neurodivergentFriendlyRoutines = [
     id: "nd-routine-2",
     name: "Sensory-friendly start",
     description: "A softer start for noisy, busy, or difficult days.",
+    icon: "🎧",
     steps: [
       {
         id: "nd-routine-2-step-1",
         text: "Adjust light, sound, or comfort if needed",
+        time: "2 min",
         completed: false,
       },
       {
         id: "nd-routine-2-step-2",
-        text: "Put one useful item nearby",
+        text: "Place water or one helpful item nearby",
+        time: "1 min",
         completed: false,
       },
       {
         id: "nd-routine-2-step-3",
-        text: "Start with five quiet minutes",
+        text: "Allow five quiet minutes before starting",
+        time: "5 min",
         completed: false,
       },
     ],
   },
 ]
 
+// Full preview — shows the whole app working together.
+// フルプレビュー — アプリ全体の連携を示す。
 export const fullPreviewTasks = [
   {
     id: "full-task-1",
     text: "Review your morning routine",
     category: "Daily care",
+    icon: "☀️",
     completed: false,
   },
   {
     id: "full-task-2",
-    text: "Complete one focus task",
+    text: "Try a short focus block",
     category: "Focus",
+    icon: "🎯",
     completed: false,
   },
   {
     id: "full-task-3",
     text: "Add a small moment",
     category: "Moments",
+    icon: "📷",
     completed: false,
   },
 ]
@@ -147,63 +205,84 @@ export const fullPreviewRoutines = [
   {
     id: "full-routine-1",
     name: "Morning routine",
-    description: "A gentle morning routine for starting the day.",
+    description: "A structured but gentle anchor for starting your day.",
+    icon: "🌅",
     steps: [
       {
         id: "full-routine-1-step-1",
         text: "Drink water",
+        time: "2 min",
         completed: false,
       },
       {
         id: "full-routine-1-step-2",
-        text: "Check today’s tasks",
+        text: "Review your gentle intentions for today",
+        time: "2 min",
         completed: false,
       },
       {
         id: "full-routine-1-step-3",
-        text: "Start one focus block",
+        text: "Start your first small focus block",
+        time: "15 min",
         completed: false,
       },
     ],
   },
   {
     id: "full-routine-2",
-    name: "Evening reset",
-    description: "A short reset routine for closing the day softly.",
+    name: "Evening unwind",
+    description: "A soft evening routine to help you close the day.",
+    icon: "🌙",
     steps: [
       {
         id: "full-routine-2-step-1",
         text: "Clear one small space",
+        time: "5 min",
         completed: false,
       },
       {
         id: "full-routine-2-step-2",
-        text: "Write down one thing that helped",
+        text: "Write down one thing that helped today",
+        time: "2 min",
         completed: false,
       },
       {
         id: "full-routine-2-step-3",
-        text: "Choose one gentle step for tomorrow",
+        text: "Choose one helpful step for tomorrow",
+        time: "3 min",
         completed: false,
       },
     ],
   },
 ]
 
+export function isNeurodivergentDemoType(demoType) {
+  return [
+    "neurodivergent",
+    "neurodivergent-day",
+    "neurodivergentFriendly",
+    "neurodivergent-friendly",
+    "neurodivergentFriendlyDay",
+  ].includes(demoType)
+}
+
+export function isFullPreviewDemoType(demoType) {
+  return [
+    "full",
+    "full-app",
+    "full-app-preview",
+    "fullPreview",
+    "fullAppPreview",
+    "full_app_preview",
+  ].includes(demoType)
+}
+
 export function getDemoTasksByType(demoType) {
-  if (
-    demoType === "neurodivergent" ||
-    demoType === "neurodivergent-day" ||
-    demoType === "neurodivergentFriendly"
-  ) {
+  if (isNeurodivergentDemoType(demoType)) {
     return neurodivergentFriendlyTasks
   }
 
-  if (
-    demoType === "full" ||
-    demoType === "full-app-preview" ||
-    demoType === "fullPreview"
-  ) {
+  if (isFullPreviewDemoType(demoType)) {
     return fullPreviewTasks
   }
 
@@ -211,19 +290,11 @@ export function getDemoTasksByType(demoType) {
 }
 
 export function getDemoRoutinesByType(demoType) {
-  if (
-    demoType === "neurodivergent" ||
-    demoType === "neurodivergent-day" ||
-    demoType === "neurodivergentFriendly"
-  ) {
+  if (isNeurodivergentDemoType(demoType)) {
     return neurodivergentFriendlyRoutines
   }
 
-  if (
-    demoType === "full" ||
-    demoType === "full-app-preview" ||
-    demoType === "fullPreview"
-  ) {
+  if (isFullPreviewDemoType(demoType)) {
     return fullPreviewRoutines
   }
 

@@ -119,26 +119,8 @@ Next development focus:
 - Git / GitHub
 - VS Code
 - Claude Code
+- Codex
 - ChatGPT
-
-## Backend Security and Configuration
-
-Recent backend configuration improvements include:
-
-- Removed an insecure hardcoded JWT `SECRET_KEY` fallback.
-- Added fail-fast backend startup validation when required authentication configuration is missing.
-- Moved CORS allowed origins into environment variables for local development and live frontend deployment.
-- Configured backend CORS for local React/Vite development and the live Vercel frontend.
-- Stabilised backend local setup using a Python virtual environment, dependency checks, and local uvicorn testing.
-
-Example backend environment variables:
-
-```env
-SECRET_KEY=your_secure_secret_key_here
-CORS_ORIGINS=http://localhost:5173,https://your-vercel-app.vercel.app
-```
-
-These values should be stored in local `.env` files or deployment environment settings, not hardcoded in source code.
 
 ## AI-Assisted Development Workflow
 

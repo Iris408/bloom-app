@@ -156,7 +156,7 @@ function Sidebar({ activePage, setActivePage, onOpenHelp }) {
 
             <button
               type="button"
-              onClick={() => onOpenHelp?.()}
+              onClick={() => setActivePage("help")}
               className="flex h-10 w-10 items-center justify-center rounded-2xl border border-bloom-sage/20 bg-white/70 text-bloom-forest/65 transition hover:bg-bloom-light hover:text-bloom-forest dark:border-white/10 dark:bg-white/10 dark:text-bloom-light/60 dark:hover:bg-white/15"
               aria-label="Open help"
             >

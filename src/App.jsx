@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useApp } from "./context/AppContext";
 import { getAuthToken, getCurrentUser, logoutUser } from "./api/bloomApi";
 import { getAvatarDisplay } from "./utils/avatarStorage";
+import { seedDemoData } from "./utils/seedDemoData"
 
 import LoginModal from "./components/auth/LoginModal";
 import Header from "./components/layout/Header";
@@ -45,10 +46,7 @@ function App() {
   const [demoType, setDemoType] = useState(null);
   const [isDemoCompletionOpen, setIsDemoCompletionOpen] = useState(false);
   const guidedDemoPages = ["routines", "focus", "moments"];
-  const isGuidedDemo = isDemoMode &&
-    demoType !== "full" &&
-    demoType !== "full-app-preview" &&
-    demoType !== "fullPreview"
+  const isGuidedDemo = isDemoMode && !isFullDemoType(demoType)
 
   const guidedDemoPageName = {
     routines: "Routines",
@@ -176,12 +174,25 @@ function App() {
   }
 
   function handleStartDemo(selectedDemoType) {
+    seedDemoData(demoType)
+    
     // EN: Start demo mode and move the user into the main Bloom app.
     // JP: デモモードを開始し、ユーザーをBloomのメイン画面へ移動します。
     setIsDemoMode(true);
     setDemoType(selectedDemoType);
     setIsLoginOpen(false);
     setActivePage("home");
+  }
+
+  function isFullDemoType(type) {
+    return [
+      "full",
+      "full-app-preview",
+      "fullPreview",
+      "full-app",
+      "fullAppPreview",
+      "full_app_preview",
+    ].includes(type)
   }
 
   function handleConfirmExitDemo() {

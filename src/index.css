@@ -72,3 +72,24 @@ html.reduce-motion *::after {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   line-height: 1 !important;
 }
+@keyframes bloomSoftRise {
+  0% {
+    opacity: 0;
+    transform: translateY(18px) scale(0.98);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.bloom-soft-rise {
+  animation: bloomSoftRise 260ms ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bloom-soft-rise {
+    animation: none;
+  }
+}

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 
 import EmptyState from "../components/ui/EmptyState"
-import { demoRoutines } from "../data/demoData"
+import { quietStartTasks, quietStartRoutines, neurodivergentFriendlyTasks, neurodivergentFriendlyRoutines, fullPreviewTasks, fullPreviewRoutines } from "../data/demoData"
 import {
   markDailyResetComplete,
   resetRoutineStepCompletion,

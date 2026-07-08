@@ -29,7 +29,7 @@ export default function DemoBanner({
       </p>
 
       <p className="text-xs leading-relaxed text-bloom-forest/75 dark:text-gray-300">
-        ꕤ Nothings is being saved, and that's okay.
+        ꕤ Nothing is being saved, and that's okay.
       </p>
 
       <p className="text-xs leading-relaxed text-bloom-forest/75 dark:text-gray-300">

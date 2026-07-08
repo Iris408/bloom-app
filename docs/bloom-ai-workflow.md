@@ -5,6 +5,7 @@ Bloom uses supervised AI-assisted development as part of the engineering workflo
 ## AI Tools Used
 
 - Claude Code
+- Codex
 - ChatGPT
 
 ## Use Cases
@@ -26,6 +27,6 @@ AI-generated suggestions were not committed automatically.
 
 The developer manually reviewed diffs, tested changes, controlled Git commits, and made final implementation decisions.
 
-## Resume-Friendly Summary
+## Summary
 
 Used Claude Code and ChatGPT as supervised AI pair-programming tools for code review, debugging support, backend security/configuration checks, and documentation, while manually reviewing diffs, testing changes, and managing Git commits.

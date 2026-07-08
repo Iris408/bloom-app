@@ -73,13 +73,13 @@ const tutorialSurfaceMeta = {
     title: "Public guide",
   },
   demo: {
-    buttonLabel: "Demo start",
+    buttonLabel: "Demo guide",
     eyebrow: "Demo guide",
-    title: "Demo mode guide",
+    title: "Demo guide",
   },
   app: {
-    buttonLabel: "App guide",
-    eyebrow: "Bloom app guide",
+    buttonLabel: "Bloom guide",
+    eyebrow: "Bloom guide",
     title: "Protected app guide",
   },
 }

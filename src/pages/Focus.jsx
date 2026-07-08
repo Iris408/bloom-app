@@ -64,6 +64,7 @@ const ENVIRONMENTS = [
   },
 ]
 
+
 function FocusIcon() {
   return (
     <svg
@@ -269,14 +270,14 @@ function Focus() {
   }
 
   function handleStartBreak() {
-    const resetSession = FOCUS_TYPES.find((type) => type.id === "reset")
+    setSelectedFocusMinutes(5)
 
-    if (!resetSession) return
-
-    setSelectedFocusTypeId(resetSession.id)
-    setSecondsRemaining(resetSession.minutes * 60)
-    setIsSessionComplete(false)
-    setIsTimerRunning(true)
+    requestAnimationFrame(() => {
+      timerRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      })
+    })
   }
 
   function handleSaveReflection() {
@@ -375,7 +376,7 @@ function Focus() {
       </section>
 
       {/* Timer + today's focus */}
-      <section className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_360px]">
+      <section ref={timerRef} className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_360px]">
         <div
           id="focus-timer"
           className="rounded-[2rem] border border-bloom-sage/25 bg-white/55 p-5 shadow-sm dark:border-white/10 dark:bg-white/5 sm:p-7"
@@ -622,11 +623,11 @@ function Focus() {
           </p>
 
           <h3 className="mt-2 text-xl font-bold text-bloom-forest dark:text-bloom-light">
-            Set the room
+            Set the room 
           </h3>
 
           <p className="mt-2 text-sm leading-relaxed text-bloom-forest/60 dark:text-gray-300">
-            This is a visual setting for now. Sounds can be added later.
+            Soundscapes coming soon. ᭄᭡ ͏ ͏ ͏
           </p>
 
           <div className="mt-5 grid gap-3 sm:grid-cols-2">
