@@ -150,7 +150,9 @@ function TutorialPanel({
       <button
         type="button"
         onClick={handleToggle}
-        className="fixed bottom-6 right-6 z-40 inline-flex h-11 items-center justify-center gap-2 rounded-full bg-bloom-forest px-4 text-xs font-bold text-bloom-light shadow-lg transition hover:bg-bloom-mid dark:bg-bloom-sage dark:text-bloom-forest dark:hover:bg-bloom-light"
+        className={`fixed bottom-6 right-6 z-40 inline-flex h-11 items-center justify-center gap-2 rounded-full bg-bloom-forest px-4 text-xs font-bold text-bloom-light shadow-lg transition hover:bg-bloom-mid dark:bg-bloom-sage dark:text-bloom-forest dark:hover:bg-bloom-light ${
+          !isOpen && surface === "demo" ? "bloom-guide-jump" : ""
+        }`}
         aria-label={isOpen ? "Close Bloom guide" : "Open Bloom guide"}
         title="How to use Bloom"
       >
