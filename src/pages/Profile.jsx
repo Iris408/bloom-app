@@ -228,18 +228,18 @@ function ProfileAvatarSlider({
         </div>
       </div>
 
-      {isDemoMode ? (
-        <div className="rounded-2xl bg-white/70 px-4 py-4 shadow-sm dark:bg-white/5">
-          <p className="text-sm font-bold text-bloom-forest dark:text-bloom-light">
-            Avatar choices are for Bloom accounts
+      {isDemoMode && (
+        <div className="rounded-2xl border border-bloom-sage/25 bg-bloom-light/60 px-4 py-4 text-sm leading-6 text-bloom-forest/70 shadow-sm dark:border-white/10 dark:bg-white/10 dark:text-gray-300">
+          <p className="font-bold text-bloom-forest dark:text-bloom-light">
+            Demo avatar preview
           </p>
 
-          <p className="mt-1 text-xs leading-5 text-bloom-forest/65 dark:text-gray-300">
-            Demo mode uses temporary sample data. Create an account to save your
-            avatar choice.
+          <p className="mt-1">
+            You can try avatar choices in demo mode, but they are not saved. Saving
+            avatar choices is part of Bloom accounts
           </p>
         </div>
-      ) : (
+      ) }
         <div className="rounded-2xl bg-white/70 px-4 py-4 shadow-sm dark:bg-white/5">
           <p className="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-bloom-mid dark:text-bloom-sage">
             Profile Avatar
@@ -308,9 +308,8 @@ function ProfileAvatarSlider({
             </button>
           </div>
         </div>
-      )}
     </div>
-  )
+  );
 }
 
 function OnboardingSelect({
@@ -465,26 +464,17 @@ function Profile({
   }
 
   function handleSelectAvatar({ avatarType, avatarId, avatarUrl }) {
-    if (!currentUser?.id) return
-
     setSelectedAvatarType(avatarType)
     setSelectedAvatarId(avatarId)
     setSelectedAvatarUrl(avatarUrl)
+
+    if (isDemoMode || !currentUser?.id) return
 
     saveBloomAvatarChoice(currentUser, {
       avatarType,
       avatarId,
       avatarUrl,
     })
-  }
-
-  function handleAvatarChange(nextAvatar) {
-    if (isDemoMode) {
-      setPreviewAvatar(nextAvatar)
-      return
-    }
-
-    saveAvatar(nextAvatar)
   }
 
   function handleUpdateOnboarding(key, value) {
@@ -519,12 +509,6 @@ function Profile({
 
   const shouldShowAvatarImage =
     selectedAvatarType === "bloom" && selectedAvatarUrl
-
-  const [previewAvatar, setPreviewAvatar] = useState(null)
-
-  const visibleAvatar = isDemoMode && previewAvatar
-    ? previewAvatar
-    : selectedAvatarType === "bloom" && selectedAvatarUrl  
 
   return (
     <div className="mx-auto flex w-full min-w-0 max-w-6xl flex-col gap-6 overflow-x-hidden pb-28 sm:gap-7 sm:pb-0">
