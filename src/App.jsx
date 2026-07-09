@@ -309,7 +309,15 @@ function App() {
         />
       );    
     }
-    if (activePage === "focus") return <Focus />;
+    if (activePage === "focus") {
+      return (
+        <Focus
+          currentUser={currentUser}
+          isDemoMode={isDemoMode}
+          demoType={demoType}
+        />
+      )
+    }
     if (activePage === "progress") {
       return (
         <Progress

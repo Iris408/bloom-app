@@ -2,6 +2,12 @@ import { useEffect, useMemo, useRef, useState } from "react"
 
 import EmptyState from "../components/ui/EmptyState"
 import { useApp } from "../context/AppContext"
+import {
+  createFocusTask,
+  deleteFocusTaskFromApi,
+  getFocusTasks,
+  updateFocusTask,
+} from "../api/bloomApi"
 import { todayKey } from "../utils/progressUtils"
 
 const FOCUS_HISTORY_STORAGE_KEY = "bloom-focus-history"
@@ -150,12 +156,16 @@ function isWithinLastSevenDays(dateValue) {
   return difference >= 0 && difference <= sevenDays
 }
 
-function Focus() {
+function Focus({
+  currentUser = null,
+  isDemoMode = false,
+}) {
+    
   const {
-    focusTasks,
-    addFocusTask,
-    toggleFocusTaskComplete,
-    deleteFocusTask,
+    focusTasks: localFocusTasks,
+    addFocusTask: addLocalFocusTask,
+    toggleFocusTaskComplete: toggleLocalFocusTaskComplete,
+    deleteFocusTask: deleteLocalFocusTask,
   } = useApp()
 
   const timerRef = useRef(null)
@@ -174,6 +184,13 @@ function Focus() {
   const [reflectionText, setReflectionText] = useState("")
   const [focusHistory, setFocusHistory] = useState(() => getStoredFocusHistory())
 
+  const isBackendMode = Boolean(currentUser?.id) && !isDemoMode
+  const [backendFocusTasks, setBackendFocusTasks] = useState([])
+  const [isLoadingFocusTasks, setIsLoadingFocusTasks] = useState(false)
+  const [focusTaskError, setFocusTaskError] = useState("")
+
+  const activeFocusTasks = isBackendMode ? backendFocusTasks : localFocusTasks
+
   const selectedFocusType =
     FOCUS_TYPES.find((type) => type.id === selectedFocusTypeId) ||
     FOCUS_TYPES[2]
@@ -188,8 +205,8 @@ function Focus() {
   )
 
   const todayFocusTasks = useMemo(() => {
-    return (focusTasks ?? []).filter((task) => task.scheduledFor === today)
-  }, [focusTasks, today])
+    return (activeFocusTasks ?? []).filter((task) => task.scheduledFor === today)
+  }, [activeFocusTasks, today])
 
   const completedCount = todayFocusTasks.filter(
     (task) => task.completedOn === today
@@ -219,6 +236,41 @@ function Focus() {
         : completedCount > 0
           ? "You are making gentle progress."
           : "There is no rush. Start when it feels right."
+
+  useEffect(() => {
+    if (!isBackendMode) return
+
+    let shouldIgnore = false
+
+    async function loadFocusTasks() {
+      setIsLoadingFocusTasks(true)
+      setFocusTaskError("")
+
+      try {
+        const savedFocusTasks = await getFocusTasks(today)
+
+        if (!shouldIgnore) {
+          setBackendFocusTasks(savedFocusTasks)
+        }
+      } catch (error) {
+        if (!shouldIgnore) {
+          setFocusTaskError(
+            error.message || "Could not load your saved focus tasks."
+          )
+        }
+      } finally {
+        if (!shouldIgnore) {
+          setIsLoadingFocusTasks(false)
+        }
+      } 
+    }
+
+    loadFocusTasks()
+
+    return () => {
+      shouldIgnore = true
+    }
+  }, [isBackendMode, currentUser?.id, today])
 
   useEffect(() => {
     localStorage.setItem(
@@ -307,11 +359,88 @@ function Focus() {
     setSecondsRemaining(totalSeconds)
   }
 
-  function handleAddFocusTask() {
-    if (taskTitle.trim() === "") return
+  async function handleAddFocusTask() {
+    const cleanTitle = taskTitle.trim()
 
-    addFocusTask(taskTitle.trim(), today)
+    if (cleanTitle === "") return
+
+    if (isBackendMode) {
+      setFocusTaskError("")
+
+      try {
+        const savedTask = await createFocusTask(
+          {
+            title: cleanTitle,
+            completed: false,
+          },
+          today
+        )
+
+        setBackendFocusTasks((currentTasks) => [...currentTasks, savedTask])
+        setTaskTitle("")
+      } catch (error) {
+        setFocusTaskError(error.message || "Could not create focus task.")
+      }
+
+      return
+    }
+
+    addLocalFocusTask(cleanTitle, today)
     setTaskTitle("")
+  }
+
+  async function handleToggleFocusTaskComplete(taskId) {
+    if (isBackendMode) {
+      const task = backendFocusTasks.find(
+        (currentTask) => currentTask.id === taskId
+      )
+
+      if (!task) return
+
+      setFocusTaskError("")
+
+      try {
+        const updatedTask = await updateFocusTask(
+          taskId,
+          {
+            completed: task.completedOn !== today,
+          },
+          today
+        )
+
+        setBackendFocusTasks((currentTasks) =>
+          currentTasks.map((currentTask) =>
+            currentTask.id === taskId ? updatedTask : currentTask
+          )
+        )
+      } catch (error) {
+        setFocusTaskError(error.message || "Could not update focus task.")
+      }
+
+      return
+    }
+
+    toggleLocalFocusTaskComplete(taskId, today)
+  }
+
+  async function handleDeleteFocusTask(taskId) {
+    if (isBackendMode) {
+      setFocusTaskError("")
+
+      try {
+        await deleteFocusTaskFromApi(taskId)
+
+        setBackendFocusTasks((currentTasks) =>
+          currentTasks.filter((task) => task.id !== taskId)
+        )
+      } catch (error) {
+        setFocusTaskError(error.message || "Could not delete focus task.")
+      }
+
+      return
+    }
+
+    deleteLocalFocusTask(taskId)
   }
 
   return (
@@ -507,6 +636,18 @@ function Focus() {
             </button>
           </div>
 
+          {isLoadingFocusTasks && (
+            <p className="mb-4 rounded-2xl bg-bloom-light/70 px-4 py-3 text-sm font-semibold text-bloom-forest/70 dark:bg-white/10 dark:text-gray-300">
+              Loading your saved focus tasks...
+            </p>
+          )}
+
+          {focusTaskError && (
+            <p className="mb-4 rounded-2xl bg-red-50 px-4 py-3 text-sm font-semibold text-red-700 dark:bg-red-500/10 dark:text-red-200">
+              {focusTaskError}
+            </p>
+          )}
+
           {todayFocusTasks.length === 0 ? (
             <EmptyState
               icon="🎧"
@@ -531,7 +672,7 @@ function Focus() {
                     <div className="flex items-center gap-3">
                       <button
                         type="button"
-                        onClick={() => toggleFocusTaskComplete(task.id, today)}
+                        onClick={() => handleToggleFocusTaskComplete(task.id)}
                         aria-label={
                           isComplete
                             ? "Mark focus task as incomplete"
@@ -568,7 +709,7 @@ function Focus() {
 
                       <button
                         type="button"
-                        onClick={() => deleteFocusTask(task.id)}
+                        onClick={() => handleDeleteFocusTask(task.id)}
                         className="rounded-full px-3 py-2 text-xs font-bold text-red-400 transition hover:text-red-600"
                       >
                         Remove
@@ -791,7 +932,7 @@ function Focus() {
             </p>
 
             <p className="mt-1 text-xs font-semibold text-bloom-forest/60 dark:text-gray-300">
-              Today&apos;s tasks
+              Today's tasks
             </p>
           </div>
         </div>

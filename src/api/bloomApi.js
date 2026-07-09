@@ -316,3 +316,101 @@ export async function deleteRoutineStep(stepId) {
 
   return response.json();
 }
+
+// EN: Convert backend focus task shape into frontend focus task shape.
+// JP: バックエンドのフォーカスタスク形式をフロントエンド用の形式に変換します。
+function mapFocusTaskFromApi(task, dateKey) {
+  return {
+    id: task.id,
+    title: task.title,
+    scheduledFor: dateKey,
+    completedOn: task.completed ? dateKey : null,
+  };
+}
+
+// EN: Fetch focus tasks for the logged-in user.
+// JP: ログイン中ユーザーのフォーカスタスクを取得します。
+export async function getFocusTasks(dateKey) {
+  const response = await fetch(`${API_BASE_URL}/focus-tasks/`, {
+    method: "GET",
+    headers: getAuthHeaders(),
+  });
+
+  if (!response.ok) {
+    const message = await getApiErrorMessage(
+      response,
+      "Failed to fetch focus tasks"
+    );
+    throw new Error(message);
+  }
+
+  const tasks = await response.json();
+
+  return tasks.map((task) => mapFocusTaskFromApi(task, dateKey));
+}
+
+// EN: Create a new focus task.
+// JP: 新しいフォーカスタスクを作成します。
+export async function createFocusTask({ title, completed = false }, dateKey) {
+  const response = await fetch(`${API_BASE_URL}/focus-tasks/`, {
+    method: "POST",
+    headers: getAuthHeaders(),
+    body: JSON.stringify({
+      title,
+      completed,
+    }),
+  });
+
+  if (!response.ok) {
+    const message = await getApiErrorMessage(
+      response,
+      "Failed to create focus task"
+    );
+    throw new Error(message);
+  }
+
+  const task = await response.json();
+
+  return mapFocusTaskFromApi(task, dateKey);
+}
+
+// EN: Update an existing focus task.
+// JP: 既存のフォーカスタスクを更新します。
+export async function updateFocusTask(taskId, updates, dateKey) {
+  const response = await fetch(`${API_BASE_URL}/focus-tasks/${taskId}`, {
+    method: "PUT",
+    headers: getAuthHeaders(),
+    body: JSON.stringify(updates),
+  });
+
+  if (!response.ok) {
+    const message = await getApiErrorMessage(
+      response,
+      "Failed to update focus task"
+    );
+    throw new Error(message);
+  }
+
+  const task = await response.json();
+
+  return mapFocusTaskFromApi(task, dateKey);
+}
+
+// EN: Delete an existing focus task.
+// JP: 既存のフォーカスタスクを削除します。
+export async function deleteFocusTaskFromApi(taskId) {
+  const response = await fetch(`${API_BASE_URL}/focus-tasks/${taskId}`, {
+    method: "DELETE",
+    headers: getAuthHeaders(),
+  });
+
+  if (!response.ok) {
+    const message = await getApiErrorMessage(
+      response,
+      "Failed to delete focus task"
+    );
+    throw new Error(message);
+  }
+
+  return response.json();
+}
