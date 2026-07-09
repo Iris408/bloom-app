@@ -300,7 +300,15 @@ function App() {
       );
     }
 
-    if (activePage === "routines") return <Routines />;
+    if (activePage === "routines") {
+      return (
+        <Routines
+          currentUser={currentUser}
+          isDemoMode={isDemoMode}
+          demoType={demoType}
+        />
+      );    
+    }
     if (activePage === "focus") return <Focus />;
     if (activePage === "progress") {
       return (

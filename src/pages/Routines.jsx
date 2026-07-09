@@ -1,13 +1,23 @@
 import { useEffect, useState } from "react"
 
 import EmptyState from "../components/ui/EmptyState"
-import { quietStartRoutines } from "../data/demoData"
 import {
   markDailyResetComplete,
   resetRoutineStepCompletion,
   shouldRunDailyReset,
 } from "../utils/dailyResetUtils"
+import {
+  createRoutine,
+  createRoutineStep,
+  deleteRoutine as deleteRoutineFromApi,
+  deleteRoutineStep,
+  getRoutines,
+  updateRoutine,
+  updateRoutineStep,
+} from "../api/bloomApi"
+import { quietStartRoutines } from "../data/demoData"
 import { triggerDemoCompletionEvent } from "../utils/demoCompletionEvent"
+import { getCurrentUser } from "../api/bloomApi"
 
 const ROUTINE_STORAGE_KEY = "bloom-routines"
 const ROUTINE_DAILY_RESET_KEY = "bloom-routines-last-reset"
@@ -132,7 +142,10 @@ function normaliseStarterRoutine(routine) {
   }
 }
 
-function Routines() {
+function Routines({
+  currentUser = null,
+  isDemoMode = false,
+}) {
   const [routines, setRoutines] = useState(() => {
     try {
       const savedRoutines = localStorage.getItem(ROUTINE_STORAGE_KEY)
@@ -176,6 +189,10 @@ function Routines() {
   const [expandedRoutineId, setExpandedRoutineId] = useState(null)
   const [exploredStarterRoutineId, setExploredStarterRoutineId] = useState(null)
   const [expandedWideId, setExpandedWideId] = useState(null)
+
+  const isBackendMode = Boolean(currentUser?.id) && !isDemoMode
+  const [isLoadingRoutines, setIsLoadingRoutines] = useState(false)
+  const [routineError, setRoutineError] = useState("")
 
   const starterRoutines = quietStartRoutines
 
@@ -784,7 +801,7 @@ function Routines() {
                             onClick={() => handleDeleteRoutine(routine.id)}
                             aria-label="Delete routine"
                             title="Delete routine"
-                            className="rounded-full px-2 py-1 text-sm font-bold text-red-400 transition hover:text-red-600"
+                            className="rounded-full px-2 py-1 text-sm"
                           >
                             🗑
                           </button>

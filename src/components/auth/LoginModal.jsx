@@ -158,6 +158,13 @@ export default function LoginModal({
     onClose();
   }
 
+  function switchView(nextView) {
+    setModalView(nextView)
+    setError("")
+    setNotice("")
+    setIsLoading(false)
+  }
+
   async function handleLogin(event) {
     event.preventDefault();
 

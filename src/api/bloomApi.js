@@ -140,3 +140,179 @@ export async function getCurrentUser() {
 
   return response.json();
 }
+
+// EN: Convert backend routine shape into frontend routine shape.
+// JP: バックエンドのルーティン形式をフロントエンド用の形式に変換します。
+function mapRoutineFromApi(routine) {
+  return {
+    id: routine.id,
+    name: routine.name,
+    completed: routine.completed,
+    steps: [...(routine.steps || [])]
+      .sort((firstStep, secondStep) => firstStep.step_order - secondStep.step_order)
+      .map((step) => ({
+        id: step.id,
+        routineId: step.routine_id,
+        text: step.title,
+        completed: step.completed,
+        stepOrder: step.step_order,
+      })),
+  };
+}
+
+// EN: Fetch routines for the logged-in user.
+// JP: ログイン中ユーザーのルーティンを取得します。
+export async function getRoutines() {
+  const response = await fetch(`${API_BASE_URL}/routines/`, {
+    method: "GET",
+    headers: getAuthHeaders(),
+  });
+
+  if (!response.ok) {
+    const message = await getApiErrorMessage(response, "Failed to fetch routines");
+    throw new Error(message);
+  }
+
+  const routines = await response.json();
+
+  return routines.map(mapRoutineFromApi);
+}
+
+// EN: Create a new routine.
+// JP: 新しいルーティンを作成します。
+export async function createRoutine({ name, completed = false }) {
+  const response = await fetch(`${API_BASE_URL}/routines/`, {
+    method: "POST",
+    headers: getAuthHeaders(),
+    body: JSON.stringify({
+      name,
+      completed,
+    }),
+  });
+
+  if (!response.ok) {
+    const message = await getApiErrorMessage(response, "Failed to create routine");
+    throw new Error(message);
+  }
+
+  const routine = await response.json();
+
+  return mapRoutineFromApi(routine);
+}
+
+// EN: Update an existing routine.
+// JP: 既存のルーティンを更新します。
+export async function updateRoutine(routineId, updates) {
+  const response = await fetch(`${API_BASE_URL}/routines/${routineId}`, {
+    method: "PUT",
+    headers: getAuthHeaders(),
+    body: JSON.stringify(updates),
+  });
+
+  if (!response.ok) {
+    const message = await getApiErrorMessage(response, "Failed to update routine");
+    throw new Error(message);
+  }
+
+  const routine = await response.json();
+
+  return mapRoutineFromApi(routine);
+}
+
+// EN: Delete an existing routine.
+// JP: 既存のルーティンを削除します。
+export async function deleteRoutine(routineId) {
+  const response = await fetch(`${API_BASE_URL}/routines/${routineId}`, {
+    method: "DELETE",
+    headers: getAuthHeaders(),
+  });
+
+  if (!response.ok) {
+    const message = await getApiErrorMessage(response, "Failed to delete routine");
+    throw new Error(message);
+  }
+
+  return response.json();
+}
+
+// EN: Create a new step inside a routine.
+// JP: ルーティン内に新しいステップを作成します。
+export async function createRoutineStep(
+  routineId,
+  { title, completed = false, step_order = 0 }
+) {
+  const response = await fetch(`${API_BASE_URL}/routines/${routineId}/steps`, {
+    method: "POST",
+    headers: getAuthHeaders(),
+    body: JSON.stringify({
+      title,
+      completed,
+      step_order,
+    }),
+  });
+
+  if (!response.ok) {
+    const message = await getApiErrorMessage(
+      response,
+      "Failed to create routine step"
+    );
+    throw new Error(message);
+  }
+
+  const step = await response.json();
+
+  return {
+    id: step.id,
+    routineId: step.routine_id,
+    text: step.title,
+    completed: step.completed,
+    stepOrder: step.step_order,
+  };
+}
+
+// EN: Update an existing routine step.
+// JP: 既存のルーティンステップを更新します。
+export async function updateRoutineStep(stepId, updates) {
+  const response = await fetch(`${API_BASE_URL}/routines/steps/${stepId}`, {
+    method: "PUT",
+    headers: getAuthHeaders(),
+    body: JSON.stringify(updates),
+  });
+
+  if (!response.ok) {
+    const message = await getApiErrorMessage(
+      response,
+      "Failed to update routine step"
+    );
+    throw new Error(message);
+  }
+
+  const step = await response.json();
+
+  return {
+    id: step.id,
+    routineId: step.routine_id,
+    text: step.title,
+    completed: step.completed,
+    stepOrder: step.step_order,
+  };
+}
+
+// EN: Delete an existing routine step.
+// JP: 既存のルーティンステップを削除します。
+export async function deleteRoutineStep(stepId) {
+  const response = await fetch(`${API_BASE_URL}/routines/steps/${stepId}`, {
+    method: "DELETE",
+    headers: getAuthHeaders(),
+  });
+
+  if (!response.ok) {
+    const message = await getApiErrorMessage(
+      response,
+      "Failed to delete routine step"
+    );
+    throw new Error(message);
+  }
+
+  return response.json();
+}
