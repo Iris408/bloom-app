@@ -411,7 +411,10 @@ function Home({
             </h3>
           </div>
 
-          <TaskList />
+          <TaskList
+             currentUser={currentUser}
+             isDemoMode={isDemoMode}
+          />
         </div>
 
         {!isDemoMode && (

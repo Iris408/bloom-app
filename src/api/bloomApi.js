@@ -414,3 +414,79 @@ export async function deleteFocusTaskFromApi(taskId) {
 
   return response.json();
 }
+
+function mapTaskFromApi(task) {
+  return {
+    id: task.id,
+    text: task.title,
+    completed: task.completed,
+    emoji: "🌱",
+  }
+}
+
+export async function getTasks() {
+  const response = await fetch(`${API_BASE_URL}/tasks/`, {
+    method: "GET",
+    headers: getAuthHeaders(),
+  })
+
+  if (!response.ok) {
+    const message = await getApiErrorMessage(response, "Failed to fetch tasks")
+    throw new Error(message)
+  }
+
+  const tasks = await response.json()
+
+  return tasks.map(mapTaskFromApi)
+}
+
+export async function createTask({ title, completed = false }) {
+  const response = await fetch(`${API_BASE_URL}/tasks/`, {
+    method: "POST",
+    headers: getAuthHeaders(),
+    body: JSON.stringify({
+      title,
+      completed,
+    }),
+  })
+
+  if (!response.ok) {
+    const message = await getApiErrorMessage(response, "Failed to create task")
+    throw new Error(message)
+  }
+
+  const task = await response.json()
+
+  return mapTaskFromApi(task)
+}
+
+export async function updateTask(taskId, updates) {
+  const response = await fetch(`${API_BASE_URL}/tasks/${taskId}`, {
+    method: "PUT",
+    headers: getAuthHeaders(),
+    body: JSON.stringify(updates),
+  })
+
+  if (!response.ok) {
+    const message = await getApiErrorMessage(response, "Failed to update task")
+    throw new Error(message)
+  }
+
+  const task = await response.json()
+
+  return mapTaskFromApi(task)
+}
+
+export async function deleteTaskFromApi(taskId) {
+  const response = await fetch(`${API_BASE_URL}/tasks/${taskId}`, {
+    method: "DELETE",
+    headers: getAuthHeaders(),
+  })
+
+  if (!response.ok) {
+    const message = await getApiErrorMessage(response, "Failed to delete task")
+    throw new Error(message)
+  }
+
+  return response.json()
+}

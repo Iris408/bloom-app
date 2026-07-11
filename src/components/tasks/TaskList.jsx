@@ -2,12 +2,10 @@ import { useEffect, useState } from "react"
 import { triggerDemoCompletionEvent } from "../../utils/demoCompletionEvent"
 
 import TaskCard from "./TaskCard"
-import {
-  markDailyResetComplete,
-  resetCompletedItems,
-  shouldRunDailyReset,
-} from "../../utils/dailyResetUtils"
+import { createTask, deleteTaskFromApi, getTasks, updateTask } from "../../api/bloomApi"
+import { markDailyResetComplete, resetCompletedItems, shouldRunDailyReset } from "../../utils/dailyResetUtils"
 import EmptyState from "../ui/EmptyState"
+
 
 const emojis = [
   "🌅", "☀️", "🛏️", "⏰", "🪥", "🚿", "🧴", "🪞",
@@ -43,7 +41,10 @@ function EmojiPicker({ onSelect }) {
   )
 }
 
-function TaskList() {
+function TaskList({
+  currentUser = null,
+  isDemoMode = false,
+}) {  
   const [tasks, setTasks] = useState(() => {
     try {
       const savedTasks = localStorage.getItem(TASK_STORAGE_KEY)
@@ -77,18 +78,81 @@ function TaskList() {
   const [editEmoji, setEditEmoji] = useState("🌱")
   const [showEditPicker, setShowEditPicker] = useState(false)
 
+  const isBackendMode = Boolean(currentUser?.id) && !isDemoMode
+  const [isLoadingTasks, setIsLoadingTasks] = useState(false)
+  const [taskError, setTaskError] = useState("")
+
+  useEffect(() => {
+    if (!isBackendMode) return
+
+    let shouldIgnore = false
+
+    async function loadSavedTasks() {
+      setIsLoadingTasks(true)
+      setTaskError("")
+
+      try {
+        const savedTasks = await getTasks()
+
+        if (!shouldIgnore) {
+          setTasks(savedTasks)
+        }
+      } catch (error) {
+        if (!shouldIgnore) {
+          setTaskError(error.message || "Could not load your saved tasks.")
+        }
+      } finally {
+        if (!shouldIgnore) {
+          setIsLoadingTasks(false)
+        }
+      }
+    }
+
+    loadSavedTasks()
+
+    return () => {
+      shouldIgnore = true
+    }
+  }, [isBackendMode, currentUser?.id])
+
   useEffect(() => {
     localStorage.setItem(TASK_STORAGE_KEY, JSON.stringify(tasks))
-
     // EN: Let Home/Progress read updated task data later.
     // JP: 後でHome/Progressが更新されたタスクデータを読めるようにします。
     window.dispatchEvent(new Event("bloom-tasks-updated"))
   }, [tasks])
 
-  function handleAddTask() {
+  async function handleAddTask() {
     const cleanText = inputText.trim()
 
     if (!cleanText) return
+
+    if (isBackendMode) {
+      setTaskError("")
+
+      try {
+        const savedTask = await createTask({
+          title: cleanText,
+          completed: false,
+        })
+
+        setTasks((currentTasks) => [
+          ...currentTasks,
+          {
+            ...savedTask,
+            emoji: selectedEmoji,
+          },
+        ])
+
+        setInputText("")
+        setSelectedEmoji("🌱")
+        setShowPicker(false)
+      } catch (error) {
+        setTaskError(error.message || "Could not create task.")
+      }
+
+      return
+    }
 
     setTasks((currentTasks) => [
       ...currentTasks,
@@ -118,12 +182,41 @@ function TaskList() {
     )
   }
 
-  function handleToggleTask(taskId) {
+  async function handleToggleComplete(id) {
+    const currentTask = tasks.find((task) => task.id === id)
+
+    if (!currentTask) return
+
+    const nextCompleted = !currentTask.completed
+
+    if (isBackendMode) {
+      setTaskError("")
+
+      try {
+        const updatedTask = await updateTask(id, {
+          completed: nextCompleted,
+        })
+
+        setTasks((currentTasks) =>
+          currentTasks.map((task) =>
+            task.id === id
+              ? {
+                  ...updatedTask,
+                  emoji: task.emoji || "🌱",
+                }
+              : task
+          )
+        )
+      } catch (error) {
+        setTaskError(error.message || "Could not update task.")
+      }
+
+      return
+    }
+
     setTasks((currentTasks) =>
       currentTasks.map((task) => {
-        if (task.id !== taskId) return task
-
-        const nextCompleted = !task.completed
+        if (task.id !== id) return task
 
         if (nextCompleted) {
           triggerDemoCompletionEvent("task")
@@ -145,10 +238,40 @@ function TaskList() {
     setShowPicker(false)
   }
 
-  function handleEditSave(id) {
+  async function handleEditSave(id) {
     const cleanText = editText.trim()
 
     if (!cleanText) return
+
+    if (isBackendMode) {
+      setTaskError("")
+
+      try {
+        const updatedTask = await updateTask(id, {
+          title: cleanText,
+        })
+
+        setTasks((currentTasks) =>
+          currentTasks.map((task) =>
+            task.id === id
+              ? {
+                  ...updatedTask,
+                  emoji: editEmoji,
+                }
+              : task
+          )
+        )
+
+        setEditingId(null)
+        setEditText("")
+        setEditEmoji("🌱")
+        setShowEditPicker(false)
+      } catch (error) {
+        setTaskError(error.message || "Could not update task.")
+      }
+
+      return
+    }
 
     setTasks((currentTasks) =>
       currentTasks.map((task) =>
@@ -175,7 +298,23 @@ function TaskList() {
     setShowEditPicker(false)
   }
 
-  function handleDelete(id) {
+  async function handleDelete(id) {
+    if (isBackendMode) {
+      setTaskError("")
+
+      try {
+        await deleteTaskFromApi(id)
+
+        setTasks((currentTasks) =>
+          currentTasks.filter((task) => task.id !== id)
+        )
+      } catch (error) {
+        setTaskError(error.message || "Could not delete task.")
+      }
+
+      return
+    }
+
     setTasks((currentTasks) => currentTasks.filter((task) => task.id !== id))
   }
 
@@ -224,6 +363,19 @@ function TaskList() {
           />
         )}
       </div>
+
+      {/* Loading/error UI */}
+      {isLoadingTasks && (
+        <p className="rounded-2xl bg-bloom-light/70 px-4 py-3 text-sm font-semibold text-bloom-forest/70 dark:bg-white/10 dark:text-gray-300">
+          Loading your saved tasks...
+        </p>
+      )}
+
+      {taskError && (
+        <p className="rounded-2xl bg-red-50 px-4 py-3 text-sm font-semibold text-red-700 dark:bg-red-500/10 dark:text-red-200">
+          {taskError}
+        </p>
+      )}
 
       {tasks.length === 0 ? (
         <EmptyState
