@@ -11,6 +11,7 @@ import {
 import { todayKey } from "../utils/progressUtils"
 
 const FOCUS_HISTORY_STORAGE_KEY = "bloom-focus-history"
+const FOCUS_SELECTED_TASK_STORAGE_PREFIX = "bloom-selected-focus-task"
 
 const FOCUS_TYPES = [
   {
@@ -189,6 +190,11 @@ function Focus({
   const [isLoadingFocusTasks, setIsLoadingFocusTasks] = useState(false)
   const [focusTaskError, setFocusTaskError] = useState("")
 
+  const focusSelectionStorageKey =
+    isBackendMode && currentUser?.id
+      ? `${FOCUS_SELECTED_TASK_STORAGE_PREFIX}-user-${currentUser.id}-${today}`
+      : `${FOCUS_SELECTED_TASK_STORAGE_PREFIX}-local-${today}`
+
   const activeFocusTasks = isBackendMode ? backendFocusTasks : localFocusTasks
 
   const selectedFocusType =
@@ -215,7 +221,9 @@ function Focus({
   const totalCount = todayFocusTasks.length
 
   const selectedFocusTask =
-    todayFocusTasks.find((task) => task.id === selectedTaskId) ||
+    todayFocusTasks.find(
+      (task) => String(task.id) === String(selectedTaskId)
+    ) ||
     todayFocusTasks.find((task) => task.completedOn !== today) ||
     todayFocusTasks[0] ||
     null
@@ -273,6 +281,16 @@ function Focus({
   }, [isBackendMode, currentUser?.id, today])
 
   useEffect(() => {
+    try {
+      const savedSelectedTaskId = localStorage.getItem(focusSelectionStorageKey)
+
+      setSelectedTaskId(savedSelectedTaskId || null)
+    } catch {
+      setSelectedTaskId(null)
+    }
+  }, [focusSelectionStorageKey])
+
+  useEffect(() => {
     localStorage.setItem(
       FOCUS_HISTORY_STORAGE_KEY,
       JSON.stringify(focusHistory)
@@ -302,6 +320,28 @@ function Focus({
     setSecondsRemaining(focusType.minutes * 60)
     setIsTimerRunning(false)
     setIsSessionComplete(false)
+  }
+
+  function handleSelectFocusTask(taskId) {
+    const nextTaskId = String(taskId)
+
+    setSelectedTaskId(nextTaskId)
+
+    try {
+      localStorage.setItem(focusSelectionStorageKey, nextTaskId)
+    } catch {
+      // Selection persistence is optional.
+    }
+  }
+
+  function clearSelectedFocusTask() {
+    setSelectedTaskId(null)
+
+    try {
+      localStorage.removeItem(focusSelectionStorageKey)
+    } catch {
+      // Selection persistence is optional.
+    }
   }
 
   function handleStartTimer() {
@@ -433,6 +473,11 @@ function Focus({
         setBackendFocusTasks((currentTasks) =>
           currentTasks.filter((task) => task.id !== taskId)
         )
+
+        if (String(selectedTaskId) === String(taskId)) {
+          clearSelectedTaskId(null)
+        }
+
       } catch (error) {
         setFocusTaskError(error.message || "Could not delete focus task.")
       }
@@ -441,6 +486,10 @@ function Focus({
     }
 
     deleteLocalFocusTask(taskId)
+
+    if (String(selectedTaskId) === String(taskId)) {
+      setSelectedTaskId(null)
+    }
   }
 
   return (
@@ -658,7 +707,7 @@ function Focus({
             <div className="flex max-h-[320px] flex-col gap-3 overflow-y-auto pr-1">
               {todayFocusTasks.map((task) => {
                 const isComplete = task.completedOn === today
-                const isSelected = selectedFocusTask?.id === task.id
+                const isSelected = String(selectedTaskId) === String(task.id)
 
                 return (
                   <div
@@ -701,7 +750,7 @@ function Focus({
                     <div className="mt-3 flex gap-2">
                       <button
                         type="button"
-                        onClick={() => setSelectedTaskId(task.id)}
+                        onClick={() => handleSelectFocusTask(task.id)}
                         className="flex-1 rounded-full bg-bloom-light px-3 py-2 text-xs font-bold text-bloom-forest transition hover:bg-bloom-mint/60 dark:bg-white/10 dark:text-bloom-light"
                       >
                         {isSelected ? "Using this" : "Use this task"}
