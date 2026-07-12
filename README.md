@@ -1,14 +1,51 @@
-# Bloom 🌱
+# Bloom
 
 Calm routines for every brain.
 
-Bloom is an active full-stack capstone project focused on building a calm, accessible visual routine and task sequencing app. It helps users create, organise, and follow step-by-step routines in a clear, supportive, and neurodivergent-friendly way.
+Bloom is an accessibility-focused routine, focus, and progress-tracking app built with React, JavaScript, Tailwind CSS, Vite, FastAPI, and Vercel.
+
+It is designed around calm UI, gentle task sequencing, demo routines, focus sessions, reflection moments, and neurodivergent-friendly interaction patterns.
 
 Bloom currently focuses on **Bloom Personal**: a personal routine, focus, progress, and task support app being prepared for public beta feedback.
 
 ## Live Demo
 
 [Experience Bloom](https://bloom-app-three-xi.vercel.app/)
+
+## Current Status
+
+Bloom has completed the public Overview v2 refresh and is now moving into the **v2.1.0 authentication phase**.
+
+| Area | Status |
+| --- | --- |
+| Public Overview landing page | ✅ Complete |
+| Demo mode entry from Overview | ✅ Complete |
+| Public About, Privacy, and Accessibility pages | ✅ Complete |
+| Desktop sidebar and mobile navigation | ✅ Complete |
+| Routines, tasks, focus, and progress pages | ✅ Complete |
+| Moments dashboard | ✅ Complete |
+| Light/dark mode | ✅ Complete |
+| Text size controls | ✅ Complete |
+| OpenDyslexic font toggle | ✅ Complete |
+| Reduce motion setting | ✅ Complete |
+| Login/create account modal UI | 🚧 In progress |
+| Backend auth/config hardening | 🚧 In progress |
+
+## Features
+
+- Calm routine and task sequencing
+- Focus session support
+- Progress and reflection pages
+- Moments dashboard
+- Demo mode from the public overview page
+- Login and create account modal UI
+- Light and dark mode
+- Text size controls
+- OpenDyslexic font toggle
+- Reduce motion setting
+- Responsive desktop and mobile layouts
+- Public About, Privacy, and Accessibility pages
+- Backend security/configuration improvements for JWT and CORS
 
 ## Screenshots
 
@@ -51,99 +88,33 @@ Bloom currently focuses on **Bloom Personal**: a personal routine, focus, progre
   </tr>
 </table>
 
-## Current Status
-
-Bloom has completed the public Overview v2 refresh and is now moving into the **v2.1.0 authentication phase**.
-
-Recent completed work includes:
-
-- Public Overview v2 redesign
-- Login and create account modal polish
-- Public About, Privacy, and Accessibility page updates
-- Public and protected header layout separation
-- Protected app sidebar/header layout restoration
-- Moments v1.1.0 UI polish
-- Favorite Quote card overlap fix
-- Horizontal avatar picker
-- Page Controls available across public and protected pages
-- Backend security/configuration improvements for JWT and CORS
-
-Next development focus:
-
-- Stable login, account creation, and logout flow
-- Restore current user on refresh
-- Protect app pages from unauthenticated access
-- Keep demo mode separate from real account data
-- Save selected avatar per user
-- Improve loading and error states
-
-## Current Features
-
-| Feature | Status |
-|---|---|
-| Public Overview landing page | Complete |
-| Demo mode entry from Overview | Complete |
-| Login/create account modal UI | In progress |
-| Desktop sidebar and mobile navigation | Complete |
-| Routines, tasks, focus, and progress pages | Complete |
-| Moments dashboard | Complete |
-| Favorite Quote card polish | Complete |
-| Horizontal avatar picker | Complete |
-| Light/dark mode | Complete |
-| Text size controls | Complete |
-| OpenDyslexic font toggle | Complete |
-| Reduce motion setting | Complete |
-| Public About, Privacy, and Accessibility pages | Complete |
-| Backend auth/config hardening | In progress |
-
 ## Tech Stack
 
-### Frontend
+| Area | Technologies |
+| --- | --- |
+| Frontend | React, JavaScript, Tailwind CSS, Vite |
+| Backend | Python, FastAPI, JWT auth configuration, environment-based CORS |
+| Deployment | Vercel |
+| Tools | Git, GitHub, VS Code, Claude Code, ChatGPT |
 
-- React
-- JavaScript
-- Tailwind CSS
-- Vite
-- Vercel
+## Quick Start
 
-### Backend
-
-- Python
-- FastAPI
-- JWT authentication configuration
-- Environment-based CORS configuration
-- Python virtual environment setup
-
-### Development Tools
-
-- Git / GitHub
-- VS Code
-- Claude Code
-- Codex
-- ChatGPT
-
-## AI-Assisted Development Workflow
-
-Bloom includes supervised AI-assisted development as part of the engineering workflow.
-
-AI tools were used for:
-
-- Code review support
-- Security and configuration checks
-- Git diff review
-- Debugging guidance
-- README and documentation drafting
-- Refactoring suggestions
-- Frontend UI polish planning
-
-AI-generated suggestions were reviewed, tested, and committed manually. Final implementation decisions, testing, Git workflow, and project direction were handled by the developer.
-
-## Run Locally
+Clone the repository:
 
 ```bash
 git clone https://github.com/Iris408/bloom-app.git
 cd bloom-app
+```
+
+Install dependencies:
+
+```bash
 npm install
+```
+
+Run locally:
+
+```bash
 npm run dev
 ```
 
@@ -153,34 +124,24 @@ Build check:
 npm run build
 ```
 
-The app runs locally with Vite, usually at:
-
-```text
-http://localhost:5173
-```
-
 ## Documentation
 
-More detailed notes are available in the `/docs` folder:
+More detailed project documentation is available in the `docs/` folder.
 
-- [Beta Notes](./docs/bloom-beta-notes.md)
-- [Backend Security and Configuration](./docs/bloom-security-config.md)
-- [AI-Assisted Workflow](./docs/bloom-ai-workflow.md)
-- [Japanese Summary](./docs/bloom-japanese-summary.md)
+| Document | Description |
+| --- | --- |
+| [Setup Guide](./docs/setup.md) | Local setup and build commands |
+| [Product Roadmap](./docs/product-roadmap.md) | Authentication, persistence, beta, and future backend plans |
+| [Accessibility Notes](./docs/accessibility-notes.md) | Neurodivergent-friendly design, readability controls, and calm UI choices |
+| [Demo Mode](./docs/demo-mode.md) | Demo flow, preloaded routines, focus support, and demo boundaries |
+| [Project Details](./docs/project-details.md) | Architecture, AI-assisted workflow, limitations, and learning notes |
+| [Beta Notes](./docs/bloom-beta-notes.md) | Beta feedback planning |
+| [Security & Config](./docs/bloom-security-config.md) | Backend security and configuration notes |
+| [AI-Assisted Workflow](./docs/bloom-ai-workflow.md) | Notes on supervised AI-assisted development |
 
-## Planned Features
+## Project Summary
 
-- v2.1.0 authentication flow and user session handling
-- Backend-connected feedback storage
-- Database persistence for routines, tasks, focus items, moments, and profile settings
-- Saved avatar and accessibility preferences per user
-- Onboarding flow
-- Mood check-in at app open
-- Short version of routines
-- Oasis calm reset space
-- Low demand mode
-- Exportable progress CSV
-- Future full-stack deployment
+Bloom is a product-focused frontend/full-stack capstone project built to practise accessible UI design, React app structure, routine/task workflows, demo mode design, authentication planning, backend security configuration, and product documentation.
 
 ## Author
 
