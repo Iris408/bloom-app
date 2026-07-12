@@ -1,4 +1,4 @@
-# Bloom
+# 🌱 Bloom
 
 Calm routines for every brain.
 
