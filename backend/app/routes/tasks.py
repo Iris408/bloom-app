@@ -21,6 +21,7 @@ def create_task(task: schemas.TaskCreate, db: Session = Depends(get_db), current
         user_id=current_user.id,
         title=task.title,
         completed=task.completed,
+        emoji=task.emoji,
     )
 
     db.add(new_task)

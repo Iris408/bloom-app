@@ -68,6 +68,7 @@ class TaskCreate(BaseModel):
     # JP: タスク作成時に必要なデータです。
     title: str
     completed: bool = False
+    emoji: str = "🌱"
 
 
 class TaskUpdate(BaseModel):
@@ -75,6 +76,7 @@ class TaskUpdate(BaseModel):
     # JP: 任意で更新できるタスクフィールドです。
     title: str | None = None
     completed: bool | None = None
+    emoji: str | None = None
 
 
 class TaskResponse(BaseModel):
@@ -84,10 +86,11 @@ class TaskResponse(BaseModel):
     user_id: int
     title: str
     completed: bool
+    emoji: str
 
     class Config:
         from_attributes = True
-
+        
 class RoutineStepCreate(BaseModel):
     # EN: Data required when creating a routine step.
     # JP: ルーティンステップ作成時に必要なデータです。

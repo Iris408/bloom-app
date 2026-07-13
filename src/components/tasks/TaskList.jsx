@@ -24,12 +24,12 @@ const TASK_DAILY_RESET_KEY = "bloom-tasks-last-reset"
 
 function EmojiPicker({ onSelect }) {
   return (
-    <div className="absolute left-0 top-full z-40 mt-2 max-h-52 w-full overflow-y-auto rounded-2xl border border-bloom-sage/25 bg-white/95 p-3 shadow-xl backdrop-blur-lg dark:border-dark-border dark:bg-dark-soil/35">
+    <div className="absolute left-0 top-full z-50 mt-2 max-h-52 w-full overflow-y-auto rounded-2xl border border-bloom-sage/25 bg-white/95 p-3 shadow-xl backdrop-blur-lg dark:border-dark-border dark:bg-dark-soil/95">
       <div className="grid grid-cols-6 gap-2 sm:grid-cols-8">
-        {emojis.map((emoji) => (
+        {emojis.map((emoji, index) => (
           <button
             type="button"
-            key={emoji}
+            key={`${emoji}-${index}`}
             onClick={() => onSelect(emoji)}
             className="flex h-10 w-10 items-center justify-center rounded-xl text-xl transition hover:bg-bloom-light dark:hover:bg-white/10"
           >
@@ -134,15 +134,11 @@ function TaskList({
         const savedTask = await createTask({
           title: cleanText,
           completed: false,
+          emoji: selectedEmoji,
         })
 
         setTasks((currentTasks) => [
-          ...currentTasks,
-          {
-            ...savedTask,
-            emoji: selectedEmoji,
-          },
-        ])
+          ...currentTasks, savedTask])
 
         setInputText("")
         setSelectedEmoji("🌱")
@@ -249,16 +245,12 @@ function TaskList({
       try {
         const updatedTask = await updateTask(id, {
           title: cleanText,
+          emoji: editEmoji,
         })
 
         setTasks((currentTasks) =>
           currentTasks.map((task) =>
-            task.id === id
-              ? {
-                  ...updatedTask,
-                  emoji: editEmoji,
-                }
-              : task
+            task.id === id ? updatedTask : task
           )
         )
 
@@ -418,6 +410,7 @@ function TaskList({
 
                 {showEditPicker && (
                   <EmojiPicker
+                    inline
                     onSelect={(emoji) => {
                       setEditEmoji(emoji)
                       setShowEditPicker(false)

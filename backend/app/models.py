@@ -85,6 +85,7 @@ class Task(Base):
 
     title = Column(String, nullable=False)
     completed = Column(Boolean, default=False)
+    emoji = Column(String, nullable=False, default="🌱")
 
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)

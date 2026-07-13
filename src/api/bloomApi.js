@@ -420,7 +420,7 @@ function mapTaskFromApi(task) {
     id: task.id,
     text: task.title,
     completed: task.completed,
-    emoji: "🌱",
+    emoji: task.emoji || "🌱",
   }
 }
 
@@ -440,25 +440,30 @@ export async function getTasks() {
   return tasks.map(mapTaskFromApi)
 }
 
-export async function createTask({ title, completed = false }) {
-  const response = await fetch(`${API_BASE_URL}/tasks/`, {
-    method: "POST",
-    headers: getAuthHeaders(),
-    body: JSON.stringify({
-      title,
-      completed,
-    }),
-  })
+  export async function createTask({
+    title,
+    completed = false,
+    emoji = "🌱",
+  }) {
+    const response = await fetch(`${API_BASE_URL}/tasks/`, {
+      method: "POST",
+      headers: getAuthHeaders(),
+      body: JSON.stringify({
+        title,
+        completed,
+        emoji,
+      }),
+    })
 
-  if (!response.ok) {
-    const message = await getApiErrorMessage(response, "Failed to create task")
-    throw new Error(message)
+    if (!response.ok) {
+      const message = await getApiErrorMessage(response, "Failed to create task")
+      throw new Error(message)
+    }
+
+    const task = await response.json()
+
+    return mapTaskFromApi(task)
   }
-
-  const task = await response.json()
-
-  return mapTaskFromApi(task)
-}
 
 export async function updateTask(taskId, updates) {
   const response = await fetch(`${API_BASE_URL}/tasks/${taskId}`, {
