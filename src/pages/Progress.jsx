@@ -1,11 +1,20 @@
 // EN: Progress page for Bloom routine tracking.
 // JP: Bloom のルーティン進捗を表示するページ。
 
-import { useRef, useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 
 import { useProgressStore } from "../hooks/useProgressStore"
 import { dayLabel, getProgressState, getWeekKeys, todayKey } from "../utils/progressUtils"
 import { isFullPreviewDemoType, isNeurodivergentDemoType } from "../data/demoData"
+
+import { 
+  createProgressSnapshot, 
+  getFocusTasks, 
+  getProgressSnapshots, 
+  getRoutines, 
+  getTasks, 
+  updateProgressSnapshot, 
+} from "../api/bloomApi"
 
 const ROUTINE_STORAGE_KEY = "bloom-routines"
 const FOCUS_HISTORY_STORAGE_KEY = "bloom-focus-history"
@@ -41,6 +50,81 @@ function loadFocusHistory() {
     return Array.isArray(parsedHistory) ? parsedHistory : []
   } catch {
     return []
+  }
+}
+
+function buildLiveProgressSnapshot(dateKey, tasks = [], routines = [], focusTasks = []) {
+  const safeTasks = Array.isArray(tasks) ? tasks : []
+  const safeRoutines = Array.isArray(routines) ? routines : []
+  const safeFocusTasks = Array.isArray(focusTasks) ? focusTasks : []
+
+  const routineSnapshots = safeRoutines.map((routine) => {
+    const steps = routine.steps || []
+
+    return {
+      id: routine.id,
+      name: routine.name,
+      completedSteps: steps.filter((step) => step.completed).length,
+      totalSteps: steps.length,
+    }
+  })
+
+  const completedTasks = safeTasks.filter((task) => task.completed).length
+  const totalTasks = safeTasks.length
+
+  const completedRoutines = routineSnapshots.filter(
+    (routine) =>
+      routine.totalSteps > 0 &&
+      routine.completedSteps === routine.totalSteps
+  ).length
+
+  const totalRoutines = routineSnapshots.length
+
+  const todayFocusTasks = safeFocusTasks.filter(
+    (task) => task.scheduledFor === dateKey
+  )
+
+  const completedFocusTasks = todayFocusTasks.filter(
+    (task) => task.completedOn === dateKey
+  ).length
+
+  const totalFocusTasks = todayFocusTasks.length
+
+  const completedRoutineSteps = routineSnapshots.reduce(
+    (total, routine) => total + routine.completedSteps,
+    0
+  )
+
+  const totalRoutineSteps = routineSnapshots.reduce(
+    (total, routine) => total + routine.totalSteps,
+    0
+  )
+
+  return {
+    snapshotDate: dateKey,
+
+    completedTasks,
+    totalTasks,
+
+    completedRoutines,
+    totalRoutines,
+
+    completedFocusTasks,
+    totalFocusTasks,
+
+    routineSnapshots,
+    focusCompleted: completedFocusTasks,
+    focusTotal: totalFocusTasks,
+
+    completedSteps:
+      completedTasks +
+      completedRoutineSteps +
+      completedFocusTasks,
+
+    totalSteps:
+      totalTasks +
+      totalRoutineSteps +
+      totalFocusTasks,
   }
 }
 
@@ -214,8 +298,9 @@ function GuidedProgressNote({ demoType }) {
   )
 }
 
-export default function Progress({ isDemoMode = false, demoType = null }) {
+export default function Progress({ currentUser = null, isDemoMode = false, demoType = null }) {
   const { loadDay, syncToday } = useProgressStore()
+  const isBackendMode = Boolean(currentUser?.id) && !isDemoMode
 
   const today = todayKey()
   const weekKeys = useMemo(() => getWeekKeys(7), [])
@@ -225,15 +310,136 @@ export default function Progress({ isDemoMode = false, demoType = null }) {
   const [selectedDate, setSelectedDate] = useState(today)
   const [weekSnapshots, setWeekSnapshots] = useState({})
   const [daySnapshot, setDaySnapshot] = useState(null)
+  const [backendTasks, setBackendTasks] = useState([])
+  const [backendFocusTasks, setBackendFocusTasks] = useState([])
+  const [backendSnapshots, setBackendSnapshots] = useState([])
+
+  const [isLoadingProgress, setIsLoadingProgress] = useState(false)
+  const [progressError, setProgressError] = useState("")
+
+  const backendSnapshotsByDate = useMemo(() => {
+    const snapshotsByDate = {}
+
+    backendSnapshots.forEach((snapshot) => {
+      snapshotsByDate[snapshot.snapshotDate] = snapshot
+    })
+
+    return snapshotsByDate
+  }, [backendSnapshots])
 
   const safeRoutines = useMemo(
     () => (Array.isArray(routines) ? routines : []),
     [routines]
   )
 
-  const safeFocusTasks = useMemo(() => [], [])
+  const safeFocusTasks = useMemo(
+    () => (isBackendMode ? backendFocusTasks : []),
+    [isBackendMode, backendFocusTasks]
+  )
 
   useEffect(() => {
+    if (!isBackendMode) return
+
+    let shouldIgnore = false
+
+    async function loadAndSyncBackendProgress() {
+      setIsLoadingProgress(true)
+      setProgressError("")
+
+      try {
+        const [
+          savedTasks,
+          savedRoutines,
+          savedFocusTasks,
+          savedSnapshots,
+        ] = await Promise.all([
+          getTasks(),
+          getRoutines(),
+          getFocusTasks(today),
+          getProgressSnapshots(),
+        ])
+
+        if (shouldIgnore) return
+
+        setBackendTasks(savedTasks)
+        setRoutines(savedRoutines)
+        setBackendFocusTasks(savedFocusTasks)
+
+        const liveSnapshot = buildLiveProgressSnapshot(
+          today,
+          savedTasks,
+          savedRoutines,
+          savedFocusTasks
+        )
+
+        const existingTodaySnapshot = savedSnapshots.find(
+          (snapshot) => snapshot.snapshotDate === today
+        )
+
+        let savedTodaySnapshot
+
+        if (existingTodaySnapshot) {
+          savedTodaySnapshot = await updateProgressSnapshot(
+            existingTodaySnapshot.id,
+            liveSnapshot
+          )
+        } else {
+          savedTodaySnapshot = await createProgressSnapshot(liveSnapshot)
+        }
+
+        if (shouldIgnore) return
+
+        const updatedSnapshots = existingTodaySnapshot
+          ? savedSnapshots.map((snapshot) =>
+              snapshot.id === savedTodaySnapshot.id
+                ? {
+                    ...savedTodaySnapshot,
+                    routineSnapshots: liveSnapshot.routineSnapshots,
+                    completedSteps: liveSnapshot.completedSteps,
+                    totalSteps: liveSnapshot.totalSteps,
+                  }
+                : snapshot
+            )
+          : [
+              ...savedSnapshots,
+              {
+                ...savedTodaySnapshot,
+                routineSnapshots: liveSnapshot.routineSnapshots,
+                completedSteps: liveSnapshot.completedSteps,
+                totalSteps: liveSnapshot.totalSteps,
+              },
+            ]
+
+        setBackendSnapshots(updatedSnapshots)
+        setDaySnapshot({
+          ...savedTodaySnapshot,
+          routineSnapshots: liveSnapshot.routineSnapshots,
+          completedSteps: liveSnapshot.completedSteps,
+          totalSteps: liveSnapshot.totalSteps,
+        })
+      } catch (error) {
+        if (!shouldIgnore) {
+          setProgressError(
+            error.message || "Could not load your saved progress."
+          )
+        }
+      } finally {
+        if (!shouldIgnore) {
+          setIsLoadingProgress(false)
+        }
+      }
+    }
+
+    loadAndSyncBackendProgress()
+
+    return () => {
+      shouldIgnore = true
+    }
+  }, [isBackendMode, currentUser?.id, today])
+
+  useEffect(() => {
+    if (isBackendMode) return
+
     function refreshProgressData() {
       setRoutines(loadStoredRoutines())
       setFocusHistory(loadFocusHistory())
@@ -246,13 +452,42 @@ export default function Progress({ isDemoMode = false, demoType = null }) {
       window.removeEventListener("bloom-routines-updated", refreshProgressData)
       window.removeEventListener("storage", refreshProgressData)
     }
-  }, [])
+  }, [isBackendMode])
 
   useEffect(() => {
+    if (isBackendMode) return
+
     syncToday(today, safeRoutines, safeFocusTasks)
-  }, [today, safeRoutines, safeFocusTasks, syncToday])
+  }, [isBackendMode, today, safeRoutines, safeFocusTasks, syncToday])
 
   useEffect(() => {
+    if (isBackendMode) return
+
+    if (selectedDate === today) {
+      const liveSnapshot = syncToday(
+        today,
+        safeRoutines,
+        safeFocusTasks
+      )
+
+      setDaySnapshot(liveSnapshot)
+      return
+    }
+
+    setDaySnapshot(loadDay(selectedDate))
+  }, [
+    isBackendMode,
+    selectedDate,
+    today,
+    safeRoutines,
+    safeFocusTasks,
+    syncToday,
+    loadDay,
+  ])
+
+  useEffect(() => {
+    if (isBackendMode) return
+
     const snapshots = {}
 
     weekKeys.forEach((key) => {
@@ -260,16 +495,58 @@ export default function Progress({ isDemoMode = false, demoType = null }) {
     })
 
     setWeekSnapshots(snapshots)
-  }, [weekKeys, loadDay, safeRoutines, safeFocusTasks])
+  }, [isBackendMode, weekKeys, loadDay, safeRoutines, safeFocusTasks])
 
   useEffect(() => {
-    if (selectedDate === today) {
-      const liveSnapshot = syncToday(today, safeRoutines, safeFocusTasks)
-      setDaySnapshot(liveSnapshot)
-    } else {
-      setDaySnapshot(loadDay(selectedDate))
+    if (!isBackendMode) return
+
+    const snapshots = {}
+
+    weekKeys.forEach((key) => {
+      snapshots[key] = backendSnapshotsByDate[key] || null
+    })
+
+    setWeekSnapshots(snapshots)
+  }, [
+    isBackendMode,
+    weekKeys,
+    backendSnapshotsByDate,
+  ])
+
+  useEffect(() => {
+    if (!isBackendMode) return
+
+    const selectedSnapshot =
+      backendSnapshotsByDate[selectedDate] || null
+
+    if (selectedDate === today && selectedSnapshot) {
+      const liveSnapshot = buildLiveProgressSnapshot(
+        today,
+        backendTasks,
+        routines,
+        backendFocusTasks
+      )
+
+      setDaySnapshot({
+        ...selectedSnapshot,
+        routineSnapshots: liveSnapshot.routineSnapshots,
+        completedSteps: liveSnapshot.completedSteps,
+        totalSteps: liveSnapshot.totalSteps,
+      })
+
+      return
     }
-  }, [selectedDate, today, safeRoutines, safeFocusTasks, syncToday, loadDay])
+
+    setDaySnapshot(selectedSnapshot)
+  }, [
+    isBackendMode,
+    selectedDate,
+    today,
+    backendSnapshotsByDate,
+    backendTasks,
+    routines,
+    backendFocusTasks,
+  ])
 
   const completed = daySnapshot?.completedSteps ?? 0
   const total = daySnapshot?.totalSteps ?? 0
@@ -291,8 +568,11 @@ export default function Progress({ isDemoMode = false, demoType = null }) {
   const completedRoutines =
     daySnapshot?.routineSnapshots?.filter(
       (routine) =>
-        routine.totalSteps > 0 && routine.completedSteps === routine.totalSteps
-    ).length ?? 0
+        routine.totalSteps > 0 &&
+        routine.completedSteps === routine.totalSteps
+    ).length ??
+    daySnapshot?.completedRoutines ??
+    0
 
   const weeklyFocusHistory = focusHistory.filter((session) =>
     weekKeys.includes(session.date)
@@ -305,7 +585,7 @@ export default function Progress({ isDemoMode = false, demoType = null }) {
     0
   )
 
-  const weeklyReflections = weeklyFocusHistory.filter(
+  const weeklyReflections = weeklyFocusHistory.filter( 
     (session) => session.reflection
   ).length
 
@@ -364,6 +644,18 @@ export default function Progress({ isDemoMode = false, demoType = null }) {
       </section>
 
       {isGuidedDemo && <GuidedProgressNote demoType={demoType} />}
+
+      {isLoadingProgress && (
+        <p className="rounded-2xl bg-bloom-light/70 px-4 py-3 text-sm font-semibold text-bloom-forest/70 dark:bg-white/10 dark:text-gray-300">
+          Loading your saved progress...
+        </p>
+      )}
+
+      {progressError && (
+        <p className="rounded-2xl bg-red-50 px-4 py-3 text-sm font-semibold text-red-700 dark:bg-red-500/10 dark:text-red-200">
+          {progressError}
+        </p>
+      )}
 
       {/* Metric cards */}
       <section className="grid min-w-0 gap-4 md:grid-cols-3">

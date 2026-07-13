@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 
 import TaskList from "../components/tasks/TaskList"
 import DemoBanner from "../components/demo/DemoBanner"
@@ -7,6 +7,7 @@ import { getAvatarDisplay } from "../utils/avatarStorage"
 import { useApp } from "../context/AppContext"
 import { todayKey } from "../utils/progressUtils"
 import { isNeurodivergentDemoType } from "../data/demoData"
+import { getRoutines, updateRoutineStep } from "../api/bloomApi"
 
 const TASK_STORAGE_KEY = "bloom-tasks"
 const ROUTINE_STORAGE_KEY = "bloom-routines"
@@ -144,6 +145,9 @@ function Home({
   const [selectedFocusMinutes, setSelectedFocusMinutes] = useState(10)
   const [focusRemainingSeconds, setFocusRemainingSeconds] = useState(10 * 60)
   const [isFocusRunning, setIsFocusRunning] = useState(false)
+  const [isLoadingBackendRoutines, setIsLoadingBackendRoutines] =
+    useState(false)
+  const isBackendMode = Boolean(currentUser?.id) && !isDemoMode  
 
   const [taskStats, setTaskStats] = useState(() => getTaskStats())
   const [routines, setRoutines] = useState(() => getStoredRoutines())
@@ -184,7 +188,12 @@ function Home({
   useEffect(() => {
     function syncHomeData() {
       setTaskStats(getTaskStats())
-      setRoutines(getStoredRoutines())
+
+      // Demo/local users read routines from localStorage.
+      // Logged-in users must keep the routines loaded from the backend.
+      if (!isBackendMode) {
+        setRoutines(getStoredRoutines())
+      }
     }
 
     window.addEventListener("bloom-tasks-updated", syncHomeData)
@@ -195,6 +204,40 @@ function Home({
       window.removeEventListener("bloom-tasks-updated", syncHomeData)
       window.removeEventListener("bloom-routines-updated", syncHomeData)
       window.removeEventListener("storage", syncHomeData)
+    }
+  }, [isBackendMode])
+
+  const isMountedRef = useRef(true)
+
+  useEffect(() => {
+    isMountedRef.current = true
+
+    return () => {
+      isMountedRef.current = false
+    }
+  }, [])
+
+  // EN: Single reusable loader for backend routines, used both on mount and
+  // whenever Routines.jsx reports a backend change via "bloom-backend-routines-updated".
+  const loadBackendRoutines = useCallback(async () => {
+    setIsLoadingBackendRoutines(true)
+
+    try {
+      const savedRoutines = await getRoutines()
+
+      if (isMountedRef.current) {
+        setRoutines(savedRoutines)
+      }
+    } catch (error) {
+      console.error("Could not load Home routines:", error)
+
+      if (isMountedRef.current) {
+        setRoutines([])
+      }
+    } finally {
+      if (isMountedRef.current) {
+        setIsLoadingBackendRoutines(false)
+      }
     }
   }, [])
 
@@ -217,6 +260,33 @@ function Home({
       window.clearInterval(intervalId)
     }
   }, [isFocusRunning])
+
+  useEffect(() => {
+    if (!isBackendMode) return
+
+    setRoutines([])
+    loadBackendRoutines()
+  }, [isBackendMode, currentUser?.id, loadBackendRoutines])
+
+  useEffect(() => {
+    if (!isBackendMode) return
+
+    function handleBackendRoutinesUpdated() {
+      loadBackendRoutines()
+    }
+
+    window.addEventListener(
+      "bloom-backend-routines-updated",
+      handleBackendRoutinesUpdated
+    )
+
+    return () => {
+      window.removeEventListener(
+        "bloom-backend-routines-updated",
+        handleBackendRoutinesUpdated
+      )
+    }
+  }, [isBackendMode, loadBackendRoutines])
 
   function goToPage(page) {
     if (!setActivePage) return
@@ -258,25 +328,82 @@ function Home({
     setFocusRemainingSeconds(selectedFocusMinutes * 60)
   }
 
-  function handleToggleRoutineStep(routineId, stepId) {
-    const updatedRoutines = routines.map((routine) => {
-      if (routine.id !== routineId) return routine
+  async function handleToggleRoutineStep(routineId, stepId) {
+    const routine = routines.find(
+      (currentRoutine) => String(currentRoutine.id) === String(routineId)
+    )
+
+    const step = routine?.steps?.find(
+      (currentStep) => String(currentStep.id) === String(stepId)
+    )
+
+    if (!step) return
+
+    if (isBackendMode) {
+      const numericStepId = Number(stepId)
+
+      if (!Number.isInteger(numericStepId)) {
+        console.warn(
+          "Bloom: cannot send local/demo routine step to backend:",
+          stepId
+        )
+        return
+      }
+
+      try {
+        const updatedStep = await updateRoutineStep(numericStepId, {
+          completed: !step.completed,
+        })
+
+        setRoutines((currentRoutines) =>
+          currentRoutines.map((currentRoutine) => {
+            if (String(currentRoutine.id) !== String(routineId)) {
+              return currentRoutine
+            }
+
+            return {
+              ...currentRoutine,
+              steps: (currentRoutine.steps || []).map((currentStep) =>
+                String(currentStep.id) === String(stepId)
+                  ? {
+                      ...currentStep,
+                      completed: updatedStep.completed,
+                    }
+                  : currentStep
+              ),
+            }
+          })
+        )
+      } catch (error) {
+        console.error("Could not update routine step:", error)
+      }
+
+      return
+    }
+
+    const updatedRoutines = routines.map((currentRoutine) => {
+      if (String(currentRoutine.id) !== String(routineId)) {
+        return currentRoutine
+      }
 
       return {
-        ...routine,
-        steps: (routine.steps || []).map((step) =>
-          step.id === stepId
+        ...currentRoutine,
+        steps: (currentRoutine.steps || []).map((currentStep) =>
+          String(currentStep.id) === String(stepId)
             ? {
-                ...step,
-                completed: !step.completed,
+                ...currentStep,
+                completed: !currentStep.completed,
               }
-            : step
+            : currentStep
         ),
       }
     })
 
     setRoutines(updatedRoutines)
-    localStorage.setItem(ROUTINE_STORAGE_KEY, JSON.stringify(updatedRoutines))
+    localStorage.setItem(
+      ROUTINE_STORAGE_KEY,
+      JSON.stringify(updatedRoutines)
+    )
     window.dispatchEvent(new Event("bloom-routines-updated"))
   }
 
@@ -540,7 +667,13 @@ function Home({
             </span>
           </div>
 
-          {routines.length === 0 ? (
+          {isBackendMode && isLoadingBackendRoutines ? (
+            <div className="rounded-2xl bg-white/70 px-4 py-5 text-center shadow-sm dark:bg-white/5">
+              <p className="text-sm font-bold text-bloom-forest dark:text-bloom-light">
+                Loading your routines...🌱
+              </p>
+            </div>
+          ) : routines.length === 0 ? (
             <div className="rounded-2xl bg-white/70 px-4 py-5 text-center shadow-sm dark:bg-white/5">
               <p className="text-2xl">🌿</p>
 
@@ -617,8 +750,11 @@ function Home({
                             <button
                               key={step.id}
                               type="button"
-                              onClick={() => handleToggleRoutineStep(routine.id, step.id)}
-                              className="flex w-full items-center gap-2 rounded-xl px-2 py-1.5 text-left text-xs font-semibold text-bloom-forest/75 transition hover:bg-bloom-light/60 dark:text-gray-300 dark:hover:bg-white/10"
+                              disabled={isBackendMode && isLoadingBackendRoutines}
+                              onClick={() =>
+                                handleToggleRoutineStep(routine.id, step.id)
+                              }
+                              className="flex w-full items-center gap-2 rounded-xl px-2 py-1.5 text-left text-xs font-semibold text-bloom-forest/75 transition hover:bg-bloom-light/60 disabled:cursor-wait disabled:opacity-50 dark:text-gray-300 dark:hover:bg-white/10"
                             >
                               <span
                                 className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[10px] ${

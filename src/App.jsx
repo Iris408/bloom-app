@@ -321,6 +321,7 @@ function App() {
     if (activePage === "progress") {
       return (
         <Progress
+          currentUser={currentUser}
           isDemoMode={isDemoMode}
           demoType={demoType}
         />

@@ -376,7 +376,13 @@ function TaskList({
           message="Add one small task when you're ready."
         />
       ) : (
-        <div className="max-h-[340px] overflow-y-auto pr-1">
+        <div
+          className={
+            editingId
+              ? "overflow-visible pr-1"
+              : "max-h-[340px] overflow-y-auto pr-1"
+          }
+        >
           <div className="flex flex-col gap-3">
             {tasks.map((task) =>
               editingId === task.id ? (

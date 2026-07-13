@@ -146,7 +146,13 @@ function Routines({
   currentUser = null,
   isDemoMode = false,
 }) {
+  const isBackendMode = Boolean(currentUser?.id) && !isDemoMode
+
   const [routines, setRoutines] = useState(() => {
+    // EN: Logged-in users load their routines from the backend (see the
+    // effect below), so start empty instead of reading localStorage.
+    if (isBackendMode) return []
+
     try {
       const savedRoutines = localStorage.getItem(ROUTINE_STORAGE_KEY)
 
@@ -190,7 +196,6 @@ function Routines({
   const [exploredStarterRoutineId, setExploredStarterRoutineId] = useState(null)
   const [expandedWideId, setExpandedWideId] = useState(null)
 
-  const isBackendMode = Boolean(currentUser?.id) && !isDemoMode
   const [isLoadingRoutines, setIsLoadingRoutines] = useState(false)
   const [routineError, setRoutineError] = useState("")
 
@@ -202,34 +207,143 @@ function Routines({
 
   const selectedStarterCount = selectedDemoRoutineIds.length
 
-  function handleLoadDemoRoutines() {
+  // EN: Tell Home (and any other backend-aware page) that backend routines
+  // changed, so it can reload them. Kept separate from "bloom-routines-updated",
+  // which stays local/demo-only.
+  function notifyBackendRoutinesUpdated() {
+    window.dispatchEvent(new Event("bloom-backend-routines-updated"))
+  }
+
+  async function handleLoadDemoRoutines() {
+    const routinesToAdd = starterRoutines
+      .filter((routine) => selectedDemoRoutineIds.includes(routine.id))
+      .map((routine) => normaliseStarterRoutine(routine))
+
+    if (isBackendMode) {
+      setIsLoadingRoutines(true)
+      setRoutineError("")
+
+      try {
+        for (const routine of routinesToAdd) {
+          const createdRoutine = await createRoutine({ name: routine.name })
+
+          const createdSteps = []
+
+          for (let index = 0; index < routine.steps.length; index += 1) {
+            const step = routine.steps[index]
+
+            const createdStep = await createRoutineStep(createdRoutine.id, {
+              title: step.text,
+              step_order: index,
+            })
+
+            createdSteps.push(createdStep)
+          }
+
+          setRoutines((prevRoutines) => [
+            ...prevRoutines,
+            { ...createdRoutine, steps: createdSteps },
+          ])
+        }
+
+        notifyBackendRoutinesUpdated()
+      } catch (error) {
+        console.error("Could not add starter routines:", error)
+        setRoutineError("Could not add starter routines. Please try again.")
+      } finally {
+        setIsLoadingRoutines(false)
+      }
+
+      setSelectedDemoRoutineIds([])
+      setShowDemoRoutines(false)
+      return
+    }
+
     setRoutines((prevRoutines) => {
       const existingIds = new Set(prevRoutines.map((routine) => routine.id))
 
-      const routinesToAdd = starterRoutines
-        .filter((routine) => selectedDemoRoutineIds.includes(routine.id))
-        .filter((routine) => !existingIds.has(routine.id))
-        .map((routine) => normaliseStarterRoutine(routine))
-
-      return [...prevRoutines, ...routinesToAdd]
+      return [
+        ...prevRoutines,
+        ...routinesToAdd.filter((routine) => !existingIds.has(routine.id)),
+      ]
     })
 
     setSelectedDemoRoutineIds([])
     setShowDemoRoutines(false)
   }
 
+  // EN: Logged-in users load their routines from the backend whenever this
+  // page mounts, or whenever the logged-in user changes.
   useEffect(() => {
+    if (!isBackendMode) return
+
+    let shouldIgnore = false
+
+    async function loadBackendRoutines() {
+      setIsLoadingRoutines(true)
+      setRoutineError("")
+
+      try {
+        const savedRoutines = await getRoutines()
+
+        if (!shouldIgnore) {
+          setRoutines(savedRoutines)
+        }
+      } catch (error) {
+        console.error("Could not load routines:", error)
+
+        if (!shouldIgnore) {
+          setRoutineError("Could not load your routines. Please try again.")
+        }
+      } finally {
+        if (!shouldIgnore) {
+          setIsLoadingRoutines(false)
+        }
+      }
+    }
+
+    loadBackendRoutines()
+
+    return () => {
+      shouldIgnore = true
+    }
+  }, [isBackendMode, currentUser?.id])
+
+  // EN: Demo/local users persist routines to localStorage and notify other
+  // local-mode pages (Home, Progress) via "bloom-routines-updated".
+  useEffect(() => {
+    if (isBackendMode) return
+
     localStorage.setItem(ROUTINE_STORAGE_KEY, JSON.stringify(routines))
 
     window.dispatchEvent(new Event("bloom-routines-updated"))
-  }, [routines])
+  }, [routines, isBackendMode])
 
-  function handleAddRoutine() {
+  async function handleAddRoutine() {
     if (routineName.trim() === "") return
+
+    const name = routineName.trim()
+
+    if (isBackendMode) {
+      try {
+        setRoutineError("")
+
+        const newRoutine = await createRoutine({ name })
+
+        setRoutines((prevRoutines) => [...prevRoutines, newRoutine])
+        setRoutineName("")
+        notifyBackendRoutinesUpdated()
+      } catch (error) {
+        console.error("Could not create routine:", error)
+        setRoutineError("Could not create your routine. Please try again.")
+      }
+
+      return
+    }
 
     const newRoutine = {
       id: Date.now(),
-      name: routineName.trim(),
+      name,
       steps: [],
     }
 
@@ -242,15 +356,39 @@ function Routines({
     setEditRoutineName(routine.name || routine.title || "")
   }
 
-  function handleEditRoutineSave(routineId) {
+  async function handleEditRoutineSave(routineId) {
     if (editRoutineName.trim() === "") return
+
+    const name = editRoutineName.trim()
+
+    if (isBackendMode) {
+      try {
+        const updatedRoutine = await updateRoutine(routineId, { name })
+
+        setRoutines((prevRoutines) =>
+          prevRoutines.map((routine) =>
+            routine.id === routineId
+              ? { ...routine, name: updatedRoutine.name }
+              : routine
+          )
+        )
+        notifyBackendRoutinesUpdated()
+      } catch (error) {
+        console.error("Could not update routine:", error)
+        setRoutineError("Could not update your routine. Please try again.")
+      }
+
+      setEditingRoutineId(null)
+      setEditRoutineName("")
+      return
+    }
 
     setRoutines(
       routines.map((routine) =>
         routine.id === routineId
           ? {
               ...routine,
-              name: editRoutineName.trim(),
+              name,
             }
           : routine
       )
@@ -265,10 +403,43 @@ function Routines({
     setEditRoutineName("")
   }
 
-  function handleAddStep(routineId) {
+  async function handleAddStep(routineId) {
     const text = stepText[routineId]
 
     if (!text || text.trim() === "") return
+
+    const trimmedText = text.trim()
+
+    if (isBackendMode) {
+      const routine = routines.find((current) => current.id === routineId)
+      const stepOrder = routine?.steps?.length || 0
+
+      try {
+        const newStep = await createRoutineStep(routineId, {
+          title: trimmedText,
+          step_order: stepOrder,
+        })
+
+        setRoutines((prevRoutines) =>
+          prevRoutines.map((current) =>
+            current.id === routineId
+              ? { ...current, steps: [...(current.steps || []), newStep] }
+              : current
+          )
+        )
+
+        setStepText({
+          ...stepText,
+          [routineId]: "",
+        })
+        notifyBackendRoutinesUpdated()
+      } catch (error) {
+        console.error("Could not add routine step:", error)
+        setRoutineError("Could not add the step. Please try again.")
+      }
+
+      return
+    }
 
     setRoutines(
       routines.map((routine) =>
@@ -279,7 +450,7 @@ function Routines({
                 ...(routine.steps || []),
                 {
                   id: Date.now(),
-                  text: text.trim(),
+                  text: trimmedText,
                   completed: false,
                 },
               ],
@@ -294,11 +465,52 @@ function Routines({
     })
   }
 
-  function handleDeleteRoutine(routineId) {
+  async function handleDeleteRoutine(routineId) {
+    if (isBackendMode) {
+      try {
+        await deleteRoutineFromApi(routineId)
+
+        setRoutines((prevRoutines) =>
+          prevRoutines.filter((routine) => routine.id !== routineId)
+        )
+        notifyBackendRoutinesUpdated()
+      } catch (error) {
+        console.error("Could not delete routine:", error)
+        setRoutineError("Could not delete your routine. Please try again.")
+      }
+
+      return
+    }
+
     setRoutines(routines.filter((routine) => routine.id !== routineId))
   }
 
-  function handleDeleteStep(routineId, stepId) {
+  async function handleDeleteStep(routineId, stepId) {
+    if (isBackendMode) {
+      try {
+        await deleteRoutineStep(stepId)
+
+        setRoutines((prevRoutines) =>
+          prevRoutines.map((routine) =>
+            routine.id === routineId
+              ? {
+                  ...routine,
+                  steps: (routine.steps || []).filter(
+                    (step) => step.id !== stepId
+                  ),
+                }
+              : routine
+          )
+        )
+        notifyBackendRoutinesUpdated()
+      } catch (error) {
+        console.error("Could not delete routine step:", error)
+        setRoutineError("Could not delete the step. Please try again.")
+      }
+
+      return
+    }
+
     setRoutines(
       routines.map((routine) =>
         routine.id === routineId
@@ -311,7 +523,41 @@ function Routines({
     )
   }
 
-  function handleToggleStep(routineId, stepId) {
+  async function handleToggleStep(routineId, stepId) {
+    if (isBackendMode) {
+      const routine = routines.find((current) => current.id === routineId)
+      const step = routine?.steps?.find((current) => current.id === stepId)
+
+      if (!step) return
+
+      try {
+        const updatedStep = await updateRoutineStep(stepId, {
+          completed: !step.completed,
+        })
+
+        setRoutines((prevRoutines) =>
+          prevRoutines.map((current) => {
+            if (current.id !== routineId) return current
+
+            return {
+              ...current,
+              steps: (current.steps || []).map((currentStep) =>
+                currentStep.id === stepId
+                  ? { ...currentStep, completed: updatedStep.completed }
+                  : currentStep
+              ),
+            }
+          })
+        )
+        notifyBackendRoutinesUpdated()
+      } catch (error) {
+        console.error("Could not update routine step:", error)
+        setRoutineError("Could not update the step. Please try again.")
+      }
+
+      return
+    }
+
     setRoutines((currentRoutines) =>
       currentRoutines.map((routine) => {
         if (routine.id !== routineId) return routine
@@ -345,7 +591,47 @@ function Routines({
     )
   }
 
-  function handleCompleteRoutine(routineId) {
+  async function handleCompleteRoutine(routineId) {
+    if (isBackendMode) {
+      const routine = routines.find((current) => current.id === routineId)
+      const incompleteSteps = (routine?.steps || []).filter(
+        (step) => !step.completed
+      )
+
+      try {
+        const updatedSteps = await Promise.all(
+          incompleteSteps.map((step) =>
+            updateRoutineStep(step.id, { completed: true })
+          )
+        )
+
+        setRoutines((prevRoutines) =>
+          prevRoutines.map((current) => {
+            if (current.id !== routineId) return current
+
+            return {
+              ...current,
+              steps: (current.steps || []).map((step) => {
+                const updatedStep = updatedSteps.find(
+                  (updated) => updated.id === step.id
+                )
+
+                return updatedStep
+                  ? { ...step, completed: updatedStep.completed }
+                  : step
+              }),
+            }
+          })
+        )
+        notifyBackendRoutinesUpdated()
+      } catch (error) {
+        console.error("Could not complete routine:", error)
+        setRoutineError("Could not complete this routine. Please try again.")
+      }
+
+      return
+    }
+
     setRoutines((currentRoutines) =>
       currentRoutines.map((routine) => {
         if (routine.id !== routineId) return routine
@@ -370,8 +656,39 @@ function Routines({
     setEditStepText(step.text || step.title || "")
   }
 
-  function handleEditStepSave(routineId, stepId) {
+  async function handleEditStepSave(routineId, stepId) {
     if (editStepText.trim() === "") return
+
+    const text = editStepText.trim()
+
+    if (isBackendMode) {
+      try {
+        const updatedStep = await updateRoutineStep(stepId, { title: text })
+
+        setRoutines((prevRoutines) =>
+          prevRoutines.map((routine) =>
+            routine.id === routineId
+              ? {
+                  ...routine,
+                  steps: (routine.steps || []).map((step) =>
+                    step.id === stepId
+                      ? { ...step, text: updatedStep.text }
+                      : step
+                  ),
+                }
+              : routine
+          )
+        )
+        notifyBackendRoutinesUpdated()
+      } catch (error) {
+        console.error("Could not update routine step:", error)
+        setRoutineError("Could not update the step. Please try again.")
+      }
+
+      setEditingStepId(null)
+      setEditStepText("")
+      return
+    }
 
     setRoutines(
       routines.map((routine) =>
@@ -382,7 +699,7 @@ function Routines({
                 step.id === stepId
                   ? {
                       ...step,
-                      text: editStepText.trim(),
+                      text,
                     }
                   : step
               ),
@@ -400,29 +717,53 @@ function Routines({
     setEditStepText("")
   }
 
-  function handleMoveStep(routineId, stepIndex, direction) {
+  async function handleMoveStep(routineId, stepIndex, direction) {
+    const routine = routines.find((current) => current.id === routineId)
+
+    if (!routine) return
+
+    const updatedSteps = [...(routine.steps || [])]
+    const newIndex = stepIndex + direction
+
+    if (newIndex < 0 || newIndex >= updatedSteps.length) return
+
+    const movedStep = updatedSteps[stepIndex]
+    updatedSteps[stepIndex] = updatedSteps[newIndex]
+    updatedSteps[newIndex] = movedStep
+
+    if (isBackendMode) {
+      try {
+        await Promise.all([
+          updateRoutineStep(updatedSteps[stepIndex].id, {
+            step_order: stepIndex,
+          }),
+          updateRoutineStep(updatedSteps[newIndex].id, {
+            step_order: newIndex,
+          }),
+        ])
+
+        setRoutines((prevRoutines) =>
+          prevRoutines.map((current) =>
+            current.id === routineId
+              ? { ...current, steps: updatedSteps }
+              : current
+          )
+        )
+        notifyBackendRoutinesUpdated()
+      } catch (error) {
+        console.error("Could not reorder routine steps:", error)
+        setRoutineError("Could not reorder the steps. Please try again.")
+      }
+
+      return
+    }
+
     setRoutines(
-      routines.map((routine) => {
-        if (routine.id !== routineId) {
-          return routine
-        }
-
-        const updatedSteps = [...(routine.steps || [])]
-        const newIndex = stepIndex + direction
-
-        if (newIndex < 0 || newIndex >= updatedSteps.length) {
-          return routine
-        }
-
-        const movedStep = updatedSteps[stepIndex]
-        updatedSteps[stepIndex] = updatedSteps[newIndex]
-        updatedSteps[newIndex] = movedStep
-
-        return {
-          ...routine,
-          steps: updatedSteps,
-        }
-      })
+      routines.map((current) =>
+        current.id === routineId
+          ? { ...current, steps: updatedSteps }
+          : current
+      )
     )
   }
 
@@ -633,7 +974,10 @@ function Routines({
           <button
             type="button"
             onClick={handleLoadDemoRoutines}
-            disabled={selectedStarterCount === 0}
+            disabled={
+              selectedStarterCount === 0 ||
+              (isBackendMode && isLoadingRoutines)
+            }
             className="mt-5 w-full rounded-full bg-bloom-forest px-5 py-3 text-sm font-bold text-bloom-light shadow-sm transition hover:bg-bloom-mid disabled:cursor-not-allowed disabled:opacity-40 dark:bg-bloom-mint dark:text-bloom-forest"
           >
             {selectedStarterCount === 0
@@ -712,7 +1056,19 @@ function Routines({
             </div>
           </div>
 
-          {routines.length === 0 ? (
+          {routineError && (
+            <p className="mb-4 rounded-2xl bg-red-50 px-4 py-3 text-sm font-semibold text-red-700 dark:bg-red-500/10 dark:text-red-200">
+              {routineError}
+            </p>
+          )}
+
+          {isBackendMode && isLoadingRoutines ? (
+            <div className="rounded-2xl bg-white/70 px-4 py-5 text-center shadow-sm dark:bg-white/5">
+              <p className="text-sm font-bold text-bloom-forest dark:text-bloom-light">
+                Loading your routines...🌱
+              </p>
+            </div>
+          ) : routines.length === 0 ? (
             <EmptyState
               icon="🌿"
               title="No routines yet"

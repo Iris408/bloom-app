@@ -495,3 +495,121 @@ export async function deleteTaskFromApi(taskId) {
 
   return response.json()
 }
+
+function mapProgressSnapshotFromApi(snapshot) {
+  const completedSteps =
+    snapshot.completed_tasks +
+    snapshot.completed_routines +
+    snapshot.completed_focus_tasks
+
+  const totalSteps =
+    snapshot.total_tasks +
+    snapshot.total_routines +
+    snapshot.total_focus_tasks
+
+  return {
+    id: snapshot.id,
+    snapshotDate: snapshot.snapshot_date,
+
+    completedTasks: snapshot.completed_tasks,
+    totalTasks: snapshot.total_tasks,
+
+    completedRoutines: snapshot.completed_routines,
+    totalRoutines: snapshot.total_routines,
+
+    completedFocusTasks: snapshot.completed_focus_tasks,
+    totalFocusTasks: snapshot.total_focus_tasks,
+
+    completedSteps,
+    totalSteps,
+
+    routineSnapshots: [],
+    focusCompleted: snapshot.completed_focus_tasks,
+    focusTotal: snapshot.total_focus_tasks,
+  }
+}
+
+export async function getProgressSnapshots() {
+  const response = await fetch(`${API_BASE_URL}/progress/`, {
+    method: "GET",
+    headers: getAuthHeaders(),
+  })
+
+  if (!response.ok) {
+    const message = await getApiErrorMessage(
+      response,
+      "Failed to fetch progress snapshots"
+    )
+
+    throw new Error(message)
+  }
+
+  const snapshots = await response.json()
+
+  return snapshots.map(mapProgressSnapshotFromApi)
+}
+
+export async function createProgressSnapshot(snapshot) {
+  const response = await fetch(`${API_BASE_URL}/progress/`, {
+    method: "POST",
+    headers: getAuthHeaders(),
+    body: JSON.stringify({
+      snapshot_date: snapshot.snapshotDate,
+
+      completed_tasks: snapshot.completedTasks,
+      total_tasks: snapshot.totalTasks,
+
+      completed_routines: snapshot.completedRoutines,
+      total_routines: snapshot.totalRoutines,
+
+      completed_focus_tasks: snapshot.completedFocusTasks,
+      total_focus_tasks: snapshot.totalFocusTasks,
+    }),
+  })
+
+  if (!response.ok) {
+    const message = await getApiErrorMessage(
+      response,
+      "Failed to create progress snapshot"
+    )
+
+    throw new Error(message)
+  }
+
+  const savedSnapshot = await response.json()
+
+  return mapProgressSnapshotFromApi(savedSnapshot)
+}
+
+export async function updateProgressSnapshot(snapshotId, snapshot) {
+  const response = await fetch(
+    `${API_BASE_URL}/progress/${snapshotId}`,
+    {
+      method: "PUT",
+      headers: getAuthHeaders(),
+      body: JSON.stringify({
+        completed_tasks: snapshot.completedTasks,
+        total_tasks: snapshot.totalTasks,
+
+        completed_routines: snapshot.completedRoutines,
+        total_routines: snapshot.totalRoutines,
+
+        completed_focus_tasks: snapshot.completedFocusTasks,
+        total_focus_tasks: snapshot.totalFocusTasks,
+      }),
+    }
+  )
+
+  if (!response.ok) {
+    const message = await getApiErrorMessage(
+      response,
+      "Failed to update progress snapshot"
+    )
+
+    throw new Error(message)
+  }
+
+  const savedSnapshot = await response.json()
+
+  return mapProgressSnapshotFromApi(savedSnapshot)
+}
