@@ -30,7 +30,6 @@ import RoadmapPage from "./pages/RoadmapPage";
 import FeedbackPage from "./pages/FeedbackPage";
 
 import DailyAffirmationCard from "./components/home/DailyAffirmationCard"
-import DemoBanner from "./components/demo/DemoBanner";
 import ExitDemoConfirmModal from "./components/demo/ExitDemoConfirmModal";
 import DemoCompletionModal from "./components/demo/DemoCompletionModal";
 import GuidedDemoNotice from "./components/demo/GuidedDemoNotice";
@@ -124,6 +123,9 @@ function App() {
         // JP: 保存済みトークンが有効なユーザーに属しているか確認します。
         const user = await getCurrentUser();
         setCurrentUser(user);
+
+        // EN: The page restored from localStorage should stay active; do not
+        // force activePage to "home" here.
       } catch {
         // EN: Remove invalid or expired token.
         // JP: 無効または期限切れのトークンを削除します。
@@ -158,32 +160,6 @@ function App() {
       window.removeEventListener("bloom-demo-completion", handleDemoCompletion)
     }
   }, [isDemoMode])
-
-  useEffect(() => {
-    async function checkExistingLogin() {
-      const token = getAuthToken()
-
-      if (!token) {
-        setIsCheckingAuth(false)
-        return
-      }
-
-      try {
-        const user = await getCurrentUser()
-        setCurrentUser(user)
-
-        // The saved page from localStorage should remain active.
-      } catch {
-        logoutUser()
-        setCurrentUser(null)
-        setActivePage("overview")
-      } finally {
-        setIsCheckingAuth(false)
-      }
-    }
-
-    checkExistingLogin()
-  }, [])
 
   function handleLogout() {
     // EN: Log out the user and return to the public Overview page.
@@ -381,8 +357,6 @@ function App() {
         />
       );
     }
-    if (activePage === "help") return <HelpPage />
-   
     return (
       <Overview
         setActivePage={handlePageChange}

@@ -1,23 +1,8 @@
-import { React, useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 
 const MEMORY_HERO_IMAGE = "/illustrations/bloom-memories-hero.png"
 const MEMORY_QUOTE_IMAGE = "/illustrations/bloom-memories-quote.png"
-const MEMORY_JOURNAL_IMAGE = "/illustrations/bloom-memories-journal.png"
 const MEMORIES_STORAGE_KEY = "bloom-memories"
-
-const IMAGE_1 = "/illustrations/sample-image-1.png"
-const IMAGE_2 = "/illustrations/sample-image-2.png"
-const IMAGE_4 = "/illustrations/sample-image-4.png"
-const IMAGE_5 = "/illustrations/sample-image-5.png"
-const IMAGE_8 = "/illustrations/sample-image-8.png"
-const IMAGE_9 = "/illustrations/sample-image-9.png"
-const IMAGE_10 = "/illustrations/sample-image-10.png"
-const IMAGE_12 = "/illustrations/sample-image-12.png"
-const IMAGE_13 = "/illustrations/sample-image-13.png"
-const IMAGE_14 = "/illustrations/sample-image-14.png"
-const IMAGE_15 = "/illustrations/sample-image-15.png"
-const IMAGE_16 = "/illustrations/sample-image-16.png"
-
 
 const MEMORY_FILTERS = [
   { value: "all", label: "All memories" },
@@ -1071,14 +1056,6 @@ export default function Moments() {
   const dashboardMemories = useMemo(() => {
     return filteredMemories.slice(0, 3)
   }, [filteredMemories])
-
-  const reflectionCount = memories.filter(
-    (memory) => memory.tag === "Reflective"
-  ).length
-
-  const smallWinCount = memories.filter(
-    (memory) => memory.tag === "Accomplished"
-  ).length
 
   function handleOpenAddMemory() {
     setEditingMemory(null)

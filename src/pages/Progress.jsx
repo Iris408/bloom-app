@@ -195,9 +195,6 @@ function WeekDay({ dateKey, snapshot, isSelected, isToday, onClick }) {
   const completedSteps = snapshot?.completedSteps ?? 0
   const totalSteps = snapshot?.totalSteps ?? 0
 
-  const pct =
-    totalSteps === 0 ? 0 : Math.round((completedSteps / totalSteps) * 100)
-
   const hasProgress = completedSteps > 0
   const isComplete = totalSteps > 0 && completedSteps === totalSteps
 
@@ -308,8 +305,6 @@ export default function Progress({ currentUser = null, isDemoMode = false, demoT
   const [routines, setRoutines] = useState(() => loadStoredRoutines())
   const [focusHistory, setFocusHistory] = useState(() => loadFocusHistory())
   const [selectedDate, setSelectedDate] = useState(today)
-  const [weekSnapshots, setWeekSnapshots] = useState({})
-  const [daySnapshot, setDaySnapshot] = useState(null)
   const [backendTasks, setBackendTasks] = useState([])
   const [backendFocusTasks, setBackendFocusTasks] = useState([])
   const [backendSnapshots, setBackendSnapshots] = useState([])
@@ -411,12 +406,6 @@ export default function Progress({ currentUser = null, isDemoMode = false, demoT
             ]
 
         setBackendSnapshots(updatedSnapshots)
-        setDaySnapshot({
-          ...savedTodaySnapshot,
-          routineSnapshots: liveSnapshot.routineSnapshots,
-          completedSteps: liveSnapshot.completedSteps,
-          totalSteps: liveSnapshot.totalSteps,
-        })
       } catch (error) {
         if (!shouldIgnore) {
           setProgressError(
@@ -454,90 +443,46 @@ export default function Progress({ currentUser = null, isDemoMode = false, demoT
     }
   }, [isBackendMode])
 
+  // EN: Persist today's local/demo snapshot to localStorage. This writes to
+  // an external system (storage), so it stays an effect; the displayed value
+  // below is derived, not mirrored from this write.
   useEffect(() => {
     if (isBackendMode) return
 
     syncToday(today, safeRoutines, safeFocusTasks)
   }, [isBackendMode, today, safeRoutines, safeFocusTasks, syncToday])
 
-  useEffect(() => {
-    if (isBackendMode) return
+  // EN: Derive the selected day's snapshot instead of mirroring it into
+  // state. Today's snapshot is computed live from in-memory data so it is
+  // always current; other days are read from where they were persisted.
+  const daySnapshot = useMemo(() => {
+    if (isBackendMode) {
+      const selectedSnapshot = backendSnapshotsByDate[selectedDate] || null
+
+      if (selectedDate === today && selectedSnapshot) {
+        const liveSnapshot = buildLiveProgressSnapshot(
+          today,
+          backendTasks,
+          routines,
+          backendFocusTasks
+        )
+
+        return {
+          ...selectedSnapshot,
+          routineSnapshots: liveSnapshot.routineSnapshots,
+          completedSteps: liveSnapshot.completedSteps,
+          totalSteps: liveSnapshot.totalSteps,
+        }
+      }
+
+      return selectedSnapshot
+    }
 
     if (selectedDate === today) {
-      const liveSnapshot = syncToday(
-        today,
-        safeRoutines,
-        safeFocusTasks
-      )
-
-      setDaySnapshot(liveSnapshot)
-      return
+      return buildLiveProgressSnapshot(today, [], safeRoutines, safeFocusTasks)
     }
 
-    setDaySnapshot(loadDay(selectedDate))
-  }, [
-    isBackendMode,
-    selectedDate,
-    today,
-    safeRoutines,
-    safeFocusTasks,
-    syncToday,
-    loadDay,
-  ])
-
-  useEffect(() => {
-    if (isBackendMode) return
-
-    const snapshots = {}
-
-    weekKeys.forEach((key) => {
-      snapshots[key] = loadDay(key)
-    })
-
-    setWeekSnapshots(snapshots)
-  }, [isBackendMode, weekKeys, loadDay, safeRoutines, safeFocusTasks])
-
-  useEffect(() => {
-    if (!isBackendMode) return
-
-    const snapshots = {}
-
-    weekKeys.forEach((key) => {
-      snapshots[key] = backendSnapshotsByDate[key] || null
-    })
-
-    setWeekSnapshots(snapshots)
-  }, [
-    isBackendMode,
-    weekKeys,
-    backendSnapshotsByDate,
-  ])
-
-  useEffect(() => {
-    if (!isBackendMode) return
-
-    const selectedSnapshot =
-      backendSnapshotsByDate[selectedDate] || null
-
-    if (selectedDate === today && selectedSnapshot) {
-      const liveSnapshot = buildLiveProgressSnapshot(
-        today,
-        backendTasks,
-        routines,
-        backendFocusTasks
-      )
-
-      setDaySnapshot({
-        ...selectedSnapshot,
-        routineSnapshots: liveSnapshot.routineSnapshots,
-        completedSteps: liveSnapshot.completedSteps,
-        totalSteps: liveSnapshot.totalSteps,
-      })
-
-      return
-    }
-
-    setDaySnapshot(selectedSnapshot)
+    return loadDay(selectedDate)
   }, [
     isBackendMode,
     selectedDate,
@@ -546,6 +491,36 @@ export default function Progress({ currentUser = null, isDemoMode = false, demoT
     backendTasks,
     routines,
     backendFocusTasks,
+    safeRoutines,
+    safeFocusTasks,
+    loadDay,
+  ])
+
+  // EN: Same idea for the week strip — derive it instead of mirroring it.
+  const weekSnapshots = useMemo(() => {
+    const snapshots = {}
+
+    weekKeys.forEach((key) => {
+      if (isBackendMode) {
+        snapshots[key] = backendSnapshotsByDate[key] || null
+        return
+      }
+
+      snapshots[key] =
+        key === today
+          ? buildLiveProgressSnapshot(today, [], safeRoutines, safeFocusTasks)
+          : loadDay(key)
+    })
+
+    return snapshots
+  }, [
+    isBackendMode,
+    weekKeys,
+    backendSnapshotsByDate,
+    today,
+    safeRoutines,
+    safeFocusTasks,
+    loadDay,
   ])
 
   const completed = daySnapshot?.completedSteps ?? 0

@@ -174,7 +174,21 @@ function Focus({
   const today = todayKey()
 
   const [taskTitle, setTaskTitle] = useState("")
-  const [selectedTaskId, setSelectedTaskId] = useState(null)
+
+  const isBackendMode = Boolean(currentUser?.id) && !isDemoMode
+
+  const focusSelectionStorageKey =
+    isBackendMode && currentUser?.id
+      ? `${FOCUS_SELECTED_TASK_STORAGE_PREFIX}-user-${currentUser.id}-${today}`
+      : `${FOCUS_SELECTED_TASK_STORAGE_PREFIX}-local-${today}`
+
+  const [selectedTaskId, setSelectedTaskId] = useState(() => {
+    try {
+      return localStorage.getItem(focusSelectionStorageKey) || null
+    } catch {
+      return null
+    }
+  })
 
   const [selectedFocusTypeId, setSelectedFocusTypeId] = useState("deep")
   const [secondsRemaining, setSecondsRemaining] = useState(25 * 60)
@@ -185,15 +199,9 @@ function Focus({
   const [reflectionText, setReflectionText] = useState("")
   const [focusHistory, setFocusHistory] = useState(() => getStoredFocusHistory())
 
-  const isBackendMode = Boolean(currentUser?.id) && !isDemoMode
   const [backendFocusTasks, setBackendFocusTasks] = useState([])
   const [isLoadingFocusTasks, setIsLoadingFocusTasks] = useState(false)
   const [focusTaskError, setFocusTaskError] = useState("")
-
-  const focusSelectionStorageKey =
-    isBackendMode && currentUser?.id
-      ? `${FOCUS_SELECTED_TASK_STORAGE_PREFIX}-user-${currentUser.id}-${today}`
-      : `${FOCUS_SELECTED_TASK_STORAGE_PREFIX}-local-${today}`
 
   const activeFocusTasks = isBackendMode ? backendFocusTasks : localFocusTasks
 
@@ -279,16 +287,6 @@ function Focus({
       shouldIgnore = true
     }
   }, [isBackendMode, currentUser?.id, today])
-
-  useEffect(() => {
-    try {
-      const savedSelectedTaskId = localStorage.getItem(focusSelectionStorageKey)
-
-      setSelectedTaskId(savedSelectedTaskId || null)
-    } catch {
-      setSelectedTaskId(null)
-    }
-  }, [focusSelectionStorageKey])
 
   useEffect(() => {
     if (isDemoMode) return
@@ -477,7 +475,7 @@ function Focus({
         )
 
         if (String(selectedTaskId) === String(taskId)) {
-          clearSelectedTaskId(null)
+          clearSelectedFocusTask()
         }
 
       } catch (error) {
@@ -490,7 +488,7 @@ function Focus({
     deleteLocalFocusTask(taskId)
 
     if (String(selectedTaskId) === String(taskId)) {
-      setSelectedTaskId(null)
+      clearSelectedFocusTask()
     }
   }
 
