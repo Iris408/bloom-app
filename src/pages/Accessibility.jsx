@@ -22,10 +22,25 @@ function StatusBadge({ children }) {
   )
 }
 
-function Accessibility() {
+function PrincipleCard({ title, text }) {
   return (
-    <div className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 pb-16 pt-8 text-bloom-forest dark:text-bloom-light sm:px-6 lg:px-8 pt-28 sm:pt-32">
-      {/* Hero */}
+    <div className="rounded-2xl bg-bloom-light/70 p-4 dark:bg-white/5">
+      <p className="font-bold text-bloom-forest dark:text-bloom-light">
+        {title}
+      </p>
+
+      <p className="mt-2 text-sm leading-6 text-bloom-forest/70 dark:text-gray-300">
+        {text}
+      </p>
+    </div>
+  )
+}
+
+function Accessibility({ setActivePage }) {
+  return (
+    <div className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 pb-16 pt-28 text-bloom-forest dark:text-bloom-light sm:px-6 sm:pt-32 lg:px-8">
+      {/* EN: Accessibility page introduction */}
+      {/* JP: アクセシビリティページの紹介 */}
       <section className="rounded-[2rem] border border-bloom-sage/25 bg-white/55 p-6 shadow-sm dark:border-white/10 dark:bg-white/5 md:p-8">
         <div className="mb-4 flex items-center gap-3">
           <span className="text-3xl">
@@ -38,25 +53,24 @@ function Accessibility() {
         </div>
 
         <h1 className="max-w-4xl text-4xl font-bold leading-tight text-bloom-forest dark:text-bloom-light md:text-5xl">
-          Bloom is designed to feel calm, readable, and supportive for different
-          minds and different days.
+          Bloom is designed to be calm, readable, and easy to adjust.
         </h1>
 
         <p className="mt-6 max-w-3xl text-base leading-8 text-bloom-forest/75 dark:text-gray-300">
-          Accessibility is part of Bloom’s product identity. The app is being
-          built with clear layouts, gentle colours, readable text, calm motion,
-          and neurodivergent-friendly design choices in mind.
+          Accessibility is built into Bloom from the beginning, with support
+          for different needs, preferences, and ways of working.
         </p>
       </section>
 
-      {/* Current accessibility status */}
+      {/* EN: Current accessibility features */}
+      {/* JP: 現在利用できるアクセシビリティ機能 */}
       <section className="rounded-[2rem] border border-bloom-sage/25 bg-bloom-light/60 p-6 shadow-sm dark:border-white/10 dark:bg-white/5 md:p-8">
         <p className="mb-3 text-xs font-bold uppercase tracking-[0.22em] text-bloom-mid dark:text-bloom-sage">
-          Current accessibility status
+          Available now
         </p>
 
         <h2 className="text-3xl font-bold text-bloom-forest dark:text-bloom-light">
-          Bloom already includes several accessibility-focused controls.
+          Current accessibility features
         </h2>
 
         <div className="mt-5 flex flex-wrap gap-2">
@@ -69,120 +83,98 @@ function Accessibility() {
         </div>
 
         <p className="mt-5 max-w-3xl text-sm leading-7 text-bloom-forest/75 dark:text-gray-300">
-          These features are still being tested and improved. Bloom’s current
-          beta focuses on making the experience easier to read, easier to
-          navigate, and less overwhelming.
+          Bloom is actively improving accessibility throughout beta.
         </p>
       </section>
 
-      {/* Main accessibility cards */}
+      {/* EN: Main accessibility areas */}
+      {/* JP: 主なアクセシビリティ領域 */}
       <section className="grid grid-cols-1 gap-5 md:grid-cols-2">
         <AccessibilityCard title="Readable text and display controls">
           <p>
-            Bloom includes display controls so users can adjust the app to feel
-            more comfortable. Text size and font options are part of the current
-            accessibility direction.
+            Adjust text size and display settings to make Bloom more
+            comfortable to use.
           </p>
 
           <p className="mt-3">
-            OpenDyslexic support is included to help users who prefer a more
+            OpenDyslexic is available for users who prefer a
             dyslexia-friendly reading style.
           </p>
         </AccessibilityCard>
 
         <AccessibilityCard title="Dark mode and visual comfort">
           <p>
-            Bloom supports dark mode for users who prefer lower brightness or a
-            softer visual experience.
+            Use dark mode for a softer, lower-brightness experience.
           </p>
 
           <p className="mt-3">
-            The colour palette uses calm greens, creams, and soft contrast so
-            the app feels gentle rather than harsh or overstimulating.
+            Calm greens, creams, and gentle contrast help reduce visual noise.
           </p>
         </AccessibilityCard>
 
         <AccessibilityCard title="Neurodivergent-friendly design">
           <p>
-            Bloom is designed with neurodivergent users in mind, including users
-            who may experience overwhelm, executive dysfunction, task paralysis,
-            sensory sensitivity, or difficulty restarting after missed days.
+            Bloom is designed to reduce overwhelm, support restarts, and
+            encourage small steps without pressure.
           </p>
 
           <p className="mt-3">
-            The goal is to support small steps without shame, pressure, or
-            punishment.
+            This includes support for executive dysfunction, task paralysis,
+            sensory sensitivity, and difficult days.
           </p>
         </AccessibilityCard>
 
-        <AccessibilityCard title="Calm wording and low-pressure progress">
+        <AccessibilityCard title="Low-pressure progress">
           <p>
-            Bloom avoids language that makes unfinished tasks feel like failure.
-            The app focuses on gentle progress, recovery, and returning to the
-            next small step.
+            Unfinished tasks are not treated as failure.
           </p>
 
           <p className="mt-3">
-            Future features will continue this direction with missed-day
-            recovery and low-demand mode.
+            Bloom focuses on recovery, returning gently, and choosing the next
+            manageable step.
           </p>
         </AccessibilityCard>
       </section>
 
-      {/* Design principles */}
+      {/* EN: Design principles */}
+      {/* JP: デザイン原則 */}
       <section className="rounded-[2rem] border border-bloom-sage/25 bg-white/55 p-6 shadow-sm dark:border-white/10 dark:bg-white/5 md:p-8">
         <p className="mb-3 text-xs font-bold uppercase tracking-[0.22em] text-bloom-mid dark:text-bloom-sage">
           Design principles
         </p>
 
         <h2 className="text-3xl font-bold text-bloom-forest dark:text-bloom-light">
-          Bloom’s accessibility approach is based on calm, clarity, and choice.
+          Built around calm, clarity, and choice.
         </h2>
 
         <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-3">
-          <div className="rounded-2xl bg-bloom-light/70 p-4 dark:bg-white/5">
-            <p className="font-bold text-bloom-forest dark:text-bloom-light">
-              Calm
-            </p>
+          <PrincipleCard
+            title="Calm"
+            text="Soft colours, gentle cards, simple layouts, and less visual noise."
+          />
 
-            <p className="mt-2 text-sm leading-6 text-bloom-forest/70 dark:text-gray-300">
-              Soft colours, gentle cards, simple layouts, and less visual noise.
-            </p>
-          </div>
+          <PrincipleCard
+            title="Clarity"
+            text="Clear headings, readable spacing, obvious actions, and simple navigation."
+          />
 
-          <div className="rounded-2xl bg-bloom-light/70 p-4 dark:bg-white/5">
-            <p className="font-bold text-bloom-forest dark:text-bloom-light">
-              Clarity
-            </p>
-
-            <p className="mt-2 text-sm leading-6 text-bloom-forest/70 dark:text-gray-300">
-              Clear headings, obvious actions, readable spacing, and simple
-              navigation.
-            </p>
-          </div>
-
-          <div className="rounded-2xl bg-bloom-light/70 p-4 dark:bg-white/5">
-            <p className="font-bold text-bloom-forest dark:text-bloom-light">
-              Choice
-            </p>
-
-            <p className="mt-2 text-sm leading-6 text-bloom-forest/70 dark:text-gray-300">
-              Display controls and future preferences so users can shape the app
-              around their needs.
-            </p>
-          </div>
+          <PrincipleCard
+            title="Choice"
+            text="Display controls and preferences that help users shape Bloom around their needs."
+          />
         </div>
       </section>
 
-      {/* Current and planned features */}
+      {/* EN: Current and planned accessibility features */}
+      {/* JP: 現在と今後のアクセシビリティ機能 */}
       <section>
         <div className="mb-6 text-center">
           <p className="mb-2 text-xs font-bold uppercase tracking-[0.22em] text-bloom-mid dark:text-bloom-sage">
-            Feature roadmap
+            Accessibility roadmap
           </p>
 
           <h2 className="text-3xl font-bold text-bloom-forest dark:text-bloom-light">
-            Accessibility will keep growing with Bloom.
+            What is available now and what is coming next.
           </h2>
         </div>
 
@@ -193,62 +185,63 @@ function Accessibility() {
               <li>• OpenDyslexic font option</li>
               <li>• Dark mode</li>
               <li>• Calm colour palette</li>
-              <li>• Mobile-friendly public landing page</li>
+              <li>• Mobile-friendly layouts</li>
               <li>• Gentle task and progress wording</li>
             </ul>
           </AccessibilityCard>
 
-          <AccessibilityCard title="Planned future improvements">
+          <AccessibilityCard title="Coming later">
             <ul className="space-y-2">
               <li>• High contrast mode</li>
               <li>• Reduced motion setting</li>
               <li>• Low-demand mode</li>
-              <li>• Larger tap targets across all app areas</li>
-              <li>• More keyboard navigation checks</li>
-              <li>• Screen reader testing and improvements</li>
+              <li>• Larger tap targets</li>
+              <li>• More keyboard navigation testing</li>
+              <li>• Screen reader improvements</li>
             </ul>
           </AccessibilityCard>
         </div>
       </section>
 
-      {/* Feedback guidance */}
+      {/* EN: Accessibility feedback link */}
+      {/* JP: アクセシビリティフィードバックへの案内 */}
       <section className="rounded-[2rem] border border-bloom-sage/25 bg-white/55 p-6 shadow-sm dark:border-white/10 dark:bg-white/5 md:p-8">
         <p className="mb-3 text-xs font-bold uppercase tracking-[0.22em] text-bloom-mid dark:text-bloom-sage">
           Accessibility feedback
         </p>
 
         <h2 className="text-3xl font-bold text-bloom-forest dark:text-bloom-light">
-          Feedback is especially helpful during beta.
+          Help make Bloom easier to use.
         </h2>
 
-        <div className="mt-5 space-y-4 text-sm leading-7 text-bloom-forest/75 dark:text-gray-300">
-          <p>
-            Bloom is still early, so accessibility feedback is important.
-            Helpful feedback includes anything that felt difficult to read,
-            confusing to navigate, too visually busy, too small to tap, or
-            uncomfortable to use.
-          </p>
-
-          <p>
-            The goal is to improve Bloom carefully through real feedback rather
-            than assuming one design works for everyone.
-          </p>
+        <div className="mt-5 max-w-3xl space-y-2 text-sm leading-7 text-bloom-forest/75 dark:text-gray-300">
+          <p>Something difficult to read?</p>
+          <p>Too much visual clutter?</p>
+          <p>A control that felt confusing?</p>
         </div>
+
+        <button
+          type="button"
+          onClick={() => setActivePage?.("feedback")}
+          className="mt-6 inline-flex rounded-2xl bg-bloom-forest px-5 py-3 text-sm font-bold text-bloom-light transition hover:bg-bloom-mid"
+        >
+          Give feedback
+        </button>
       </section>
 
-      {/* Last updated */}
+      {/* EN: Page update note */}
+      {/* JP: ページ更新情報 */}
       <section className="rounded-3xl border border-bloom-sage/25 bg-white/45 p-5 text-sm leading-7 text-bloom-forest/70 dark:border-white/10 dark:bg-white/5 dark:text-gray-300">
         <p>
           <span className="font-bold text-bloom-forest dark:text-bloom-light">
             Last updated:
           </span>{" "}
-          June 2026
+          July 2026
         </p>
 
         <p className="mt-2">
-          This page reflects Bloom’s current beta/frontend version. It should be
-          reviewed again as account features, backend data, education features,
-          and deeper accessibility support are added.
+          Bloom is currently in beta and accessibility features will continue
+          to evolve.
         </p>
       </section>
     </div>

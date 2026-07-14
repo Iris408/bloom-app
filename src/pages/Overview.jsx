@@ -641,12 +641,11 @@ function Overview({
             </p>
 
             <h2 className="mt-4 text-3xl font-bold leading-tight">
-              It is okay to need help.
+              Bloom can support routines and reflection, but it is not a replacement for professional help.
             </h2>
 
             <p className="mt-4 text-sm leading-7 opacity-80">
-              Bloom can support gentle structure and reflection, but it is not a
-              crisis service, therapy app, or medical tool.
+              If you need support, please reach out to someone you trust or a professional service.
             </p>
           </div>
 

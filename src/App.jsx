@@ -249,7 +249,9 @@ function App() {
     // JP: 公開情報ページはすべてのユーザーが閲覧できます。
     if (activePage === "about") return <About />;
     if (activePage === "privacy") return <Privacy />;
-    if (activePage === "accessibility") return <Accessibility />;
+    if (activePage === "accessibility") {
+      return <Accessibility setActivePage={handlePageChange} />;
+    };
     if (activePage === "roadmap") return <RoadmapPage />;
     if (activePage === "feedback") return <FeedbackPage />;
     if (activePage === "faq") {
