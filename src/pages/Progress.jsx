@@ -699,8 +699,7 @@ export default function Progress({ currentUser = null, isDemoMode = false, demoT
             </div>
 
             <div className="w-fit max-w-full rounded-full bg-bloom-light px-4 py-2 text-xs font-bold leading-5 text-bloom-forest/65 dark:bg-white/10 dark:text-gray-300">
-              {consistentDays} days you made time for yourself this week
-              {consistentDays === 1 ? "" : "s"}
+              {consistentDays} day{consistentDays === 1 ? "" : "s"} s you made time for yourself this week
             </div>
           </div>
 
@@ -857,8 +856,7 @@ export default function Progress({ currentUser = null, isDemoMode = false, demoT
               </p>
 
               <p className="mt-1 break-words text-xs leading-5 text-bloom-forest/55 dark:text-gray-400">
-                {consistentDays} day{consistentDays === 1 ? "" : "s"} with
-                days you made time for yourself this week.
+                {consistentDays} day{consistentDays === 1 ? "" : "s"} you made time for yourself this week.
               </p>
             </div>
 

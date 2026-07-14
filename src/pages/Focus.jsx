@@ -291,11 +291,13 @@ function Focus({
   }, [focusSelectionStorageKey])
 
   useEffect(() => {
+    if (isDemoMode) return
+
     localStorage.setItem(
       FOCUS_HISTORY_STORAGE_KEY,
       JSON.stringify(focusHistory)
     )
-  }, [focusHistory])
+  }, [focusHistory, isDemoMode])
 
   useEffect(() => {
     if (!isTimerRunning) return undefined

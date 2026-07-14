@@ -35,8 +35,25 @@ import ExitDemoConfirmModal from "./components/demo/ExitDemoConfirmModal";
 import DemoCompletionModal from "./components/demo/DemoCompletionModal";
 import GuidedDemoNotice from "./components/demo/GuidedDemoNotice";
 
+const ACTIVE_PAGE_STORAGE_KEY = "bloom-active-page"
+
 function App() {
-  const [activePage, setActivePage] = useState("overview");
+  const [activePage, setActivePage] = useState(() => {
+    try {
+      return localStorage.getItem(ACTIVE_PAGE_STORAGE_KEY) || "home"
+    } catch {
+      return "home"
+    }
+  })
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(ACTIVE_PAGE_STORAGE_KEY, activePage)
+    } catch {
+      // Page persistence is optional.
+    }
+  }, [activePage])
+
   const [currentUser, setCurrentUser] = useState(null);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
@@ -107,10 +124,6 @@ function App() {
         // JP: 保存済みトークンが有効なユーザーに属しているか確認します。
         const user = await getCurrentUser();
         setCurrentUser(user);
-
-        // EN: Existing logged-in users enter the protected app area.
-        // JP: 既にログイン済みのユーザーは保護されたアプリ画面へ移動します。
-        setActivePage("home");
       } catch {
         // EN: Remove invalid or expired token.
         // JP: 無効または期限切れのトークンを削除します。
@@ -147,12 +160,30 @@ function App() {
   }, [isDemoMode])
 
   useEffect(() => {
-    // EN: If a logged-out user somehow lands on a protected page, return to Overview.
-    // JP: 未ログインのユーザーが保護ページに入った場合、Overviewへ戻します。
-    if (!isCheckingAuth && !canUseApp && protectedPages.includes(activePage)) {
-      setActivePage("overview");
+    async function checkExistingLogin() {
+      const token = getAuthToken()
+
+      if (!token) {
+        setIsCheckingAuth(false)
+        return
+      }
+
+      try {
+        const user = await getCurrentUser()
+        setCurrentUser(user)
+
+        // The saved page from localStorage should remain active.
+      } catch {
+        logoutUser()
+        setCurrentUser(null)
+        setActivePage("overview")
+      } finally {
+        setIsCheckingAuth(false)
+      }
     }
-  }, [activePage, canUseApp, isCheckingAuth]);
+
+    checkExistingLogin()
+  }, [])
 
   function handleLogout() {
     // EN: Log out the user and return to the public Overview page.
@@ -352,10 +383,14 @@ function App() {
     }
     if (activePage === "help") return <HelpPage />
    
-    // EN: If the active page is not recognized, return to the Overview page.
-    // JP: アクティブページが認識されない場合、Overviewページへ戻します。
-    setActivePage("overview");
-    return null;
+    return (
+      <Overview
+        setActivePage={handlePageChange}
+        onLoginClick={() => openLoginModal("login")}
+        onTryDemoClick={() => openLoginModal("demo")}
+        onCreateAccountClick={() => openLoginModal("create")}
+      />
+    );
   }
 
   if (isDemoMode && !canUseApp) {
@@ -369,7 +404,7 @@ function App() {
         onCreateAccount={handleCreateAccountFromDemo}
         onExitDemoClick={() => setIsExitDemoConfirmOpen(true)}
       />
-    );  
+    );
   }
 
   return (
@@ -428,7 +463,7 @@ function App() {
                     </p>
                   </div>
                 ) : (
-                  <div className="mx-auto w-full max-w-7xl px-5 py-6 sm:px-8 sm:px-8 lg:px-10">
+                  <div className="mx-auto w-full max-w-7xl px-5 py-6 sm:px-8 lg:px-10">
                     {renderPage()}
                   </div>  
                 )}

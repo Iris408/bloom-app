@@ -277,13 +277,13 @@ function SmallWinsCard() {
         <div className="text-5xl opacity-80">🌿</div>
       </div>
 
-      <button
-        type="button"
-        onClick={() => setActivePage("wins")}
-        className="mt-6 text-sm font-bold text-bloom-forest/70 transition hover:text-bloom-forest dark:text-gray-300 dark:hover:text-bloom-light"
-      >
-        View all wins →
-      </button>
+      <div className="inline-flex items-center gap-2 rounded-full border border-bloom-sage/25 bg-bloom-light/70 px-4 py-2 text-xs font-bold text-bloom-forest/70 dark:border-white/10 dark:bg-white/10 dark:text-gray-300">
+        <span>View all wins</span>
+
+        <span className="rounded-full bg-white/70 px-2 py-1 text-[10px] uppercase tracking-[0.12em] text-bloom-mid dark:bg-white/10 dark:text-bloom-sage">
+          Coming soon
+        </span>
+      </div>
     </section>
   )
 }
