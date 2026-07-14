@@ -4,6 +4,7 @@ import { getAuthToken, getCurrentUser, logoutUser } from "./api/bloomApi";
 import { getAvatarDisplay } from "./utils/avatarStorage";
 import { seedDemoData } from "./utils/seedDemoData"
 import { isFullPreviewDemoType } from "./data/demoData"
+import { resetDemoSessionData } from "./utils/resetDemoSession"
 
 import LoginModal from "./components/auth/LoginModal";
 import Header from "./components/layout/Header";
@@ -190,6 +191,7 @@ function App() {
           selectedDemoType?.value ||
           "simple"
 
+    resetDemoSessionData()
     seedDemoData(nextDemoType)
 
     setIsDemoMode(true)
@@ -199,12 +201,15 @@ function App() {
   }
 
   function handleConfirmExitDemo() {
+    resetDemoSessionData()
+
     // EN: Exit demo mode and return to the public Overview page.
     // JP: デモモードを終了し、公開用Overviewページへ戻します。
-    setIsDemoMode(false);
-    setDemoType(null);
-    setIsExitDemoConfirmOpen(false);
-    setActivePage("overview");
+    setIsDemoMode(false)
+    setDemoType(null)
+    setIsExitDemoConfirmOpen(false)
+    setIsDemoCompletionOpen(false)
+    setActivePage("overview")
   }
 
   function handleCreateAccountFromDemo() {

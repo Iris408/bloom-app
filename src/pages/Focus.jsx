@@ -197,7 +197,9 @@ function Focus({
 
   const [selectedEnvironmentId, setSelectedEnvironmentId] = useState("forest")
   const [reflectionText, setReflectionText] = useState("")
-  const [focusHistory, setFocusHistory] = useState(() => getStoredFocusHistory())
+  const [focusHistory, setFocusHistory] = useState(() =>
+    isDemoMode ? [] : getStoredFocusHistory()
+  )
 
   const [backendFocusTasks, setBackendFocusTasks] = useState([])
   const [isLoadingFocusTasks, setIsLoadingFocusTasks] = useState(false)
@@ -291,10 +293,14 @@ function Focus({
   useEffect(() => {
     if (isDemoMode) return
 
-    localStorage.setItem(
-      FOCUS_HISTORY_STORAGE_KEY,
-      JSON.stringify(focusHistory)
-    )
+    try {
+      localStorage.setItem(
+        FOCUS_HISTORY_STORAGE_KEY,
+        JSON.stringify(focusHistory)
+      )
+    } catch {
+      // Focus history persistence is optional.
+    }  
   }, [focusHistory, isDemoMode])
 
   useEffect(() => {
