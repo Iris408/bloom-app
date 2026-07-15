@@ -12,24 +12,17 @@ Bloom currently focuses on **Bloom Personal**: a personal routine, focus, progre
 
 [Experience Bloom](https://bloom-app-three-xi.vercel.app/)
 
-## Current Status
+## Latest Release
 
-Bloom has completed the public Overview v2 refresh and is now moving into the **v2.1.0 authentication phase**.
+### v2.1.0
 
-| Area | Status |
-| --- | --- |
-| Public Overview landing page | ✅ Complete |
-| Demo mode entry from Overview | ✅ Complete |
-| Public About, Privacy, and Accessibility pages | ✅ Complete |
-| Desktop sidebar and mobile navigation | ✅ Complete |
-| Routines, tasks, focus, and progress pages | ✅ Complete |
-| Moments dashboard | ✅ Complete |
-| Light/dark mode | ✅ Complete |
-| Text size controls | ✅ Complete |
-| OpenDyslexic font toggle | ✅ Complete |
-| Reduce motion setting | ✅ Complete |
-| Login/create account modal UI | 🚧 In progress |
-| Backend auth/config hardening | 🚧 In progress |
+- Authenticated routine persistence
+- Authenticated focus persistence
+- Progress tracking improvements
+- Active-page persistence
+- Demo-session isolation
+- Cross-page synchronization
+- Release hardening and ESLint cleanup
 
 ## Features
 
