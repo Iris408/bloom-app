@@ -13,6 +13,13 @@ load_dotenv()
 
 DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./bloom.db")
 
+if DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace(
+        "postgres://",
+        "postgresql://",
+        1,
+    )
+
 # EN: SQLite needs this extra argument for local development.
 # JP: SQLiteをローカル開発で使う場合、この追加設定が必要です。
 connect_args = {"check_same_thread": False} if DATABASE_URL.startswith("sqlite") else {}
