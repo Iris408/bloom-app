@@ -18,7 +18,7 @@ function AppProvider({ children }) {
 
         const [focusTasks, setFocusTasks]       = useState(() => {
       try {
-        const saved = localStorage.getItem(FOCUS_TASK_STORAGE_KEY, JSON.stringify(focusTasks))
+        const saved = localStorage.getItem(FOCUS_TASK_STORAGE_KEY)
 
         if (saved) {
             const parsedFocusTasks = JSON.parse(saved)

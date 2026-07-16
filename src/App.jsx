@@ -434,17 +434,23 @@ function App() {
    
               <main className="min-w-0 w-full max-w-full flex-1 overflow-x-hidden">
                 {isCheckingAuth ? (
-                  // EN: Centred loading indicator shown while the auth token is verified.
-                  // JP: 認証トークンの確認中に表示される中央寄せのローディング表示です。
-                  <div className="flex min-h-[60vh] items-center justify-center">
-                    <p className="animate-pulse text-2xl text-gray-500 dark:text-gray-400">
-                      🌱 Loading...
-                    </p>
+                  // EN: Calm loading state shown while Bloom restores the saved session.
+                  // JP: 保存されたセッションを復元している間に表示する穏やかなローディング状態です。
+                  <div className="flex min-h-[60vh] items-center justify-center px-6">
+                    <div className="text-center">
+                      <p className="text-lg font-medium text-gray-700 dark:text-gray-200">
+                        Loading your Bloom space…🌱
+                      </p>
+
+                      <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                        Restoring your account
+                      </p>
+                    </div>
                   </div>
                 ) : (
                   <div className="mx-auto w-full max-w-7xl px-5 py-6 sm:px-8 lg:px-10">
                     {renderPage()}
-                  </div>  
+                  </div>
                 )}
               </main>
             </div>
@@ -471,14 +477,22 @@ function App() {
 
             <main className="min-w-0 w-full max-w-full flex-1 overflow-x-hidden">
               {isCheckingAuth ? (
-                <div className="flex min-h-[60vh] items-center justify-center">
-                  <p className="animate-pulse text-sm text-gray-500 dark:text-gray-400">
-                    🌱 Loading...
-                  </p>
-                </div>
+                // EN: Calm loading state shown while Bloom restores the saved session.
+                // JP: 保存されたセッションを復元している間に表示する穏やかなローディング状態です。
+                  <div className="flex min-h-[60vh] items-center justify-center px-6">
+                    <div className="text-center">
+                      <p className="text-lg font-medium text-gray-700 dark:text-gray-200">
+                        Loading your Bloom space…🌱
+                      </p>
+
+                      <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                        Restoring your account
+                      </p>
+                    </div>
+                  </div>
               ) : (
                 renderPage()
-              )}  
+              )}
             </main>
 
             <Footer
