@@ -56,6 +56,7 @@ function App() {
 
   const [currentUser, setCurrentUser] = useState(null);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+  const [authRestoreError, setAuthRestoreError] = useState("")
   const [isLoginOpen, setIsLoginOpen] = useState(false);
 
   // EN: Demo mode lets users/recruiters explore Bloom without a real account.
@@ -111,36 +112,88 @@ function App() {
   const bgClass = canUseApp ? protectedBgClass : publicBgClass
 
   useEffect(() => {
+    let shouldIgnore = false
+
     async function checkExistingLogin() {
-      const token = getAuthToken();
+      const token = getAuthToken()
 
       if (!token) {
-        setIsCheckingAuth(false);
-        return;
+        if (!shouldIgnore) {
+          setCurrentUser(null)
+          setIsCheckingAuth(false)
+        }
+
+        return
       }
 
-      try {
-        // EN: Check whether the saved token still belongs to a valid user.
-        // JP: 保存済みトークンが有効なユーザーに属しているか確認します。
-        const user = await getCurrentUser();
-        setCurrentUser(user);
+      setIsCheckingAuth(true)
+      setAuthRestoreError("")
 
-        // EN: The page restored from localStorage should stay active; do not
-        // force activePage to "home" here.
-      } catch {
-        // EN: Remove invalid or expired token.
-        // JP: 無効または期限切れのトークンを削除します。
-        logoutUser();
-        setCurrentUser(null);
-        setActivePage("overview");
+      try {
+        // EN: Restore the signed-in user from the saved token.
+        // JP: 保存されたトークンからログインユーザーを復元します。
+        const user = await getCurrentUser()
+
+        if (!shouldIgnore) {
+          setCurrentUser(user)
+        }
+      } catch (error) {
+        if (shouldIgnore) return
+
+        const status = error?.status
+
+        if (status === 401 || status === 403) {
+          // EN: Remove the token only when the backend confirms it is invalid.
+          // JP: バックエンドがトークンの無効を確認した場合のみ削除します。
+          logoutUser()
+          setCurrentUser(null)
+          setActivePage("overview")
+          return
+        }
+
+        // EN: Keep the saved session during temporary connection problems.
+        // JP: 一時的な接続エラーでは保存済みセッションを維持します。
+        setAuthRestoreError(
+          "We couldn't reach Bloom right now. Your session is still saved."
+        )
       } finally {
-        setIsCheckingAuth(false);
+        if (!shouldIgnore) {
+          setIsCheckingAuth(false)
+        }
       }
     }
 
-    checkExistingLogin();
-  }, []);
+    checkExistingLogin()
 
+    return () => {
+      shouldIgnore = true
+    }
+  }, [])
+
+  async function retryAuthRestoration() {
+    setIsCheckingAuth(true)
+    setAuthRestoreError("")
+
+    try {
+      const user = await getCurrentUser()
+      setCurrentUser(user)
+    } catch (error) {
+      const status = error?.status || error?.response?.status
+
+      if (status === 401 || status === 403) {
+        logoutUser()
+        setCurrentUser(null)
+        setActivePage("overview")
+        return
+      }
+
+      setAuthRestoreError(
+        "We still couldn't reach Bloom. Please try again in a moment."
+      )
+    } finally {
+      setIsCheckingAuth(false)
+    }
+  }  
   useEffect(() => {
     function handleDemoCompletion() {
       if (!isDemoMode) return
@@ -384,6 +437,40 @@ function App() {
         onExitDemoClick={() => setIsExitDemoConfirmOpen(true)}
       />
     );
+  }
+
+  if (authRestoreError) {
+    return (
+      <div
+        className={`flex min-h-screen items-center justify-center px-6 ${publicBgClass}`}
+      >
+        <div className="w-full max-w-md rounded-[2rem] border border-bloom-sage/25 bg-white/80 p-7 text-center shadow-sm dark:border-white/10 dark:bg-white/10">
+          <p className="text-3xl" aria-hidden="true">
+            🌱
+          </p>
+
+          <h1 className="mt-4 text-xl font-bold text-bloom-forest dark:text-bloom-light">
+            Bloom is having trouble connecting
+          </h1>
+
+          <p
+            role="alert"
+            className="mt-3 text-sm leading-6 text-bloom-forest/65 dark:text-gray-300"
+          >
+            {authRestoreError}
+          </p>
+
+          <button
+            type="button"
+            onClick={retryAuthRestoration}
+            disabled={isCheckingAuth}
+            className="mt-6 rounded-full bg-bloom-mid px-5 py-3 text-sm font-bold text-white transition hover:bg-bloom-forest disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {isCheckingAuth ? "Trying again…" : "Try again"}
+          </button>
+        </div>
+      </div>
+    )
   }
 
   return (

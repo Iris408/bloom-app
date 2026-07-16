@@ -62,6 +62,14 @@ async function getApiErrorMessage(response, fallbackMessage) {
   }
 }
 
+// EN: Create an API error that keeps the HTTP status code.
+// JP: HTTPステータスコードを保持するAPIエラーを作成します。
+function createApiError(message, status) {
+  const error = new Error(message)
+  error.status = status
+  return error
+}
+
 // EN: Register a new Bloom user using the existing users endpoint.
 // JP: 既存のユーザーエンドポイントを使って新しいBloomユーザーを登録します。
 export async function registerUser({ username, email, password }) {
@@ -135,7 +143,7 @@ export async function getCurrentUser() {
       "Failed to fetch current user"
     );
 
-    throw new Error(message);
+    throw createApiError(message, response.status)
   }
 
   return response.json();
