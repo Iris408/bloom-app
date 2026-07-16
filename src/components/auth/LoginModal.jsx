@@ -168,6 +168,8 @@ export default function LoginModal({
   async function handleLogin(event) {
     event.preventDefault();
 
+    if (isLoading) return;
+
     setError("");
     setNotice("");
     setIsLoading(true);
@@ -183,7 +185,7 @@ export default function LoginModal({
       completeAuth(user);
     } catch (error) {
       setError(
-        error.message || "Login failed. Please check your email and password."
+        error.message || "We couldn't log you in. Please check your email and password and try again."
       );
     } finally {
       setIsLoading(false);
@@ -206,6 +208,8 @@ export default function LoginModal({
 
   async function handleCreateAccount(event) {
     event.preventDefault();
+
+    if (isLoading) return;
 
     setError("");
     setNotice("");
@@ -249,7 +253,7 @@ export default function LoginModal({
       setNotice("Account created. Opening your Bloom space...");
       completeAuth(user);
     } catch (error) {
-      setError(error.message || "Could not create your Bloom account.");
+      setError(error.message || "We couldn't create your Bloom account. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -275,9 +279,10 @@ export default function LoginModal({
 
           <button
             type="button"
+            disabled={isLoading}
             onClick={onClose}
             aria-label="Close login modal"
-            className="shrink-0 rounded-full border border-bloom-sage/30 px-3 py-1 text-sm font-bold text-bloom-forest transition hover:bg-bloom-mint/30 dark:text-bloom-light dark:hover:bg-white/10"
+            className="shrink-0 rounded-full border border-bloom-sage/30 px-3 py-1 text-sm font-bold text-bloom-forest transition hover:bg-bloom-mint/30 disabled:cursor-not-allowed disabled:opacity-50 dark:text-bloom-light dark:hover:bg-white/10"
           >
             x
           </button>
