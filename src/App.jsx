@@ -58,6 +58,7 @@ function App() {
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
   const [authRestoreError, setAuthRestoreError] = useState("")
   const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const { reduceMotion } = useApp()
 
   // EN: Demo mode lets users/recruiters explore Bloom without a real account.
   // JP: デモモードでは、実際のアカウントなしでBloomを試せます。
@@ -614,6 +615,7 @@ function App() {
 
       <DemoCompletionModal
         isOpen={isDemoCompletionOpen}
+        reduceMotion={reduceMotion}
         onClose={() => setIsDemoCompletionOpen(false)}
         onCreateAccount={() => {
           setIsDemoCompletionOpen(false)

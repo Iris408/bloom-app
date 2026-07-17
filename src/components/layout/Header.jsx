@@ -1,6 +1,7 @@
 import PageControlsDropdown from "./PageControlsDropdown"
 import ProfileDropdown from "../auth/ProfileDropdown"
 import Seedling from "../ui/Seedling"
+import ModeIndicator from "../modes/ModeIndicator"
 
 function MoonIcon() {
   return (
@@ -93,7 +94,7 @@ function PublicHeader({
             </p>
 
             <span className="hidden rounded-full border border-bloom-sage/20 bg-white/20 px-2 py-1 text-[11px] font-bold text-bloom-forest/65 dark:border-white/10 dark:bg-white/5 dark:text-gray-300 sm:inline-flex">
-              v2.0.0
+              v2.1.1
             </span>
           </div>
         </button>
@@ -131,7 +132,10 @@ function PublicHeader({
             {isDarkMode ? <SunIcon /> : <MoonIcon />}
           </button>
 
-          <PageControlsDropdown />
+          <PageControlsDropdown
+            isDarkMode={isDarkMode}
+            onToggleTheme={onToggleTheme}
+          />
 
           <button
             type="button"
@@ -156,6 +160,8 @@ function ProtectedHeader({
   currentUser,
   onProfileClick,
   onLogout,
+  isDemoMode,
+  demoType,
   reduceMotion = false,
   showPageControls = true,
 }) {
@@ -165,40 +171,64 @@ function ProtectedHeader({
     focus: "Focus",
     progress: "Progress",
     moments: "Moments",
+    wins: "Wins",
     profile: "Profile",
     settings: "Settings",
   }
 
   const activePageLabel = pageLabels[activePage] ?? "Bloom"
 
+  const demoLabel =
+    demoType === "full-app-preview"
+      ? "Full Bloom"
+      : demoType === "neurodivergent-day"
+        ? "Neurodivergent-friendly Day"
+        : "A Quiet Start"
+
   return (
-    <header className="sticky top-0 z-30 flex h-14 shrink-0 items-center justify-between border-b border-bloom-sage/15 bg-transparent px-4 backdrop-blur-md dark:border-white/10 dark:bg-transparent md:h-16 md:justify-end md:px-6 md:h-16 lg:px-8">
+    <header className="sticky top-0 z-30 grid h-14 shrink-0 grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center border-b border-bloom-sage/15 bg-transparent px-3 backdrop-blur-md dark:border-white/10 dark:bg-transparent md:flex md:h-16 md:justify-end md:px-6 lg:px-8">
+      {/* EN: Mobile Bloom identity and active page label. */}
+      {/* JP: モバイル用のBloomロゴと現在のページ名です。 */}
       <button
         type="button"
         onClick={() => onProfileClick?.()}
-        className="flex items-center gap-3 rounded-2xl px-2 py-2 text-left transition hover:bg-white/45 dark:hover:bg-white/10 md:hidden"
+        className="flex min-w-0 items-center gap-2 rounded-2xl px-1 py-2 text-left transition hover:bg-white/45 dark:hover:bg-white/10 md:hidden"
         aria-label="Open profile"
-      >          
-        <span className="text-2xl leading-none">
+      >
+        <span className="shrink-0 text-2xl leading-none">
           <Seedling variant="indigo" />
         </span>
 
-        <div>
-          <p className="font-serif text-2xl font-bold leading-none text-bloom-forest dark:text-bloom-light">    
+        <div className="min-w-0">
+          <p className="truncate font-serif text-xl font-bold leading-none text-bloom-forest dark:text-bloom-light">
             Bloom
           </p>
 
-          <p className="mt-1 text-[11px] font-semibold text-bloom-forest/50 dark:text-gray-400">
-            {activePageLabel} v2.0.0
+          <p className="mt-1 truncate text-[10px] font-semibold text-bloom-forest/50 dark:text-gray-400">
+            {activePageLabel}
           </p>
         </div>
       </button>
 
-      <div className="flex items-center gap-2 sm:gap-3">
+      {/* EN: Compact account/demo indicator centred in the mobile header. */}
+      {/* JP: モバイルヘッダー中央に表示するアカウント・デモ状態です。 */}
+      <div className="flex justify-center md:hidden">
+        <ModeIndicator
+          mode={isDemoMode ? "demo" : "account"}
+          variant="mobile"
+          username={currentUser?.username}
+          demoLabel={demoLabel}
+          onOpenMenu={onProfileClick}
+        />
+      </div>
+
+      {/* EN: Header controls stay aligned to the right. */}
+      {/* JP: ヘッダー操作ボタンを右側に配置します。 */}
+      <div className="flex items-center justify-self-end gap-1.5 sm:gap-3">
         <button
           type="button"
           onClick={onToggleTheme}
-          className="flex h-10 w-10 items-center justify-center rounded-full border border-bloom-sage/25 bg-white/70 text-bloom-forest shadow-sm transition hover:bg-bloom-light dark:border-white/10 dark:bg-white/10 dark:text-bloom-light dark:hover:bg-white/15"
+          className="hidden h-10 w-10 items-center justify-center rounded-full border border-bloom-sage/25 bg-white/70 text-bloom-forest shadow-sm transition hover:bg-bloom-light dark:border-white/10 dark:bg-white/10 dark:text-bloom-light dark:hover:bg-white/15 sm:flex"
           aria-label={
             isDarkMode ? "Switch to light mode" : "Switch to dark mode"
           }
@@ -206,7 +236,12 @@ function ProtectedHeader({
           {isDarkMode ? <SunIcon /> : <MoonIcon />}
         </button>
 
-        {showPageControls && <PageControlsDropdown />}
+        {showPageControls && (
+          <PageControlsDropdown
+            isDarkMode={isDarkMode}
+            onToggleTheme={onToggleTheme}
+          />
+        )}
 
         <ProfileDropdown
           avatarDisplay={avatarDisplay}
@@ -231,6 +266,8 @@ function Header({
   onProfileClick,
   onLoginClick,
   onLogout,
+  isDemoMode = false,
+  demoType = null,
   reduceMotion = false,
   showPageControls = true,
 }) {
@@ -256,6 +293,8 @@ function Header({
       currentUser={currentUser}
       onProfileClick={onProfileClick}
       onLogout={onLogout}
+      isDemoMode={isDemoMode}
+      demoType={demoType}
       reduceMotion={reduceMotion}
       showPageControls={showPageControls}
     />
