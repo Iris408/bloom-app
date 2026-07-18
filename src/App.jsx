@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useApp } from "./context/AppContext";
+import useApp from "./context/useApp";
 import { getAuthToken, getCurrentUser, logoutUser } from "./api/bloomApi";
 import { getAvatarDisplay } from "./utils/avatarStorage";
 import { seedDemoData } from "./utils/seedDemoData"

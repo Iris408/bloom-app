@@ -1,6 +1,5 @@
 export default function DemoBanner({
   demoType,
-  onCreateAccount,
   onExitDemoClick,
 }) {
   const demoLabels = {

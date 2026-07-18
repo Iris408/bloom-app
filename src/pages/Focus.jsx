@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react"
 
 import EmptyState from "../components/ui/EmptyState"
-import { useApp } from "../context/AppContext"
+import useApp from "../context/useApp"
 import {
   createFocusTask,
   deleteFocusTaskFromApi,

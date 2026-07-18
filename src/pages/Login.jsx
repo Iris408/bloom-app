@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { getCurrentUser, loginUser } from "../api/bloomApi";
-import bloomIllustration from "../assets/bloom-illustration.png";
 
 export default function Login({
   currentUser,
@@ -33,7 +32,7 @@ export default function Login({
       // EN: Move user away from the login page after successful login.
       // JP: ログイン成功後、ログインページから移動します。
       setActivePage("overview");
-    } catch (error) {
+    } catch {
       setError("Login failed. Please check your email and password.");
     } finally {
       setIsLoading(false);

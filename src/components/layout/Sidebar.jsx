@@ -71,7 +71,7 @@ function SidebarIcon({ type }) {
   )
 }
 
-function Sidebar({ activePage, setActivePage, onOpenHelp }) {
+function Sidebar({ activePage, setActivePage }) {
   const navItems = [
     { id: "home", label: "Home", icon: "home" },
     { id: "routines", label: "Routines", icon: "routines" },

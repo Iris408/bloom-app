@@ -1,4 +1,4 @@
-import { useApp } from "../../context/AppContext"
+import useApp from "../../context/useApp"
 import TaskCompletionButton from "./TaskCompletionButton"
 
 function TaskCard({ task, onEdit, onDelete, onToggleComplete }) {

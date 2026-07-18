@@ -36,10 +36,6 @@ function handleClearSelectedDemoRoutines() {
   setSelectedDemoRoutineIds([])
 }
 
-const safeSelectedDemoRoutineIds = Array.isArray(selectedDemoRoutineIds)
-  ? selectedDemoRoutineIds
-  : []
-
   return (
     <div className="flex flex-col gap-5">
       <div className="rounded-2xl border border-bloom-sage/30 bg-white/80 p-4 dark:border-dark-border dark:bg-dark-surface/55 sm:relative sm:pr-44 sm:pb-10">

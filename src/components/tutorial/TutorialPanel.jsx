@@ -98,6 +98,16 @@ function TutorialPanel({
   const isLastStep  = currentStep === steps.length - 1
   const isFirstStep = currentStep === 0
 
+  const triggerPosition =
+    surface === "app"
+      ? "bottom-24 sm:bottom-6"
+      : "bottom-5 sm:bottom-6"
+
+  const panelPosition =
+    surface === "app"
+      ? "bottom-36 sm:bottom-20"
+      : "bottom-20 sm:bottom-20"
+
   // EN: Move to next step or close on last step
   // JP: 次のステップへ進む、最終ステップでは閉じる
   function handleNext() {
@@ -140,11 +150,11 @@ function TutorialPanel({
 
   return (
     <>
-      {/* ── Trigger button ─────────────────────────────────────────── */}
+      {/* ── Trigger button ── */}
       <button
         type="button"
         onClick={handleToggle}
-        className={`fixed bottom-[6.5rem] right-4 z-40 inline-flex h-11 items-center justify-center gap-2 rounded-full bg-bloom-forest px-4 text-xs font-bold text-bloom-light shadow-lg transition hover:bg-bloom-mid dark:bg-bloom-sage dark:text-bloom-forest dark:hover:bg-bloom-light ${
+        className={`fixed right-4 z-40 inline-flex h-11 items-center justify-center gap-2 rounded-full bg-bloom-forest px-4 text-xs font-bold text-bloom-light shadow-lg transition hover:bg-bloom-mid dark:bg-bloom-sage dark:text-bloom-forest dark:hover:bg-bloom-light ${triggerPosition} ${
           !isOpen && surface === "demo" ? "bloom-guide-jump" : ""
         }`}
         aria-label={isOpen ? "Close Bloom guide" : "Open Bloom guide"}
@@ -158,10 +168,10 @@ function TutorialPanel({
         {!isOpen && <span>{surfaceMeta.buttonLabel}</span>}
       </button>
 
-      {/* ── Tutorial panel ─────────────────────────────────────────── */}
+      {/* ── Tutorial panel ── */}
       {isOpen && (
         <aside
-          className={`fixed bottom-[4.5rem] right-4 z-40 flex w-[min(20rem,calc(100vw-2rem))] flex-col rounded-[1.75rem] border border-bloom-sage/25 bg-white/95 p-4 text-bloom-forest shadow-2xl backdrop-blur-md dark:border-white/10 dark:bg-[#252532]/95 dark:text-bloom-light sm:bottom-20 sm:right-5 sm:w-[21rem] sm:p-5 ${
+          className={`fixed right-4 z-40 flex w-[min(20rem,calc(100vw-2rem))] flex-col rounded-[1.75rem] border border-bloom-sage/25 bg-white/95 p-4 text-bloom-forest shadow-2xl backdrop-blur-md dark:border-white/10 dark:bg-[#252532]/95 dark:text-bloom-light sm:bottom-20 sm:right-5 sm:w-[21rem] sm:p-5 ${panelPosition} ${
             reduceMotion ? "animate-none" : "transition duration-300 ease-out"
           }`}
           role="dialog"
@@ -169,7 +179,7 @@ function TutorialPanel({
           aria-label={`${surfaceMeta.buttonLabel}, step ${currentStep + 1} of ${steps.length}`}
         >
 
-          {/* ── Panel header — dots + close ──────────────────────── */}
+          {/* ── Panel header — dots + close ── */}
           <div className="mb-4 flex items-center justify-between gap-4">
             <StepDots total={steps.length} current={currentStep} />
 
@@ -183,7 +193,7 @@ function TutorialPanel({
             </button>
           </div>
 
-          {/* ── Step icon ────────────────────────────────────────── */}
+          {/* ── Step icon ── */}
           <div
             className="mb-4 flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-bloom-light text-2xl dark:bg-white/10"
             aria-hidden="true"
@@ -191,7 +201,7 @@ function TutorialPanel({
             {step.icon}
           </div>
 
-          {/* ── Step content ─────────────────────────────────────── */}
+          {/* ── Step content ── */}
           <h2 className="text-lg font-bold leading-tight text-bloom-forest dark:text-bloom-light">
             {step.title}
           </h2>
@@ -214,7 +224,7 @@ function TutorialPanel({
             </button>
           )}
 
-          {/* ── Navigation — back + next/got it ──────────────────── */}
+          {/* ── Navigation — back + next/got it ── */}
           <div className="mt-5 flex items-center gap-2">
 
             {/* EN: Back button — hidden on first step */}

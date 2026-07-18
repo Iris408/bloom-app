@@ -3,8 +3,8 @@ import { useCallback, useEffect, useRef, useState } from "react"
 import TaskList from "../components/tasks/TaskList"
 import DemoBanner from "../components/demo/DemoBanner"
 
+import useApp from "../context/useApp"
 import { getAvatarDisplay } from "../utils/avatarStorage"
-import { useApp } from "../context/AppContext"
 import { todayKey } from "../utils/progressUtils"
 import { isNeurodivergentDemoType } from "../data/demoData"
 import { getRoutines, updateRoutineStep } from "../api/bloomApi"
@@ -260,13 +260,6 @@ function Home({
       window.clearInterval(intervalId)
     }
   }, [isFocusRunning])
-
-  useEffect(() => {
-    if (!isBackendMode) return
-
-    setRoutines([])
-    loadBackendRoutines()
-  }, [isBackendMode, currentUser?.id, loadBackendRoutines])
 
   useEffect(() => {
     if (!isBackendMode) return

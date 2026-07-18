@@ -12,17 +12,20 @@ Bloom currently focuses on **Bloom Personal**: a personal routine, focus, progre
 
 [Experience Bloom](https://bloom-app-three-xi.vercel.app/)
 
-## Latest Release
+## Latest Release - Bloom v2.1.1
 
-### v2.1.0
+Bloom v2.1.1 focuses on responsive UI polish, account persistence testing, contextual guidance, and release cleanup.
 
-- Authenticated routine persistence
-- Authenticated focus persistence
-- Progress tracking improvements
-- Active-page persistence
-- Demo-session isolation
-- Cross-page synchronization
-- Release hardening and ESLint cleanup
+### Included
+
+- Responsive landing-page improvements
+- Contextual tutorial panels for landing, demo, and authenticated areas
+- Authenticated profile persistence
+- Account data isolation
+- Demo and account separation
+- Protected-route validation
+- Mobile layout improvements
+- ESLint and production-build cleanup
 
 ## Features
 

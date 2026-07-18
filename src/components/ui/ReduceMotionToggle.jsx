@@ -1,4 +1,4 @@
-import { useApp } from '../../context/AppContext'
+import useApp from "../../context/useApp"
 
 function ReduceMotionToggle() {
     const { reduceMotion, toggleReduceMotion } = useApp()

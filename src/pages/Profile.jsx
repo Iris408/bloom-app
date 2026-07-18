@@ -357,25 +357,72 @@ function OnboardingSelect({
   )
 }
 
-function Profile({
+function Profile(props) {
+  const { currentUser, isDemoMode = false } = props
+
+  if (!isDemoMode && !currentUser?.id) {
+    return null
+  }
+
+  const profileKey = isDemoMode
+    ? `demo-${props.demoType ?? "default"}`
+    : currentUser.id
+
+  return <AuthenticatedProfile key={profileKey} {...props} />
+}
+
+function AuthenticatedProfile({
   currentUser = null,
   isDemoMode = false,
   demoType = null,
   onLogout,
 }) {
-  const [nickname, setNickname] = useState("")
-  const [nicknameDraft, setNicknameDraft] = useState("")
+  
+  const initialNickname = isDemoMode
+    ? ""
+    : getStoredValue(currentUser, "nickname", "")
+
+  const initialAvatar = isDemoMode
+    ? {
+        avatarType: "initial",
+        avatarId: null,
+        avatarUrl: null,
+      }
+    : getAvatarDisplay(currentUser)
+
+  const [nickname, setNickname] = useState(initialNickname)
+  const [nicknameDraft, setNicknameDraft] = useState(initialNickname)
   const [isEditingNickname, setIsEditingNickname] = useState(false)
 
-  const [goals, setGoals] = useState(defaultGoals)
-  const [newGoal, setNewGoal] = useState("")
-  const [onboardingAnswers, setOnboardingAnswers] = useState(
-    defaultOnboardingAnswers
+  const [goals, setGoals] = useState(() =>
+    isDemoMode
+      ? defaultGoals
+      : getStoredJson(currentUser, "goals", defaultGoals)
   )
 
-  const [selectedAvatarType, setSelectedAvatarType] = useState("initial")
-  const [selectedAvatarId, setSelectedAvatarId] = useState(null)
-  const [selectedAvatarUrl, setSelectedAvatarUrl] = useState(null)
+  const [newGoal, setNewGoal] = useState("")
+
+  const [onboardingAnswers, setOnboardingAnswers] = useState(() =>
+    isDemoMode
+      ? defaultOnboardingAnswers
+      : getStoredJson(
+          currentUser,
+          "onboarding",
+          defaultOnboardingAnswers
+        )
+  )
+
+  const [selectedAvatarType, setSelectedAvatarType] = useState(
+    initialAvatar.avatarType || "initial"
+  )
+
+  const [selectedAvatarId, setSelectedAvatarId] = useState(
+    initialAvatar.avatarId || null
+  )
+
+  const [selectedAvatarUrl, setSelectedAvatarUrl] = useState(
+    initialAvatar.avatarUrl || null
+  )
 
   const username =
     currentUser?.username || (isDemoMode ? "Demo user" : "Bloom user")
@@ -396,46 +443,16 @@ function Profile({
   }, [demoType])
 
   useEffect(() => {
-    if (!currentUser?.id) {
-      setNickname("")
-      setNicknameDraft("")
-      setIsEditingNickname(false)
-      setGoals(defaultGoals)
-      setOnboardingAnswers(defaultOnboardingAnswers)
-      setSelectedAvatarType("initial")
-      setSelectedAvatarId(null)
-      setSelectedAvatarUrl(null)
-      return
-    }
-
-    const savedNickname = getStoredValue(currentUser, "nickname", "")
-
-    setNickname(savedNickname)
-    setNicknameDraft(savedNickname)
-    setIsEditingNickname(false)
-    setGoals(getStoredJson(currentUser, "goals", defaultGoals))
-    setOnboardingAnswers(
-      getStoredJson(currentUser, "onboarding", defaultOnboardingAnswers)
-    )
-
-    const avatarDisplay = getAvatarDisplay(currentUser)
-
-    setSelectedAvatarType(avatarDisplay.avatarType || "initial")
-    setSelectedAvatarId(avatarDisplay.avatarId || null)
-    setSelectedAvatarUrl(avatarDisplay.avatarUrl || null)
-  }, [currentUser])
-
-  useEffect(() => {
-    if (!currentUser?.id) return
+    if (!currentUser?.id || isDemoMode) return
 
     saveStoredJson(currentUser, "goals", goals)
-  }, [currentUser, goals])
+  }, [currentUser, goals, isDemoMode])
 
   useEffect(() => {
-    if (!currentUser?.id) return
+    if (!currentUser?.id || isDemoMode) return
 
     saveStoredJson(currentUser, "onboarding", onboardingAnswers)
-  }, [currentUser, onboardingAnswers])
+  }, [currentUser, onboardingAnswers, isDemoMode])
 
   function handleEditNickname() {
     if (isDemoMode) return

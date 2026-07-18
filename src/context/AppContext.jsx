@@ -1,157 +1,189 @@
-import { createContext, useContext, useState, useEffect } from "react"
-import { shouldRunDailyReset, markDailyResetComplete, resetCompletedItems, } from "../utils/dailyResetUtils"
+import { useEffect, useState } from "react"
 
-// create the context
-const AppContext = createContext()
+import AppContext from "./appContextObject"
+import {
+  markDailyResetComplete,
+  resetCompletedItems,
+  shouldRunDailyReset,
+} from "../utils/dailyResetUtils"
+
+const FOCUS_TASK_STORAGE_KEY = "bloom_focus_tasks"
+const FOCUS_DAILY_RESET_KEY = "bloom-focus-tasks-last-reset"
 
 function AppProvider({ children }) {
-    const [activeMode, setActiveMode]       = useState("standard")
-    const [activeTheme, setActiveTheme]     = useState("system")
-    const [activeProfile, setActiveProfile] = useState(null)
-    const [isDarkMode, setIsDarkMode]       = useState(false)
-    const [darkStyle, setDarkStyle]         = useState("green")
-    const [fontSize, setFontSize]           = useState("medium")
-    const [dyslexicFont, setDyslexicFont]   = useState(false)
-    const [reduceMotion, setReduceMotion]   = useState(false)
-        const FOCUS_TASK_STORAGE_KEY = "bloom_focus_tasks"
-        const FOCUS_DAILY_RESET_KEY = "bloom-focus-tasks-last-reset"
+  const [activeMode, setActiveMode] = useState("standard")
+  const [activeTheme, setActiveTheme] = useState("system")
+  const [activeProfile, setActiveProfile] = useState(null)
 
-        const [focusTasks, setFocusTasks]       = useState(() => {
-      try {
-        const saved = localStorage.getItem(FOCUS_TASK_STORAGE_KEY)
+  const [isDarkMode, setIsDarkMode] = useState(false)
+  const [darkStyle, setDarkStyle] = useState("green")
+  const [fontSize, setFontSize] = useState("medium")
+  const [dyslexicFont, setDyslexicFont] = useState(false)
+  const [reduceMotion, setReduceMotion] = useState(false)
 
-        if (saved) {
-            const parsedFocusTasks = JSON.parse(saved)
+  const [focusTasks, setFocusTasks] = useState(() => {
+    try {
+      const saved = localStorage.getItem(FOCUS_TASK_STORAGE_KEY)
 
-            if (shouldRunDailyReset(FOCUS_DAILY_RESET_KEY)) {
-                const resetFocusTasks = resetCompletedItems(parsedFocusTasks)
-
-                localStorage.setItem(FOCUS_TASK_STORAGE_KEY, JSON.stringify(resetFocusTasks))
-
-                markDailyResetComplete(FOCUS_DAILY_RESET_KEY)
-
-                return resetFocusTasks
-            }
-
-            return parsedFocusTasks
-        }
-
+      if (!saved) {
         return []
-            } catch {
-                return []
-            }
-        })     
+      }
 
+      const parsedFocusTasks = JSON.parse(saved)
 
-    useEffect(() => {
-        localStorage.setItem("bloom_focus_tasks", JSON.stringify(focusTasks));
-    }, [focusTasks]);
+      if (shouldRunDailyReset(FOCUS_DAILY_RESET_KEY)) {
+        const resetFocusTasks = resetCompletedItems(parsedFocusTasks)
 
-    
+        localStorage.setItem(
+          FOCUS_TASK_STORAGE_KEY,
+          JSON.stringify(resetFocusTasks)
+        )
 
-    function toggleDarkStyle() {
-    setDarkStyle(darkStyle === "grey" ? "green" : "grey")
+        markDailyResetComplete(FOCUS_DAILY_RESET_KEY)
+
+        return resetFocusTasks
+      }
+
+      return parsedFocusTasks
+    } catch {
+      return []
     }
+  })
 
-const addFocusTask = (title, dateKey) => {
-  setFocusTasks((prev) => [
-    ...prev,
-    {
-      id: crypto.randomUUID(),
-      title,
-      scheduledFor: dateKey,
-      completedOn: null,
-    },
-  ])
-}
+  useEffect(() => {
+    try {
+      localStorage.setItem(
+        FOCUS_TASK_STORAGE_KEY,
+        JSON.stringify(focusTasks)
+      )
+    } catch {
+      // Continue if localStorage is unavailable.
+    }
+  }, [focusTasks])
 
-const toggleFocusTaskComplete = (id, dateKey) => {
-  setFocusTasks((prev) =>
-    prev.map((task) =>
-      task.id === id
-        ? {
-            ...task,
-            completedOn: task.completedOn === dateKey ? null : dateKey,
-          }
-        : task
+  function toggleDarkStyle() {
+    setDarkStyle((currentStyle) =>
+      currentStyle === "grey" ? "green" : "grey"
     )
+  }
+
+  function addFocusTask(title, dateKey) {
+    setFocusTasks((currentTasks) => [
+      ...currentTasks,
+      {
+        id: crypto.randomUUID(),
+        title,
+        scheduledFor: dateKey,
+        completedOn: null,
+      },
+    ])
+  }
+
+  function toggleFocusTaskComplete(id, dateKey) {
+    setFocusTasks((currentTasks) =>
+      currentTasks.map((task) =>
+        task.id === id
+          ? {
+              ...task,
+              completedOn:
+                task.completedOn === dateKey ? null : dateKey,
+            }
+          : task
+      )
+    )
+  }
+
+  function deleteFocusTask(id) {
+    setFocusTasks((currentTasks) =>
+      currentTasks.filter((task) => task.id !== id)
+    )
+  }
+
+  function toggleDarkMode() {
+    setIsDarkMode((currentValue) => {
+      const nextValue = !currentValue
+
+      document.documentElement.classList.toggle("dark", nextValue)
+
+      return nextValue
+    })
+  }
+
+  function applyFontSize(size) {
+    document.documentElement.classList.remove(
+      "font-small",
+      "font-medium",
+      "font-large",
+      "font-xl"
+    )
+
+    document.documentElement.classList.add(`font-${size}`)
+    setFontSize(size)
+  }
+
+  function toggleDyslexicFont() {
+    setDyslexicFont((currentValue) => {
+      const nextValue = !currentValue
+
+      document.documentElement.classList.toggle(
+        "dyslexic",
+        nextValue
+      )
+
+      return nextValue
+    })
+  }
+
+  function toggleReduceMotion() {
+    setReduceMotion((currentValue) => {
+      const nextValue = !currentValue
+
+      document.documentElement.classList.toggle(
+        "reduce-motion",
+        nextValue
+      )
+
+      return nextValue
+    })
+  }
+
+  const contextValue = {
+    activeMode,
+    setActiveMode,
+
+    activeTheme,
+    setActiveTheme,
+
+    activeProfile,
+    setActiveProfile,
+
+    isDarkMode,
+    toggleDarkMode,
+
+    darkStyle,
+    toggleDarkStyle,
+
+    fontSize,
+    applyFontSize,
+
+    dyslexicFont,
+    toggleDyslexicFont,
+
+    reduceMotion,
+    toggleReduceMotion,
+
+    focusTasks,
+    setFocusTasks,
+    addFocusTask,
+    toggleFocusTaskComplete,
+    deleteFocusTask,
+  }
+
+  return (
+    <AppContext.Provider value={contextValue}>
+      {children}
+    </AppContext.Provider>
   )
 }
 
-const deleteFocusTask = (id) => {
-  setFocusTasks((prev) => prev.filter((task) => task.id !== id))
-}
-
-    function toggleDarkMode() {
-        const newValue = !isDarkMode
-        setIsDarkMode(newValue)
-
-        if (newValue) {
-            document.documentElement.classList.add("dark")
-        } else {
-            document.documentElement.classList.remove("dark")
-        }
-    }
-
-    function applyFontSize(size) {
-    // EN: Remove all font size classes then apply the chosen one
-    // JP: すべてのフォントサイズクラスを削除し、選択したサイズを適用します
-    document.documentElement.classList.remove(
-        "font-small", "font-medium", "font-large", "font-xl"
-    )
-    document.documentElement.classList.add(`font-${size}`)
-    setFontSize(size)
-}
-
-    function toggleDyslexicFont() {
-    const newValue = !dyslexicFont
-    setDyslexicFont(newValue)
-    if (newValue) {
-        document.documentElement.classList.add("dyslexic")
-    } else {
-        document.documentElement.classList.remove("dyslexic")
-    }
-}
-
-    function toggleReduceMotion() {
-        const newValue = !reduceMotion
-        setReduceMotion(newValue)
-
-        if (newValue) {
-            document.documentElement.classList.add("reduce-motion")   
-        } else {
-            document.documentElement.classList.remove("reduce-motion")
-        }
-    }
-
-    return (
-        <AppContext.Provider value={{
-            activeMode,    setActiveMode,
-            activeTheme,   setActiveTheme,
-            activeProfile, setActiveProfile,
-
-            isDarkMode,    toggleDarkMode,
-            darkStyle,     
-            toggleDarkStyle,
-
-            fontSize,      applyFontSize,
-            dyslexicFont,  toggleDyslexicFont,
-            reduceMotion,  toggleReduceMotion,
-            
-            focusTasks,    
-            setFocusTasks,
-            addFocusTask,
-            toggleFocusTaskComplete,
-            deleteFocusTask,  
-        }}>
-            {children}
-        </AppContext.Provider>
-    )
-}
-
-function useApp() {
-    return useContext(AppContext)
-}
-
-export { AppProvider, useApp }
-export default AppContext
+export { AppProvider }

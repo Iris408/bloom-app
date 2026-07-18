@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react"
-import { useApp } from "../../context/AppContext"
+import useApp from "../../context/useApp"
 
 const fontSizeOptions = [
   { id: "small", label: "S" },

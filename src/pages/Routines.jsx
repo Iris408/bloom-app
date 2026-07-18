@@ -17,7 +17,6 @@ import {
 } from "../api/bloomApi"
 import { quietStartRoutines } from "../data/demoData"
 import { triggerDemoCompletionEvent } from "../utils/demoCompletionEvent"
-import { getCurrentUser } from "../api/bloomApi"
 
 const ROUTINE_STORAGE_KEY = "bloom-routines"
 const ROUTINE_DAILY_RESET_KEY = "bloom-routines-last-reset"
@@ -589,66 +588,6 @@ function Routines({
         }
       })
     )
-  }
-
-  async function handleCompleteRoutine(routineId) {
-    if (isBackendMode) {
-      const routine = routines.find((current) => current.id === routineId)
-      const incompleteSteps = (routine?.steps || []).filter(
-        (step) => !step.completed
-      )
-
-      try {
-        const updatedSteps = await Promise.all(
-          incompleteSteps.map((step) =>
-            updateRoutineStep(step.id, { completed: true })
-          )
-        )
-
-        setRoutines((prevRoutines) =>
-          prevRoutines.map((current) => {
-            if (current.id !== routineId) return current
-
-            return {
-              ...current,
-              steps: (current.steps || []).map((step) => {
-                const updatedStep = updatedSteps.find(
-                  (updated) => updated.id === step.id
-                )
-
-                return updatedStep
-                  ? { ...step, completed: updatedStep.completed }
-                  : step
-              }),
-            }
-          })
-        )
-        notifyBackendRoutinesUpdated()
-      } catch (error) {
-        console.error("Could not complete routine:", error)
-        setRoutineError("Could not complete this routine. Please try again.")
-      }
-
-      return
-    }
-
-    setRoutines((currentRoutines) =>
-      currentRoutines.map((routine) => {
-        if (routine.id !== routineId) return routine
-
-        const currentSteps = routine.steps || []
-
-        return {
-          ...routine,
-          steps: currentSteps.map((step) => ({
-            ...step,
-            completed: true,
-          })),
-        }
-      })
-    )
-
-    triggerDemoCompletionEvent("routine")
   }
 
   function handleEditStepStart(step) {

@@ -165,19 +165,6 @@ function TaskList({
     setShowPicker(false)
   }
 
-  function handleToggleComplete(id) {
-    setTasks((currentTasks) =>
-      currentTasks.map((task) =>
-        task.id === id
-          ? {
-              ...task,
-              completed: !task.completed,
-            }
-          : task
-      )
-    )
-  }
-
   async function handleToggleComplete(id) {
     const currentTask = tasks.find((task) => task.id === id)
 

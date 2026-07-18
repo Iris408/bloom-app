@@ -1,4 +1,4 @@
-import { useApp } from '../../context/AppContext'
+import useApp from "../../context/useApp"
 
 // EN: Font size options available to the user
 // JP: ユーザーが選択できるフォントサイズのオプション

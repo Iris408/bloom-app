@@ -1,5 +1,4 @@
 import { useMemo, useState } from "react"
-import FeedbackForm from "../components/feedback/FeedbackForm"
 
 function createSlug(text) {
   return text

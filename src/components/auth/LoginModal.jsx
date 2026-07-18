@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { getCurrentUser, loginUser, registerUser } from "../../api/bloomApi";
 import { saveBloomAvatarChoice } from "../../utils/avatarStorage";
-import { useApp } from "../../context/AppContext"
+import useApp from "../../context/useApp"
 
 import Seedling from "../ui/Seedling"
 import AvatarChoiceGrid from "../profile/AvatarChoiceGrid";
@@ -123,6 +123,9 @@ export default function LoginModal({
   onAuthSuccess,
 }) {
   const [modalView, setModalView] = useState(initialView);
+  const [error, setError] = useState("");
+  const [notice, setNotice] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
@@ -135,17 +138,6 @@ export default function LoginModal({
   const [selectedAvatarType, setSelectedAvatarType] = useState("initial");
   const [selectedAvatarId, setSelectedAvatarId] = useState(null);
   const [selectedAvatarUrl, setSelectedAvatarUrl] = useState(null);
-
-  const [error, setError] = useState("");
-  const [notice, setNotice] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    setModalView(initialView);
-    setError("");
-    setNotice("");
-    setIsLoading(false);
-  }, [initialView]);
 
   function completeAuth(user) {
     if (onAuthSuccess) {
