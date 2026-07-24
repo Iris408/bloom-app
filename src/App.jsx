@@ -54,6 +54,21 @@ function App() {
     }
   }, [activePage])
 
+  useEffect(() => {
+    const scrollTimer = window.setTimeout(() => {
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: "auto",
+      })
+
+      document.documentElement.scrollTop = 0
+      document.body.scrollTop = 0
+    }, 0)
+
+    return () => window.clearTimeout(scrollTimer)
+  }, [activePage])
+
   const [currentUser, setCurrentUser] = useState(null);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
   const [authRestoreError, setAuthRestoreError] = useState("")
@@ -293,16 +308,6 @@ function App() {
     }
 
     setActivePage(page)
-
-    // EN: After changing pages, return the user to the top of the new page.
-    // JP: ページを切り替えた後、新しいページの一番上へ移動します。
-    requestAnimationFrame(() => {
-      window.scrollTo({
-        top: 0,
-        left: 0,
-        behavior: "auto",
-      })
-    })
   }
 
   function openLoginModal(initialView = "login") {
@@ -338,6 +343,7 @@ function App() {
           onLoginClick={() => openLoginModal("login")}
           onTryDemoClick={() => openLoginModal("demo")}
           onCreateAccountClick={() => openLoginModal("create")}
+          onFaqClick={() => handlePageChange("faq")}
         />
       );
     }
@@ -422,6 +428,7 @@ function App() {
         onLoginClick={() => openLoginModal("login")}
         onTryDemoClick={() => openLoginModal("demo")}
         onCreateAccountClick={() => openLoginModal("create")}
+        onFaqClick={() =>handlePageChange("faq")}
       />
     );
   }

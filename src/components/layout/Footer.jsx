@@ -7,7 +7,7 @@ function Footer({
   onCreateAccountClick,
 }) {
   return (
-    <footer className="relative z-10 w-full overflow-x-hidden border-t border-bloom-sage/20 bg-white/35 px-4 py-8 backdrop-blur-sm dark:border-white/10 dark:bg-white/5 sm:px-6 sm:py-10">
+    <footer className="relative z-30 w-full overflow-x-hidden border-t border-bloom-sage/20 bg-white/35 px-4 py-8 backdrop-blur-sm dark:border-white/10 dark:bg-white/5 sm:px-6 sm:py-10">
       <div className="mx-auto grid w-full max-w-7xl grid-cols-1 gap-7 text-bloom-forest dark:text-bloom-light lg:grid-cols-[1.35fr_2.65fr] lg:gap-12">
         {/* Brand */}
         <div className="min-w-0">
@@ -29,7 +29,7 @@ function Footer({
         {/* Footer links */}
         <div className="grid min-w-0 grid-cols-3 gap-4 sm:gap-8">
           <div className="min-w-0">
-            <p className="mb-3 text-sm font-bold text-bloom-forest dark:text-bloom-light">
+            <p className="mb-3 text-xs font-bold uppercase tracking-widest text-bloom-forest dark:text-bloom-light">
               Product
             </p>
 
@@ -37,7 +37,7 @@ function Footer({
               <button
                 type="button"
                 onClick={() => setActivePage("overview")}
-                className="w-fit max-w-full text-left transition hover:text-bloom-forest dark:hover:text-bloom-light"
+                className="w-fit max-w-full text-left transition hover:text-bloom-forest active:text-bloom-forest dark:hover:text-bloom-light"
               >
                 Overview
               </button>
@@ -45,7 +45,7 @@ function Footer({
               <button
                 type="button"
                 onClick={onTryDemoClick}
-                className="w-fit max-w-full text-left transition hover:text-bloom-forest dark:hover:text-bloom-light"
+                className="w-fit max-w-full text-left transition hover:text-bloom-forest active:text-bloom-forest dark:hover:text-bloom-light"
               >
                 Try Bloom Demo
               </button>
@@ -53,7 +53,7 @@ function Footer({
               <button
                 type="button"
                 onClick={onCreateAccountClick}
-                className="w-fit max-w-full text-left transition hover:text-bloom-forest dark:hover:text-bloom-light"
+                className="w-fit max-w-full text-left transition hover:text-bloom-forest active:text-bloom-forest dark:hover:text-bloom-light"
               >
                 Create account
               </button>
@@ -61,7 +61,7 @@ function Footer({
               <button
                 type="button"
                 onClick={onLoginClick}
-                className="w-fit max-w-full text-left transition hover:text-bloom-forest dark:hover:text-bloom-light"
+                className="w-fit max-w-full text-left transition hover:text-bloom-forest active:text-bloom-forest dark:hover:text-bloom-light"
               >
                 Log in
               </button>
@@ -69,7 +69,7 @@ function Footer({
           </div>
 
           <div className="min-w-0">
-            <p className="mb-3 text-sm font-bold text-bloom-forest dark:text-bloom-light">
+            <p className="mb-3 text-xs font-bold uppercase tracking-widest text-bloom-forest dark:text-bloom-light">
               Company
             </p>
 
@@ -77,7 +77,7 @@ function Footer({
               <button
                 type="button"
                 onClick={() => setActivePage("about")}
-                className="w-fit max-w-full text-left transition hover:text-bloom-forest dark:hover:text-bloom-light"
+                className="w-fit max-w-full text-left transition hover:text-bloom-forest active:text-bloom-forest dark:hover:text-bloom-light"
               >
                 About
               </button>
@@ -85,7 +85,7 @@ function Footer({
               <button
                 type="button"
                 onClick={() => setActivePage("accessibility")}
-                className="w-fit max-w-full break-words text-left transition hover:text-bloom-forest dark:hover:text-bloom-light"
+                className="w-fit max-w-full break-words text-left transition hover:text-bloom-forest active:text-bloom-forest dark:hover:text-bloom-light"
               >
                 Accessibility
               </button>
@@ -93,7 +93,7 @@ function Footer({
               <button
                 type="button"
                 onClick={() => setActivePage("faq")}
-                className="w-fit max-w-full text-left transition hover:text-bloom-forest dark:hover:text-bloom-light"
+                className="w-fit max-w-full text-left transition hover:text-bloom-forest active:text-bloom-forest dark:hover:text-bloom-light"
               >
                 FAQ
               </button>
@@ -102,7 +102,7 @@ function Footer({
               <button
                 type="button"
                 onClick={() => setActivePage("feedback")}
-                className="w-fit max-w-full text-left transition hover:text-bloom-forest dark:hover:text-bloom-light"
+                className="w-fit max-w-full text-left transition hover:text-bloom-forest active:text-bloom-forest dark:hover:text-bloom-light"
               >
                 Feedback
               </button>
@@ -110,7 +110,7 @@ function Footer({
               <button
                 type="button"
                 onClick={() => setActivePage("roadmap")}
-                className="w-fit max-w-full text-left transition hover:text-bloom-forest dark:hover:text-bloom-light"
+                className="w-fit max-w-full text-left transition hover:text-bloom-forest active:text-bloom-forest dark:hover:text-bloom-light"
               >
                 Roadmap
               </button>
@@ -118,7 +118,7 @@ function Footer({
           </div>
 
           <div className="min-w-0">
-            <p className="mb-3 text-sm font-bold text-bloom-forest dark:text-bloom-light">
+            <p className="mb-3 text-xs font-bold uppercase tracking-widest text-bloom-forest dark:text-bloom-light">
               Trust
             </p>
 
@@ -126,12 +126,14 @@ function Footer({
               <button
                 type="button"
                 onClick={() => setActivePage("privacy")}
-                className="w-fit max-w-full text-left transition hover:text-bloom-forest dark:hover:text-bloom-light"
+                className="w-fit max-w-full text-left transition hover:text-bloom-forest active:text-bloom-forest dark:hover:text-bloom-light"
               >
                 Privacy
               </button>
 
-              <span className="break-words">No real data in demo</span>
+              {/* EN: Static trust statements — not links */}
+              {/* JP: 静的なトラスト文 — リンクではない */}
+              <span className="break-words">Demo data only</span>
               <span className="break-words">No tracking or ads</span>
               <span className="break-words">You're in control</span>
             </div>
@@ -139,11 +141,14 @@ function Footer({
         </div>
       </div>
 
-      <div className="mx-auto mt-8 flex w-full max-w-7xl flex-col gap-2 border-t border-bloom-sage/15 pt-5 text-xs text-bloom-forest/55 dark:border-white/10 dark:text-gray-400 sm:flex-row sm:items-center sm:justify-between">
+      <div className="mt-8 border-t border-bloom-sage/15 pt-6 dark:border-white/10 flex flex-col gap-1 sm:flex-row sm:justify-between">
+        <p className="text-xs text-bloom-forest/35 dark:text-gray-500">
+           © 2026 Bloom. All rights reserved.
+        </p>
 
-        <p>© 2026 Bloom. All rights reserved.</p>
-        <p>Made with care for all minds.</p>
-
+        <p className="text-xs text-bloom-forest/55 dark:text-gray-400">
+         Made with care for all minds.
+        </p>
       </div>
     </footer>
   )

@@ -302,7 +302,7 @@ function HeroAppPreview() {
       <div className="absolute inset-6 rounded-[2.5rem] bg-black/10 blur-2xl dark:bg-black/25" />
 
       {/* Main card */}
-      <div className="relative overflow-hidden rounded-[1.75rem] border border-bloom-sage/25 bg-white/78 p-4 shadow-[0_30px_80px_rgba(45,90,67,0.18)] backdrop-blur-md min-[430px]:rounded-[2.25rem] min-[430px]:p-5 dark:border-white/10 dark:bg-white/5"> 
+      <div className="relative overflow-hidden rounded-[1.75rem] border border-bloom-sage/25 bg-white/78 p-3 min-[430px]:p-4 shadow-[0_30px_80px_rgba(45,90,67,0.18)] backdrop-blur-md min-[430px]:rounded-[2.25rem] min-[430px]:p-5 dark:border-white/10 dark:bg-white/5"> 
         {/* Phone top bar */}
         <div className="mx-auto mb-4 h-1.5 w-14 rounded-full bg-bloom-sage/30 dark:bg-white/20" />
 
@@ -312,7 +312,7 @@ function HeroAppPreview() {
               Today in Bloom
             </p>
 
-            <h3 className="mt-2 text-xl font-bold leading-tight text-bloom-forest min-[430px]:mt-3 min-[430px]:text-2xl dark:text-bloom-light">
+            <h3 className="mt-2 text-base font-bold leading-tight text-bloom-forest min-[430px]:mt-3 min-[390px]:text-xl dark:text-bloom-light">
               A softer start
             </h3>
 
@@ -334,11 +334,11 @@ function HeroAppPreview() {
           ].map(([title, text, status]) => (
             <div
               key={title}
-              className="rounded-[1.2rem] border border-bloom-sage/20 bg-white/80 p-3 min-[430px]:rounded-[1.35rem] min-[430px]:p-4 dark:border-white/10 dark:bg-white/5"
+              className="rounded-[1.2rem] border border-bloom-sage/20 bg-white/80 p-2.5 min-[430px]:rounded-[1.35rem] min-[430px]:p-3 dark:border-white/10 dark:bg-white/5"
             >
               <div className="flex items-start justify-between gap-3">
                 <div>
-                  <p className="text-sm font-bold text-bloom-forest dark:text-bloom-light">
+                  <p className="text-xs min-[390px]:text-sm font-bold text-bloom-forest dark:text-bloom-light">
                     {title}
                   </p>
 
@@ -373,11 +373,95 @@ function HeroAppPreview() {
   )
 }
 
+function MobileHeroCard({ onFaqClick }) {
+  return (
+    <div className="relative mx-auto w-full max-w-[430px] overflow-hidden rounded-[2rem] border border-bloom-sage/25 bg-white/75 p-6 shadow-[0_24px_60px_rgba(45,90,67,0.14)] backdrop-blur-md dark:border-white/10 dark:bg-white/5">
+      {/* Decorative background */}
+      <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-bloom-mint/25 blur-3xl" />
+      <div className="absolute -bottom-12 -left-10 h-36 w-36 rounded-full bg-[#f7df9e]/30 blur-3xl" />
+
+      <div className="relative">
+        <div className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-bloom-mint/20 dark:bg-white/10">
+          <Seedling variant="indigo" />
+        </div>
+
+        <p className="text-xs font-bold uppercase tracking-[0.16em] text-bloom-mid dark:text-bloom-sage">
+          Designed for calm
+        </p>
+
+        <h2 className="mt-3 text-3xl font-bold leading-tight text-bloom-forest dark:text-bloom-light">
+          A softer way to move through your day
+        </h2>
+
+        <p className="mt-4 text-sm leading-6 text-bloom-forest/65 dark:text-gray-300">
+          No streaks. No guilt for days away. Just small, manageable steps.
+        </p>
+
+        <div className="mt-6 space-y-3 pt-3">
+          <div className="flex items-center gap-3">
+            <span
+              aria-hidden="true"
+              className="font-bold text-bloom-mid dark:text-bloom-sage"
+            >
+              ✓
+            </span>
+
+            <p className="text-sm font-semibold text-bloom-forest/75 dark:text-gray-300">
+              Start in under a minute
+            </p>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <span
+              aria-hidden="true"
+              className="font-bold text-bloom-mid dark:text-bloom-sage"
+            >
+              ✓
+            </span>
+
+            <p className="text-sm font-semibold text-bloom-forest/75 dark:text-gray-300">
+              No account needed
+            </p>
+          </div>  
+
+          <div className="flex items-center gap-3">
+            <span
+              aria-hidden="true"
+              className="font-bold text-bloom-mid dark:text-bloom-sage"
+            >
+              ✓
+            </span>
+
+            <p className="text-sm font-semibold text-bloom-forest/75 dark:text-gray-300">
+            Explore at your own pace
+            </p>
+          </div>
+        </div>
+
+        <div className="mt-6 border-t border-bloom-sage/20 pt-5 text-center">
+          <p className="text-sm text-bloom-forest/65 dark:text-gray-300">
+            Want to learn more about Bloom?
+          </p>
+
+          <button
+            type="button"
+            onClick={onFaqClick}
+            className="mt-3 inline-flex items-center justify-center rounded-full border border-bloom-sage/30 bg-white/55 px-4 py-2 text-sm font-bold text-bloom-mid transition hover:border-bloom-sage/50 hover:bg-bloom-light/70 hover:text-bloom-forest focus:outline-none focus-visible:ring-2 focus-visible:ring-bloom-mint focus-visible:ring-offset-2 dark:border-white/15 dark:bg-white/5 dark:text-bloom-sage dark:hover:bg-white/10 dark:hover:text-bloom-light"
+          >
+            Browse our FAQ →
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 
 function Overview({
   onLoginClick,
   onTryDemoClick,
   onCreateAccountClick,
+  onFaqClick,
 }) {
   return (
     <div className="relative min-h-screen w-full overflow-hidden bg-transparent text-bloom-forest dark:text-bloom-light">
@@ -453,7 +537,13 @@ function Overview({
             </div>
           </div>
 
-          <div className="pt-2 lg:pt-0">
+          {/* Mobile only */}
+          <div className="lg:hidden">
+            <MobileHeroCard onFaqClick={onFaqClick} />
+          </div>
+
+          {/* Desktop only */}
+          <div className="hidden lg:block">
             <HeroAppPreview />
           </div>
         </section>

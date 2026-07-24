@@ -14,7 +14,7 @@ function FeedbackPage() {
           </h1>
 
           <p className="mt-4 max-w-3xl text-sm leading-7 text-bloom-forest/65 dark:text-gray-300 sm:text-base">
-            Bloom is still growing. Your feedback helps improve the app’s
+            Bloom is still growing. Your feedback helps improve the app's
             routines, focus tools, accessibility controls, wording, layout, and
             overall feeling.
           </p>
