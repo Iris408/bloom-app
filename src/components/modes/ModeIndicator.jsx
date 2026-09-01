@@ -21,7 +21,7 @@ function ModeIndicator({
   const detail = isDemo
     ? "Not saved"
     : username
-      ? `Signed in as ${username}`
+      ? `${username}`
       : "Progress saved"
 
   const handleClick = () => {

@@ -65,7 +65,7 @@ function Settings({ currentUser = null, isDemoMode = false, onLogout }) {
           {isDemoMode
             ? "Demo mode uses sample data only. Settings shown here are a preview."
             : currentUser?.email
-              ? `Signed in as ${currentUser.email}`
+              ? `${currentUser.email}`
               : "Signed in account details will appear here."}
         </div>
       </section>

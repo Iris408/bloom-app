@@ -254,7 +254,7 @@ export default function LoginModal({
   const createInitial =
     username.trim().charAt(0).toUpperCase() ||
     createEmail.trim().charAt(0).toUpperCase() ||
-    "?";
+    "?"; // Default to "?" if no username or email is available.
 
   return (
     <div

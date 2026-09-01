@@ -421,30 +421,18 @@ function Home({
         <section className="flex h-full rounded-[1.75rem] border border-bloom-sage/25 bg-white/55 p-4 shadow-sm dark:border-white/10 dark:bg-white/5 sm:p-5">
           <div className="flex w-full flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="min-w-0">
-              <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.2em] text-bloom-mid dark:text-bloom-sage">
-                Home
+              <p className="mb-1 text-[11px] font-bold uppercase tracking-[0.2em] text-bloom-mid dark:text-bloom-sage">
+                ꕤ Home
               </p>
 
               <h2 className="break-words text-2xl font-bold leading-tight text-bloom-forest dark:text-bloom-light sm:text-3xl">
-                {greeting}, {displayName} ꕤ
+                {greeting}, {displayName} 
               </h2>
 
-              <p className="mt-2 max-w-xl text-sm leading-6 text-bloom-forest/65 dark:text-gray-300">
+              <p className="mt-1 max-w-xl text-xs leading-6 text-bloom-forest/65 dark:text-gray-300">
                 Choose one gentle step, pause when needed, and come back when
                 you're ready.
               </p>
-            </div>
-
-            <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-[1.2rem] bg-bloom-forest text-xl font-bold text-bloom-light shadow-sm">
-              {shouldShowAvatar ? (
-                <img
-                  src={avatarDisplay.avatarUrl}
-                  alt=""
-                  className="h-full w-full object-cover"
-                />
-              ) : (
-                avatarDisplay.initial
-              )}
             </div>
           </div>
         </section>
@@ -457,53 +445,61 @@ function Home({
           >
             <div className="flex w-full flex-col justify-between gap-4">
               <div>
-                <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.2em] text-bloom-mid dark:text-bloom-sage">
-                  Focus mode
+                <p className="mb-1 text-[11px] font-bold uppercase tracking-[0.2em] text-bloom-mid dark:text-bloom-sage">
+                  ꕤ Quick Focus
                 </p>
 
-                <h2 className="break-words text-2xl font-bold leading-tight text-bloom-forest dark:text-bloom-light sm:text-3xl">
+                <h2 className="break-words text-lg font-bold leading-tight text-bloom-forest dark:text-bloom-light sm:text-3xl">
                   {isNeurodivergentDemo
-                    ? "Try one calm pause ꕤ"
-                    : "Try one calm focus block ꕤ"}
+                    ? "Try one calm pause"
+                    : "Start a short focus session"}
                 </h2>
 
-                <p className="mt-2 max-w-xl text-sm leading-6 text-bloom-forest/65 dark:text-gray-300">
+                <p className="mt-1 max-w-xl text-xs leading-6 text-bloom-forest/65 dark:text-gray-300">
                   {isNeurodivergentDemo
-                    ? "Start with a short, quiet timer from Home. You can stop whenever you need."
-                    : "Start with a short timer directly from Home. Demo mode has been designed so you can experience Bloom without needing to open another page."}
+                    ? "Start with a short, quiet timer from Home. Pause whenever you need to."
+                    : "Begin a short timer directly from Home."}
                 </p>
               </div>
 
-              <div className="flex flex-wrap items-center gap-3">
-                <div className="rounded-2xl bg-white/70 px-4 py-3 text-sm font-bold text-bloom-forest dark:bg-white/10 dark:text-bloom-light">
-                  {focusTimerLabel}
-                </div>
-
-                {isFocusRunning ? (
-                  <button
-                    type="button"
-                    onClick={handlePauseFocus}
-                    className="rounded-2xl bg-bloom-forest px-4 py-2.5 text-sm font-bold text-bloom-light transition hover:bg-bloom-mid dark:bg-bloom-sage dark:text-bloom-forest dark:hover:bg-bloom-light"
-                  >
-                    Pause focus
-                  </button>
-                ) : (
-                  <button
-                    type="button"
-                    onClick={handleStartFocus}
-                    className="rounded-2xl bg-bloom-forest px-4 py-2.5 text-sm font-bold text-bloom-light transition hover:bg-bloom-mid dark:bg-bloom-sage dark:text-bloom-forest dark:hover:bg-bloom-light"
-                  >
-                    Start focus
-                  </button>
-                )}
-
-                <button
-                  type="button"
-                  onClick={handleResetFocus}
-                  className="rounded-2xl border border-bloom-sage/25 bg-white/70 px-4 py-2.5 text-sm font-bold text-bloom-forest transition hover:bg-bloom-light dark:border-white/10 dark:bg-white/10 dark:text-bloom-light dark:hover:bg-white/15"
+              {/* EN: Large countdown with simple primary and secondary controls. */}
+              {/* JP: 大きなカウントダウンと、シンプルな主・副操作です。 */}
+              <div className="flex flex-col items-center justify-center py-2 text-center">
+                <p
+                  className="text-5xl font-bold tabular-nums tracking-tight text-bloom-forest dark:text-bloom-light"
+                  aria-live="polite"
+                  aria-label={`Focus timer: ${focusTimerLabel}`}
                 >
-                  Reset
-                </button>
+                  {focusTimerLabel}
+                </p>
+
+                <div className="mt-2 flex items-center justify-center gap-5">
+                  {isFocusRunning ? (
+                    <button
+                      type="button"
+                      onClick={handlePauseFocus}
+                      className="rounded-full bg-bloom-forest px-5 py-2 text-sm font-bold text-bloom-light transition hover:bg-bloom-mid dark:bg-bloom-sage dark:text-bloom-forest dark:hover:bg-bloom-light"
+                    >
+                      Pause
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={handleStartFocus}
+                      className="rounded-full bg-bloom-forest px-5 py-2 text-sm font-bold text-bloom-light transition hover:bg-bloom-mid dark:bg-bloom-sage dark:text-bloom-forest dark:hover:bg-bloom-light"
+                    >
+                      Start
+                    </button>
+                  )}
+
+                  <button
+                    type="button"
+                    onClick={handleResetFocus}
+                    className="px-2 py-2 text-sm font-semibold text-bloom-forest/65 underline-offset-4 transition hover:text-bloom-forest hover:underline dark:text-gray-300 dark:hover:text-bloom-light"
+                  >
+                    Reset
+                  </button>
+                </div>
               </div>
             </div>
           </section>
