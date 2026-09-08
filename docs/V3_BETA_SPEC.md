@@ -40,22 +40,27 @@ Bloom v3 will introduce a clearer distinction between the production product and
 
 ## Bloom Personal
 
-Bloom Personal is the primary production application.
+Bloom Personal is the primary production application and the sole production
+product required for the initial v3.0.0 Live Beta.
 
-v3.0.0 will make Bloom Personal available to a small live-beta group using real accounts and persistent user data.
+v3.0.0 will make Bloom Personal available to a small group of approximately
+10 external beta testers using real accounts and persistent user data.
 
-Bloom Personal includes:
+The initial beta focuses on the core Bloom Personal experience:
 
 - Everyday Mode
-- Low Demand Mode MVP
-- Oasis MVP
 - Routines
 - Focus
 - Moments
 - Progress
 - Personalisation
-- Accessibility settings
+- Core accessibility settings
 - Account management
+- Responsive desktop and mobile web experiences
+
+Low Demand Mode, Oasis and additional Personal colour themes remain part of
+Bloom's longer-term product direction but are not blockers for the initial
+v3.0.0 Live Beta.
 
 ---
 
@@ -103,6 +108,14 @@ Any future production release involving children, schools or educational organis
 
 # 3. Modes
 
+For the initial v3.0.0 Live Beta, Everyday Mode is the production mode.
+
+Low Demand Mode and Oasis remain approved future Bloom Personal experiences,
+but their implementation is deferred until after the first live-beta cohort
+has provided feedback on the core product.
+
+Sprout remains a polished fictional-data demonstration experience for v3.0.0.
+
 ## Everyday Mode
 
 The standard Bloom experience.
@@ -115,7 +128,7 @@ Everyday Mode provides access to the complete Bloom Personal feature set while m
 
 Low Demand Mode reduces the amount of information and decision-making presented to the user.
 
-The v3 MVP should explore:
+A future MVP should explore:
 
 - Reduced information density
 - Fewer visible choices
@@ -133,7 +146,7 @@ Low Demand Mode should modify how Bloom behaves rather than simply applying anot
 
 Oasis is a calm space within Bloom intended for stepping away from planning and productivity.
 
-The v3 MVP may include:
+A future MVP may include:
 
 - Calm visual environment
 - Quiet timer
@@ -224,9 +237,12 @@ Times are optional.
 
 A routine step does not require a scheduled time to be meaningful or important.
 
-Bloom should imply that a task without a time is completely optional and up to the user.
+Bloom should not imply that a routine step without a scheduled time is less
+important or inherently optional.
 
-The absence of a time must not reduce the importance of a routine step or create pressure to schedule one.
+The absence of a time must not reduce the importance of a routine step or
+create pressure to schedule one. Scheduling remains optional; the routine
+step itself retains the meaning given to it by the user.
 
 ## Routine Guidance
 
@@ -355,26 +371,34 @@ More advanced accessibility preferences may live under:
 
 # 10. Themes and Personalisation
 
-Bloom v3 should support a controlled theme system.
+The initial v3.0.0 Live Beta will use a deliberately limited presentation
+system so that product behaviour, accessibility and reliability remain the
+priority.
 
-This includes:
+Required for the initial beta:
 
-- Standard Bloom theme
-- Dark mode
-- High-contrast presentation
-- Selected custom colour themes:
-  - **Chamomile & Oat** — warm, soft and neutral
-  - **Twilight Slate** — cool, muted and understated
-  - **Terracotta Dust** — warm, earthy and grounded
-  - **Violet Hour** — rich violet and purple tones inspired by the Bloom v3 visual direction
+- Standard Bloom
+- Light appearance
+- Dark appearance
+- High-contrast presentation where supported
+- Sprout's dedicated playful visual treatment
+
+The following approved Bloom Personal themes are deferred until after the
+initial beta:
+
+- Chamomile & Oat
+- Twilight Slate
+- Terracotta Dust
+- Violet Hour
+
+These remain part of Bloom's design direction and may be introduced
+incrementally based on beta feedback.
 
 Themes control how Bloom looks.
 
 Modes control how Bloom behaves.
 
-The two systems should remain conceptually separate.
-
-Theme preferences should persist for authenticated users.
+Appearance controls such as light/dark are separate from both.
 
 ---
 
@@ -465,6 +489,14 @@ Primary desktop navigation:
 
 Settings, billing, account management and additional accessibility options remain within Profile rather than occupying primary navigation.
 
+Desktop will remain a complete Bloom Personal experience during and after the
+initial beta.
+
+Longer term, desktop may naturally emphasise planning, routine setup,
+reflection and account management while a future native mobile client
+emphasises immediate day-to-day interaction. This distinction will be guided
+by observed user behaviour rather than enforced before beta validation.
+
 ---
 
 ## Mobile North Star
@@ -509,9 +541,8 @@ The intended structure is:
 Bloom Landing Page
         │
         ├── Public Demo
-        │     ├── Bloom Personal Demo
-        │     ├── Sprout Demo
-        │     └── Bloom Education Concept Demo
+        │     ├── Bloom Personal Demo 
+        │     └── Sprout Demo
         │
         ├── Login
         ├── Create Account
@@ -520,6 +551,9 @@ Bloom Landing Page
 ```
 
 The public experience should not require an account simply to understand or explore Bloom.
+
+Bloom Education remains a future concept/research direction and is not part
+of the critical path to v3.0.0.
 
 ---
 
@@ -563,21 +597,25 @@ Help should remain easy to discover without dominating the primary application i
 
 # 16. Pricing and Billing
 
-Bloom v3 will establish the initial commercial direction for Bloom Personal.
+Commercial planning will continue during the v3 beta period, but production
+billing is not required to begin the first live-beta cohort.
 
-Before paid access is introduced, the following will be confirmed:
+The initial beta may provide Founding Members with free access while Bloom
+collects product feedback and evaluates future commercial positioning.
+
+Before paid access is introduced, Bloom will define:
 
 - Pricing range
 - Free/paid feature boundaries
-- Beta access rules
 - Post-beta pricing
 - Founding Member benefits
 - Cancellation behaviour
-- Billing/account management flow
+- Billing/account-management flow
 
-Stripe is the expected payment provider if payment functionality is required for the v3 beta/commercial transition.
+Stripe remains the likely payment provider for a future paid release.
 
-Exact pricing remains **TBD**.
+Stripe integration must not delay the initial v3.0.0 Live Beta unless the
+commercial strategy changes before release.
 
 ---
 
@@ -627,20 +665,37 @@ Complex automated referral infrastructure is not required for the initial beta.
 
 # 19. Mobile and PWA
 
-Bloom should remain mobile-first in quality even though desktop is also fully supported.
+Bloom's web application should provide a high-quality mobile experience for
+the initial v3.0.0 Live Beta.
 
-v3 should provide:
+The beta should support:
 
-- High-quality responsive mobile experience
-- Installable PWA where supported
-- Appropriate application icons
-- Appropriate metadata
-- Public link previews
+- Intentional responsive mobile layouts
 - Mobile-safe navigation
 - Touch-friendly controls
-- Appropriate offline/network-failure handling
+- Application icons and manifest
+- Add-to-Home-Screen/installable behaviour where supported
+- Appropriate metadata and public link previews
+- Reliable iOS Safari behaviour
+- Clear offline/network-failure states
+- HTTPS production delivery
 
-Mobile layouts should be intentionally designed rather than simply shrinking desktop components.
+Advanced offline-first PWA engineering is not required for v3.0.0.
+
+The initial beta does not require:
+
+- Offline CRUD
+- Background synchronisation
+- IndexedDB-based account persistence
+- Push notifications
+- Background timers
+- Advanced service-worker caching
+- App badges
+- File/share-target integrations
+- Complex installation prompts
+
+Authenticated account data should continue to use the Bloom API and
+PostgreSQL as its authoritative source.
 
 ---
 
@@ -684,7 +739,11 @@ Current intended direction:
 
 ### Infrastructure
 - Docker
-- GitHub Actions CI
+- Production frontend hosting
+- Production FastAPI hosting
+- PostgreSQL
+- Environment-based configuration
+- CI to be established and verified before beta release
 
 ### Product Services
 - Stripe where required
@@ -694,6 +753,32 @@ Current intended direction:
 Vue.js, Express.js and a Next.js migration are not required for v3.0.0.
 
 TypeScript may be evaluated separately but is not a prerequisite for the beta.
+
+### Future Native Direction
+
+Bloom v3.0.0 remains a web product.
+
+Following initial beta validation, Bloom is expected to explore a native iOS
+client using Swift and SwiftUI while retaining FastAPI and PostgreSQL as the
+shared backend platform.
+
+The intended long-term direction is:
+
+iOS
+→ primary day-to-day Bloom experience
+
+Mobile web
+→ complete accessible web fallback
+
+Desktop web
+→ complete Bloom experience with particular strength in planning,
+reflection and account management
+
+Public web
+→ landing pages, product information, demos, help and account entry
+
+Native iOS development is deliberately deferred until the core product has
+been tested with real beta users.
 
 ---
 
@@ -817,12 +902,20 @@ The following are not required for the initial Bloom v3 live beta:
 - Social feeds
 - Likes/follower systems
 - Complex referral infrastructure
-- Native iOS application
-- Native Android application
+- Native iOS application for the v3.0.0 release
+- Native Android application for the v3.0.0 release
 - Vue.js migration
 - Express.js backend
 - Next.js rewrite
 - Large AI feature set
+- Low Demand Mode production implementation
+- Oasis production implementation
+- Additional Bloom Personal themes beyond the initial presentation system
+- Advanced offline-first PWA functionality
+- Background synchronisation
+- Web push notifications
+- Production Stripe billing where not required for beta access
+- Bloom Education Concept Demo as a beta blocker
 
 Future features may be considered after beta feedback and product validation.
 
@@ -830,31 +923,53 @@ Future features may be considered after beta feedback and product validation.
 
 # 24. Definition of v3.0.0 Live Beta
 
-Bloom can be considered ready for v3.0.0 Live Beta when:
+# 24. Definition of v3.0.0 Web Live Beta
+
+Bloom can be considered ready for the initial v3.0.0 Web Live Beta when:
 
 - Core authentication is stable
-- Account data persists correctly
-- Demo and authenticated data remain separated
-- Core Personal features are usable
-- Everyday Mode is complete
-- Low Demand Mode MVP is usable
-- Oasis MVP is usable
-- Sprout Demo is polished
-- Public demo experience is available
+- Session restoration behaves reliably
+- Authenticated account data persists correctly
+- Demo and authenticated data are clearly separated
+- PostgreSQL is authoritative for appropriate authenticated user data
+- Core Bloom Personal features are usable:
+  - Routines
+  - Tasks
+  - Focus
+  - Moments
+  - Progress
+- Everyday Mode is complete and polished
+- Sprout Demo is polished and uses fictional/demo-only data
+- Public Bloom Personal and Sprout demonstrations are available
 - Desktop North Star has been substantially implemented
 - Mobile North Star has been substantially implemented
-- Accessibility settings work reliably
-- Themes persist
+- Core accessibility settings work reliably
+- Accessibility preferences persist where appropriate
+- Responsive mobile behaviour is reliable
+- Basic PWA/installability requirements are satisfied
+- Loading, empty, authentication, network and error states are handled
 - Feedback can be submitted
-- Pricing and beta terms are defined
-- Founding beta access is configured
-- Production deployment is stable
-- Domain configuration is complete
+- Founding beta access rules are defined
+- Production frontend is stable
+- Production FastAPI backend is stable
+- Production PostgreSQL is stable
+- Database migrations have a reliable production strategy
+- Production domain configuration is complete
 - Critical accessibility issues have been addressed
 - Critical beta-blocking bugs have been resolved
-- README and product documentation reflect the live product
+- Relevant backend/API persistence behaviour has automated test coverage
+- Release validation succeeds
+- README and product documentation describe the actual deployed product
 
-Bloom Education Concept Demo may be completed during the late v3 development cycle without introducing production education functionality.
+The following do not block the initial v3.0.0 beta:
+
+- Low Demand Mode
+- Oasis
+- Additional Bloom Personal themes
+- Bloom Education
+- Advanced PWA functionality
+- Native iOS
+- Production paid billing
 
 ---
 
