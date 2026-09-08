@@ -6,6 +6,7 @@ const EXACT_DEMO_KEYS = [
   "bloom-routines",
   "bloom_focus_tasks",
   "bloom-focus-history",
+  "bloom-memories",
   "bloom-tasks-last-reset",
   "bloom-focus-tasks-last-reset",
 ]
