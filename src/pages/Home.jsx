@@ -155,7 +155,9 @@ function Home({
   const [taskStats, setTaskStats] = useState(() =>
     isBackendMode ? computeTaskStats([]) : getTaskStats()
   )
-  const [routines, setRoutines] = useState(() => getStoredRoutines())
+  const [routines, setRoutines] = useState(() =>
+    isBackendMode ? [] : getStoredRoutines()
+  )
 
   const taskPanelRef = useRef(null)
   const focusPanelRef = useRef(null)
@@ -279,6 +281,16 @@ function Home({
       }
     }
   }, [])
+
+  useEffect(() => {
+    if (!isBackendMode) return
+
+    async function loadInitialRoutines() {
+      await loadBackendRoutines()
+    }
+
+    loadInitialRoutines()
+  }, [isBackendMode, loadBackendRoutines])
 
   useEffect(() => {
     if (!isFocusRunning) return undefined
