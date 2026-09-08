@@ -7,7 +7,7 @@ import useApp from "../context/useApp"
 import { getAvatarDisplay } from "../utils/avatarStorage"
 import { todayKey } from "../utils/progressUtils"
 import { isNeurodivergentDemoType } from "../data/demoData"
-import { getRoutines, updateRoutineStep } from "../api/bloomApi"
+import { getRoutines, getTasks, updateRoutineStep } from "../api/bloomApi"
 
 const TASK_STORAGE_KEY = "bloom-tasks"
 const ROUTINE_STORAGE_KEY = "bloom-routines"
@@ -59,8 +59,7 @@ function getStoredRoutines() {
   }
 }
 
-function getTaskStats() {
-  const tasks = getStoredTasks()
+function computeTaskStats(tasks) {
   const totalTasks = tasks.length
   const completedTasks = tasks.filter((task) => task.completed).length
   const progressPercent =
@@ -71,6 +70,10 @@ function getTaskStats() {
     completedTasks,
     progressPercent,
   }
+}
+
+function getTaskStats() {
+  return computeTaskStats(getStoredTasks())
 }
 
 function getRoutineStats(routines) {
@@ -149,7 +152,9 @@ function Home({
     useState(false)
   const isBackendMode = Boolean(currentUser?.id) && !isDemoMode  
 
-  const [taskStats, setTaskStats] = useState(() => getTaskStats())
+  const [taskStats, setTaskStats] = useState(() =>
+    isBackendMode ? computeTaskStats([]) : getTaskStats()
+  )
   const [routines, setRoutines] = useState(() => getStoredRoutines())
 
   const taskPanelRef = useRef(null)
@@ -185,9 +190,53 @@ function Home({
 
   const focusTimerLabel = formatFocusTime(focusRemainingSeconds)
 
+  const isMountedRef = useRef(true)
+
+  useEffect(() => {
+    isMountedRef.current = true
+
+    return () => {
+      isMountedRef.current = false
+    }
+  }, [])
+
+  // EN: Authenticated task stats must come from the backend, not from the
+  // shared "bloom-tasks" localStorage key that demo/local mode reads/writes.
+  const loadBackendTaskStats = useCallback(async () => {
+    try {
+      const savedTasks = await getTasks()
+
+      if (isMountedRef.current) {
+        setTaskStats(computeTaskStats(savedTasks))
+      }
+    } catch (error) {
+      console.error("Could not load Home task stats:", error)
+
+      if (isMountedRef.current) {
+        setTaskStats(computeTaskStats([]))
+      }
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!isBackendMode) return
+
+    async function loadInitialTaskStats() {
+      await loadBackendTaskStats()
+    }
+
+    loadInitialTaskStats()
+  }, [isBackendMode, loadBackendTaskStats])
+
   useEffect(() => {
     function syncHomeData() {
-      setTaskStats(getTaskStats())
+      // Authenticated users: re-fetch task stats from the backend API.
+      // Demo/local users: read tasks from localStorage as before.
+      if (isBackendMode) {
+        loadBackendTaskStats()
+      } else {
+        setTaskStats(getTaskStats())
+      }
 
       // Demo/local users read routines from localStorage.
       // Logged-in users must keep the routines loaded from the backend.
@@ -205,17 +254,7 @@ function Home({
       window.removeEventListener("bloom-routines-updated", syncHomeData)
       window.removeEventListener("storage", syncHomeData)
     }
-  }, [isBackendMode])
-
-  const isMountedRef = useRef(true)
-
-  useEffect(() => {
-    isMountedRef.current = true
-
-    return () => {
-      isMountedRef.current = false
-    }
-  }, [])
+  }, [isBackendMode, loadBackendTaskStats])
 
   // EN: Single reusable loader for backend routines, used both on mount and
   // whenever Routines.jsx reports a backend change via "bloom-backend-routines-updated".
