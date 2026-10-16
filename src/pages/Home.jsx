@@ -4,7 +4,6 @@ import TaskList from "../components/tasks/TaskList"
 import DemoBanner from "../components/demo/DemoBanner"
 
 import useApp from "../context/useApp"
-import { getAvatarDisplay } from "../utils/avatarStorage"
 import { todayKey } from "../utils/progressUtils"
 import { isNeurodivergentDemoType } from "../data/demoData"
 import {
@@ -176,8 +175,6 @@ function Home({
   const [backendFocusTasks, setBackendFocusTasks] = useState([])
   const focusTasks = isBackendMode ? backendFocusTasks : localFocusTasks
 
-  const avatarDisplay = getAvatarDisplay(currentUser)
-
   const username =
     currentUser?.username || (isDemoMode ? "Demo user" : "Bloom user")
 
@@ -194,9 +191,6 @@ function Home({
   )
 
   const progressIcon = getProgressIcon(combinedProgressPercent)
-
-  const shouldShowAvatar =
-    avatarDisplay.avatarType === "bloom" && avatarDisplay.avatarUrl
 
   const isNeurodivergentDemo = isDemoMode && isNeurodivergentDemoType(demoType)
 

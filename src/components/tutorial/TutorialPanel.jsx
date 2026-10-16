@@ -98,11 +98,6 @@ function TutorialPanel({
   const isLastStep  = currentStep === steps.length - 1
   const isFirstStep = currentStep === 0
 
-  const triggerPosition =
-    surface === "app"
-      ? "bottom-24 sm:bottom-6"
-      : "bottom-5 sm:bottom-6"
-
   const panelPosition =
     surface === "app"
       ? "bottom-36 sm:bottom-20"
