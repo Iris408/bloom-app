@@ -9,8 +9,12 @@ import {
   updateFocusTask,
 } from "../api/bloomApi"
 import { todayKey } from "../utils/progressUtils"
+import {
+  getFocusHistoryStorageKey,
+  loadFocusHistory,
+  saveFocusHistory,
+} from "../utils/focusHistoryStorage"
 
-const FOCUS_HISTORY_STORAGE_KEY = "bloom-focus-history"
 const FOCUS_SELECTED_TASK_STORAGE_PREFIX = "bloom-selected-focus-task"
 
 const FOCUS_TYPES = [
@@ -137,17 +141,6 @@ function formatTime(totalSeconds) {
   )}`
 }
 
-function getStoredFocusHistory() {
-  try {
-    const storedHistory = localStorage.getItem(FOCUS_HISTORY_STORAGE_KEY)
-    const parsedHistory = storedHistory ? JSON.parse(storedHistory) : []
-
-    return Array.isArray(parsedHistory) ? parsedHistory : []
-  } catch {
-    return []
-  }
-}
-
 function isWithinLastSevenDays(dateValue) {
   const sessionDate = new Date(`${dateValue}T00:00:00`)
   const today = new Date()
@@ -197,9 +190,31 @@ function Focus({
 
   const [selectedEnvironmentId, setSelectedEnvironmentId] = useState("forest")
   const [reflectionText, setReflectionText] = useState("")
-  const [focusHistory, setFocusHistory] = useState(() =>
-    isDemoMode ? [] : getStoredFocusHistory()
-  )
+  // EN: History is held together with the key it was loaded from. When the
+  // user/mode changes, rehydrate from the new key during render so the
+  // previous key's sessions are never shown or saved under the new key.
+  // JP: 履歴は読み込み元のキーと一緒に保持し、キーが変わったら再読み込みします。
+  const focusHistoryStorageKey = getFocusHistoryStorageKey({
+    currentUser,
+    isDemoMode,
+  })
+
+  const [focusHistoryState, setFocusHistoryState] = useState(() => ({
+    storageKey: focusHistoryStorageKey,
+    sessions: loadFocusHistory(focusHistoryStorageKey),
+  }))
+
+  if (focusHistoryState.storageKey !== focusHistoryStorageKey) {
+    setFocusHistoryState({
+      storageKey: focusHistoryStorageKey,
+      sessions: loadFocusHistory(focusHistoryStorageKey),
+    })
+  }
+
+  const focusHistory =
+    focusHistoryState.storageKey === focusHistoryStorageKey
+      ? focusHistoryState.sessions
+      : []
 
   const [backendFocusTasks, setBackendFocusTasks] = useState([])
   const [isLoadingFocusTasks, setIsLoadingFocusTasks] = useState(false)
@@ -289,19 +304,6 @@ function Focus({
       shouldIgnore = true
     }
   }, [isBackendMode, currentUser?.id, today])
-
-  useEffect(() => {
-    if (isDemoMode) return
-
-    try {
-      localStorage.setItem(
-        FOCUS_HISTORY_STORAGE_KEY,
-        JSON.stringify(focusHistory)
-      )
-    } catch {
-      // Focus history persistence is optional.
-    }  
-  }, [focusHistory, isDemoMode])
 
   useEffect(() => {
     if (!isTimerRunning) return undefined
@@ -399,7 +401,21 @@ function Focus({
         reflectionText.trim() || "I showed up for one small focus session.",
     }
 
-    setFocusHistory((previousHistory) => [newSession, ...previousHistory].slice(0, 20))
+    // EN: Only write to the current key, starting from history that was
+    // loaded from that same key.
+    // JP: 現在のキーから読み込んだ履歴だけを、現在のキーに保存します。
+    const previousHistory =
+      focusHistoryState.storageKey === focusHistoryStorageKey
+        ? focusHistoryState.sessions
+        : loadFocusHistory(focusHistoryStorageKey)
+
+    const nextHistory = [newSession, ...previousHistory].slice(0, 20)
+
+    saveFocusHistory(focusHistoryStorageKey, nextHistory)
+    setFocusHistoryState({
+      storageKey: focusHistoryStorageKey,
+      sessions: nextHistory,
+    })
     setReflectionText("")
     setIsSessionComplete(false)
     setSecondsRemaining(totalSeconds)
