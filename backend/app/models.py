@@ -121,10 +121,13 @@ class Routine(Base):
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     user = relationship("User", back_populates="routines")
+    # EN: Explicit order: PostgreSQL does not keep insertion order after updates.
+    # JP: PostgreSQL は更新後に挿入順を保たないため、順序を明示します。
     steps = relationship(
         "RoutineStep",
         back_populates="routine",
         cascade="all, delete-orphan",
+        order_by="(RoutineStep.step_order, RoutineStep.id)",
     )
 
 

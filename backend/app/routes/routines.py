@@ -40,6 +40,7 @@ def get_routines_for_current_user(db: Session = Depends(get_db), current_user: m
     return (
         db.query(models.Routine)
         .filter(models.Routine.user_id == current_user.id)
+        .order_by(models.Routine.id)
         .all()
     )
 
