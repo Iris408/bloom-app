@@ -8,11 +8,11 @@ Bloom is an accessibility-focused visual task planner for everyday tasks, routin
 
 Bloom Personal uses calm interfaces, gentle task sequencing, focus sessions and reflection to help users make progress without turning missed days into failure.
 
-> **Current status:** v2.2.2 → v3 production live beta
+> **Current status:** v2.1.1 → v3 production live beta
 
 ## Live Demo
 
-[Experience Bloom](https://bloom-app-three-xi.vercel.app/)
+[Experience Bloom](https://bloomapp.uk/)
 
 ## Features
 
@@ -113,7 +113,7 @@ Additional project documentation is available in `/docs`, including:
 
 ## Development Status
 
-Bloom v2.2.2 is currently running as a live production beta while development moves toward the Bloom v3 beta.
+Bloom v2.1.1 is currently running as a live production beta while development moves toward the Bloom v3 beta.
 
 
 ## Author
