@@ -5,6 +5,8 @@ import {
   getAvatarDisplay,
   saveBloomAvatarChoice,
 } from "../utils/avatarStorage"
+import { getProfileStorageKey } from "../utils/accountProfile"
+import { updateProfileSettings } from "../api/bloomApi"
 
 const defaultGoals = [
   "Build calmer daily routines",
@@ -82,10 +84,13 @@ function getDisplayInitial(user, fallbackName = "", fallbackEmail = "") {
   )
 }
 
-function getProfileStorageKey(user, key) {
-  if (!user?.id) return null
-
-  return `bloom-profile-${key}-${user.id}`
+// EN: Save nickname/avatar changes to the signed-in account. The local
+// cache is already updated, so a failed save only affects other devices.
+// JP: ニックネーム・アバターの変更をアカウントに保存します。
+function saveProfileToAccount(updates) {
+  updateProfileSettings(updates).catch((error) => {
+    console.warn("Bloom: could not save profile settings", error)
+  })
 }
 
 function getStoredValue(user, key, fallback) {
@@ -468,6 +473,7 @@ function AuthenticatedProfile({
 
     setNickname(cleanNickname)
     saveStoredValue(currentUser, "nickname", cleanNickname)
+    saveProfileToAccount({ displayName: cleanNickname || null })
     setIsEditingNickname(false)
   }
 
@@ -477,6 +483,7 @@ function AuthenticatedProfile({
     setNickname("")
     setNicknameDraft("")
     saveStoredValue(currentUser, "nickname", "")
+    saveProfileToAccount({ displayName: null })
     setIsEditingNickname(false)
   }
 
@@ -492,6 +499,7 @@ function AuthenticatedProfile({
       avatarId,
       avatarUrl,
     })
+    saveProfileToAccount({ avatarType, avatarId })
   }
 
   function handleUpdateOnboarding(key, value) {
@@ -610,6 +618,7 @@ function AuthenticatedProfile({
                 value={nicknameDraft}
                 onChange={(event) => setNicknameDraft(event.target.value)}
                 placeholder="Add a nickname"
+                maxLength={50}
                 disabled={isDemoMode}
                 className="mt-3 w-full rounded-2xl border border-bloom-sage/30 bg-white px-4 py-3 text-sm text-bloom-forest outline-none transition placeholder:text-bloom-forest/40 focus:border-bloom-mid focus:ring-2 focus:ring-bloom-mint/40 disabled:cursor-not-allowed disabled:opacity-60 dark:border-white/10 dark:bg-white/10 dark:text-bloom-light dark:placeholder:text-gray-500"
               />

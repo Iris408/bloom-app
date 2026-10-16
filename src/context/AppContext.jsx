@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 
 import AppContext from "./appContextObject"
 import {
@@ -10,6 +10,30 @@ import {
 const FOCUS_TASK_STORAGE_KEY = "bloom_focus_tasks"
 const FOCUS_DAILY_RESET_KEY = "bloom-focus-tasks-last-reset"
 
+const FONT_SIZE_CLASSES = ["font-small", "font-medium", "font-large", "font-xl"]
+
+// EN: Apply accessibility/display preferences to the <html> element.
+// JP: アクセシビリティ・表示設定を <html> 要素に反映します。
+function applyDarkModeClass(isDark) {
+  document.documentElement.classList.toggle("dark", isDark)
+}
+
+function applyFontSizeClass(size) {
+  document.documentElement.classList.remove(...FONT_SIZE_CLASSES)
+
+  if (size) {
+    document.documentElement.classList.add(`font-${size}`)
+  }
+}
+
+function applyDyslexicFontClass(enabled) {
+  document.documentElement.classList.toggle("dyslexic", enabled)
+}
+
+function applyReduceMotionClass(enabled) {
+  document.documentElement.classList.toggle("reduce-motion", enabled)
+}
+
 function AppProvider({ children }) {
   const [activeMode, setActiveMode] = useState("standard")
   const [activeTheme, setActiveTheme] = useState("system")
@@ -20,6 +44,11 @@ function AppProvider({ children }) {
   const [fontSize, setFontSize] = useState("medium")
   const [dyslexicFont, setDyslexicFont] = useState(false)
   const [reduceMotion, setReduceMotion] = useState(false)
+
+  // EN: Set by App while a real account is signed in, so preference changes
+  // are saved to that account. It is null for demo and signed-out use.
+  // JP: 実際のアカウントでログイン中のみ App が設定し、変更をアカウントに保存します。
+  const preferenceSaverRef = useRef(null)
 
   const [focusTasks, setFocusTasks] = useState(() => {
     try {
@@ -99,52 +128,70 @@ function AppProvider({ children }) {
     )
   }
 
+  const setPreferenceSaver = useCallback((saver) => {
+    preferenceSaverRef.current = saver
+  }, [])
+
+  function savePreference(updates) {
+    preferenceSaverRef.current?.(updates)
+  }
+
   function toggleDarkMode() {
-    setIsDarkMode((currentValue) => {
-      const nextValue = !currentValue
+    const nextValue = !isDarkMode
 
-      document.documentElement.classList.toggle("dark", nextValue)
-
-      return nextValue
-    })
+    applyDarkModeClass(nextValue)
+    setIsDarkMode(nextValue)
+    savePreference({ isDarkMode: nextValue })
   }
 
   function applyFontSize(size) {
-    document.documentElement.classList.remove(
-      "font-small",
-      "font-medium",
-      "font-large",
-      "font-xl"
-    )
-
-    document.documentElement.classList.add(`font-${size}`)
+    applyFontSizeClass(size)
     setFontSize(size)
+    savePreference({ fontSize: size })
   }
 
   function toggleDyslexicFont() {
-    setDyslexicFont((currentValue) => {
-      const nextValue = !currentValue
+    const nextValue = !dyslexicFont
 
-      document.documentElement.classList.toggle(
-        "dyslexic",
-        nextValue
-      )
-
-      return nextValue
-    })
+    applyDyslexicFontClass(nextValue)
+    setDyslexicFont(nextValue)
+    savePreference({ dyslexicFont: nextValue })
   }
 
   function toggleReduceMotion() {
-    setReduceMotion((currentValue) => {
-      const nextValue = !currentValue
+    const nextValue = !reduceMotion
 
-      document.documentElement.classList.toggle(
-        "reduce-motion",
-        nextValue
-      )
+    applyReduceMotionClass(nextValue)
+    setReduceMotion(nextValue)
+    savePreference({ reduceMotion: nextValue })
+  }
 
-      return nextValue
-    })
+  // EN: Apply preferences loaded from an account without saving them back.
+  // JP: アカウントから読み込んだ設定を、保存し直さずに反映します。
+  const applyPreferences = useCallback((preferences) => {
+    applyDarkModeClass(preferences.isDarkMode)
+    applyFontSizeClass(preferences.fontSize)
+    applyDyslexicFontClass(preferences.dyslexicFont)
+    applyReduceMotionClass(preferences.reduceMotion)
+
+    setIsDarkMode(preferences.isDarkMode)
+    setFontSize(preferences.fontSize)
+    setDyslexicFont(preferences.dyslexicFont)
+    setReduceMotion(preferences.reduceMotion)
+  }, [])
+
+  // EN: Return to signed-out defaults so the next person does not inherit them.
+  // JP: 次の利用者に引き継がれないよう、ログアウト時の既定値に戻します。
+  function resetPreferences() {
+    applyDarkModeClass(false)
+    applyFontSizeClass(null)
+    applyDyslexicFontClass(false)
+    applyReduceMotionClass(false)
+
+    setIsDarkMode(false)
+    setFontSize("medium")
+    setDyslexicFont(false)
+    setReduceMotion(false)
   }
 
   const contextValue = {
@@ -171,6 +218,10 @@ function AppProvider({ children }) {
 
     reduceMotion,
     toggleReduceMotion,
+
+    applyPreferences,
+    resetPreferences,
+    setPreferenceSaver,
 
     focusTasks,
     setFocusTasks,

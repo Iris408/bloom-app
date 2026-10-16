@@ -1,7 +1,13 @@
 # EN: Pydantic schemas for request and response validation.
 # JP: リクエストとレスポンス検証用のPydanticスキーマです。
 
-from pydantic import BaseModel, EmailStr
+from typing import Literal
+
+from pydantic import BaseModel, EmailStr, Field
+
+ThemeName = Literal["light", "dark"]
+TextSize = Literal["small", "medium", "large", "xl"]
+AvatarType = Literal["initial", "bloom"]
 
 class Token(BaseModel):
     # EN: JWT token response returned after login.
@@ -42,11 +48,13 @@ class ProfileSettingsCreate(BaseModel):
 class ProfileSettingsUpdate(BaseModel):
     # EN: Optional profile settings update fields.
     # JP: 任意で更新できるプロフィール設定フィールドです。
-    display_name: str | None = None
-    theme: str | None = None
-    text_size: str | None = None
+    display_name: str | None = Field(default=None, max_length=50)
+    theme: ThemeName | None = None
+    text_size: TextSize | None = None
     dyslexic_font: bool | None = None
     reduce_motion: bool | None = None
+    avatar_type: AvatarType | None = None
+    avatar_id: str | None = Field(default=None, max_length=64, pattern=r"^[a-z0-9-]+$")
 
 
 class ProfileSettingsResponse(BaseModel):
@@ -59,6 +67,8 @@ class ProfileSettingsResponse(BaseModel):
     text_size: str
     dyslexic_font: bool
     reduce_motion: bool
+    avatar_type: str = "initial"
+    avatar_id: str | None = None
 
     class Config:
         from_attributes = True

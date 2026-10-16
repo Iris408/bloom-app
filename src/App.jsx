@@ -1,6 +1,13 @@
 import { useEffect, useState } from "react";
 import useApp from "./context/useApp";
-import { getAuthToken, getCurrentUser, logoutUser } from "./api/bloomApi";
+import {
+  getAuthToken,
+  getCurrentUser,
+  getProfileSettings,
+  logoutUser,
+  updateProfileSettings,
+} from "./api/bloomApi";
+import { cacheAccountProfile } from "./utils/accountProfile";
 import { getAvatarDisplay } from "./utils/avatarStorage";
 import { seedDemoData } from "./utils/seedDemoData"
 import { isFullPreviewDemoType } from "./data/demoData"
@@ -36,6 +43,20 @@ import DemoCompletionModal from "./components/demo/DemoCompletionModal";
 import GuidedDemoNotice from "./components/demo/GuidedDemoNotice";
 
 const ACTIVE_PAGE_STORAGE_KEY = "bloom-active-page"
+
+// EN: Load the signed-in account's saved preferences and profile choices.
+// A failure keeps the current preferences rather than blocking sign-in.
+// JP: ログイン中アカウントの保存済み設定を読み込みます。失敗してもログインは続けます。
+async function loadAccountPreferences(user, applyPreferences) {
+  try {
+    const profile = await getProfileSettings()
+
+    applyPreferences(profile)
+    cacheAccountProfile(user, profile)
+  } catch (error) {
+    console.warn("Bloom: could not load account preferences", error)
+  }
+}
 
 function App() {
   const [activePage, setActivePage] = useState(() => {
@@ -95,7 +116,32 @@ function App() {
 
   const [loginInitialView, setLoginInitialView] =useState("login");
 
-  const { isDarkMode, toggleDarkMode } = useApp();
+  const {
+    isDarkMode,
+    toggleDarkMode,
+    applyPreferences,
+    resetPreferences,
+    setPreferenceSaver,
+  } = useApp();
+
+  // EN: Only a real signed-in account (not demo) saves preference changes.
+  // JP: デモではない実際のログイン中アカウントだけが設定変更を保存します。
+  const preferenceAccountId = !isDemoMode ? currentUser?.id ?? null : null
+
+  useEffect(() => {
+    if (!preferenceAccountId) {
+      setPreferenceSaver(null)
+      return undefined
+    }
+
+    setPreferenceSaver((updates) => {
+      updateProfileSettings(updates).catch((error) => {
+        console.warn("Bloom: could not save preferences", error)
+      })
+    })
+
+    return () => setPreferenceSaver(null)
+  }, [preferenceAccountId, setPreferenceSaver])
 
   const avatarDisplay = getAvatarDisplay(currentUser);
 
@@ -150,6 +196,10 @@ function App() {
         // JP: 保存されたトークンからログインユーザーを復元します。
         const user = await getCurrentUser()
 
+        if (shouldIgnore) return
+
+        await loadAccountPreferences(user, applyPreferences)
+
         if (!shouldIgnore) {
           setCurrentUser(user)
         }
@@ -184,7 +234,7 @@ function App() {
     return () => {
       shouldIgnore = true
     }
-  }, [])
+  }, [applyPreferences])
 
   async function retryAuthRestoration() {
     setIsCheckingAuth(true)
@@ -192,6 +242,7 @@ function App() {
 
     try {
       const user = await getCurrentUser()
+      await loadAccountPreferences(user, applyPreferences)
       setCurrentUser(user)
     } catch (error) {
       const status = error?.status || error?.response?.status
@@ -235,6 +286,7 @@ function App() {
     // EN: Log out the user and return to the public Overview page.
     // JP: ユーザーをログアウトし、公開用Overviewページへ戻します。
     logoutUser();
+    resetPreferences();
     setCurrentUser(null);
     setIsDemoMode(false);
     setDemoType(null);
@@ -272,6 +324,13 @@ function App() {
   function handleConfirmExitDemo() {
     resetDemoSessionData()
 
+    // EN: Preference changes made during a demo are not saved, so a signed-in
+    // account returns to its own saved preferences.
+    // JP: デモ中の設定変更は保存されないため、ログイン中のアカウントは保存済み設定に戻ります。
+    if (currentUser?.id) {
+      loadAccountPreferences(currentUser, applyPreferences)
+    }
+
     // EN: Exit demo mode and return to the public Overview page.
     // JP: デモモードを終了し、公開用Overviewページへ戻します。
     setIsDemoMode(false)
@@ -288,9 +347,12 @@ function App() {
   openLoginModal("create");
 }
 
-  function handleAuthSuccess(user) {
-    // EN: A real logged-in account should leave demo mode.
-    // JP: 実際のログイン済みアカウントではデモモードを終了します。
+  async function handleAuthSuccess(user) {
+    // EN: A real logged-in account should leave demo mode and use its own
+    // saved preferences.
+    // JP: 実際のログイン済みアカウントではデモモードを終了し、保存済み設定を使います。
+    await loadAccountPreferences(user, applyPreferences);
+
     setCurrentUser(user);
     setIsDemoMode(false);
     setDemoType(null);

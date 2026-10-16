@@ -72,6 +72,11 @@ class ProfileSettings(Base):
     dyslexic_font = Column(Boolean, default=False)
     reduce_motion = Column(Boolean, default=False)
 
+    # EN: Chosen profile avatar ("initial" or a preset Bloom avatar id).
+    # JP: 選択したプロフィールアバター（"initial" またはBloomアバターID）です。
+    avatar_type = Column(String, nullable=False, default="initial", server_default="initial")
+    avatar_id = Column(String, nullable=True)
+
     user = relationship("User", back_populates="profile_settings")
 
 
