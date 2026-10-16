@@ -332,6 +332,7 @@ function MemoriesTimeline({
         </div>
 
         <select
+          aria-label="Filter memories by category"
           value={memoryFilter}
           onChange={(event) => onFilterChange(event.target.value)}
           className="w-[150px] rounded-full border border-bloom-sage/25 bg-white/80 px-4 py-2 text-xs font-bold text-bloom-forest/70 outline-none transition hover:bg-bloom-light dark:border-white/10 dark:bg-white/10 dark:text-gray-300"
@@ -781,6 +782,7 @@ function AllMemoriesView({
 
         <div className="mt-6 flex flex-col gap-3 sm:flex-row">
           <select
+            aria-label="Filter memories by category"
             value={memoryFilter}
             onChange={(event) => onFilterChange(event.target.value)}
             className="rounded-full border border-bloom-sage/25 bg-white/80 px-4 py-3 text-sm font-bold text-bloom-forest outline-none dark:border-white/10 dark:bg-white/10 dark:text-gray-100"
@@ -793,6 +795,7 @@ function AllMemoriesView({
           </select>
 
           <select
+            aria-label="Sort memories"
             value={memorySortOrder}
             onChange={(event) => onSortChange(event.target.value)}
             className="rounded-full border border-bloom-sage/25 bg-white/80 px-4 py-3 text-sm font-bold text-bloom-forest outline-none dark:border-white/10 dark:bg-white/10 dark:text-gray-100"
