@@ -163,7 +163,7 @@ function Settings({ currentUser = null, isDemoMode = false, onLogout }) {
           </p>
 
           <h3 className="mb-2 break-words text-lg font-bold text-bloom-light">
-            Settings v2.0.0
+            Settings v2.2.0
           </h3>
 
           <p className="break-words text-sm leading-relaxed text-bloom-light/90">

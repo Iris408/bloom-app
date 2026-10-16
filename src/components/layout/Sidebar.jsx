@@ -104,7 +104,7 @@ function Sidebar({ activePage, setActivePage }) {
               </h1>
 
               <p className="mt-1 text-xs font-semibold text-bloom-forest/50 dark:text-gray-400">
-                {activePageLabel} v2.0.0
+                {activePageLabel} v2.2.0
               </p>
             </div>
           </div>

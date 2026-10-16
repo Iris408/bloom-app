@@ -638,7 +638,7 @@ function AuthenticatedProfile({
                 ? "Demo sessions are temporary."
                 : "Joined date will be shown after backend profile timestamps are added."
             }
-            rightText={isDemoMode ? "Demo" : "v2.0.0"}
+            rightText={isDemoMode ? "Demo" : "v2.2.0"}
           />
         </ProfileSection>
 
