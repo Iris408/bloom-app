@@ -701,3 +701,87 @@ export async function updateProfileSettings(updates) {
 
   return mapProfileFromApi(await response.json())
 }
+
+// EN: Convert a backend Moment into the frontend memory shape.
+// JP: バックエンドのMomentをフロントエンドの思い出形式に変換します。
+function mapMomentFromApi(moment) {
+  return {
+    id: moment.id,
+    title: moment.title,
+    description: moment.description,
+    tag: moment.tag,
+    image: moment.image,
+    createdAt: moment.created_at,
+  }
+}
+
+function mapMomentToApi(memory) {
+  return {
+    title: memory.title,
+    description: memory.description,
+    tag: memory.tag,
+    image: memory.image,
+  }
+}
+
+// EN: Fetch the logged-in user's Moments.
+// JP: ログイン中ユーザーのMomentsを取得します。
+export async function getMoments() {
+  const response = await fetch(`${API_BASE_URL}/moments/`, {
+    method: "GET",
+    headers: getAuthHeaders(),
+  })
+
+  if (!response.ok) {
+    const message = await getApiErrorMessage(response, "Failed to fetch moments")
+    throw createApiError(message, response.status)
+  }
+
+  const moments = await response.json()
+
+  return moments.map(mapMomentFromApi)
+}
+
+export async function createMoment(memory) {
+  const response = await fetch(`${API_BASE_URL}/moments/`, {
+    method: "POST",
+    headers: getAuthHeaders(),
+    body: JSON.stringify(mapMomentToApi(memory)),
+  })
+
+  if (!response.ok) {
+    const message = await getApiErrorMessage(response, "Failed to save moment")
+    throw createApiError(message, response.status)
+  }
+
+  return mapMomentFromApi(await response.json())
+}
+
+export async function updateMoment(momentId, memory) {
+  const response = await fetch(`${API_BASE_URL}/moments/${momentId}`, {
+    method: "PUT",
+    headers: getAuthHeaders(),
+    body: JSON.stringify(mapMomentToApi(memory)),
+  })
+
+  if (!response.ok) {
+    const message = await getApiErrorMessage(response, "Failed to update moment")
+    throw createApiError(message, response.status)
+  }
+
+  return mapMomentFromApi(await response.json())
+}
+
+export async function deleteMomentFromApi(momentId) {
+  const response = await fetch(`${API_BASE_URL}/moments/${momentId}`, {
+    method: "DELETE",
+    headers: getAuthHeaders(),
+  })
+
+  if (!response.ok) {
+    const message = await getApiErrorMessage(response, "Failed to delete moment")
+    throw createApiError(message, response.status)
+  }
+
+  return response.json()
+}

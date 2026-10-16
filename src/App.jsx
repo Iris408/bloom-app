@@ -463,7 +463,15 @@ function App() {
         />
       );
     }
-    if (activePage === "moments") return <Moments />;
+    if (activePage === "moments") {
+      return (
+        <Moments
+          key={!isDemoMode && currentUser?.id ? `user-${currentUser.id}` : "demo"}
+          currentUser={currentUser}
+          isDemoMode={isDemoMode}
+        />
+      );
+    }
     if (activePage === "wins") return <Wins />;
     if (activePage === "profile") {
       return (

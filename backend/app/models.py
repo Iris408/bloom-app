@@ -1,11 +1,11 @@
 # EN: SQLAlchemy database models for the Bloom backend.
 # JP: Bloomバックエンド用のSQLAlchemyデータベースモデルです。
 
-from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, String
+from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, String, Text
 from sqlalchemy.orm import relationship
 
 from app.database import Base
-from datetime import datetime
+from datetime import datetime, timezone
 
 class User(Base):
     # EN: Main user account table.
@@ -52,6 +52,14 @@ class User(Base):
     # JP: 1人のユーザーは複数の進捗スナップショットを持つことができます。
     progress_snapshots = relationship(
         "ProgressSnapshot",
+        back_populates="user",
+        cascade="all, delete-orphan",
+    )
+
+    # EN: One user can have many saved Moments.
+    # JP: 1人のユーザーは複数のMomentsを保存できます。
+    moments = relationship(
+        "Moment",
         back_populates="user",
         cascade="all, delete-orphan",
     )
@@ -178,3 +186,26 @@ class ProgressSnapshot(Base):
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     user = relationship("User", back_populates="progress_snapshots")
+
+
+def utc_now():
+    return datetime.now(timezone.utc)
+
+
+class Moment(Base):
+    # EN: Stores a memory saved on the Moments page.
+    # JP: Momentsページで保存された思い出を保存します。
+    __tablename__ = "moments"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+
+    title = Column(String(120), nullable=False)
+    description = Column(Text, nullable=False)
+    tag = Column(String(32), nullable=False)
+    image = Column(String(255), nullable=False)
+
+    created_at = Column(DateTime(timezone=True), nullable=False, default=utc_now)
+    updated_at = Column(DateTime(timezone=True), nullable=False, default=utc_now, onupdate=utc_now)
+
+    user = relationship("User", back_populates="moments")
