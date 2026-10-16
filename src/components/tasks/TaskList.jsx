@@ -45,7 +45,14 @@ function TaskList({
   currentUser = null,
   isDemoMode = false,
 }) {  
+  const isBackendMode = Boolean(currentUser?.id) && !isDemoMode
+
   const [tasks, setTasks] = useState(() => {
+    // EN: Signed-in accounts load tasks from the backend and never use the
+    // shared demo/local "bloom-tasks" key.
+    // JP: ログイン中のアカウントはバックエンドからタスクを読み込み、共有キーは使いません。
+    if (isBackendMode) return []
+
     try {
       const savedTasks = localStorage.getItem(TASK_STORAGE_KEY)
 
@@ -78,7 +85,6 @@ function TaskList({
   const [editEmoji, setEditEmoji] = useState("🌱")
   const [showEditPicker, setShowEditPicker] = useState(false)
 
-  const isBackendMode = Boolean(currentUser?.id) && !isDemoMode
   const [isLoadingTasks, setIsLoadingTasks] = useState(false)
   const [taskError, setTaskError] = useState("")
 
@@ -116,11 +122,14 @@ function TaskList({
   }, [isBackendMode, currentUser?.id])
 
   useEffect(() => {
-    localStorage.setItem(TASK_STORAGE_KEY, JSON.stringify(tasks))
+    if (!isBackendMode) {
+      localStorage.setItem(TASK_STORAGE_KEY, JSON.stringify(tasks))
+    }
+
     // EN: Let Home/Progress read updated task data later.
     // JP: 後でHome/Progressが更新されたタスクデータを読めるようにします。
     window.dispatchEvent(new Event("bloom-tasks-updated"))
-  }, [tasks])
+  }, [tasks, isBackendMode])
 
   async function handleAddTask() {
     const cleanText = inputText.trim()

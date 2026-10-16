@@ -122,6 +122,7 @@ function App() {
     applyPreferences,
     resetPreferences,
     setPreferenceSaver,
+    resetLocalFocusTasks,
   } = useApp();
 
   // EN: Only a real signed-in account (not demo) saves preference changes.
@@ -160,6 +161,15 @@ function App() {
   // EN: Users can access the main app if they are logged in OR using demo mode.
   // JP: ログイン済み、またはデモモードの場合、メインアプリにアクセスできます。
   const canUseApp = Boolean(currentUser) || isDemoMode;
+
+  // EN: App pages remount when the account or demo session changes, so no
+  // page keeps another session's data in memory.
+  // JP: アカウントやデモが切り替わるとページを再マウントし、別セッションのデータを保持しません。
+  const appSessionKey = isDemoMode
+    ? `demo-${demoType ?? "default"}`
+    : currentUser?.id
+      ? `user-${currentUser.id}`
+      : "public"
 
   // EN: Dynamic background based on dark mode.
   // JP: ダークモードに応じて背景を切り替えます。
@@ -313,6 +323,7 @@ function App() {
           "simple"
 
     resetDemoSessionData()
+    resetLocalFocusTasks()
     seedDemoData(nextDemoType)
 
     setIsDemoMode(true)
@@ -323,6 +334,7 @@ function App() {
 
   function handleConfirmExitDemo() {
     resetDemoSessionData()
+    resetLocalFocusTasks()
 
     // EN: Preference changes made during a demo are not saved, so a signed-in
     // account returns to its own saved preferences.
@@ -352,6 +364,14 @@ function App() {
     // saved preferences.
     // JP: 実際のログイン済みアカウントではデモモードを終了し、保存済み設定を使います。
     await loadAccountPreferences(user, applyPreferences);
+
+    // EN: Signing in from a demo ends it; demo data is cleared rather than
+    // carried into the account.
+    // JP: デモ中にログインするとデモを終了し、デモデータはアカウントに持ち込まず消去します。
+    if (isDemoMode) {
+      resetDemoSessionData();
+      resetLocalFocusTasks();
+    }
 
     setCurrentUser(user);
     setIsDemoMode(false);
@@ -613,7 +633,10 @@ function App() {
                     </div>
                   </div>
                 ) : (
-                  <div className="mx-auto w-full max-w-7xl px-5 py-6 sm:px-8 lg:px-10">
+                  <div
+                    key={appSessionKey}
+                    className="mx-auto w-full max-w-7xl px-5 py-6 sm:px-8 lg:px-10"
+                  >
                     {renderPage()}
                   </div>
                 )}

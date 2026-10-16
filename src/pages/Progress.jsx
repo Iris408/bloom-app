@@ -294,7 +294,9 @@ export default function Progress({ currentUser = null, isDemoMode = false, demoT
   const today = todayKey()
   const weekKeys = useMemo(() => getWeekKeys(7), [])
 
-  const [routines, setRoutines] = useState(() => loadStoredRoutines())
+  const [routines, setRoutines] = useState(() =>
+    isBackendMode ? [] : loadStoredRoutines()
+  )
   // EN: Read focus history from the key for the current user/mode, and
   // rehydrate during render if that key changes.
   // JP: 現在のユーザー・モードのキーから履歴を読み、キーが変わったら再読み込みします。

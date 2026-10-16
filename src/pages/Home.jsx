@@ -7,7 +7,12 @@ import useApp from "../context/useApp"
 import { getAvatarDisplay } from "../utils/avatarStorage"
 import { todayKey } from "../utils/progressUtils"
 import { isNeurodivergentDemoType } from "../data/demoData"
-import { getRoutines, getTasks, updateRoutineStep } from "../api/bloomApi"
+import {
+  getFocusTasks,
+  getRoutines,
+  getTasks,
+  updateRoutineStep,
+} from "../api/bloomApi"
 
 const TASK_STORAGE_KEY = "bloom-tasks"
 const ROUTINE_STORAGE_KEY = "bloom-routines"
@@ -163,8 +168,13 @@ function Home({
   const focusPanelRef = useRef(null)
   const routinePanelRef = useRef(null)
 
-  const { focusTasks } = useApp()
+  const { focusTasks: localFocusTasks } = useApp()
   const today = todayKey()
+
+  // EN: Signed-in accounts count their saved focus tasks, not demo/local ones.
+  // JP: ログイン中のアカウントは、デモ用ではなく保存済みのフォーカスタスクを数えます。
+  const [backendFocusTasks, setBackendFocusTasks] = useState([])
+  const focusTasks = isBackendMode ? backendFocusTasks : localFocusTasks
 
   const avatarDisplay = getAvatarDisplay(currentUser)
 
@@ -219,6 +229,26 @@ function Home({
       }
     }
   }, [])
+
+  useEffect(() => {
+    if (!isBackendMode) return undefined
+
+    let shouldIgnore = false
+
+    getFocusTasks(today)
+      .then((savedFocusTasks) => {
+        if (!shouldIgnore) {
+          setBackendFocusTasks(savedFocusTasks)
+        }
+      })
+      .catch((error) => {
+        console.error("Could not load Home focus tasks:", error)
+      })
+
+    return () => {
+      shouldIgnore = true
+    }
+  }, [isBackendMode, today])
 
   useEffect(() => {
     if (!isBackendMode) return

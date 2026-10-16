@@ -122,6 +122,13 @@ function AppProvider({ children }) {
     )
   }
 
+  // EN: Clear demo/local focus tasks held in memory (storage is cleared by
+  // resetDemoSessionData) so they never carry into another session.
+  // JP: メモリ上のデモ用フォーカスタスクを消去し、別のセッションに持ち越さないようにします。
+  function resetLocalFocusTasks() {
+    setFocusTasks([])
+  }
+
   function deleteFocusTask(id) {
     setFocusTasks((currentTasks) =>
       currentTasks.filter((task) => task.id !== id)
@@ -228,6 +235,7 @@ function AppProvider({ children }) {
     addFocusTask,
     toggleFocusTaskComplete,
     deleteFocusTask,
+    resetLocalFocusTasks,
   }
 
   return (
