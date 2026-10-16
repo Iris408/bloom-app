@@ -1,85 +1,72 @@
 # 🌱 Bloom
 
-Calm routines for every brain.
+**Small steps. Steady routines. Room to grow.**
 
-Bloom is an accessibility-focused routine, focus, and progress-tracking app built with React, JavaScript, Tailwind CSS, Vite, FastAPI, and Vercel.
+A visual task planner without streaks, pressure, or the feeling of falling behind.
 
-It is designed around calm UI, gentle task sequencing, demo routines, focus sessions, reflection moments, and neurodivergent-friendly interaction patterns.
+Bloom is an accessibility-focused visual task planner for everyday tasks, routines and focus.
 
-Bloom currently focuses on **Bloom Personal**: a personal routine, focus, progress, and task support app being prepared for public beta feedback.
+Bloom Personal uses calm interfaces, gentle task sequencing, focus sessions and reflection to help users make progress without turning missed days into failure.
+
+> **Current status:** v2.2.2 → v3 production live beta
 
 ## Live Demo
 
 [Experience Bloom](https://bloom-app-three-xi.vercel.app/)
 
-## Latest Release - Bloom v2.1.1
-
-Bloom v2.1.1 focuses on responsive UI polish, account persistence testing, contextual guidance, and release cleanup.
-
-### Included
-
-- Responsive landing-page improvements
-- Contextual tutorial panels for landing, demo, and authenticated areas
-- Authenticated profile persistence
-- Account data isolation
-- Demo and account separation
-- Protected-route validation
-- Mobile layout improvements
-- ESLint and production-build cleanup
-
 ## Features
 
-- Calm routine and task sequencing
-- Focus session support
-- Progress and reflection pages
-- Moments dashboard
-- Demo mode from the public overview page
-- Login and create account modal UI
-- Light and dark mode
-- Text size controls
-- OpenDyslexic font toggle
-- Reduce motion setting
+- Visual task and routine planning
+- Calm task sequencing
+- Focus sessions
+- Progress, reflection and Moments
+- Demo mode with preloaded routines
+- Account creation and login
+- Persistent authenticated user data
+- Light and dark themes
+- Text-size controls
+- OpenDyslexic font option
+- Reduced-motion setting
 - Responsive desktop and mobile layouts
-- Public About, Privacy, and Accessibility pages
-- Backend security/configuration improvements for JWT and CORS
+- Public About, Privacy and Accessibility pages
 
 ## Screenshots
 
 <table>
   <tr>
     <td>
-      <img src="./public/images/bloom-overview.png" width="400"/>
+      <img src="./public/images/bloom-overview.png" width="400" alt="Bloom public overview page"/>
       <br/>
-      <strong>Public Overview</strong>
+      <strong>Public overview</strong>
     </td>
     <td>
-      <img src="./public/images/bloom-create-account.png" width="400"/>
+      <img src="./public/images/bloom-create-account.png" width="400" alt="Bloom create account modal"/>
       <br/>
-      <strong>Create Account Modal</strong>
+      <strong>Create account</strong>
     </td>
   </tr>
   <tr>
     <td>
-      <img src="./public/images/bloom-moments.png" width="400"/>
+      <img src="./public/images/bloom-moments.png" width="400" alt="Bloom Moments page"/>
       <br/>
       <strong>Moments</strong>
     </td>
     <td>
-      <img src="./public/images/bloom-home.png" width="400"/>
+      <img src="./public/images/bloom-home.png" width="400" alt="Bloom home page"/>
       <br/>
       <strong>Home</strong>
     </td>
   </tr>
   <tr>
     <td>
-      <img src="./public/images/bloom-routines-dark.png" width="400"/>
+      <img src="./public/images/bloom-routines-dark.png" width="400" alt="Bloom routines page in dark mode"/>
       <br/>
-      <strong>Routines - Dark Mode</strong>
+      <strong>Routines — dark mode</strong>
     </td>
     <td>
-      <img src="./public/images/bloom-focus-dark.png" width="400"/>
+      <img src="./public/images/bloom-focus-dark.png" width="400" alt="Bloom focus page in dark mode"/>
       <br/>
-      <strong>Focus - Dark Mode</strong>
+      <strong>Focus — dark mode</strong>
     </td>
   </tr>
 </table>
@@ -89,56 +76,46 @@ Bloom v2.1.1 focuses on responsive UI polish, account persistence testing, conte
 | Area | Technologies |
 | --- | --- |
 | Frontend | React, JavaScript, Tailwind CSS, Vite |
-| Backend | Python, FastAPI, JWT auth configuration, environment-based CORS |
+| Backend | Python, FastAPI |
+| Authentication | JWT |
 | Deployment | Vercel |
-| Tools | Git, GitHub, VS Code, Claude Code, ChatGPT |
+| Configuration | Environment-based configuration and CORS |
 
-## Quick Start
-
-Clone the repository:
+## Run Locally
 
 ```bash
 git clone https://github.com/Iris408/bloom-app.git
 cd bloom-app
-```
-
-Install dependencies:
-
-```bash
 npm install
-```
-
-Run locally:
-
-```bash
 npm run dev
 ```
 
-Build check:
+### Build Check
 
 ```bash
 npm run build
 ```
 
+Backend setup and environment configuration are documented in `/docs`.
+
 ## Documentation
 
-More detailed project documentation is available in the `docs/` folder.
+Additional project documentation is available in `/docs`, including:
 
-| Document | Description |
-| --- | --- |
-| [Setup Guide](./docs/setup.md) | Local setup and build commands |
-| [Product Roadmap](./docs/product-roadmap.md) | Authentication, persistence, beta, and future backend plans |
-| [Accessibility Notes](./docs/accessibility-notes.md) | Neurodivergent-friendly design, readability controls, and calm UI choices |
-| [Demo Mode](./docs/demo-mode.md) | Demo flow, preloaded routines, focus support, and demo boundaries |
-| [Project Details](./docs/project-details.md) | Architecture, AI-assisted workflow, limitations, and learning notes |
-| [Beta Notes](./docs/bloom-beta-notes.md) | Beta feedback planning |
-| [Security & Config](./docs/bloom-security-config.md) | Backend security and configuration notes |
-| [AI-Assisted Workflow](./docs/bloom-ai-workflow.md) | Notes on supervised AI-assisted development |
+- Setup Guide
+- Product Roadmap
+- Accessibility Notes
+- Demo Mode
+- Project Details
+- Beta Notes
+- Security & Config
+- AI-Assisted Workflow
 
-## Project Summary
+## Development Status
 
-Bloom is a product-focused frontend/full-stack capstone project built to practise accessible UI design, React app structure, routine/task workflows, demo mode design, authentication planning, backend security configuration, and product documentation.
+Bloom v2.2.2 is currently running as a live production beta while development moves toward the Bloom v3 beta.
+
 
 ## Author
 
-Built by Iris408
+Built by [Iris408](https://github.com/Iris408).
