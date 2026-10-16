@@ -74,10 +74,3 @@ def get_logged_in_user(current_user: models.User = Depends(get_current_user)):
     # EN: Return the currently logged-in user from the JWT token.
     # JP: JWTトークンから現在ログイン中のユーザーを返します。
     return current_user
-
-
-@router.get("/", response_model=list[schemas.UserResponse])
-def get_users(db: Session = Depends(get_db)):
-    # EN: Return all users for early backend testing.
-    # JP: 初期バックエンドテスト用に全ユーザーを返します。
-    return db.query(models.User).all()
