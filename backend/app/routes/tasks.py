@@ -35,7 +35,12 @@ def create_task(task: schemas.TaskCreate, db: Session = Depends(get_db), current
 def get_tasks_for_current_user(db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
     # EN: Get all tasks for the currently logged-in user.
     # JP: 現在ログイン中のユーザーのすべてのタスクを取得します。
-    return db.query(models.Task).filter(models.Task.user_id == current_user.id).all()
+    return (
+        db.query(models.Task)
+        .filter(models.Task.user_id == current_user.id)
+        .order_by(models.Task.id)
+        .all()
+    )
 
 
 @router.put("/{task_id}", response_model=schemas.TaskResponse)

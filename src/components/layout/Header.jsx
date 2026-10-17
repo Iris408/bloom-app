@@ -94,7 +94,7 @@ function PublicHeader({
             </p>
 
             <span className="hidden rounded-full border border-bloom-sage/20 bg-white/20 px-2 py-1 text-[11px] font-bold text-bloom-forest/65 dark:border-white/10 dark:bg-white/5 dark:text-gray-300 sm:inline-flex">
-              v2.1.1
+              v2.2.0
             </span>
           </div>
         </button>

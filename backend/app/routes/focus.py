@@ -37,7 +37,12 @@ def get_focus_tasks_for_current_user(db: Session = Depends(get_db), current_user
 
     # EN: Get all focus tasks for the currently logged-in user.
     # JP: 現在ログイン中のユーザーのすべてのフォーカスタスクを取得します。
-    return (db.query(models.FocusTask).filter(models.FocusTask.user_id == current_user.id).all())
+    return (
+        db.query(models.FocusTask)
+        .filter(models.FocusTask.user_id == current_user.id)
+        .order_by(models.FocusTask.id)
+        .all()
+    )
 
 
 @router.put("/{focus_task_id}", response_model=schemas.FocusTaskResponse)

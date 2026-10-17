@@ -65,7 +65,7 @@ function Settings({ currentUser = null, isDemoMode = false, onLogout }) {
           {isDemoMode
             ? "Demo mode uses sample data only. Settings shown here are a preview."
             : currentUser?.email
-              ? `Signed in as ${currentUser.email}`
+              ? `${currentUser.email}`
               : "Signed in account details will appear here."}
         </div>
       </section>
@@ -163,7 +163,7 @@ function Settings({ currentUser = null, isDemoMode = false, onLogout }) {
           </p>
 
           <h3 className="mb-2 break-words text-lg font-bold text-bloom-light">
-            Settings v2.0.0
+            Settings v2.2.0
           </h3>
 
           <p className="break-words text-sm leading-relaxed text-bloom-light/90">

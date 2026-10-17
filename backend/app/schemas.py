@@ -1,7 +1,19 @@
 # EN: Pydantic schemas for request and response validation.
 # JP: リクエストとレスポンス検証用のPydanticスキーマです。
 
-from pydantic import BaseModel, EmailStr
+from datetime import datetime, timezone
+from typing import Literal
+
+from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_serializer
+
+ThemeName = Literal["light", "dark"]
+TextSize = Literal["small", "medium", "large", "xl"]
+AvatarType = Literal["initial", "bloom"]
+MomentTag = Literal["Grateful", "Reset", "Accomplished", "Reflective"]
+
+# EN: Moments use Bloom's bundled sample images until uploads exist.
+# JP: アップロード機能ができるまで、MomentsはBloom付属の画像を使います。
+MOMENT_IMAGE_PATTERN = r"^/images/memories/[a-z0-9-]+\.png$"
 
 class Token(BaseModel):
     # EN: JWT token response returned after login.
@@ -42,11 +54,13 @@ class ProfileSettingsCreate(BaseModel):
 class ProfileSettingsUpdate(BaseModel):
     # EN: Optional profile settings update fields.
     # JP: 任意で更新できるプロフィール設定フィールドです。
-    display_name: str | None = None
-    theme: str | None = None
-    text_size: str | None = None
+    display_name: str | None = Field(default=None, max_length=50)
+    theme: ThemeName | None = None
+    text_size: TextSize | None = None
     dyslexic_font: bool | None = None
     reduce_motion: bool | None = None
+    avatar_type: AvatarType | None = None
+    avatar_id: str | None = Field(default=None, max_length=64, pattern=r"^[a-z0-9-]+$")
 
 
 class ProfileSettingsResponse(BaseModel):
@@ -59,6 +73,8 @@ class ProfileSettingsResponse(BaseModel):
     text_size: str
     dyslexic_font: bool
     reduce_motion: bool
+    avatar_type: str = "initial"
+    avatar_id: str | None = None
 
     class Config:
         from_attributes = True
@@ -216,4 +232,51 @@ class ProgressSnapshotResponse(BaseModel):
     total_focus_tasks: int
 
     class Config:
-        from_attributes = True                                
+        from_attributes = True
+
+
+class MomentCreate(BaseModel):
+    # EN: Data required when saving a Moment.
+    # JP: Momentを保存するときに必要なデータです。
+    model_config = ConfigDict(str_strip_whitespace=True)
+
+    title: str = Field(min_length=1, max_length=120)
+    description: str = Field(min_length=1, max_length=1000)
+    tag: MomentTag
+    image: str = Field(max_length=255, pattern=MOMENT_IMAGE_PATTERN)
+
+
+class MomentUpdate(BaseModel):
+    # EN: Optional Moment update fields.
+    # JP: 任意で更新できるMomentフィールドです。
+    model_config = ConfigDict(str_strip_whitespace=True)
+
+    title: str | None = Field(default=None, min_length=1, max_length=120)
+    description: str | None = Field(default=None, min_length=1, max_length=1000)
+    tag: MomentTag | None = None
+    image: str | None = Field(default=None, max_length=255, pattern=MOMENT_IMAGE_PATTERN)
+
+
+class MomentResponse(BaseModel):
+    # EN: Moment data returned by the API.
+    # JP: APIが返すMomentデータです。
+    id: int
+    user_id: int
+    title: str
+    description: str
+    tag: str
+    image: str
+    created_at: datetime
+    updated_at: datetime
+
+    @field_serializer("created_at", "updated_at")
+    def serialize_as_utc(self, value: datetime):
+        # EN: SQLite drops timezone info; stored times are always UTC.
+        # JP: SQLiteはタイムゾーン情報を保持しないため、UTCとして返します。
+        if value.tzinfo is None:
+            value = value.replace(tzinfo=timezone.utc)
+
+        return value.isoformat()
+
+    class Config:
+        from_attributes = True

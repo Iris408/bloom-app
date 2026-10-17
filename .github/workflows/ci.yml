@@ -1,0 +1,102 @@
+name: CI
+
+on:
+  push:
+    branches: [main, "feature/**"]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  frontend:
+    name: Frontend (lint + build)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run build
+
+  backend:
+    name: Backend (tests, migrations, startup)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: bloom
+          POSTGRES_PASSWORD: bloom-ci-only
+          POSTGRES_DB: bloom_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U bloom -d bloom_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    env:
+      # EN: CI-only values; never used outside this workflow.
+      # JP: CI 専用の値です。このワークフロー以外では使いません。
+      SECRET_KEY: bloom-ci-only-secret
+      PG_BASE_URL: postgresql://bloom:bloom-ci-only@localhost:5432
+      PGPASSWORD: bloom-ci-only
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: backend/requirements.txt
+
+      - run: pip install -r requirements.txt
+
+      - name: Create extra PostgreSQL databases
+        run: |
+          psql -h localhost -U bloom -d bloom_test -c "CREATE DATABASE bloom_migrations;"
+          psql -h localhost -U bloom -d bloom_test -c "CREATE DATABASE bloom_app;"
+
+      - name: Tests (SQLite)
+        run: python -m pytest -q
+
+      - name: Tests (PostgreSQL)
+        env:
+          TEST_DATABASE_URL: ${{ env.PG_BASE_URL }}/bloom_test
+          MIGRATION_TEST_DATABASE_URL: ${{ env.PG_BASE_URL }}/bloom_migrations
+        run: python -m pytest -q
+
+      - name: Migrations upgrade a fresh PostgreSQL database
+        env:
+          DATABASE_URL: ${{ env.PG_BASE_URL }}/bloom_app
+        run: |
+          python -m alembic upgrade head
+          python -m alembic current | grep "(head)"
+
+      - name: App starts and responds
+        env:
+          DATABASE_URL: ${{ env.PG_BASE_URL }}/bloom_app
+        run: |
+          python -m uvicorn app.main:app --port 8000 &
+          for attempt in $(seq 1 20); do
+            if curl -fsS http://127.0.0.1:8000/ ; then exit 0; fi
+            sleep 1
+          done
+          echo "Backend did not start" >&2
+          exit 1

@@ -41,6 +41,72 @@ npm run build
 
 This confirms the frontend builds successfully.
 
+The frontend calls the backend at `VITE_API_BASE_URL` (default `http://127.0.0.1:8000`). Set it in `.env.local` if your backend runs elsewhere.
+
+## Backend
+
+The backend is a FastAPI app in `backend/`. Commands below run from that folder.
+
+### Create the virtual environment
+
+```bash
+cd backend
+python3 -m venv venv
+source venv/bin/activate
+python -m pip install -r requirements.txt
+```
+
+The `venv/` folder is not committed. If it was created in another location and the project was moved, scripts such as `venv/bin/uvicorn` keep pointing at the old path. Delete `venv/` and create it again with the commands above.
+
+### Configure
+
+```bash
+cp .env.example .env
+```
+
+Set `SECRET_KEY` in `.env` to a long random value. The app does not start without it.
+
+`DATABASE_URL` defaults to a local SQLite file (`sqlite:///./bloom.db`). Production uses PostgreSQL, for example `postgresql://user:password@host:5432/bloom`.
+
+### Migrate the database
+
+```bash
+python -m alembic upgrade head
+```
+
+Run this before starting a new version of the backend, including on existing databases. It is safe on an empty database, on a database already managed by Alembic, and on an older database that was created by the app at startup without Alembic.
+
+### Run
+
+```bash
+python -m uvicorn app.main:app --reload
+```
+
+The API runs at `http://127.0.0.1:8000`, with interactive docs at `/docs`.
+
+### Test
+
+```bash
+python -m pytest
+```
+
+Tests use a temporary SQLite database and never touch `bloom.db`. To run them against PostgreSQL, point them at empty test databases:
+
+```bash
+TEST_DATABASE_URL=postgresql://user:password@localhost:5432/bloom_test \
+MIGRATION_TEST_DATABASE_URL=postgresql://user:password@localhost:5432/bloom_migrations \
+python -m pytest
+```
+
+Both test databases are cleared by the tests, so never point them at real data.
+
+## Continuous Integration
+
+GitHub Actions (`.github/workflows/ci.yml`) runs on pushes to `main` and `feature/**` branches and on pull requests:
+
+- Frontend: install, lint, production build
+- Backend: tests on SQLite and PostgreSQL, migration upgrade on a fresh PostgreSQL database, and a startup check
+
 ## Development Notes
 
 Bloom is currently focused on the frontend public/protected app experience and v2.1.0 authentication preparation.

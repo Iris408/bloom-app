@@ -2,7 +2,7 @@ export function getUserInitial(user) {
   return (
     user?.username?.charAt(0).toUpperCase() ||
     user?.email?.charAt(0).toUpperCase() ||
-    "?"
+    "?" // Default to "?" if no username or email is available.
   )
 }
 

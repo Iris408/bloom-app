@@ -1,7 +1,17 @@
 import { useEffect, useMemo, useState } from "react"
 
+import {
+  createMoment,
+  deleteMomentFromApi,
+  getMoments,
+  updateMoment,
+} from "../api/bloomApi"
+
 const MEMORY_HERO_IMAGE = "/illustrations/bloom-memories-hero.png"
 const MEMORY_QUOTE_IMAGE = "/illustrations/bloom-memories-quote.png"
+// EN: Demo-only Moments storage (cleared by resetDemoSessionData).
+// Signed-in accounts use the backend and never read or write this key.
+// JP: デモ専用の保存先です。ログイン中のアカウントはバックエンドを使います。
 const MEMORIES_STORAGE_KEY = "bloom-memories"
 
 const MEMORY_FILTERS = [
@@ -155,6 +165,16 @@ function getDisplayDate(dateValue) {
   })
 }
 
+
+// EN: Add display-only fields to a memory loaded from the backend.
+// JP: バックエンドから読み込んだ思い出に表示用フィールドを追加します。
+function decorateMemory(memory) {
+  return {
+    ...memory,
+    tagClass: getMemoryTagClass(memory.tag),
+    date: getDisplayDate(memory.createdAt),
+  }
+}
 
 function loadStoredMemories() {
   try {
@@ -312,6 +332,7 @@ function MemoriesTimeline({
         </div>
 
         <select
+          aria-label="Filter memories by category"
           value={memoryFilter}
           onChange={(event) => onFilterChange(event.target.value)}
           className="w-[150px] rounded-full border border-bloom-sage/25 bg-white/80 px-4 py-2 text-xs font-bold text-bloom-forest/70 outline-none transition hover:bg-bloom-light dark:border-white/10 dark:bg-white/10 dark:text-gray-300"
@@ -761,6 +782,7 @@ function AllMemoriesView({
 
         <div className="mt-6 flex flex-col gap-3 sm:flex-row">
           <select
+            aria-label="Filter memories by category"
             value={memoryFilter}
             onChange={(event) => onFilterChange(event.target.value)}
             className="rounded-full border border-bloom-sage/25 bg-white/80 px-4 py-3 text-sm font-bold text-bloom-forest outline-none dark:border-white/10 dark:bg-white/10 dark:text-gray-100"
@@ -773,6 +795,7 @@ function AllMemoriesView({
           </select>
 
           <select
+            aria-label="Sort memories"
             value={memorySortOrder}
             onChange={(event) => onSortChange(event.target.value)}
             className="rounded-full border border-bloom-sage/25 bg-white/80 px-4 py-3 text-sm font-bold text-bloom-forest outline-none dark:border-white/10 dark:bg-white/10 dark:text-gray-100"
@@ -838,7 +861,14 @@ function AllMemoriesView({
   )
 }
 
-function MemoryFormOverlay({ mode, initialMemory, onSave, onCancel }) {
+function MemoryFormOverlay({
+  mode,
+  initialMemory,
+  onSave,
+  onCancel,
+  isSaving = false,
+  saveError = "",
+}) {
   const [title, setTitle] = useState(initialMemory?.title ?? "")
   const [description, setDescription] = useState(
     initialMemory?.description ?? ""
@@ -901,34 +931,48 @@ function MemoryFormOverlay({ mode, initialMemory, onSave, onCancel }) {
         </div>
 
         <div className="max-h-[62vh] overflow-y-auto pr-1">
-          <label className="block text-sm font-bold text-bloom-forest dark:text-bloom-light">
+          <label
+            htmlFor="memory-title"
+            className="block text-sm font-bold text-bloom-forest dark:text-bloom-light"
+          >
             Memory title
           </label>
 
           <input
+            id="memory-title"
             type="text"
+            maxLength={120}
             value={title}
             onChange={(event) => setTitle(event.target.value)}
             placeholder="A quiet cup of tea..."
             className="mt-2 w-full rounded-2xl border border-bloom-sage/25 bg-white/80 px-4 py-3 text-sm text-bloom-forest outline-none focus:border-bloom-mid dark:border-white/10 dark:bg-white/10 dark:text-gray-100"
           />
 
-          <label className="mt-5 block text-sm font-bold text-bloom-forest dark:text-bloom-light">
+          <label
+            htmlFor="memory-description"
+            className="mt-5 block text-sm font-bold text-bloom-forest dark:text-bloom-light"
+          >
             What happened?
           </label>
 
           <textarea
+            id="memory-description"
+            maxLength={1000}
             value={description}
             onChange={(event) => setDescription(event.target.value)}
             placeholder="Write a small note about this moment..."
             className="mt-2 min-h-[96px]] w-full resize-none rounded-2xl border border-bloom-sage/25 bg-white/80 px-4 py-3 text-sm text-bloom-forest outline-none focus:border-bloom-mid dark:border-white/10 dark:bg-white/10 dark:text-gray-100"
           />
 
-          <label className="mt-5 block text-sm font-bold text-bloom-forest dark:text-bloom-light">
+          <label
+            htmlFor="memory-category"
+            className="mt-5 block text-sm font-bold text-bloom-forest dark:text-bloom-light"
+          >
             Category
           </label>
 
           <select
+            id="memory-category"
             value={tag}
             onChange={(event) => handleTagChange(event.target.value)}
             className="mt-2 w-full rounded-2xl border border-bloom-sage/25 bg-white/80 px-4 py-3 text-sm font-bold text-bloom-forest outline-none focus:border-bloom-mid dark:border-white/10 dark:bg-white/10 dark:text-gray-100"
@@ -1005,13 +1049,23 @@ function MemoryFormOverlay({ mode, initialMemory, onSave, onCancel }) {
             </button>
           </div>
 
+          {saveError && (
+            <p
+              role="alert"
+              className="mt-5 rounded-2xl bg-red-50 px-4 py-3 text-sm font-semibold text-red-700 dark:bg-red-500/10 dark:text-red-200"
+            >
+              {saveError}
+            </p>
+          )}
+
           <div className="mt-6 flex flex-col gap-3 sm:flex-row">
             <button
               type="button"
               onClick={handleSave}
-              className="rounded-full bg-bloom-forest px-5 py-3 text-sm font-bold text-bloom-light shadow-sm transition hover:bg-bloom-mid dark:bg-bloom-sage dark:text-bloom-forest"
+              disabled={isSaving}
+              className="rounded-full bg-bloom-forest px-5 py-3 text-sm font-bold text-bloom-light shadow-sm transition hover:bg-bloom-mid disabled:cursor-not-allowed disabled:opacity-60 dark:bg-bloom-sage dark:text-bloom-forest"
             >
-              Save memory
+              {isSaving ? "Saving…" : "Save memory"}
             </button>
 
             <button
@@ -1028,8 +1082,19 @@ function MemoryFormOverlay({ mode, initialMemory, onSave, onCancel }) {
   )
 }
 
-export default function Moments() {
-  const [memories, setMemories] = useState(() => loadStoredMemories())
+export default function Moments({ currentUser = null, isDemoMode = false }) {
+  // EN: App remounts this page (via key) when the account/demo mode changes,
+  // so memories from one mode are never shown or saved in another.
+  // JP: アカウント・デモが切り替わると App がこのページを再マウントします。
+  const isBackendMode = Boolean(currentUser?.id) && !isDemoMode
+
+  const [memories, setMemories] = useState(() =>
+    isBackendMode ? [] : loadStoredMemories()
+  )
+  const [isLoadingMemories, setIsLoadingMemories] = useState(isBackendMode)
+  const [memoriesError, setMemoriesError] = useState("")
+  const [isSavingMemory, setIsSavingMemory] = useState(false)
+  const [memorySaveError, setMemorySaveError] = useState("")
   const [featuredMemory, setFeaturedMemory] = useState(null)
   const [activeMomentsView, setActiveMomentsView] = useState("dashboard")
   const [memoryFilter, setMemoryFilter] = useState("all")
@@ -1039,8 +1104,41 @@ export default function Moments() {
   const [openMemoryMenuId, setOpenMemoryMenuId] = useState(null)
 
   useEffect(() => {
-    localStorage.setItem(MEMORIES_STORAGE_KEY, JSON.stringify(memories))
-  }, [memories])
+    if (isBackendMode) return
+
+    try {
+      localStorage.setItem(MEMORIES_STORAGE_KEY, JSON.stringify(memories))
+    } catch {
+      // Demo memory persistence is optional.
+    }
+  }, [memories, isBackendMode])
+
+  useEffect(() => {
+    if (!isBackendMode) return undefined
+
+    let shouldIgnore = false
+
+    getMoments()
+      .then((savedMoments) => {
+        if (!shouldIgnore) {
+          setMemories(savedMoments.map(decorateMemory))
+        }
+      })
+      .catch((error) => {
+        if (!shouldIgnore) {
+          setMemoriesError(error.message || "Could not load your saved moments.")
+        }
+      })
+      .finally(() => {
+        if (!shouldIgnore) {
+          setIsLoadingMemories(false)
+        }
+      })
+
+    return () => {
+      shouldIgnore = true
+    }
+  }, [isBackendMode])
 
   const filteredMemories = useMemo(() => {
     const categoryFilteredMemories =
@@ -1059,16 +1157,52 @@ export default function Moments() {
 
   function handleOpenAddMemory() {
     setEditingMemory(null)
+    setMemorySaveError("")
     setIsMemoryFormOpen(true)
   }
 
   function handleEditMemory(memory) {
     setEditingMemory(memory)
+    setMemorySaveError("")
     setIsMemoryFormOpen(true)
     setOpenMemoryMenuId(null)
   }
 
-  function handleSaveMemory(memoryToSave) {
+  async function handleSaveMemory(memoryToSave) {
+    if (isBackendMode) {
+      setIsSavingMemory(true)
+      setMemorySaveError("")
+
+      try {
+        const savedMemory = decorateMemory(
+          editingMemory
+            ? await updateMoment(editingMemory.id, memoryToSave)
+            : await createMoment(memoryToSave)
+        )
+
+        setMemories((currentMemories) =>
+          editingMemory
+            ? currentMemories.map((memory) =>
+                memory.id === savedMemory.id ? savedMemory : memory
+              )
+            : [savedMemory, ...currentMemories]
+        )
+
+        if (featuredMemory?.id === savedMemory.id) {
+          setFeaturedMemory(savedMemory)
+        }
+
+        setEditingMemory(null)
+        setIsMemoryFormOpen(false)
+      } catch (error) {
+        setMemorySaveError(error.message || "Could not save this moment.")
+      } finally {
+        setIsSavingMemory(false)
+      }
+
+      return
+    }
+
     setMemories((currentMemories) => {
       const memoryExists = currentMemories.some(
         (memory) => memory.id === memoryToSave.id
@@ -1087,7 +1221,19 @@ export default function Moments() {
     setIsMemoryFormOpen(false)
   }
 
-  function handleDeleteMemory(memoryId) {
+  async function handleDeleteMemory(memoryId) {
+    if (isBackendMode) {
+      setMemoriesError("")
+
+      try {
+        await deleteMomentFromApi(memoryId)
+      } catch (error) {
+        setMemoriesError(error.message || "Could not delete this moment.")
+        setOpenMemoryMenuId(null)
+        return
+      }
+    }
+
     setMemories((currentMemories) =>
       currentMemories.filter((memory) => memory.id !== memoryId)
     )
@@ -1169,6 +1315,21 @@ export default function Moments() {
         </div>
       </section>
 
+      {isLoadingMemories && (
+        <p className="rounded-2xl bg-bloom-light/70 px-4 py-3 text-sm font-semibold text-bloom-forest/70 dark:bg-white/10 dark:text-gray-300">
+          Loading your saved moments...
+        </p>
+      )}
+
+      {memoriesError && (
+        <p
+          role="alert"
+          className="rounded-2xl bg-red-50 px-4 py-3 text-sm font-semibold text-red-700 dark:bg-red-500/10 dark:text-red-200"
+        >
+          {memoriesError}
+        </p>
+      )}
+
       {/* Dashboard */}
       <section className="grid gap-6 xl:grid-cols-3">
         {/* Row 1: Your memories wide + Small wins */}
@@ -1215,6 +1376,8 @@ export default function Moments() {
           mode={editingMemory ? "edit" : "add"}
           initialMemory={editingMemory}
           onSave={handleSaveMemory}
+          isSaving={isSavingMemory}
+          saveError={memorySaveError}
           onCancel={() => {
             setEditingMemory(null)
             setIsMemoryFormOpen(false)

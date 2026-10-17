@@ -1,5 +1,10 @@
 import { useState } from "react";
-import { getCurrentUser, loginUser, registerUser } from "../../api/bloomApi";
+import {
+  getCurrentUser,
+  loginUser,
+  registerUser,
+  updateProfileSettings,
+} from "../../api/bloomApi";
 import { saveBloomAvatarChoice } from "../../utils/avatarStorage";
 import useApp from "../../context/useApp"
 
@@ -242,6 +247,20 @@ export default function LoginModal({
 
       saveAvatarChoice(user);
 
+      // EN: Save the chosen avatar to the new account. The account is already
+      // created, so a failure here should not block sign-in.
+      // JP: 選んだアバターを新しいアカウントに保存します。失敗してもログインは続けます。
+      if (selectedAvatarType === "bloom" && selectedAvatarId) {
+        try {
+          await updateProfileSettings({
+            avatarType: selectedAvatarType,
+            avatarId: selectedAvatarId,
+          });
+        } catch (error) {
+          console.warn("Bloom: could not save avatar choice", error);
+        }
+      }
+
       setNotice("Account created. Opening your Bloom space...");
       completeAuth(user);
     } catch (error) {
@@ -254,7 +273,7 @@ export default function LoginModal({
   const createInitial =
     username.trim().charAt(0).toUpperCase() ||
     createEmail.trim().charAt(0).toUpperCase() ||
-    "?";
+    "?"; // Default to "?" if no username or email is available.
 
   return (
     <div

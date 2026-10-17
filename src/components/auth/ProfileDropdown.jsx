@@ -16,7 +16,7 @@ export default function ProfileDropdown({
   const userInitial =
     currentUser?.username?.charAt(0).toUpperCase() ||
     currentUser?.email?.charAt(0).toUpperCase() ||
-    "?";
+    "?"; // Default to "?" if no username or email is available.
 
   useEffect(() => {
     function handleClickOutside(event) {

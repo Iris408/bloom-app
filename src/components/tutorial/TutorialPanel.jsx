@@ -98,11 +98,6 @@ function TutorialPanel({
   const isLastStep  = currentStep === steps.length - 1
   const isFirstStep = currentStep === 0
 
-  const triggerPosition =
-    surface === "app"
-      ? "bottom-24 sm:bottom-6"
-      : "bottom-5 sm:bottom-6"
-
   const panelPosition =
     surface === "app"
       ? "bottom-36 sm:bottom-20"
@@ -154,7 +149,7 @@ function TutorialPanel({
       <button
         type="button"
         onClick={handleToggle}
-        className={`fixed right-4 z-40 inline-flex h-11 items-center justify-center gap-2 rounded-full bg-bloom-forest px-4 text-xs font-bold text-bloom-light shadow-lg transition hover:bg-bloom-mid dark:bg-bloom-sage dark:text-bloom-forest dark:hover:bg-bloom-light ${triggerPosition} ${
+        className={`fixed bottom-[6.75rem] right-4 z-[70] inline-flex h-11 items-center justify-center gap-2 rounded-full bg-bloom-forest px-4 text-xs font-bold text-bloom-light shadow-lg transition hover:bg-bloom-mid md:bottom-6 md:right-6 dark:bg-bloom-sage dark:text-bloom-forest ${
           !isOpen && surface === "demo" ? "bloom-guide-jump" : ""
         }`}
         aria-label={isOpen ? "Close Bloom guide" : "Open Bloom guide"}
@@ -171,7 +166,7 @@ function TutorialPanel({
       {/* ── Tutorial panel ── */}
       {isOpen && (
         <aside
-          className={`fixed right-4 z-40 flex w-[min(20rem,calc(100vw-2rem))] flex-col rounded-[1.75rem] border border-bloom-sage/25 bg-white/95 p-4 text-bloom-forest shadow-2xl backdrop-blur-md dark:border-white/10 dark:bg-[#252532]/95 dark:text-bloom-light sm:bottom-20 sm:right-5 sm:w-[21rem] sm:p-5 ${panelPosition} ${
+          className={`fixed bottom-[6.75rem] right-4 z-[70] flex w-[min(20rem,calc(100vw-2rem))] flex-col rounded-[1.75rem] border border-bloom-sage/25 bg-white/95 p-4 text-bloom-forest shadow-2xl backdrop-blur-md dark:border-white/10 dark:bg-[#252532]/95 dark:text-bloom-light sm:w-[21rem] sm:p-5 md:bottom-6 md:right-6 ${panelPosition} ${
             reduceMotion ? "animate-none" : "transition duration-300 ease-out"
           }`}
           role="dialog"

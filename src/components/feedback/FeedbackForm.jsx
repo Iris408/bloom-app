@@ -65,16 +65,16 @@ function FeedbackForm() {
     return (
       <section className="rounded-[2rem] border border-bloom-sage/25 bg-white/65 p-6 text-center shadow-sm backdrop-blur-sm dark:border-white/10 dark:bg-white/5">
         <p className="mb-2 text-xs font-bold uppercase tracking-[0.22em] text-bloom-mid dark:text-bloom-sage">
-          Feedback received
+          Feedback saved on this device
         </p>
 
         <h3 className="text-2xl font-bold text-bloom-forest dark:text-bloom-light">
-          Thank you for helping Bloom grow.
+          Thank you for sharing.
         </h3>
 
         <p className="mx-auto mt-3 max-w-xl text-sm leading-7 text-bloom-forest/75 dark:text-gray-300">
-          Your feedback has been saved locally in this browser for the beta version. Later,
-          Bloom can connect this form to a backend or feedback inbox.
+          Your note is saved only in this browser on this device. It has not
+          been sent to the Bloom team.
         </p>
 
         <button
@@ -82,7 +82,7 @@ function FeedbackForm() {
           onClick={() => setIsSubmitted(false)}
           className="mt-6 rounded-full bg-bloom-mid px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-bloom-forest"
         >
-          Send another note
+          Write another note
         </button>
       </section>
     )
@@ -203,7 +203,7 @@ function FeedbackForm() {
           disabled={!message.trim()}
           className="rounded-full bg-bloom-mid px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-bloom-forest disabled:cursor-not-allowed disabled:opacity-50"
         >
-          Send feedback
+          Save feedback
         </button>
       </div>
     </form>

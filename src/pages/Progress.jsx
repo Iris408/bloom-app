@@ -6,6 +6,10 @@ import { useEffect, useMemo, useState } from "react"
 import { useProgressStore } from "../hooks/useProgressStore"
 import { dayLabel, getProgressState, getWeekKeys, todayKey } from "../utils/progressUtils"
 import { isFullPreviewDemoType, isNeurodivergentDemoType } from "../data/demoData"
+import {
+  getFocusHistoryStorageKey,
+  loadFocusHistory,
+} from "../utils/focusHistoryStorage"
 
 import { 
   createProgressSnapshot, 
@@ -17,7 +21,6 @@ import {
 } from "../api/bloomApi"
 
 const ROUTINE_STORAGE_KEY = "bloom-routines"
-const FOCUS_HISTORY_STORAGE_KEY = "bloom-focus-history"
 
 function ProgressHeroImage() {
   return (
@@ -37,17 +40,6 @@ function loadStoredRoutines() {
     const parsedRoutines = savedRoutines ? JSON.parse(savedRoutines) : []
 
     return Array.isArray(parsedRoutines) ? parsedRoutines : []
-  } catch {
-    return []
-  }
-}
-
-function loadFocusHistory() {
-  try {
-    const savedHistory = localStorage.getItem(FOCUS_HISTORY_STORAGE_KEY)
-    const parsedHistory = savedHistory ? JSON.parse(savedHistory) : []
-
-    return Array.isArray(parsedHistory) ? parsedHistory : []
   } catch {
     return []
   }
@@ -302,8 +294,33 @@ export default function Progress({ currentUser = null, isDemoMode = false, demoT
   const today = todayKey()
   const weekKeys = useMemo(() => getWeekKeys(7), [])
 
-  const [routines, setRoutines] = useState(() => loadStoredRoutines())
-  const [focusHistory, setFocusHistory] = useState(() => loadFocusHistory())
+  const [routines, setRoutines] = useState(() =>
+    isBackendMode ? [] : loadStoredRoutines()
+  )
+  // EN: Read focus history from the key for the current user/mode, and
+  // rehydrate during render if that key changes.
+  // JP: 現在のユーザー・モードのキーから履歴を読み、キーが変わったら再読み込みします。
+  const focusHistoryStorageKey = getFocusHistoryStorageKey({
+    currentUser,
+    isDemoMode,
+  })
+
+  const [focusHistoryState, setFocusHistoryState] = useState(() => ({
+    storageKey: focusHistoryStorageKey,
+    sessions: loadFocusHistory(focusHistoryStorageKey),
+  }))
+
+  if (focusHistoryState.storageKey !== focusHistoryStorageKey) {
+    setFocusHistoryState({
+      storageKey: focusHistoryStorageKey,
+      sessions: loadFocusHistory(focusHistoryStorageKey),
+    })
+  }
+
+  const focusHistory =
+    focusHistoryState.storageKey === focusHistoryStorageKey
+      ? focusHistoryState.sessions
+      : []
   const [selectedDate, setSelectedDate] = useState(today)
   const [backendTasks, setBackendTasks] = useState([])
   const [backendFocusTasks, setBackendFocusTasks] = useState([])
@@ -431,7 +448,10 @@ export default function Progress({ currentUser = null, isDemoMode = false, demoT
 
     function refreshProgressData() {
       setRoutines(loadStoredRoutines())
-      setFocusHistory(loadFocusHistory())
+      setFocusHistoryState({
+        storageKey: focusHistoryStorageKey,
+        sessions: loadFocusHistory(focusHistoryStorageKey),
+      })
     }
 
     window.addEventListener("bloom-routines-updated", refreshProgressData)
@@ -441,7 +461,7 @@ export default function Progress({ currentUser = null, isDemoMode = false, demoT
       window.removeEventListener("bloom-routines-updated", refreshProgressData)
       window.removeEventListener("storage", refreshProgressData)
     }
-  }, [isBackendMode])
+  }, [isBackendMode, focusHistoryStorageKey])
 
   // EN: Persist today's local/demo snapshot to localStorage. This writes to
   // an external system (storage), so it stays an effect; the displayed value

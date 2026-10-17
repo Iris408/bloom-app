@@ -621,3 +621,167 @@ export async function updateProgressSnapshot(snapshotId, snapshot) {
 
   return mapProgressSnapshotFromApi(savedSnapshot)
 }
+// EN: Convert backend profile settings into frontend preference names.
+// JP: バックエンドのプロフィール設定をフロントエンドの設定名に変換します。
+function mapProfileFromApi(profile) {
+  return {
+    displayName: profile.display_name ?? null,
+    isDarkMode: profile.theme === "dark",
+    fontSize: profile.text_size || "medium",
+    dyslexicFont: Boolean(profile.dyslexic_font),
+    reduceMotion: Boolean(profile.reduce_motion),
+    avatarType: profile.avatar_type || "initial",
+    avatarId: profile.avatar_id ?? null,
+  }
+}
+
+const PROFILE_FIELD_TO_API = {
+  displayName: "display_name",
+  fontSize: "text_size",
+  dyslexicFont: "dyslexic_font",
+  reduceMotion: "reduce_motion",
+  avatarType: "avatar_type",
+  avatarId: "avatar_id",
+}
+
+function mapProfileToApi(updates) {
+  const body = {}
+
+  Object.entries(updates).forEach(([field, value]) => {
+    if (field === "isDarkMode") {
+      body.theme = value ? "dark" : "light"
+      return
+    }
+
+    if (PROFILE_FIELD_TO_API[field]) {
+      body[PROFILE_FIELD_TO_API[field]] = value
+    }
+  })
+
+  return body
+}
+
+// EN: Fetch the logged-in user's profile and accessibility preferences.
+// JP: ログイン中ユーザーのプロフィール・アクセシビリティ設定を取得します。
+export async function getProfileSettings() {
+  const response = await fetch(`${API_BASE_URL}/profile/`, {
+    method: "GET",
+    headers: getAuthHeaders(),
+  })
+
+  if (!response.ok) {
+    const message = await getApiErrorMessage(
+      response,
+      "Failed to fetch profile settings"
+    )
+
+    throw createApiError(message, response.status)
+  }
+
+  return mapProfileFromApi(await response.json())
+}
+
+// EN: Save some of the logged-in user's profile preferences.
+// JP: ログイン中ユーザーのプロフィール設定の一部を保存します。
+export async function updateProfileSettings(updates) {
+  const response = await fetch(`${API_BASE_URL}/profile/`, {
+    method: "PUT",
+    headers: getAuthHeaders(),
+    body: JSON.stringify(mapProfileToApi(updates)),
+  })
+
+  if (!response.ok) {
+    const message = await getApiErrorMessage(
+      response,
+      "Failed to save profile settings"
+    )
+
+    throw createApiError(message, response.status)
+  }
+
+  return mapProfileFromApi(await response.json())
+}
+
+// EN: Convert a backend Moment into the frontend memory shape.
+// JP: バックエンドのMomentをフロントエンドの思い出形式に変換します。
+function mapMomentFromApi(moment) {
+  return {
+    id: moment.id,
+    title: moment.title,
+    description: moment.description,
+    tag: moment.tag,
+    image: moment.image,
+    createdAt: moment.created_at,
+  }
+}
+
+function mapMomentToApi(memory) {
+  return {
+    title: memory.title,
+    description: memory.description,
+    tag: memory.tag,
+    image: memory.image,
+  }
+}
+
+// EN: Fetch the logged-in user's Moments.
+// JP: ログイン中ユーザーのMomentsを取得します。
+export async function getMoments() {
+  const response = await fetch(`${API_BASE_URL}/moments/`, {
+    method: "GET",
+    headers: getAuthHeaders(),
+  })
+
+  if (!response.ok) {
+    const message = await getApiErrorMessage(response, "Failed to fetch moments")
+    throw createApiError(message, response.status)
+  }
+
+  const moments = await response.json()
+
+  return moments.map(mapMomentFromApi)
+}
+
+export async function createMoment(memory) {
+  const response = await fetch(`${API_BASE_URL}/moments/`, {
+    method: "POST",
+    headers: getAuthHeaders(),
+    body: JSON.stringify(mapMomentToApi(memory)),
+  })
+
+  if (!response.ok) {
+    const message = await getApiErrorMessage(response, "Failed to save moment")
+    throw createApiError(message, response.status)
+  }
+
+  return mapMomentFromApi(await response.json())
+}
+
+export async function updateMoment(momentId, memory) {
+  const response = await fetch(`${API_BASE_URL}/moments/${momentId}`, {
+    method: "PUT",
+    headers: getAuthHeaders(),
+    body: JSON.stringify(mapMomentToApi(memory)),
+  })
+
+  if (!response.ok) {
+    const message = await getApiErrorMessage(response, "Failed to update moment")
+    throw createApiError(message, response.status)
+  }
+
+  return mapMomentFromApi(await response.json())
+}
+
+export async function deleteMomentFromApi(momentId) {
+  const response = await fetch(`${API_BASE_URL}/moments/${momentId}`, {
+    method: "DELETE",
+    headers: getAuthHeaders(),
+  })
+
+  if (!response.ok) {
+    const message = await getApiErrorMessage(response, "Failed to delete moment")
+    throw createApiError(message, response.status)
+  }
+
+  return response.json()
+}

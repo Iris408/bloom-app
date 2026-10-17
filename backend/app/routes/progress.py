@@ -47,6 +47,7 @@ def get_progress_snapshots_for_current_user(
     return (
         db.query(models.ProgressSnapshot)
         .filter(models.ProgressSnapshot.user_id == current_user.id)
+        .order_by(models.ProgressSnapshot.id)
         .all()
     )
 
