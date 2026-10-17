@@ -162,6 +162,7 @@ function Home({
   const [routines, setRoutines] = useState(() =>
     isBackendMode ? [] : getStoredRoutines()
   )
+  const [isProgressSnapshotOpen, setIsProgressSnapshotOpen] = useState(false)
 
   const taskPanelRef = useRef(null)
   const focusPanelRef = useRef(null)
@@ -865,69 +866,96 @@ function Home({
       </section>
 
       <section className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(280px,0.65fr)]">
-        <div className="rounded-[1.5rem] border border-bloom-sage/25 bg-white/55 p-5 shadow-sm dark:border-white/10 dark:bg-white/5">
-          <div className="mb-3 flex items-center justify-between gap-3">
+        <div>
+          {/* Mobile trigger */}
+          <button
+            type="button"
+            onClick={() => setIsProgressSnapshotOpen(true)}
+            className="flex w-full items-center justify-between rounded-[1.5rem] border border-bloom-sage/25 bg-white/65 p-4 text-left shadow-sm transition hover:bg-white/80 dark:border-white/10 dark:bg-white/5 dark:hover:bg-white/10 lg:hidden"
+          >
             <div>
               <p className="text-xs font-bold uppercase tracking-[0.2em] text-bloom-mid dark:text-bloom-sage">
                 Progress snapshot
               </p>
 
-              <h3 className="mt-1 text-lg font-bold text-bloom-forest dark:text-bloom-light">
-                Today
-              </h3>
+              <p className="mt-1 text-sm font-semibold text-bloom-forest/70 dark:text-gray-300">
+                {taskStats.completedTasks}/{taskStats.totalTasks} tasks completed today
+              </p>
             </div>
 
-            <button
-              type="button"
-              onClick={() => goToPage("progress")}
-              className="rounded-full bg-bloom-light px-3 py-1.5 text-xs font-bold text-bloom-forest/70 transition hover:bg-bloom-mint/50 dark:bg-bloom-forest/85 dark:text-gray-300 dark:hover:bg-bloom-mid/80"
+            <span
+              aria-hidden="true"
+              className="ml-4 text-xl font-bold text-bloom-forest dark:text-bloom-light"
             >
-              Open progress
-            </button>
-          </div>
+              ↑
+            </span>   
+          </button>
+    
+          {/* Desktop snapshot */}
+          <div className="hidden rounded-[1.5rem] border border-bloom-sage/25 bg-white/55 p-5 shadow-sm dark:border-white/10 dark:bg-white/5 lg:block">
+            <div className="mb-3 flex items-center justify-between gap-3">
+              <div>
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-bloom-mid dark:text-bloom-sage">
+                  Progress snapshot
+                </p>
 
-          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-            <div className="rounded-2xl bg-white/70 p-4 text-center shadow-sm dark:bg-white/5">
-              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full border-4 border-bloom-sage/40 text-lg font-bold text-bloom-forest dark:border-white/10 dark:text-bloom-light">
-                ✓
+                <h3 className="mt-1 text-lg font-bold text-bloom-forest dark:text-bloom-light">
+                  Today
+                </h3>
               </div>
 
-              <p className="mt-3 text-xl font-bold text-bloom-forest dark:text-bloom-light">
-                {taskStats.completedTasks}/{taskStats.totalTasks}
-              </p>
-
-              <p className="text-xs font-semibold text-bloom-forest/60 dark:text-gray-300">
-                Tasks
-              </p>
+              <button
+                type="button"
+                onClick={() => goToPage("progress")}
+                className="rounded-full bg-bloom-light px-3 py-1.5 text-xs font-bold text-bloom-forest/70 transition hover:bg-bloom-mint/50 dark:bg-bloom-forest/85 dark:text-gray-300 dark:hover:bg-bloom-mid/80"
+              >
+                Open progress
+              </button>
             </div>
 
-            <div className="rounded-2xl bg-white/70 p-4 text-center shadow-sm dark:bg-white/5">
-              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full border-4 border-bloom-sage/40 text-lg dark:border-white/10">
-                🌿
+            <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+              <div className="rounded-2xl bg-white/70 p-4 text-center shadow-sm dark:bg-white/5">
+                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full border-4 border-bloom-sage/40 text-lg font-bold text-bloom-forest dark:border-white/10 dark:text-bloom-light">
+                  ✓
+                </div>
+
+                <p className="mt-3 text-xl font-bold text-bloom-forest dark:text-bloom-light">
+                  {taskStats.completedTasks}/{taskStats.totalTasks}
+                </p>
+
+                <p className="text-xs font-semibold text-bloom-forest/60 dark:text-gray-300">
+                  Tasks
+                </p>
               </div>
 
-              <p className="mt-3 text-xl font-bold text-bloom-forest dark:text-bloom-light">
-                {routineStats.completedSteps}/{routineStats.totalSteps}
-              </p>
+              <div className="rounded-2xl bg-white/70 p-4 text-center shadow-sm dark:bg-white/5">
+                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full border-4 border-bloom-sage/40 text-lg dark:border-white/10">
+                  🌿
+                </div>
 
-              <p className="text-xs font-semibold text-bloom-forest/60 dark:text-gray-300">
-                Routine steps
-              </p>
-            </div>
+                <p className="mt-3 text-xl font-bold text-bloom-forest dark:text-bloom-light">
+                  {routineStats.completedSteps}/{routineStats.totalSteps}
+                </p>
 
-            <div className="rounded-2xl bg-white/70 p-4 text-center shadow-sm dark:bg-white/5">
-              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full border-4 border-bloom-sage/40 text-lg dark:border-white/10">
-                ꕤ
+                <p className="text-xs font-semibold text-bloom-forest/60 dark:text-gray-300">
+                  Routine steps
+                </p>
               </div>
 
-              <p className="mt-3 text-xl font-bold text-bloom-forest dark:text-bloom-light">
-                {focusStats.completedFocusTasks}/{focusStats.totalFocusTasks}
-              </p>
+              <div className="rounded-2xl bg-white/70 p-4 text-center shadow-sm dark:bg-white/5">
+                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full border-4 border-bloom-sage/40 text-lg dark:border-white/10">
+                  ꕤ
+                </div>
 
-              <p className="text-xs font-semibold text-bloom-forest/60 dark:text-gray-300">
-                Focus tasks
-              </p>
-            </div>
+                <p className="mt-3 text-xl font-bold text-bloom-forest dark:text-bloom-light">
+                  {focusStats.completedFocusTasks}/{focusStats.totalFocusTasks}
+                </p>
+
+                <p className="text-xs font-semibold text-bloom-forest/60 dark:text-gray-300">
+                  Focus tasks
+                </p>
+              </div>
+            </div>  
 
             <div className="rounded-2xl bg-white/70 p-4 text-center shadow-sm dark:bg-white/5">
               <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full border-4 border-bloom-sage/40 text-lg dark:border-white/10">
