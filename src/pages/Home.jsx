@@ -162,7 +162,6 @@ function Home({
   const [routines, setRoutines] = useState(() =>
     isBackendMode ? [] : getStoredRoutines()
   )
-  const [isProgressSnapshotOpen, setIsProgressSnapshotOpen] = useState(false)
 
   const taskPanelRef = useRef(null)
   const focusPanelRef = useRef(null)
@@ -867,10 +866,10 @@ function Home({
 
       <section className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(280px,0.65fr)]">
         <div>
-          {/* Mobile trigger */}
+          {/* Mobile trigger: opens Progress until a mobile snapshot sheet exists */}
           <button
             type="button"
-            onClick={() => setIsProgressSnapshotOpen(true)}
+            onClick={() => goToPage("progress")}
             className="flex w-full items-center justify-between rounded-[1.5rem] border border-bloom-sage/25 bg-white/65 p-4 text-left shadow-sm transition hover:bg-white/80 dark:border-white/10 dark:bg-white/5 dark:hover:bg-white/10 lg:hidden"
           >
             <div>
