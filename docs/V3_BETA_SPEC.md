@@ -288,7 +288,6 @@ Bud may have states including:
 - Happy
 - Sleepy
 - Growing
-- Resting
 
 Bud supports the experience but must not become the interface itself.
 
