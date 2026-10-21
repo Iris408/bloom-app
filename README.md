@@ -8,7 +8,7 @@ Bloom is an accessibility-focused visual task planner for everyday tasks, routin
 
 Bloom Personal uses calm interfaces, gentle task sequencing, focus sessions and reflection to help users make progress without turning missed days into failure.
 
-> **Current status:** v2.1.1 → v3 production live beta
+> **Current status:** v2.2 → v3 production live beta
 
 ## Live Demo
 

@@ -15,7 +15,7 @@ from app import models
 app = FastAPI(
     title="Bloom Backend API",
     description="Backend API for Bloom routines, tasks, profile settings and progress.",
-    version="2.1.0",
+    version="v2.2.0",
 )
 
 # EN: Allow frontend apps to call this backend API

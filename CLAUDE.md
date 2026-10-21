@@ -6,7 +6,11 @@ For the current Bloom v3 product specification, read:
 
 `docs/V3_BETA_SPEC.md`
 
-The specification is the source of truth for approved v3 product behaviour, design direction, modes, themes, accessibility requirements and beta scope.
+The specification is the repository source of truth for approved v3 product behaviour and direction.
+
+Approved technical architecture and later decisions are also tracked in Jira under the Bloom v3 Product & UX Foundation work.
+
+Where an older repository document conflicts with a later explicitly approved Jira decision, the later approved decision takes precedence.
 
 ---
 
@@ -16,49 +20,102 @@ Bloom is an accessibility-first application for routines, focus, reflection and 
 
 Current development journey:
 
-`v2.1.1 → v2.x milestones → v3.0.0 Live Beta`
+`v2.2.0 production baseline → v2.3/v3 foundation → v3.0.0-beta.1`
 
-v3 is a major product evolution, not a rebrand or framework rewrite.
+v3 is a major product evolution built incrementally from the stable v2.2 production baseline.
 
-The goal is to turn Bloom into a dependable live-beta product while preserving its calm, low-pressure product philosophy.
+Approved framework and architecture migrations must be implemented in controlled Jira-scoped slices. Do not perform a blind rewrite of working Bloom functionality.
 
 ---
 
-## Current Stack
+## Production Baseline and Approved v3 Target
 
-### Frontend
+### Current production baseline — v2.2.0
+
+Frontend:
 
 - React
 - Vite
 - JavaScript / JSX
 - Tailwind CSS
 
-### Backend
+Backend:
 
 - Python
 - FastAPI
 - SQLAlchemy
-- PostgreSQL for production
-- SQLite fallback for local development
+- PostgreSQL in production
 - Alembic migrations
-- JWT authentication
+- Existing Bloom JWT/password authentication
 
-### Infrastructure
+Infrastructure:
 
-- Docker where applicable
+- Vercel frontend
+- Render backend
+- Managed Render PostgreSQL
 - GitHub Actions CI
 - Environment-based configuration
 
-Do not introduce another framework or backend stack without an explicit architectural decision.
+The v2.2 production application is the stable migration baseline. Preserve working behaviour unless the active Jira ticket intentionally changes it.
 
-In particular, do not independently migrate Bloom to:
+### Approved v3 frontend target
 
 - Next.js
+- React
+- TypeScript
+- App Router
+- Tailwind CSS
+- Custom Bloom design system
+- Selective Radix UI primitives
+- React Hook Form + Zod
+- TanStack Query
+- Vitest + React Testing Library
+- Playwright
+
+### Approved v3 backend target
+
+- Python
+- FastAPI modular monolith
+- Pydantic v2
+- PostgreSQL
+- SQLAlchemy 2 using async patterns where appropriate
+- asyncpg
+- Alembic
+- Versioned REST API under `/api/v1`
+- pytest + HTTPX
+
+### Approved v3 platform boundaries
+
+- Clerk for adult / guardian identity
+- Bloom-owned Account, Adult Profile and Sprout Profile records
+- AWS S3 for private user-generated media
+- Render Cron Jobs for initial scheduled/background work
+- Stripe for web payments
+- StoreKit 2 for future native iOS purchases
+- Sentry for application error tracking
+- Vercel for Next.js
+- Dockerised FastAPI on Render
+- Managed PostgreSQL on Render
+- GitHub Actions for CI
+
+Do not replace these approved technologies or introduce additional major frameworks, databases, queues, state libraries or infrastructure without an explicit Jira architecture decision.
+
+In particular, do not independently introduce:
+
 - Vue
 - Express
-- TypeScript
+- GraphQL
+- Redux
+- microservices
+- Redis / Celery
+- Kubernetes
+- ECS / EKS
+- mandatory Terraform
+- React Native
+- Flutter
+- Capacitor
 
-These technologies may be evaluated separately in the future but are not part of the current v3 migration.
+Some of these may be reconsidered later if a concrete requirement justifies them.
 
 ---
 
@@ -85,6 +142,16 @@ Do not introduce features that are not part of the current milestone or specific
 When a task exposes unrelated technical debt, report it rather than automatically fixing it.
 
 Preserve existing behaviour unless the requested change intentionally modifies it.
+
+Every implementation change must stay within the active Jira ticket unless the user explicitly expands the scope.
+
+---
+
+## Commit Attribution
+
+Do not add `Co-Authored-By`, `Co-authored-by`, `Claude-Session`, or other AI attribution trailers.
+
+All commits use the configured Git author only.
 
 ---
 
@@ -152,11 +219,22 @@ Oasis should avoid completion statistics, outstanding-task pressure and producti
 
 ### Sprout
 
-A friendly, playful demonstration experience.
+Sprout is Bloom's younger-user experience, managed through an authenticated adult / guardian account.
 
-For v3, Sprout is demo-only and uses fictional data.
+Sprout should remain friendly, calm, simple and low-pressure.
 
-Do not introduce real child accounts or child data.
+Approved identity boundaries:
+
+- A Sprout profile is owned by a Bloom adult / guardian account.
+- Sprout profiles do not have independent Clerk accounts.
+- A child email address is not required.
+- FastAPI enforces Sprout ownership and permissions server-side.
+- Guardian-sensitive settings remain protected by authenticated adult authorization.
+- A Guardian PIN may protect transitions out of Sprout mode as a UX barrier, but it is not the security boundary.
+
+Sprout should not introduce scores, streaks, rankings, missed-day penalties or productivity pressure.
+
+Do not collect unnecessary child information. Exact date of birth or other additional child data requires a concrete approved product or legal requirement.
 
 ---
 
