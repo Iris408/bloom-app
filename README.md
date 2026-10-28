@@ -98,6 +98,8 @@ npm run build
 
 Backend setup and environment configuration are documented in `/docs`.
 
+The in-development v3 web app lives separately in `web/` (see `web/README.md`); the app above is the current production frontend.
+
 ## Documentation
 
 Additional project documentation is available in `/docs`, including:

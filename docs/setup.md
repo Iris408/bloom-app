@@ -2,7 +2,22 @@
 
 This document explains how to run Bloom locally.
 
-## Installation
+## Repository layout
+
+| Path | What it is | Status |
+| --- | --- | --- |
+| repository root (`package.json`, `src/`, `public/`, `vite.config.js`) | v2.2 frontend: React + Vite (JavaScript) | Production frontend, deployed by Vercel |
+| `web/` | v3 frontend: Next.js + React + TypeScript (App Router) | In development, not deployed |
+| `backend/` | FastAPI backend | Production backend |
+
+The two frontends are independent. `web/` has its own `package.json`,
+`package-lock.json` and `node_modules`, is not an npm workspace, and is not
+installed by `npm install` at the root. Install and run each frontend from its
+own folder.
+
+## v2.2 frontend (repository root)
+
+### Installation
 
 Clone the repository:
 
@@ -17,7 +32,7 @@ Install dependencies:
 npm install
 ```
 
-## Run Locally
+### Run Locally
 
 Start the Vite development server:
 
@@ -31,17 +46,41 @@ The app usually runs at:
 http://localhost:5173
 ```
 
-## Build Check
+### Build Check
 
 Run:
 
 ```bash
+npm run lint
 npm run build
 ```
 
-This confirms the frontend builds successfully.
+This confirms the frontend lints and builds successfully.
 
 The frontend calls the backend at `VITE_API_BASE_URL` (default `http://127.0.0.1:8000`). Set it in `.env.local` if your backend runs elsewhere.
+
+## v3 web app (`web/`)
+
+```bash
+cd web
+npm install
+npm run dev
+```
+
+The v3 app runs at `http://localhost:3000`, so it can run alongside the v2.2
+app on `http://localhost:5173`. It does not call the backend yet and is marked
+`noindex`.
+
+Validate it from `web/`:
+
+```bash
+npm run lint
+npm run typecheck   # generates Next.js route types, then runs tsc
+npm test            # Vitest + React Testing Library
+npm run build
+```
+
+See `web/README.md` for its route boundaries and isolation rules.
 
 ## Backend
 
@@ -104,8 +143,11 @@ Both test databases are cleared by the tests, so never point them at real data.
 
 GitHub Actions (`.github/workflows/ci.yml`) runs on pushes to `main` and `feature/**` branches and on pull requests:
 
-- Frontend: install, lint, production build
+- Frontend (v2.2, repository root): install, lint, production build
 - Backend: tests on SQLite and PostgreSQL, migration upgrade on a fresh PostgreSQL database, and a startup check
+- Web v3 (`web/`): install, production-dependency audit (fails on high or critical), lint, typecheck, test, production build
+
+Each job installs and validates its own app independently.
 
 ## Development Notes
 
