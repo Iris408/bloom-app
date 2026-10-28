@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* Keep the isolated v3 app (web/) out of the v2 Tailwind build. */
+@source not "../web";
+
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {

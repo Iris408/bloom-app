@@ -119,6 +119,20 @@ Some of these may be reconsidered later if a concrete requirement justifies them
 
 ---
 
+## Repository Boundaries
+
+The repository root is the current production v2.2 frontend.
+
+`web/` is the independent v3 Next.js frontend. It is not part of the root app's dependency tree.
+
+Never add v3 dependencies to the root `package.json`, or root dependencies to `web/package.json`.
+
+Never import root `src/` code into `web/`.
+
+Do not change the current production/Vercel boundary unless a later ticket explicitly authorises it.
+
+---
+
 ## Development Principles
 
 Work incrementally.
